@@ -109,7 +109,9 @@ class ContentTypeManager
             foreach ($this->resolver->getResolvers() as $resolver) {
                 $contentTypes = array_merge(iterator_to_array($resolver->getTypes()), $contentTypes);
             }
+
             sort($contentTypes);
+
             $this->contentTypes = new Iterator($contentTypes);
         }
 

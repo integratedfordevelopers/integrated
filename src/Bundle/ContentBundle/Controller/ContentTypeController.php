@@ -223,8 +223,10 @@ class ContentTypeController extends Controller
 
             // Set flash message
             $this->get('braincrafted_bootstrap.flash')->success('Item deleted');
+
             return $this->redirect($this->generateUrl('integrated_content_content_type_index'));
         }
+
         return $this->render('IntegratedContentBundle:content_type:delete.html.twig', [
             'contentType' => $contentType,
             'form' => $form->createView(),
