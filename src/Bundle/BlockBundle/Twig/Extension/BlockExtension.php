@@ -184,19 +184,17 @@ class BlockExtension extends \Twig_Extension
         $name = $name.' '.$this->channelContext->getChannel()->getName();
 
         $block = $this->blockManager->getBlock($id);
-        if (!$block) {
-            return $environment->render($this->themeManager->locateTemplate('blocks/create.html.twig'), [
+        if ($block) {
+            return $environment->render($this->themeManager->locateTemplate('blocks/channel.html.twig'), [
                 'id' => $id,
-                'name' => $name,
-                'class' => $class,
+                'content' => $this->renderBlock($environment, $block, $options),
             ]);
         }
 
-        $content = $this->renderBlock($environment, $block, $options);
-
-        return $environment->render($this->themeManager->locateTemplate('blocks/channel.html.twig'), [
+        return $environment->render($this->themeManager->locateTemplate('blocks/create.html.twig'), [
             'id' => $id,
-            'content' => $content,
+            'name' => $name,
+            'class' => $class,
         ]);
     }
 
