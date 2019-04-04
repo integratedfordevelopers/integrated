@@ -67,7 +67,7 @@
                                 <a href="{{ path('integrated_content_content_type_edit', {'id': document.id}) }}" title="{% trans %}Edit{% endtrans %}">
                                     {{ icon('pencil') }}
                                 </a>
-                                <a style="color: red" href="{{ path('integrated_content_content_type_delete_rest', {'id': document.id}) }}" title="{% trans %}Remove{% endtrans %}">
+                                <a class="href-red" href="{{ path('integrated_content_content_type_delete_rest', {'id': document.id}) }}" title="{% trans %}Remove{% endtrans %}">
                                     {{ icon('trash') }}
                                 </a>
                             </td>
