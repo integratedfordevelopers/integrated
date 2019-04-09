@@ -79,7 +79,7 @@ class ContentTypeController extends Controller
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 
         $documents = $this->contentTypeManager->getAll();
-        $documentTypes = $this->getMetadata()->getAllMetadata();
+        $documentTypes = $this->metadata->getAllMetadata();
 
         return $this->render('IntegratedContentBundle:content_type:index.html.twig', [
             'documents' => $documents,
@@ -94,7 +94,7 @@ class ContentTypeController extends Controller
      */
     public function selectAction()
     {
-        $documentTypes = $this->getMetadata()->getAllMetadata();
+        $documentTypes = $this->metadata->getAllMetadata();
 
         return $this->render('IntegratedContentBundle:content_type:select.html.twig', [
             'documentTypes' => $documentTypes,
@@ -132,7 +132,7 @@ class ContentTypeController extends Controller
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 
-        $metadata = $this->getMetadata()->getMetadata($request->get('class'));
+        $metadata = $this->metadata->getMetadata($request->get('class'));
 
         if (!$metadata) {
             return $this->redirect($this->generateUrl('integrated_content_content_type_select'));
@@ -176,7 +176,7 @@ class ContentTypeController extends Controller
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 
         $contentType = $this->getContentType($id);
-        $metadata = $this->getMetadata()->getMetadata($contentType->getClass());
+        $metadata = $this->metadata->getMetadata($contentType->getClass());
 
         $form = $this->createEditForm($contentType, $metadata);
         $form->handleRequest($request);
@@ -257,20 +257,6 @@ class ContentTypeController extends Controller
             'contentType' => $contentType,
             'form' => $form->createView(),
         ]);
-    }
-
-    /**
-     * Get the metadata factory form the service container.
-     *
-     * @return MetadataFactoryInterface
-     */
-    protected function getMetadata()
-    {
-        if ($this->metadata === null) {
-            $this->metadata;
-        }
-
-        return $this->metadata;
     }
 
     /**
