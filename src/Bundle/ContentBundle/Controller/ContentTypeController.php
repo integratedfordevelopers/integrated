@@ -55,10 +55,13 @@ class ContentTypeController extends Controller
      */
     private $eventDispatcher;
 
+
     /**
      * ContentTypeController constructor.
+     *
      * @param ContentTypeManager $contentTypeManager
-     * @param EventDispatcher $eventDispatcher
+     * @param EventDispatcher    $eventDispatcher
+     * @param MetadataFactory    $metadataFactory
      */
     public function __construct(ContentTypeManager $contentTypeManager, EventDispatcher $eventDispatcher, MetadataFactory $metadataFactory)
     {
