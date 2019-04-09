@@ -41,6 +41,9 @@
                                 <a href="{{ path('integrated_content_channel_edit', {'id': document.id}) }}" title="{% trans %}Edit{% endtrans %}">
                                     {{ icon('pencil') }}
                                 </a>
+                                <a href="{{ path('integrated_content_channel_delete', {'id': document.id}) }}" title="{% trans %}Delete{% endtrans %}">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>
                             </td>
                         </tr>
                     {% else %}
