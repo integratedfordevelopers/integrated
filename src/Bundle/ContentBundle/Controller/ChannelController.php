@@ -271,7 +271,8 @@ class ChannelController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('integrated_content_channel_delete', ['id' => $id]))
             ->setMethod('DELETE')
-            ->add('submit', SubmitType::class, ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']])
+            ->add('submit', SubmitType::class, ['label' => 'Delete', 'attr' => ['onclick' => 'return confirm("Are you sure?")', 'class' => 'btn-danger']])
+
             ->getForm();
     }
 
