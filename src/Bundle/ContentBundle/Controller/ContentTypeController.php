@@ -55,7 +55,6 @@ class ContentTypeController extends Controller
      */
     private $eventDispatcher;
 
-
     /**
      * ContentTypeController constructor.
      *
