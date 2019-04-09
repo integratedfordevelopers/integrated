@@ -88,6 +88,7 @@ class UserFormType extends AbstractType
             'constraints' => [
                 new NotBlank(),
                 new Length(['min' => 3]),
+                new Length(['max' => 40]),
             ],
             'attr' => ['autocomplete' => 'off'],
         ]);
