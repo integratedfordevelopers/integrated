@@ -24,6 +24,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Validator\Constraints\Length;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -35,7 +36,9 @@ class ChannelType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', TextType::class);
+        $builder->add('name', TextType::class,  [
+            'constraints' => new Length(['max' => 50]),
+        ]);
 
         $builder->add('logo', ImageDropzoneType::class);
         $builder->add('color', ColorType::class);
