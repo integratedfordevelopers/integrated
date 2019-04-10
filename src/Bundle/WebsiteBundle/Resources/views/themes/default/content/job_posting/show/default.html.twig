@@ -1,0 +1,18 @@
+{% extends integrated_active_theme('base.html.twig') %}
+
+{% block title %}{{ jobPosting.title }}{% endblock %}
+
+{% block meta %}
+    {{ parent() }}
+
+    {% include integrated_active_theme('widgets/canonical.html.twig') with {'content': jobPosting} only %}
+{% endblock %}
+
+{% block content %}
+    {% include 'IntegratedWebsiteBundle::json-ld.html.twig' with {content: jobPosting} %}
+
+    <h1>{{ jobPosting.title }}</h1>
+
+    {{ jobPosting.content|integrated_content }}
+
+{% endblock %}

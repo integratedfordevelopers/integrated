@@ -559,6 +559,10 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
             $this->channels->add($channel);
         }
 
+        if (null === $this->primaryChannel) {
+            $this->setPrimaryChannel($channel);
+        }
+
         return $this;
     }
 
