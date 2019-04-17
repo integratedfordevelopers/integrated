@@ -647,8 +647,9 @@ class ImportController extends Controller
                                     $nextLine = $contentLines[$lineKey + 1];
                                     $nextLine = trim($nextLine);
                                     if (substr($nextLine, -1, 1) != '.'
-                                    && substr($nextLine, -1, 1) != '?'
-                                    && (substr($nextLine, -1, 1) != '>' || substr($nextLine, -3, 3) == '/a>')) {
+                                        && substr($nextLine, -1, 1) != '?'
+                                        && trim(str_ireplace('&nbsp;', '', $nextLine)) != ''
+                                        && (substr($nextLine, -1, 1) != '>' || substr($nextLine, -3, 3) == '/a>')) {
                                         $nextCouldBeLi = true;
                                     }
                                 }
@@ -772,8 +773,8 @@ class ImportController extends Controller
                                 );
 
                                 if (stripos($href, '.pdf') !== false
-                                && $importDefinition->getFileContentType()
-                                && $importDefinition->getFileRelation()) {
+                                    && $importDefinition->getFileContentType()
+                                    && $importDefinition->getFileRelation()) {
                                     $contentTT = $importDefinition->getFileContentType();
                                     $file = $this->documentManager->getRepository(File::class)->findOneBy([
                                         'contentType' => $contentTT,
@@ -814,11 +815,22 @@ class ImportController extends Controller
                                         $this->documentManager->flush($file);
                                     }
 
-                                    $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
-                                    $relation->setRelationId('__editor_image');
-                                    $relation->setRelationType('embedded');
-                                    $relation->addReference($file);
-                                    $newObject->addRelation($relation);
+                                    $skipImage = false;
+                                    if ($newObject->getReferencesByRelationType('embedded')) {
+                                        foreach ($newObject->getReferencesByRelationType('embedded') as $reference) {
+                                            if ($reference->getId() == $file->getId()) {
+                                                $skipImage = true;
+                                            }
+                                        }
+                                    }
+
+                                    if (!$skipImage) {
+                                        $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
+                                        $relation->setRelationId('__editor_image');
+                                        $relation->setRelationType('embedded');
+                                        $relation->addReference($file);
+                                        $newObject->addRelation($relation);
+                                    }
 
                                     $element->outertext = '<img src="/storage/'.$file->getId().'.pdf" class="img-responsive" title="'.htmlspecialchars($title).'" alt="'.htmlspecialchars($title).'" data-integrated-id="'.$file->getId().'" />';
                                 }
@@ -853,11 +865,23 @@ class ImportController extends Controller
                             ]);
                             if ($image) {
                                 //attach existing images instead of duplication
-                                $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
-                                $relation->setRelationId('__editor_image');
-                                $relation->setRelationType('embedded');
-                                $relation->addReference($image);
-                                $newObject->addRelation($relation);
+
+                                $skipImage = false;
+                                if ($newObject->getReferencesByRelationType('embedded')) {
+                                    foreach ($newObject->getReferencesByRelationType('embedded') as $reference) {
+                                        if ($reference->getId() == $image->getId()) {
+                                            $skipImage = true;
+                                        }
+                                    }
+                                }
+
+                                if (!$skipImage) {
+                                    $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
+                                    $relation->setRelationId('__editor_image');
+                                    $relation->setRelationType('embedded');
+                                    $relation->addReference($image);
+                                    $newObject->addRelation($relation);
+                                }
 
                                 $img->outertext = '<img src="/storage/'.$image->getId().'.jpg" class="img-responsive" title="'.htmlspecialchars($image->getTitle()).'" alt="'.htmlspecialchars($image->getTitle()).'" data-integrated-id="'.$image->getId().'" />';
                                 continue;
@@ -906,11 +930,22 @@ class ImportController extends Controller
                                 $this->documentManager->flush($file);
                             }
 
-                            $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
-                            $relation->setRelationId('__editor_image');
-                            $relation->setRelationType('embedded');
-                            $relation->addReference($file);
-                            $newObject->addRelation($relation);
+                            $skipImage = false;
+                            if ($newObject->getReferencesByRelationType('embedded')) {
+                                foreach ($newObject->getReferencesByRelationType('embedded') as $reference) {
+                                    if ($reference->getId() == $file->getId()) {
+                                        $skipImage = true;
+                                    }
+                                }
+                            }
+
+                            if (!$skipImage) {
+                                $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
+                                $relation->setRelationId('__editor_image');
+                                $relation->setRelationType('embedded');
+                                $relation->addReference($file);
+                                $newObject->addRelation($relation);
+                            }
 
                             $img->outertext = '<img src="/storage/'.$file->getId().'.jpg" class="img-responsive" title="'.htmlspecialchars($title).'" alt="'.htmlspecialchars($title).'" data-integrated-id="'.$file->getId().'" />';
                         }
@@ -1042,11 +1077,26 @@ class ImportController extends Controller
                             'metadata.data.importImageBaseUrl' => $importDefinition->getImageBaseUrl(),
                         ]);
                         if ($image) {
-                            $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
-                            $relation->setRelationId($importDefinition->getImageRelation()->getId());
-                            $relation->setRelationType('embedded');
-                            $relation->addReference($image);
-                            $newObject->addRelation($relation);
+                            $skipImage = false;
+                            if ($newObject->getReferencesByRelationType('embedded')) {
+                                foreach ($newObject->getReferencesByRelationType('embedded') as $reference) {
+                                    if ($reference->getId() == $image->getId()) {
+                                        $skipImage = true;
+                                    }
+                                }
+                            }
+
+                            if (!$skipImage) {
+                                if ($newObject->getReferencesByRelationType('embedded')) {
+                                    file_put_contents('/tmp/skipreport.txt', $newObject->getTitle() . "\n",
+                                        FILE_APPEND);
+                                }
+                                $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
+                                $relation->setRelationId($importDefinition->getImageRelation()->getId());
+                                $relation->setRelationType('embedded');
+                                $relation->addReference($image);
+                                $newObject->addRelation($relation);
+                            }
                         } else {
                             $result['warnings'][] = 'Image with ID '.$imgId.' not found';
                         }
