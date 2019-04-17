@@ -1,5 +1,6 @@
 /* add select 2 for each relations input */
-$(".relation-items").each(function() {
+console.log(123);
+$("relation-items").each(function() {
     var multiple = $(this).data('multiple');
     var relation_id = $(this).attr('id');
 
@@ -12,7 +13,7 @@ $(".relation-items").each(function() {
             $relation.append('<option selected value="'+this.id+'" data-image="' + (this.image ? this.image : '') + '">'+this.title+'</option>');
         });
     }
-
+    console.log($relation);
     $relation.select2({
         multiple: multiple,
         allowClear: !multiple,
