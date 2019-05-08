@@ -32,6 +32,10 @@
         <default key="_controller">IntegratedContentBundle:ContentType:delete</default>
     </route>
 
+    <route id="integrated_content_content_type_delete_rest" path="/{id}/delete">
+        <default key="_controller">IntegratedContentBundle:ContentType:delete</default>
+    </route>
+
     <route id="integrated_content_content_type_show" path="/{id}/show" methods="GET">
         <default key="_controller">IntegratedContentBundle:ContentType:show</default>
     </route>

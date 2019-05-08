@@ -1,0 +1,18 @@
+{% extends integrated_active_theme('base.html.twig') %}
+
+{% block title %}{{ event.title }}{% endblock %}
+
+{% block meta %}
+    {{ parent() }}
+
+    {% include integrated_active_theme('widgets/canonical.html.twig') with {'content': event} only %}
+{% endblock %}
+
+{% block content %}
+    {% include 'IntegratedWebsiteBundle::json-ld.html.twig' with {content: event} %}
+
+    <h1>{{ event.title }}</h1>
+
+    {{ event.content|integrated_content }}
+
+{% endblock %}
