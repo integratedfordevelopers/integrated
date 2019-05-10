@@ -22,6 +22,7 @@ use Integrated\Bundle\ImportBundle\Document\Embedded\ImportField;
 use Integrated\Bundle\ImportBundle\Document\ImportDefinition;
 use Integrated\Bundle\ImportBundle\Form\Type\ImportDefinitionType;
 use Integrated\Bundle\ImportBundle\Import\ImportFile;
+use Integrated\Bundle\ImportBundle\Import\ImportProcessor;
 use Integrated\Bundle\ImportBundle\Serializer\InitializedObjectConstructor;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage\Metadata as StorageMetadata;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata;
@@ -69,6 +70,11 @@ class ImportController extends Controller
     protected $storageManager;
 
     /**
+     * @var ImportProcessor
+     */
+    private $processor;
+
+    /**
      * ImportController constructor.
      *
      * @param ContentTypeManager $contentTypeManager
@@ -76,19 +82,22 @@ class ImportController extends Controller
      * @param EntityManager      $entityManager
      * @param ImportFile         $importFile
      * @param Manager            $storageManager
+     * @param ImportProcessor    $processor
      */
     public function __construct(
         ContentTypeManager $contentTypeManager,
         DocumentManager $documentManager,
         EntityManager $entityManager,
         ImportFile $importFile,
-        Manager $storageManager
+        Manager $storageManager,
+        ImportProcessor $processor
     ) {
         $this->contentTypeManager = $contentTypeManager;
         $this->documentManager = $documentManager;
         $this->entityManager = $entityManager;
         $this->importFile = $importFile;
         $this->storageManager = $storageManager;
+        $this->processor = $processor;
     }
 
     /**
@@ -290,7 +299,7 @@ class ImportController extends Controller
             ->build();
         $contentTypeFields = json_decode($serializer->serialize($contentType->create(), 'json', $context), true);
 
-        $fields = ['' => ['label' => '- ignore -', 'matchCol' => false]];
+        $fields = $this->processor->getFields();
 
         foreach ($contentTypeFields as $contentTypeField => $contentTypeValue) {
             $matchCol = false;
@@ -473,7 +482,7 @@ class ImportController extends Controller
         $session = new Session();
         $session->save();
 
-        $start = $request->get('start', 0);
+        $start = $request->get('start', 1);
 
         $result = [];
         $result['done'] = true;
@@ -484,8 +493,9 @@ class ImportController extends Controller
         $data = $this->importFile->toArray($importDefinition);
         $totalRowNumber = \count($data);
         $rowsPerRequest = max(20, min(200, (int) $totalRowNumber / 20));
-        if ($start == 0) {
-            $rowsPerRequest = 2;
+        if ($start <= 1) {
+            $start = 1;
+            $rowsPerRequest = 3;
         }
 
         $rowNumber = -1;
@@ -710,6 +720,10 @@ class ImportController extends Controller
                         }
 
                         $html = HtmlDomParser::str_get_html($newHtml);
+                        if ($html === false) {
+                            $result['warnings'][] = 'No valid HTML for '.$newObject->getTitle().', content ignored';
+                            $html = HtmlDomParser::str_get_html('<p></p>');
+                        }
 
                         foreach ($html->find('a') as $element) {
                             if (!$importDefinition->getImageContentType() || !$importDefinition->getImageRelation()) {
@@ -757,6 +771,7 @@ class ImportController extends Controller
                                 if (filesize($tmpfile) == 0) {
                                     //echo $file . "\n";
                                     //echo "FILE HAS 0 BYTES\n";
+                                    unlink($tmpfile);
                                     continue;
                                 }
 
