@@ -74,11 +74,19 @@ class ContentTypeChangedListener implements EventSubscriberInterface
         $contentType = $event->getContentType();
         $channelOption = $contentType->getOption('channels');
 
-        if (isset($channelOption['disabled']) && $channelOption['disabled'] == 0) {
+        if (isset($channelOption['disabled'])
+            && $channelOption['disabled'] == 0
+            && $contentType->getOption('publication') !== 'disabled'
+        ) {
             $channels = $this->getChannelRepository()->findAll();
 
             $newContentTypePage = false;
             foreach ($channels as $channel) {
+                if (isset($channelOption['restricted']) && !in_array($channel->getId(), $channelOption['restricted'])) {
+                    $this->deletePagesByContentType($contentType, $channel->getId());
+                    continue;
+                }
+
                 if (!$this->getPageRepository()->findOneBy([
                     'channel.$id' => $channel->getId(),
                     'contentType.$id' => $contentType->getId(),
@@ -106,9 +114,14 @@ class ContentTypeChangedListener implements EventSubscriberInterface
     /**
      * @param ContentType $contentType
      */
-    protected function deletePagesByContentType(ContentType $contentType)
+    protected function deletePagesByContentType(ContentType $contentType, $channelId = null)
     {
-        $pages = $this->getPageRepository()->findBy(['contentType.$id' => $contentType->getId()]);
+        $criteria = ['contentType.$id' => $contentType->getId()];
+        if ($channelId !== null) {
+            $criteria['channel.$id'] = $channelId;
+        }
+
+        $pages = $this->getPageRepository()->findBy($criteria);
 
         foreach ($pages as $page) {
             $this->dm->remove($page);
