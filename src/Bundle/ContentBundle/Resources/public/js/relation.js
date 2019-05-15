@@ -1,5 +1,5 @@
 /* add select 2 for each relations input */
-$("relation-items").each(function() {
+$(".relation-items").each(function() {
     var multiple = $(this).data('multiple');
     var relation_id = $(this).attr('id');
 

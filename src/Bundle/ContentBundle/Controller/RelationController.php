@@ -11,14 +11,10 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
-use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ContentBundle\Form\Type\RelationType;
-use Integrated\Common\ContentType\ContentTypeInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,7 +43,8 @@ class RelationController extends Controller
 
         /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
         $dm = $this->get('doctrine_mongodb')->getManager();
-        $qb = $dm->createQueryBuilder($this->relationClass);
+        $qb = $dm->createQueryBuilder($this->relationClass)
+            ->sort('name');
 
         if ($contentType = $request->get('contentType')) {
             $qb->field('sources.$id')->in([(string) $contentType]);
@@ -219,7 +216,6 @@ class RelationController extends Controller
         );
 
         $form->add('submit', SubmitType::class, ['label' => 'Create']);
-
 
         return $form;
     }
