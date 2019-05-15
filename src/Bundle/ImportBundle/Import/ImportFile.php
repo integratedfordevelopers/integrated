@@ -12,8 +12,14 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class ImportFile
 {
+    /**
+     * @var AppCache
+     */
     protected $storageCache;
 
+    /**
+     * @var DocumentManager
+     */
     protected $documentManager;
 
     /**

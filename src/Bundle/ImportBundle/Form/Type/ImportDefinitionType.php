@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ImportBundle\Form\Type;
 
 use Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType;
+use Doctrine\ODM\MongoDB\DocumentRepository;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChoice;
@@ -29,11 +30,40 @@ class ImportDefinitionType extends AbstractType
     {
         $builder->add('name', TextType::class);
         $builder->add('contentType', ContentTypeChoice::class, ['label' => 'Content type', 'multiple' => false]);
-        $builder->add('channels', DocumentType::class, ['label' => 'Channels', 'class' => Channel::class, 'choice_label' => 'name', 'multiple' => true, 'expanded' => true]);
+        $builder->add('channels', DocumentType::class, [
+            'label' => 'Channels',
+            'class' => Channel::class,
+            'choice_label' => 'name',
+            'multiple' => true,
+            'expanded' => true
+        ]);
         $builder->add('imageBaseUrl', UrlType::class, ['label' => 'Base URL for images', 'required' => false]);
-        $builder->add('imageContentType', ContentTypeChoice::class, ['label' => 'Content type for images', 'multiple' => false]);
-        $builder->add('imageRelation', DocumentType::class, ['label' => 'Relation for images', 'multiple' => false, 'class' => Relation::class, 'choice_label' => 'name', 'choice_value' => 'id']);
-        $builder->add('fileContentType', ContentTypeChoice::class, ['label' => 'Content type for files', 'multiple' => false]);
-        $builder->add('fileRelation', DocumentType::class, ['label' => 'Relation for files', 'multiple' => false, 'class' => Relation::class, 'choice_label' => 'name', 'choice_value' => 'id']);
+        $builder->add('imageContentType', ContentTypeChoice::class,
+            ['label' => 'Content type for images', 'required' => false, 'multiple' => false]);
+        $builder->add('imageRelation', DocumentType::class, [
+            'label' => 'Relation for images',
+            'multiple' => false,
+            'required' => false,
+            'query_builder' => function (DocumentRepository $dr) {
+                return $dr->createQueryBuilder()->sort('name');
+            },
+            'class' => Relation::class,
+            'choice_label' => 'name',
+            'choice_value' => 'id'
+        ]);
+        $builder->add('fileContentType', ContentTypeChoice::class,
+            ['label' => 'Content type for files', 'required' => false, 'multiple' => false]);
+        $builder->add('fileRelation', DocumentType::class, [
+                'label' => 'Relation for files',
+                'multiple' => false,
+                'required' => false,
+                'query_builder' => function (DocumentRepository $dr) {
+                    return $dr->createQueryBuilder()->sort('name');
+                },
+                'class' => Relation::class,
+                'choice_label' => 'name',
+                'choice_value' => 'id'
+            ]
+        );
     }
 }

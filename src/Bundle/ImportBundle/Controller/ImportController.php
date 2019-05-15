@@ -283,7 +283,8 @@ class ImportController extends Controller
         ini_set('max_execution_time', 3600);
         ini_set('memory_limit', '4G');
 
-        $data = $this->importFile->toArray($importDefinition);
+        try {
+            $data = $this->importFile->toArray($importDefinition);
 
         $contentType = $this->documentManager->find(
             ContentType::class,
@@ -424,6 +425,11 @@ class ImportController extends Controller
                     $data[$index][$index2] = implode(', ', $value2);
                 }
             }
+        }
+        } catch (\Exception $e) {
+            $this->get('braincrafted_bootstrap.flash')->error('Unable to read import file: '.$e->getMessage());
+            $fields = [];
+            $data = [];
         }
 
         return $this->render(
@@ -1135,9 +1141,9 @@ class ImportController extends Controller
 
                     $result['success'][] = 'Post '.$row['wp:post_id'].' imported';
                 } catch (\Exception $e) {
-                    $result['errors'][] = 'Item '.(string) $newObject.' failed: '.$e->getMessage();
+                    $result['errors'][] = 'Item '.(string) $newObject.' failed: '.$e->getMessage() . ' ' . nl2br($e->getTraceAsString()) . ' ' . $e->getFile() . ' ' . $e->getLine();
                 } catch (\Throwable $e) {
-                    $result['errors'][] = 'Item '.(string) $newObject.' fatal: '.$e->getMessage();
+                    $result['errors'][] = 'Item '.(string) $newObject.' fatal: '.$e->getMessage() . ' ' . nl2br($e->getTraceAsString()) . ' ' . $e->getFile() . ' ' . $e->getLine();
                 }
             }
         }
