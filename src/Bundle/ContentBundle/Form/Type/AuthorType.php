@@ -73,6 +73,16 @@ class AuthorType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'multiple' => true,
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getParent()
     {
         return TextType::class;
