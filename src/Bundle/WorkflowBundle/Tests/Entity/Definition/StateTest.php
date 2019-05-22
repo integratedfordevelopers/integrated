@@ -38,7 +38,7 @@ class StateTest extends \PHPUnit\Framework\TestCase
         $definition
             ->expects($this->exactly(2))
             ->method('getDefault')
-            ->will($this->returnValue($state1))
+            ->willReturn($state1)
         ;
 
         // Asserts
