@@ -1136,6 +1136,10 @@ class ImportController extends Controller
                         );
                     }
 
+                    if (isset($row['meta_yoast_wpseo_canonical']) && $newObject instanceof Article) {
+                        $newObject->setSourceUrl($row['meta_yoast_wpseo_canonical']);
+                    }
+
                     $this->documentManager->persist($newObject);
                     $this->documentManager->flush();
 
