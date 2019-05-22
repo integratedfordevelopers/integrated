@@ -48,7 +48,7 @@ class IntegratedFormTypeExtensionTest extends \PHPUnit\Framework\TestCase
         // Stub getParameterBag function
         $container->expects($this->once())
             ->method('getParameterBag')
-            ->will($this->returnValue($parameterBag));
+            ->willReturn($parameterBag);
 
         // Load config
         $this->extension->load($config, $container);
