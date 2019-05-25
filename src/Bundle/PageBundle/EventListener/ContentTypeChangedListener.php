@@ -82,7 +82,7 @@ class ContentTypeChangedListener implements EventSubscriberInterface
 
             $newContentTypePage = false;
             foreach ($channels as $channel) {
-                if (isset($channelOption['restricted']) && !in_array($channel->getId(), $channelOption['restricted'])) {
+                if (isset($channelOption['restricted']) && (count($channelOption['restricted']) > 0) && !in_array($channel->getId(), $channelOption['restricted'])) {
                     $this->deletePagesByContentType($contentType, $channel->getId());
                     continue;
                 }

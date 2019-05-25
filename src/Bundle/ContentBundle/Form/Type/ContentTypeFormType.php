@@ -44,7 +44,8 @@ class ContentTypeFormType extends AbstractType
                 'Publish items on selected channels' => '',
                 'Disable for publication' => 'disabled'
             ],
-            'property_path' => 'options[publication]'
+            'property_path' => 'options[publication]',
+            'required' => false,
         ]);
 
         foreach ($metadata->getOptions() as $option) {
