@@ -19,6 +19,7 @@ use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Form\Type\MetadataType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -33,6 +34,10 @@ class BlockController extends Controller
      */
     public function indexAction(Request $request)
     {
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $pageBundleInstalled = isset($this->getParameter('kernel.bundles')['IntegratedPageBundle']);
         $data = $request->query->get('integrated_block_filter');
         $queryProvider = $this->get('integrated_block.provider.filter_query');
@@ -65,6 +70,10 @@ class BlockController extends Controller
      */
     public function showAction(Request $request, Block $block)
     {
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $request->attributes->set('integrated_block_edit', true);
 
         return $this->render('IntegratedBlockBundle:block:show.json.twig', [
@@ -79,6 +88,10 @@ class BlockController extends Controller
      */
     public function newAction(Request $request)
     {
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $class = $request->get('class');
 
         $block = class_exists($class) ? new $class() : null;
@@ -112,12 +125,50 @@ class BlockController extends Controller
 
     /**
      * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function newChannelBlockAction(Request $request)
+    {
+        $csrfToken = $request->request->get('csrf_token');
+
+        if (!(
+            ($this->isGranted('ROLE_WEBSITE_MANAGER') || $this->isGranted('ROLE_ADMIN'))
+            && $this->isCsrfTokenValid('create-channel-block', $csrfToken))
+        ) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $class = $request->request->get('class');
+        $id = $request->request->get('id');
+        $name = $request->request->get('name');
+
+        $block = class_exists($class) ? new $class($id) : null;
+
+        if (!$block instanceof Block) {
+            throw $this->createNotFoundException(sprintf('Invalid block "%s"', $class));
+        }
+
+        $block->setTitle($name);
+        $block->setLayout('default.html.twig');
+        $this->getDocumentManager()->persist($block);
+        $this->getDocumentManager()->flush();
+
+        return new JsonResponse(['result' => 'ok']);
+    }
+
+    /**
+     * @param Request $request
      * @param Block   $block
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, Block $block)
     {
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $form = $this->createEditForm($block);
         $form->handleRequest($request);
 
@@ -148,6 +199,10 @@ class BlockController extends Controller
      */
     public function deleteAction(Request $request, Block $block)
     {
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         if ($block->isLocked()) {
             throw $this->createNotFoundException(sprintf('Block "%s" is locked.', $block->getId()));
         }

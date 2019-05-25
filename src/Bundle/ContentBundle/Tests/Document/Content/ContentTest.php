@@ -65,7 +65,7 @@ abstract class ContentTest extends \PHPUnit\Framework\TestCase
         // Stub getReferences
         $relation->expects($this->once())
             ->method('getReferences')
-            ->will($this->returnValue(new ArrayCollection()));
+            ->willReturn(new ArrayCollection());
 
         // Create relations collection
         $relations = new ArrayCollection([$relation]);

@@ -45,6 +45,10 @@ class ChannelController extends Controller
      */
     public function indexAction()
     {
+        if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $documents = $this->getDocumentManager()->getRepository($this->channelClass)->findAll();
 
         return $this->render('IntegratedContentBundle:channel:index.html.twig', [
@@ -61,6 +65,10 @@ class ChannelController extends Controller
      */
     public function showAction(Channel $channel)
     {
+        if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $form = $this->createDeleteForm($channel->getId());
 
         return $this->render('IntegratedContentBundle:channel:show.html.twig', [
@@ -76,6 +84,10 @@ class ChannelController extends Controller
      */
     public function newAction()
     {
+        if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $channel = new Channel();
 
         $form = $this->createCreateForm($channel);
@@ -94,6 +106,10 @@ class ChannelController extends Controller
      */
     public function createAction(Request $request)
     {
+        if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $channel = new Channel();
 
         $form = $this->createCreateForm($channel);
@@ -125,6 +141,10 @@ class ChannelController extends Controller
      */
     public function editAction(Channel $channel)
     {
+        if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $form = $this->createEditForm($channel);
 
         return $this->render('IntegratedContentBundle:channel:edit.html.twig', [
@@ -143,6 +163,10 @@ class ChannelController extends Controller
      */
     public function updateAction(Request $request, Channel $channel)
     {
+        if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $form = $this->createEditForm($channel);
         $form->handleRequest($request);
 
@@ -173,6 +197,10 @@ class ChannelController extends Controller
      */
     public function deleteAction(Request $request, Channel $channel)
     {
+        if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $form = $this->createDeleteForm($channel->getId());
         $form->handleRequest($request);
 

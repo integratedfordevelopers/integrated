@@ -299,6 +299,25 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     }
 
     /**
+     * @param array $relationTypes
+     *
+     * @return array|bool
+     */
+    public function getReferencesByRelationTypes(array $relationTypes)
+    {
+        $references = [];
+        foreach ($relationTypes as $relationType) {
+            $references = array_merge($references, $this->getReferencesByRelationType($relationType));
+        }
+
+        if (\count($references) > 0) {
+            return $references;
+        }
+
+        return false;
+    }
+
+    /**
      * @param $relationType
      *
      * @return Content|null
@@ -487,7 +506,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
      */
     public function getMetadata()
     {
-        if ($this->metadata === null) {
+        if (null === $this->metadata) {
             $this->metadata = new Metadata();
         }
 
@@ -499,7 +518,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
      */
     public function setMetadata(RegistryInterface $metadata = null)
     {
-        if ($metadata !== null && !$metadata instanceof Metadata) {
+        if (null !== $metadata && !$metadata instanceof Metadata) {
             $metadata = new Metadata($metadata->toArray());
         }
 
@@ -540,6 +559,10 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
             $this->channels->add($channel);
         }
 
+        if (null === $this->primaryChannel) {
+            $this->setPrimaryChannel($channel);
+        }
+
         return $this;
     }
 
@@ -574,11 +597,11 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     }
 
     /**
-     * @param Channel|null $primaryChannel
+     * @param ChannelInterface|null $primaryChannel
      *
      * @return $this
      */
-    public function setPrimaryChannel(Channel $primaryChannel = null)
+    public function setPrimaryChannel(ChannelInterface $primaryChannel = null)
     {
         $this->primaryChannel = $primaryChannel;
 
@@ -590,7 +613,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
      */
     public function getCustomFields()
     {
-        if ($this->customFields === null) {
+        if (null === $this->customFields) {
             $this->customFields = new Embedded\CustomFields();
         }
 
@@ -604,7 +627,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
      */
     public function setCustomFields(RegistryInterface $customFields = null)
     {
-        if ($customFields !== null && !$customFields instanceof Embedded\CustomFields) {
+        if (null !== $customFields && !$customFields instanceof Embedded\CustomFields) {
             $customFields = new Embedded\CustomFields($customFields->toArray());
         }
 

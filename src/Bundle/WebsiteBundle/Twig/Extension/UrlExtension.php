@@ -52,17 +52,18 @@ class UrlExtension extends \Twig_Extension
 
     /**
      * @param mixed $document
+     * @param null  $channelId
      *
-     * @return null|string
+     * @return string|null
      */
-    public function getUrl($document)
+    public function getUrl($document, $channelId = null)
     {
         if ($document instanceof ContentInterface) {
-            return $this->urlResolver->generateUrl($document);
+            return $this->urlResolver->generateUrl($document, $channelId);
         }
 
         //probably solr document
-        return $this->solrUrlExtractor->getUrl($document);
+        return $this->solrUrlExtractor->getUrl($document, $channelId);
     }
 
     /**

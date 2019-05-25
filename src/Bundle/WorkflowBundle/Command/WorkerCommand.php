@@ -14,11 +14,11 @@ namespace Integrated\Bundle\WorkflowBundle\Command;
 use Exception;
 use Integrated\Common\Queue\QueueInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Lock\Factory;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -26,18 +26,29 @@ use Symfony\Component\Lock\Factory;
 class WorkerCommand extends ContainerAwareCommand
 {
     /**
-     * @var Factory
+     * @var QueueInterface
      */
-    private $factory;
+    private $queue;
 
     /**
-     * @param Factory $factory
+     * @var string
      */
-    public function __construct(Factory $factory)
-    {
+    private $workingDirectory;
+
+    use LockableTrait;
+
+    /**
+     * @param QueueInterface $queue
+     * @param string         $workingDirectory
+     */
+    public function __construct(
+        QueueInterface $queue,
+        string $workingDirectory
+    ) {
         parent::__construct();
 
-        $this->factory = $factory;
+        $this->queue = $queue;
+        $this->workingDirectory = $workingDirectory;
     }
 
     /**
@@ -63,14 +74,14 @@ The <info>%command.name%</info> .
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $lock = $this->factory->createLock(self::class.md5(__DIR__));
+        if (!$this->lock(self::class.md5(__DIR__))) {
+            $output->writeln('The command is already running in another process.');
 
-        if (!$lock->acquire()) {
-            return;
+            return 0;
         }
 
         try {
-            foreach ($this->getQueue()->pull($input->getOption('batch')) as $message) {
+            foreach ($this->queue->pull($input->getOption('batch')) as $message) {
                 $data = (array) $message->getPayload();
 
                 $data['command'] = isset($data['command']) ? $data['command'] : null;
@@ -104,7 +115,7 @@ The <info>%command.name%</info> .
 
             return 1;
         } finally {
-            $lock->release();
+            $this->release();
         }
 
         return 0;
@@ -121,7 +132,10 @@ The <info>%command.name%</info> .
     protected function executeCommand(InputInterface $input, OutputInterface $output, $command, array $arguments = [])
     {
         // run in a different process for isolation like memory issues.
-        $process = new Process('php bin/console '.$command.' -e '.$input->getOption('env').' '.implode(' ', $arguments), getcwd(), null, null, null);
+        $process = new Process(
+            'php bin/console '.$command.' -e '.$input->getOption('env').' '.implode(' ', $arguments),
+            $this->workingDirectory
+        );
         $process->run();
 
         $process->run(function ($type, $buffer) use ($output) {
@@ -131,13 +145,5 @@ The <info>%command.name%</info> .
         if (!$process->isSuccessful()) {
             throw new Exception($process->getErrorOutput());
         }
-    }
-
-    /**
-     * @return QueueInterface
-     */
-    public function getQueue()
-    {
-        return $this->getContainer()->get('integrated_queue.workflow');
     }
 }

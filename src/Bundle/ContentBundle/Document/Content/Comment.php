@@ -139,6 +139,6 @@ class Comment extends Content
      */
     public function __toString()
     {
-        return $this->getDescriptor();
+        return (string) $this->getDescriptor();
     }
 }

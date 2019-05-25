@@ -34,6 +34,8 @@ class IntegratedWorkflowExtension extends Extension implements PrependExtensionI
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
+        $loader->load('command.xml');
+
         $loader->load('doctrine.xml');
         $loader->load('extension.xml');
         $loader->load('repository.xml');
@@ -41,6 +43,8 @@ class IntegratedWorkflowExtension extends Extension implements PrependExtensionI
         $loader->load('form.xml');
 
         $loader->load('security.xml');
+
+        $loader->load('service.xml');
 
         $loader->load('lock.xml');
         $loader->load('queue.xml');

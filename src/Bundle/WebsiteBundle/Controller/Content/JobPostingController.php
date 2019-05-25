@@ -71,7 +71,7 @@ class JobPostingController
         $this->blockManager->setDocument($jobPosting);
 
         return $this->templating->renderResponse(
-            $this->themeManager->locateTemplate('content/job_posting/show/'.$page->getLayout()),
+            $this->themeManager->locateTemplate('content/jobposting/show/'.$page->getLayout()),
             [
                 'jobPosting' => $jobPosting,
                 'page' => $page,

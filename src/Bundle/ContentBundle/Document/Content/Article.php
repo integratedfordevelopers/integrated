@@ -60,6 +60,12 @@ class Article extends Content
 
     /**
      * @var string
+     * @Type\Field(type="Symfony\Component\Form\Extension\Core\Type\UrlType", options={"label" = "Source URL"})
+     */
+    protected $sourceUrl;
+
+    /**
+     * @var string
      */
     protected $locale;
 
@@ -244,6 +250,30 @@ class Article extends Content
     }
 
     /**
+     * Get the source URL of the document.
+     *
+     * @return string
+     */
+    public function getSourceUrl()
+    {
+        return $this->sourceUrl;
+    }
+
+    /**
+     * Set the source of the document.
+     *
+     * @param string $sourceUrl
+     *
+     * @return $this
+     */
+    public function setSourceUrl($sourceUrl)
+    {
+        $this->sourceUrl = $sourceUrl;
+
+        return $this;
+    }
+
+    /**
      * Get the locale of the document.
      *
      * @return string
@@ -366,7 +396,7 @@ class Article extends Content
      */
     public function getCover()
     {
-        $items = $this->getReferencesByRelationType('embedded');
+        $items = $this->getReferencesByRelationTypes(['cover', 'embedded']);
         if ($items) {
             foreach ($items as $item) {
                 if ($item instanceof FileInterface) {
@@ -385,6 +415,6 @@ class Article extends Content
      */
     public function __toString()
     {
-        return $this->title;
+        return (string) $this->title;
     }
 }

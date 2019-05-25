@@ -19,6 +19,7 @@ use Integrated\Bundle\SocialBundle\Factory\TwitterFactory;
 use Integrated\Common\Channel\Connector\Config\ConfigManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -88,19 +89,21 @@ class TwitterChannelConfigSubscriber implements EventSubscriberInterface
 
         $client = $this->factory->createClient();
 
+        $session = new Session();
+        $session->set('externalReturnId', $config->getId());
+
         $response = $client->oauth(
             'oauth/request_token',
             [
                 'oauth_callback' => $this->generator->generate(
-                    'integrated_channel_config_edit',
-                    ['id' => $config->getId()],
+                    'integrated_channel_config_external_return',
+                    [],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 ),
             ]
         );
 
         // Store the request token as we need it later on in the twitter callback {@see onRequest}
-
         $options = clone $config->getOptions();
 
         $options->set('request_token', $response['oauth_token']);

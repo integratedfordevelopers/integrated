@@ -83,7 +83,7 @@ class RedirectContentSubscriber implements EventSubscriberInterface
         }
 
         $request = $event->getRequest();
-        $parts = explode('/', $request->getPathInfo());
+        $parts = explode('/', rtrim($request->getPathInfo(), '/'));
 
         if (!$slug = end($parts)) {
             return;

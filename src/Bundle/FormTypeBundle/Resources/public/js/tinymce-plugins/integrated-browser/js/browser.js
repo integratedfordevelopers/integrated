@@ -3,7 +3,7 @@ $(document).ready(function() {
      * TinyMCE instance from the top level window object
      * @type object
      */
-    var tinymce = top.tinymce;
+    var tinymce = parent.tinymce;
 
     /**
      * Window modal object created by tinymce object
@@ -179,7 +179,7 @@ $(document).ready(function() {
                 render(data.items);
                 renderPagination(data.pagination);
             }, 'json')
-                .error(function(xhr, status){
+                .fail(function(xhr, status){
                     if(status !== 'abort'){
                         $('#thumbnail-container').html('<p class="text-center">Error occured while loading content</p>');
                     }
@@ -238,7 +238,7 @@ $(document).ready(function() {
                 render(data.items);
                 renderPagination(data.pagination);
             }, 'json')
-                .error(function(){
+                .fail(function(){
                     $('#thumbnail-container').html('<p class="text-center">Error occured while loading content</p>')
                 })
                 .done(function() {
@@ -314,7 +314,7 @@ $(document).ready(function() {
                 refresh();
             });
         });
-    }).error(function() {
+    }).fail(function() {
         $('#add_image_wrapper').html('<p>Failed to retrieve content types.</p>');
     }).done(function (){
         $('#add_image_wrapper').css('opacity',1);

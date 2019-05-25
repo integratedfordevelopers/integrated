@@ -32,4 +32,8 @@
         <default key="_controller">integrated_channel.controller.config:deleteAction</default>
     </route>
 
+    <route id="integrated_channel_config_external_return" path="/external/return" methods="GET">
+        <default key="_controller">integrated_channel.controller.config:externalReturnAction</default>
+    </route>
+
 </routes>

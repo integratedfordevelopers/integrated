@@ -15,6 +15,8 @@ $(".relation-items").each(function() {
 
     $relation.select2({
         multiple: multiple,
+        allowClear: !multiple,
+        placeholder: '',
         ajax: {
             type: 'GET',
             url: Routing.generate("integrated_content_content_index", {'_format': 'json'}),

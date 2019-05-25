@@ -28,6 +28,10 @@ class InlineTextBlockController extends BlockController
      */
     public function createAction(Request $request, AbstractPage $page)
     {
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $block = new InlineTextBlock($page);
 
         $form = $this->createCreateForm($block);

@@ -43,4 +43,9 @@ interface ChannelInterface
      * @return string
      */
     public function getPrimaryDomain();
+
+    /**
+     * @return bool
+     */
+    public function getPrimaryDomainRedirect();
 }

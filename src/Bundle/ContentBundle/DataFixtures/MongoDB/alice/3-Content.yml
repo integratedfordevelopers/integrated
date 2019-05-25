@@ -75,6 +75,14 @@ Integrated\Bundle\ContentBundle\Document\Content\Comment:
     email: <email()>
     comment: <paragraph()>
 
+Integrated\Bundle\ContentBundle\Document\Content\Product:
+  product{1..20}:
+    contentType: book
+    title: <sentence(5)>
+    reference: <ean13()>
+    variant: <sentence(1)>
+    content: <paragraphs(rand(6, 12), true)>
+
 # -------------------------------------------- #
 # Below here local embedded objects            #
 # -------------------------------------------- #

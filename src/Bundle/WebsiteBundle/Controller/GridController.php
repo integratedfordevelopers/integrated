@@ -29,7 +29,9 @@ class GridController extends Controller
      */
     public function saveAction(Request $request)
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
 
         $data = (array) json_decode($request->getContent(), true);
 

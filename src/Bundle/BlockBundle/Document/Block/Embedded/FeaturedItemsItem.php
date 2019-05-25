@@ -41,7 +41,11 @@ class FeaturedItemsItem
 
     /**
      * @var string
-     * @Type\Field
+     * @Type\Field(
+     *     options={
+     *         "required"=false
+     *     }
+     * )
      */
     protected $linkText;
 

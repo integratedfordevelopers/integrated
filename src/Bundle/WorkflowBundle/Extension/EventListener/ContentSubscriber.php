@@ -328,6 +328,10 @@ E-mail: '.$person->getEmail().'',
 
         $type = $object->getContentType();
 
+        if (!$type) {
+            return null;
+        }
+
         if (!$this->getResolver()->hasType($type)) {
             return null;
         }

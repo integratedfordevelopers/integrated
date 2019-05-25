@@ -115,12 +115,7 @@ trait ContentTypeHelper
 
             $fields[$field->getName()] = (new Field())
                     ->setName($field->getName())
-                    ->setOptions(
-                        array_merge(
-                            $field->getOptions(),
-                            ['required' => \in_array(strtolower($field->getName()), $requiredFields)]
-                        )
-                    );
+                    ->setOptions(['required' => \in_array(strtolower($field->getName()), $requiredFields)]);
         }
 
         $contentType->setFields($fields);

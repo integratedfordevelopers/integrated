@@ -82,7 +82,7 @@ class ContentTypeTest extends \PHPUnit\Framework\TestCase
         $field2
             ->expects($this->once())
             ->method('getName')
-            ->will($this->returnValue('field2'))
+            ->willReturn('field2')
         ;
 
         // Add field
