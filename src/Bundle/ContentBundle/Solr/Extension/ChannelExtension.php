@@ -13,6 +13,8 @@ namespace Integrated\Bundle\ContentBundle\Solr\Extension;
 
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Common\Content\ChannelableInterface;
+use Integrated\Common\Content\ContentInterface;
+use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeExtensionInterface;
 
@@ -21,6 +23,19 @@ use Integrated\Common\Converter\Type\TypeExtensionInterface;
  */
 class ChannelExtension implements TypeExtensionInterface
 {
+    /**
+     * @var ResolverInterface
+     */
+    private $resolver;
+
+    /**
+     * @param ResolverInterface $resolver
+     */
+    public function __construct(ResolverInterface $resolver)
+    {
+        $this->resolver = $resolver;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -35,6 +50,14 @@ class ChannelExtension implements TypeExtensionInterface
         foreach ($data->getChannels() as $channel) {
             if ($channel instanceof ChannelInterface) {
                 $container->add('facet_channels', $channel->getId());
+            }
+        }
+
+        if (count($data->getChannels()) == 0 && $data instanceof ContentInterface) {
+            $contentType = $this->resolver->getType($data->getContentType());
+            $channelOption = $contentType->getOption('channels');
+            if ($contentType->getOption('publication') !== 'disabled' && $channelOption['disabled'] == 0) {
+                $container->add('facet_channels', 'None');
             }
         }
     }
