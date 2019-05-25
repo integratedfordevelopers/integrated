@@ -48,7 +48,6 @@ class ChannelsTransformer implements DataTransformerInterface
 
         $defaults = [];
         if (isset($value['defaults'])) {
-
             // TODO filter out invalid channels
 
             foreach ($value['defaults'] as $channel) {
@@ -59,7 +58,6 @@ class ChannelsTransformer implements DataTransformerInterface
         }
 
         if (isset($value['restricted'])) {
-
             // TODO filter out invalid channels
 
             foreach ($value['restricted'] as $channel) {
