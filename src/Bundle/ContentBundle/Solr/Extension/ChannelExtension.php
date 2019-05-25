@@ -53,7 +53,7 @@ class ChannelExtension implements TypeExtensionInterface
             }
         }
 
-        if (count($data->getChannels()) == 0 && $data instanceof ContentInterface) {
+        if (\count($data->getChannels()) == 0 && $data instanceof ContentInterface) {
             $contentType = $this->resolver->getType($data->getContentType());
             $channelOption = $contentType->getOption('channels');
             if ($contentType->getOption('publication') !== 'disabled' && $channelOption['disabled'] == 0) {

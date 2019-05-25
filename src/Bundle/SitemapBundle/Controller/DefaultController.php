@@ -42,10 +42,10 @@ class DefaultController extends Controller
     private $contentTypeInformation;
 
     /**
-     * @param ManagerRegistry $registry
+     * @param ManagerRegistry         $registry
      * @param ChannelContextInterface $context
-     * @param ContainerInterface $container
-     * @param ContentTypeInformation $contentTypeInformation
+     * @param ContainerInterface      $container
+     * @param ContentTypeInformation  $contentTypeInformation
      */
     public function __construct(
         ManagerRegistry $registry,
@@ -122,13 +122,17 @@ class DefaultController extends Controller
 
         $now = new DateTime();
 
-        $documents = $this->registry->getManagerForClass(Content::class)->createQueryBuilder(Content::class)
+        $queryBuilder = $this->registry->getManagerForClass(Content::class)->createQueryBuilder(Content::class);
+
+        $documents = $queryBuilder
             ->select('contentType', 'slug', 'createdAt', 'class')
             ->field('channels.$id')->equals($channel->getId())
             ->field('disabled')->equals(false)
             ->field('publishTime.startDate')->lte($now)
             ->field('publishTime.endDate')->gte($now)
             ->field('contentType')->in($this->contentTypeInformation->getPublishingAllowedContentTypes($channel->getId()))
+            ->addOr($queryBuilder->expr()->field('primaryChannel.$id')->equals($channel->getId()))
+            ->addOr($queryBuilder->expr()->field('primaryChannel')->exists(false))
             ->sort('_id')
             ->skip(--$page * 50000)
             ->limit(50000)

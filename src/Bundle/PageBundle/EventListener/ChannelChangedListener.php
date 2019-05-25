@@ -41,9 +41,9 @@ class ChannelChangedListener implements EventSubscriberInterface
     protected $routeCache;
 
     /**
-     * @param DocumentManager $dm
+     * @param DocumentManager        $dm
      * @param ContentTypePageService $contentTypePageService
-     * @param RouteCache $routeCache
+     * @param RouteCache             $routeCache
      */
     public function __construct(DocumentManager $dm, ContentTypePageService $contentTypePageService, RouteCache $routeCache)
     {
@@ -75,7 +75,7 @@ class ChannelChangedListener implements EventSubscriberInterface
             [
                 'options.channels.disabled' => 0,
                 'options.publication' => ['$ne' => 1],
-                'options.channels.restricted' => ['$ne' => $channel->getId()]
+                'options.channels.restricted' => ['$ne' => $channel->getId()],
             ]
         );
 

@@ -42,7 +42,7 @@ class ContentTypeFormType extends AbstractType
             'label' => 'Publication',
             'choices' => [
                 'Publish items on selected channels' => '',
-                'Disable for publication' => 'disabled'
+                'Disable for publication' => 'disabled',
             ],
             'property_path' => 'options[publication]',
             'required' => false,

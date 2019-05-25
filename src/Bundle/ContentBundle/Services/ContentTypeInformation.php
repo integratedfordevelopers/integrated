@@ -31,6 +31,7 @@ class ContentTypeInformation
 
     /**
      * @param string $channelId
+     *
      * @return array
      */
     public function getPublishingAllowedContentTypes(string $channelId)
@@ -46,7 +47,7 @@ class ContentTypeInformation
                 continue;
             }
 
-            if (isset($channelOption['restricted']) && (count($channelOption['restricted']) > 0) && !in_array($channelId, $channelOption['restricted'])) {
+            if (isset($channelOption['restricted']) && (\count($channelOption['restricted']) > 0) && !\in_array($channelId, $channelOption['restricted'])) {
                 continue;
             }
 

@@ -46,9 +46,9 @@ class ContentTypeChangedListener implements EventSubscriberInterface
     private $contentTypeInformation;
 
     /**
-     * @param DocumentManager $dm
+     * @param DocumentManager        $dm
      * @param ContentTypePageService $contentTypePageService
-     * @param RouteCache $routeCache
+     * @param RouteCache             $routeCache
      * @param ContentTypeInformation $contentTypeInformation
      */
     public function __construct(
@@ -86,7 +86,7 @@ class ContentTypeChangedListener implements EventSubscriberInterface
         $channels = $this->getChannelRepository()->findAll();
 
         foreach ($channels as $channel) {
-            if (!in_array($contentType->getId(), $this->contentTypeInformation->getPublishingAllowedContentTypes($channel->getId()))) {
+            if (!\in_array($contentType->getId(), $this->contentTypeInformation->getPublishingAllowedContentTypes($channel->getId()))) {
                 $this->deletePagesByContentType($contentType, $channel->getId());
                 continue;
             }
