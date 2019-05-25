@@ -62,7 +62,7 @@ class ContentTypePageController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $channel = $this->getSelectedChannel();
+            $channel = $page->getChannel();
 
             $this->getDocumentManager()->flush();
 

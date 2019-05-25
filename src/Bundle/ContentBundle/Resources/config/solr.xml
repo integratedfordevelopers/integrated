@@ -37,6 +37,7 @@
         </service>
 
         <service id="integrated_content.solr.pub_active.extension" class="Integrated\Bundle\ContentBundle\Solr\Extension\PubActiveExtension" public="false">
+            <argument type="service" id="integrated_content.resolver" />
             <tag name="integrated_solr.type_extension" />
         </service>
 

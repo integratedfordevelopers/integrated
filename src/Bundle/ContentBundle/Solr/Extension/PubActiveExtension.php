@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Solr\Extension;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
+use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeExtensionInterface;
 
@@ -21,6 +22,19 @@ use Integrated\Common\Converter\Type\TypeExtensionInterface;
 class PubActiveExtension implements TypeExtensionInterface
 {
     /**
+     * @var ResolverInterface
+     */
+    private $resolver;
+
+    /**
+     * @param ResolverInterface $resolver
+     */
+    public function __construct(ResolverInterface $resolver)
+    {
+        $this->resolver = $resolver;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function build(ContainerInterface $container, $data, array $options = [])
@@ -29,7 +43,14 @@ class PubActiveExtension implements TypeExtensionInterface
             return;
         }
 
-        $container->set('pub_active', $data->isPublished(false));
+        $published = $data->isPublished(false);
+
+        $contentType = $this->resolver->getType($data->getContentType());
+        if ($contentType->getOption('publication') === 'disabled') {
+            $published = false;
+        }
+
+        $container->set('pub_active', $published);
     }
 
     /**
