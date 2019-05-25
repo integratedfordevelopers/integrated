@@ -13,6 +13,7 @@ namespace Integrated\Bundle\PageBundle\EventListener;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
+use Integrated\Bundle\ContentBundle\Services\ContentTypeInformation;
 use Integrated\Bundle\PageBundle\Services\ContentTypePageService;
 use Integrated\Bundle\PageBundle\Services\RouteCache;
 use Integrated\Common\ContentType\Event\ContentTypeEvent;
@@ -40,18 +41,26 @@ class ContentTypeChangedListener implements EventSubscriberInterface
     protected $routeCache;
 
     /**
-     * @param DocumentManager        $dm
+     * @var ContentTypeInformation
+     */
+    private $contentTypeInformation;
+
+    /**
+     * @param DocumentManager $dm
      * @param ContentTypePageService $contentTypePageService
-     * @param RouteCache             $routeCache
+     * @param RouteCache $routeCache
+     * @param ContentTypeInformation $contentTypeInformation
      */
     public function __construct(
         DocumentManager $dm,
         ContentTypePageService $contentTypePageService,
-        RouteCache $routeCache
+        RouteCache $routeCache,
+        ContentTypeInformation $contentTypeInformation
     ) {
         $this->dm = $dm;
         $this->contentTypePageService = $contentTypePageService;
         $this->routeCache = $routeCache;
+        $this->contentTypeInformation = $contentTypeInformation;
     }
 
     /**
@@ -72,34 +81,26 @@ class ContentTypeChangedListener implements EventSubscriberInterface
     public function contentTypeChanged(ContentTypeEvent $event)
     {
         $contentType = $event->getContentType();
-        $channelOption = $contentType->getOption('channels');
+        $newContentTypePage = false;
 
-        if (isset($channelOption['disabled'])
-            && $channelOption['disabled'] == 0
-            && $contentType->getOption('publication') !== 'disabled'
-        ) {
-            $channels = $this->getChannelRepository()->findAll();
+        $channels = $this->getChannelRepository()->findAll();
 
-            $newContentTypePage = false;
-            foreach ($channels as $channel) {
-                if (isset($channelOption['restricted']) && (count($channelOption['restricted']) > 0) && !in_array($channel->getId(), $channelOption['restricted'])) {
-                    $this->deletePagesByContentType($contentType, $channel->getId());
-                    continue;
-                }
-
-                if (!$this->getPageRepository()->findOneBy([
-                    'channel.$id' => $channel->getId(),
-                    'contentType.$id' => $contentType->getId(),
-                ])) {
-                    $newContentTypePage = true;
-                    $this->contentTypePageService->addContentType($contentType, $channel);
-                }
+        foreach ($channels as $channel) {
+            if (!in_array($contentType->getId(), $this->contentTypeInformation->getPublishingAllowedContentTypes($channel->getId()))) {
+                $this->deletePagesByContentType($contentType, $channel->getId());
+                continue;
             }
-            if ($newContentTypePage) {
-                $this->routeCache->clear();
+
+            if (!$this->getPageRepository()->findOneBy([
+                'channel.$id' => $channel->getId(),
+                'contentType.$id' => $contentType->getId(),
+            ])) {
+                $newContentTypePage = true;
+                $this->contentTypePageService->addContentType($contentType, $channel);
             }
-        } else {
-            $this->deletePagesByContentType($contentType);
+        }
+        if ($newContentTypePage) {
+            $this->routeCache->clear();
         }
     }
 
