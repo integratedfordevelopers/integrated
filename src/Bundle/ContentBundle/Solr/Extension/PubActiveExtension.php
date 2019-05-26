@@ -44,7 +44,6 @@ class PubActiveExtension implements TypeExtensionInterface
         }
 
         $published = $data->isPublished(false);
-
         $contentType = $this->resolver->getType($data->getContentType());
         if ($contentType->getOption('publication') === 'disabled') {
             $published = false;
