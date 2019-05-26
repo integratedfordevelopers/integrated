@@ -118,7 +118,7 @@ class ContentChannelIntegrationListener implements EventSubscriberInterface
                     unset($choices[$index]);
                 }
 
-                if (isset($options['restricted']) && count($options['restricted']) > 0 && !in_array($value->getId(), $options['restricted'])) {
+                if (isset($options['restricted']) && \count($options['restricted']) > 0 && !\in_array($value->getId(), $options['restricted'])) {
                     unset($choices[$index]);
                 }
             }
