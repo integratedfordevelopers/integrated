@@ -1,8 +1,6 @@
 includes:
   - vendor/phpstan/phpstan-doctrine/extension.neon
 parameters:
-  excludes_analyse:
-    - src/Behat/
   ignoreErrors:
     - '#Instantiated class Imagick not found#'
     -

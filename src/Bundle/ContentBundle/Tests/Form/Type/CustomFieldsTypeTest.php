@@ -149,7 +149,7 @@ class CustomFieldsTypeTest extends TypeTestCase
     protected function getExtensions()
     {
         $validator = $this->createMock('\Symfony\Component\Validator\Validator\ValidatorInterface');
-        $validator->method('validate')->will($this->returnValue(new ConstraintViolationList()));
+        $validator->method('validate')->willReturn(new ConstraintViolationList());
         $validator->method('getMetadataFor')->willReturn($this->getMockBuilder('\Symfony\Component\Validator\Mapping\ClassMetadata')->disableOriginalConstructor()->getMock());
 
         return [new ValidatorExtension($validator)];
