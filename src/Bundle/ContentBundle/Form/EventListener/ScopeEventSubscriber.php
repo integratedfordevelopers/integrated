@@ -22,6 +22,11 @@ use Integrated\Bundle\UserBundle\Model\Scope;
 class ScopeEventSubscriber
 {
     /**
+     * @var EntityManager
+     */
+    private $entityManager;
+
+    /**
      * @param EntityManager $entityManager
      */
     public function __construct(EntityManager $entityManager)

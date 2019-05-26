@@ -89,7 +89,7 @@ class Exporter implements ExporterInterface
 
     /**
      * @param ChannelInterface $channel
-     * @param ?DateTime        $publicationDate
+     * @param ?\DateTime        $publicationDate
      *
      * @return ExporterInterface[]
      */

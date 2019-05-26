@@ -110,7 +110,7 @@ class ContentTypeTest extends \PHPUnit\Framework\TestCase
      */
     protected function getInstance()
     {
-        return new ContentType($this->repository);
+        return new ContentType();
     }
 
     /**

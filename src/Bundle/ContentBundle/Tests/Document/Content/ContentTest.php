@@ -197,7 +197,7 @@ abstract class ContentTest extends \PHPUnit\Framework\TestCase
      */
     public function testCustomFieldsFunction()
     {
-        $this->isInstanceOf(CustomFields::class, $this->getContent()->getCustomFields());
+        $this->isInstanceOf(CustomFields::class);
 
         $fields = new CustomFields(['field1' => 'value1', 'field2' => 'value2']);
         $this->assertSame($fields, $this->getContent()->setCustomFields($fields)->getCustomFields());

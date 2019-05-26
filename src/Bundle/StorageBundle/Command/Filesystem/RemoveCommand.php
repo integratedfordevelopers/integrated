@@ -56,13 +56,11 @@ class RemoveCommand extends Command
      * @param DatabaseInterface        $database
      * @param FilesystemRegistry       $registry
      * @param ManagerInterface         $storage
-     * @param MetadataFactoryInterface $metadata
      */
     public function __construct(
         DatabaseInterface $database,
         FilesystemRegistry $registry,
-        ManagerInterface $storage,
-        MetadataFactoryInterface $metadata
+        ManagerInterface $storage
     ) {
         $this->database = $database;
         $this->registry = $registry;

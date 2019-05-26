@@ -196,7 +196,7 @@ class Channel implements ChannelInterface
     }
 
     /**
-     * @return \mixed[]
+     * @return mixed[]
      */
     public function getOptions()
     {

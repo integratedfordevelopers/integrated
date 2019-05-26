@@ -40,6 +40,7 @@
         "nelmio/alice": "~3.1",
         "sensio/framework-extra-bundle": "~5.0",
         "solarium/solarium": "~3.8",
+        "swiftmailer/swiftmailer": "*",
         "twbs/bootstrap": "~3.3",
         "vihuvac/recaptcha-bundle": "~2.1"
     },
@@ -68,7 +69,9 @@
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.1",
         "phpunit/phpunit": "^6.4",
-        "friendsofphp/php-cs-fixer": "^2.8"
+        "friendsofphp/php-cs-fixer": "^2.8",
+        "phpstan/phpstan": "~0.11",
+        "phpstan/phpstan-doctrine": "~0.11"
     },
     "provide": {
         "ext-mongo": "*"
