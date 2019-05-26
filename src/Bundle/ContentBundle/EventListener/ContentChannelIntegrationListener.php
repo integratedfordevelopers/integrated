@@ -117,6 +117,10 @@ class ContentChannelIntegrationListener implements EventSubscriberInterface
                 if (!$authorizedRead && !isset($enforce[$value->getId()])) {
                     unset($choices[$index]);
                 }
+
+                if (isset($options['restricted']) && count($options['restricted']) > 0 && !in_array($value->getId(), $options['restricted'])) {
+                    unset($choices[$index]);
+                }
             }
 
             unset($channels);
