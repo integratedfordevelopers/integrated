@@ -40,10 +40,10 @@ class ChannelFormProvider implements ConfigProviderInterface
             'removeChannel',
             BulkActionChannelType::class,
             [
-                'channel_handler' => ChannelAddHandler::class,
+                'channel_handler' => ChannelRemoveHandler::class,
                 'label' => 'Remove channel',
             ],
-            new ChannelFormActionMatcher(ChannelAddHandler::class)
+            new ChannelFormActionMatcher(ChannelRemoveHandler::class)
         );
 
         return $config;

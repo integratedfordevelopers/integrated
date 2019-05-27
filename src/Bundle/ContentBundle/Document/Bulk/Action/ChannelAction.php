@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\ContentBundle\Document\Bulk\Action;
 
 use Integrated\Common\Bulk\BulkActionInterface;
-use Integrated\Common\Content\Channel\ChannelInterface;
 
 class ChannelAction implements BulkActionInterface
 {

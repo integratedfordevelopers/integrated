@@ -17,12 +17,16 @@
 
         <service id="integrated_content.bulk.action.channel_add_handler_factory" class="Integrated\Bundle\ContentBundle\Bulk\ChannelHandlerFactory" public="false">
             <argument type="string">Integrated\Bundle\ContentBundle\Bulk\ChannelAddHandler</argument>
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="security.authorization_checker" />
 
             <tag name="integrated_content.bulk.handler" class="Integrated\Bundle\ContentBundle\Bulk\ChannelAddHandler" />
         </service>
 
         <service id="integrated_content.bulk.action.channel_remove_handler_factory" class="Integrated\Bundle\ContentBundle\Bulk\ChannelHandlerFactory" public="false">
             <argument type="string">Integrated\Bundle\ContentBundle\Bulk\ChannelRemoveHandler</argument>
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="security.authorization_checker" />
 
             <tag name="integrated_content.bulk.handler" class="Integrated\Bundle\ContentBundle\Bulk\ChannelRemoveHandler" />
         </service>

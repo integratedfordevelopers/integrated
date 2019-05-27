@@ -11,8 +11,11 @@
 
 namespace Integrated\Bundle\ContentBundle\Bulk;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Common\Bulk\Action\HandlerFactoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 class ChannelHandlerFactory implements HandlerFactoryInterface
 {
@@ -27,11 +30,23 @@ class ChannelHandlerFactory implements HandlerFactoryInterface
     private $resolver;
 
     /**
+     * @var DocumentManager
+     */
+    private $documentManager;
+
+    /**
+     * @var AuthorizationChecker
+     */
+    private $authorizationChecker;
+
+    /**
      * Constructor.
      *
-     * @param string $class
+     * @param string               $class
+     * @param DocumentManager      $documentManager
+     * @param AuthorizationChecker $authorizationChecker
      */
-    public function __construct($class)
+    public function __construct($class, DocumentManager $documentManager, AuthorizationChecker $authorizationChecker)
     {
         $this->class = $class;
 
@@ -39,6 +54,9 @@ class ChannelHandlerFactory implements HandlerFactoryInterface
         $this->resolver
             ->setRequired(['channel'])
             ->addAllowedTypes('channel', 'string');
+
+        $this->documentManager = $documentManager;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -49,6 +67,6 @@ class ChannelHandlerFactory implements HandlerFactoryInterface
         $options = $this->resolver->resolve($options);
         $class = $this->class;
 
-        return new $class($options['channel']);
+        return new $class($options['channel'], $this->documentManager->getRepository(Channel::class), $this->authorizationChecker);
     }
 }

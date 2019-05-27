@@ -11,26 +11,43 @@
 
 namespace Integrated\Bundle\ContentBundle\Bulk;
 
+use Doctrine\Common\Persistence\ObjectRepository;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Common\Bulk\Action\HandlerInterface;
-use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Common\Content\ContentInterface;
+use Integrated\Common\Security\PermissionInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ChannelRemoveHandler implements HandlerInterface
 {
     /**
-     * @var ChannelInterface
+     * @var string
      */
     private $channel;
 
     /**
+     * @var ObjectRepository
+     */
+    private $repository;
+
+    /**
+     * @var AuthorizationChecker
+     */
+    private $authorizationChecker;
+
+    /**
      * Constructor.
      *
-     * @param ChannelInterface $channel
+     * @param string               $channel
+     * @param ObjectRepository     $repository
+     * @param AuthorizationChecker $authorizationChecker
      */
-    public function __construct(ChannelInterface $channel)
+    public function __construct(string $channel, ObjectRepository $repository, AuthorizationChecker $authorizationChecker)
     {
         $this->channel = $channel;
+        $this->repository = $repository;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -42,7 +59,14 @@ class ChannelRemoveHandler implements HandlerInterface
             return;
         }
 
-        /** @var Content $content */
-        $content->removeChannel($this->channel);
+        $channel = $this->repository->find($this->channel);
+        if ($channel !== null) {
+            if (!$this->authorizationChecker->isGranted(PermissionInterface::WRITE, $channel)) {
+                throw new AccessDeniedException('You are not allowed to write on channel '.$channel->getName());
+            }
+
+            /* @var Content $content */
+            $content->removeChannel($channel);
+        }
     }
 }
