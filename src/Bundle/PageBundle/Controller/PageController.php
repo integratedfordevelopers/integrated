@@ -36,16 +36,22 @@ class PageController extends Controller
             throw $this->createAccessDeniedException();
         }
 
-        $channel = $this->getSelectedChannel();
+        try {
+            $channel = $this->getSelectedChannel();
 
-        $builder = $this->getDocumentManager()->createQueryBuilder(Page::class)
-            ->field('channel.$id')->equals($channel->getId());
+            $builder = $this->getDocumentManager()->createQueryBuilder(Page::class)
+                ->field('channel.$id')->equals($channel->getId());
 
-        $pagination = $this->getPaginator()->paginate(
-            $builder,
-            $request->query->get('page', 1),
-            20
-        );
+            $pagination = $this->getPaginator()->paginate(
+                $builder,
+                $request->query->get('page', 1),
+                25
+            );
+        } catch (\RuntimeException $e) {
+            $this->get('braincrafted_bootstrap.flash')->error('Please add a website connector for at least one channel to manage pages');
+
+            return $this->render('IntegratedPageBundle:page:error.html.twig');
+        }
 
         return $this->render('IntegratedPageBundle:page:index.html.twig', [
             'pages' => $pagination,
