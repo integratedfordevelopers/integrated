@@ -11,7 +11,7 @@
                             <a href="{{ path('integrated_page_page_new', { 'channel': selectedChannel.id }) }}" tabindex="-1" role="menuitem">{% trans %}New page{% endtrans %}</a>
                         </li>
                         <li>
-                            <a href="{{ path('integrated_page_page_copy', { 'channel': selectedChannel.id }) }}" tabindex="-1" role="menuitem">{% trans %}Copy pages{% endtrans %}</a>
+                            <a href="{{ path('integrated_page_page_new', { 'channel': selectedChannel.id }) }}" tabindex="-1" role="menuitem">{% trans %}Copy selected pages{% endtrans %}</a>
                         </li>
                     </ul>
 
@@ -20,46 +20,41 @@
                     <ul role="menu" class="dropdown-menu">
                         {% for channel in channels %}
                             <li role="presentation">
-                                <a href="{{ path('integrated_page_page_index', { 'channel': channel.id }) }}" tabindex="-1" role="menuitem">{{ channel.name }}</a>
+                                <a href="{{ path('integrated_page_page_copy', { 'channel': channel.id }) }}" tabindex="-1" role="menuitem">{{ channel.name }}</a>
                             </li>
                         {% endfor %}
-                    </ul>
-                </li>
-
-                <li class="dropdown pull-right">
-                    <a href="#" data-toggle="dropdown" role="button">
-                        {% trans %}Static pages{% endtrans %}
-                        <b class="caret"></b>
-                    </a>
-                    <ul role="menu" class="dropdown-menu">
-                        <li role="presentation">
-                            <a href="{{ path('integrated_page_content_type_page_index', { 'channel': selectedChannel.id }) }}" role="menuitem">{% trans %}Content type pages{% endtrans %}</a>
-                        </li>
                     </ul>
                 </li>
             </ul>
 
             <section class="section-white section-padding section-shadow section-radius">
 
+                {% form_theme form with ['IntegratedPageBundle:form:form_div_layout.html.twig'] %}
+
+                {{ form(form) }}
+
                 <table class="table table-hover">
                     <colgroup>
+                        <col style="width: 2em" />
                         <col />
                         <col />
                         <col style="width: 5em" />
                     </colgroup>
 
                     <thead>
-                        <tr>
-                            <th>{% trans %}Title{% endtrans %}</th>
-                            <th>{% trans %}URL{% endtrans %}</th>
-                            <th>{% trans %}Actions{% endtrans %}</th>
-                        </tr>
+                    <tr>
+                        <th></th>
+                        <th>{% trans %}Title{% endtrans %}</th>
+                        <th>{% trans %}URL{% endtrans %}</th>
+                        <th>{% trans %}Actions{% endtrans %}</th>
+                    </tr>
                     </thead>
                     <tbody>
 
                     {% for page in pages %}
 
                         <tr>
+                            <td><input type="checkbox" name="pages[]" value="{{ page.id }}"></td>
                             <td>
                                 {{ page.title }}
                             </td>

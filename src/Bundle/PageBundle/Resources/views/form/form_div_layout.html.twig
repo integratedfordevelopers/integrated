@@ -1,0 +1,47 @@
+{% block page_copy_pages_row %}
+    {% spaceless %}
+        <table class="table table-hover">
+            <colgroup>
+                <col style="width: 2em" />
+                <col />
+                <col />
+                <col style="width: 5em" />
+            </colgroup>
+
+            <thead>
+            <tr>
+                <th></th>
+                <th>{% trans %}Title{% endtrans %}</th>
+                <th>{% trans %}URL{% endtrans %}</th>
+                <th>{% trans %}Actions{% endtrans %}</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for field in form %}
+
+                {{ form_row(field) }}
+
+            {% endfor %}
+
+            </tbody>
+        </table>
+    {% endspaceless %}
+{% endblock %}
+
+{% block page_copy_page_row %}
+    {% spaceless %}
+        <tr>
+            <td>
+                {{ form_widget(form.selected) }}
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+        </tr>
+    {% endspaceless %}
+{% endblock %}
+
