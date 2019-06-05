@@ -593,6 +593,7 @@ class ImportController extends Controller
                     }
 
                     //todo, make optional (or remove)
+                    /*
                     $doubleArticle = $this->documentManager->getRepository(Article::class)->findOneBy(['title' => $newObject->getTitle()]);
                     if ($doubleArticle) {
                         //do not import duplicate articles, except for files
@@ -603,6 +604,7 @@ class ImportController extends Controller
                             $result['warnings'][] = 'Item "'.$newObject->getTitle().'" already imported, place as food article';
                         }
                     }
+                    */
                     if (isset($row['publiceren_van']) && $row['publiceren_van'] != '') {
                         $newObject->getPublishTime()->setStartDate(new \DateTime('@'.$row['publiceren_van']));
                     } else {
