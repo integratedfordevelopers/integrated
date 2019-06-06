@@ -27,8 +27,5 @@ class ContentProviderPass implements CompilerPassInterface
         if (!$container->hasDefinition('integrated_workflow.solr.workflow.extension')) {
             return;
         }
-
-        $definition = $container->getDefinition('integrated_content.provider.content_provider');
-        $definition->replaceArgument(4, true);
     }
 }

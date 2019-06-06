@@ -29,7 +29,7 @@
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
             <argument type="service" id="security.token_storage" />
             <argument type="service" id="security.authorization_checker" />
-            <argument>false</argument>
+            <argument type="service" id="knp_paginator" />
         </service>
 
     </services>

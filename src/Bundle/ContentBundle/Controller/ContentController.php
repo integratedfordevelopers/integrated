@@ -16,6 +16,7 @@ use Integrated\Bundle\ContentBundle\Document\Content\Image;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ContentBundle\Form\Type\ActionsType;
 use Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType;
+use Integrated\Bundle\ContentBundle\Provider\ContentProvider;
 use Integrated\Bundle\UserBundle\Model\GroupableInterface;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 use Integrated\Common\Content\ContentInterface;
@@ -47,7 +48,7 @@ class ContentController extends Controller
      *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, ContentProvider $contentProvider)
     {
         // group the types based on there class
         $types = [];
@@ -57,6 +58,12 @@ class ContentController extends Controller
 
         // Store facetTitles in array
         $facetTitles = [];
+
+        $facetTitles['workflow_state'] = 'Workflow status';
+
+        $facetTitles['workflow_assigned'] = 'Assigned user';
+
+        $facetTitles['authors'] = 'Author';
 
         //remember search state
         $session = $request->getSession();
@@ -77,51 +84,24 @@ class ContentController extends Controller
             ksort($types[$key]);
         }
 
-        /** @var $client \Solarium\Client */
-        $client = $this->get('solarium.client');
-        $client->getPlugin('postbigrequest');
-
-        $query = $client->createSelect();
-
-        $facetSet = $query->getFacetSet();
-        $facetSet->setMinCount(1);
-        $facetSet->createFacetField('contenttypes')->setField('type_name')->addExclude('contenttypes');
-        $facetSet->createFacetField('channels')->setField('facet_channels')->addExclude('channels');
-
-        $facetSet->createFacetField('workflow_state')->setField('facet_workflow_state')->addExclude('workflow_state');
-        $facetTitles['workflow_state'] = 'Workflow status';
-
-        $facetSet->createFacetField('workflow_assigned')->setField('facet_workflow_assigned')->addExclude('workflow_assigned');
-        $facetTitles['workflow_assigned'] = 'Assigned user';
-
-        $facetSet->createFacetField('authors')->setField('facet_authors')->addExclude('authors');
-        $facetTitles['authors'] = 'Author';
-
-        $facetSet->createFacetField('properties')->setField('facet_properties')->addExclude('properties');
-
         // If the request query contains a relation parameter we need to fetch all the targets of the relation in order
         // to filter on these targets.
         // TODO this code should be somewhere else
         $relation = $request->query->get('relation');
         $relations = [];
         if (null !== $relation) {
-            $contentType = [];
-
             /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
             $dm = $this->get('doctrine_mongodb')->getManager();
 
             /** @var Relation $relation */
             if ($relation = $dm->getRepository($this->relationClass)->find($relation)) {
                 foreach ($relation->getTargets() as $target) {
-                    $contentType[] = $target->getType();
                     $relations[] = [
                         'href' => $this->generateUrl('integrated_content_content_new', ['class' => $target->getClass(), 'type' => $target->getType(), 'relation' => $relation->getId()]),
                         'name' => $target->getName(),
                     ];
                 }
             }
-        } else {
-            $contentType = $request->query->get('contenttypes');
         }
 
         /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
@@ -129,134 +109,22 @@ class ContentController extends Controller
 
         $active = [];
 
-        $helper = $query->getHelper();
-        $filter = function ($param) use ($helper) {
-            return $helper->escapePhrase($param);
-        };
-
         // If the request query contains a properties parameter we need to fetch all the targets of the relation in order
         // to filter on these targets.
         // TODO this code should be somewhere else
         $propertiesfilter = $request->query->get('properties');
         if (\is_array($propertiesfilter)) {
-            $query
-                ->createFilterQuery('properties')
-                ->addTag('properties')
-                ->setQuery('facet_properties: ((%1%))', [implode(') OR (', array_map($filter, $propertiesfilter))]);
-
             $active['properties'] = $propertiesfilter;
         }
 
         /** @var Relation $relation */
         foreach ($dm->getRepository($this->relationClass)->findAll() as $relation) {
             $name = preg_replace('/[^a-zA-Z]/', '', $relation->getName());
-
-            //create relation facet field
-            $facetSet->createFacetField($name)->setField('facet_'.$relation->getId())->addExclude($name);
             $facetTitles[$name] = $relation->getName();
             $relationfilter = $request->query->get($name);
 
             if (\is_array($relationfilter)) {
-                $query
-                    ->createFilterQuery($name)
-                    ->addTag($name)
-                    ->setQuery('facet_'.$relation->getId().': ((%1%))', [implode(') OR (', array_map($filter, $relationfilter))]);
-
                 $active[$name] = $relationfilter;
-            }
-        }
-
-        if (\is_array($contentType)) {
-            if (\count($contentType)) {
-                $query
-                    ->createFilterQuery('contenttypes')
-                    ->addTag('contenttypes')
-                    ->setQuery('type_name: ((%1%))', [implode(') OR (', array_map($filter, $contentType))]);
-            }
-        }
-
-        // If the workflow bundle is loaded then only display the results that the
-        // user has read rights to
-
-        if ($this->has('integrated_workflow.solr.workflow.extension')) {
-            $filterWorkflow = [];
-
-            $user = $this->getUser();
-
-            if ($user instanceof GroupableInterface) {
-                foreach ($user->getGroups() as $group) {
-                    $filterWorkflow[] = $group->getId();
-                }
-            }
-
-            if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-                // allow content without workflow
-                $fq = $query->createFilterQuery('workflow')
-                    ->addTag('workflow')
-                    ->addTag('security')
-                    ->setQuery('(*:* -security_workflow_read:[* TO *])');
-
-                // allow content with group access
-                if ($filterWorkflow) {
-                    $fq->setQuery(
-                        $fq->getQuery().' OR security_workflow_read: ((%1%))',
-                        [implode(') OR (', $filterWorkflow)]
-                    );
-                }
-
-                // always allow access to assigned content
-                $fq->setQuery(
-                    $fq->getQuery().' OR facet_workflow_assigned_id: %1%',
-                    [$user->getId()]
-                );
-
-                if ($person = $user->getRelation()) {
-                    $fq->setQuery(
-                        $fq->getQuery().' OR author: %1%*',
-                        [$person->getId()]
-                    );
-                }
-            }
-        }
-
-        // TODO this should be somewhere else:
-        $activeChannels = $request->query->get('channels');
-        if (\is_array($activeChannels)) {
-            if (\count($activeChannels)) {
-                $query
-                    ->createFilterQuery('channels')
-                    ->addTag('channels')
-                    ->setQuery('facet_channels: ((%1%))', [implode(') OR (', array_map($filter, $activeChannels))]);
-            }
-        }
-
-        $activeStates = $request->query->get('workflow_state');
-        if (\is_array($activeStates)) {
-            if (\count($activeStates)) {
-                $query
-                    ->createFilterQuery('workflow_state')
-                    ->addTag('workflow_state')
-                    ->setQuery('facet_workflow_state: ((%1%))', [implode(') OR (', array_map($filter, $activeStates))]);
-            }
-        }
-
-        $activeAssigned = $request->query->get('workflow_assigned');
-        if (\is_array($activeAssigned)) {
-            if (\count($activeAssigned)) {
-                $query
-                    ->createFilterQuery('workflow_assigned')
-                    ->addTag('workflow_assigned')
-                    ->setQuery('facet_workflow_assigned: ((%1%))', [implode(') OR (', array_map($filter, $activeAssigned))]);
-            }
-        }
-
-        $activeAuthors = $request->query->get('authors');
-        if (\is_array($activeAuthors)) {
-            if (\count($activeAuthors)) {
-                $query
-                    ->createFilterQuery('authors')
-                    ->addTag('authors')
-                    ->setQuery('facet_authors: ((%1%))', [implode(') OR (', array_map($filter, $activeAuthors))]);
             }
         }
 
@@ -268,47 +136,16 @@ class ContentController extends Controller
                 }
 
                 if (\count($id)) {
+                    //todo: support this
+                    /*
                     $query
                         ->createFilterQuery('id')
                         ->addTag('id')
                         ->setQuery('type_id: ((%1%))', [implode(') OR (', array_map($filter, $id))]);
+                    */
                 }
             }
         }
-
-        // sorting
-        $sort_default = 'changed';
-        $sort_options = [
-            'rel' => ['name' => 'rel', 'field' => 'score', 'label' => 'relevance', 'order' => 'desc'],
-            'changed' => ['name' => 'changed', 'field' => 'pub_edited', 'label' => 'date modified', 'order' => 'desc'],
-            'created' => ['name' => 'created', 'field' => 'pub_created', 'label' => 'date created', 'order' => 'desc'],
-            'time' => ['name' => 'time', 'field' => 'pub_time', 'label' => 'publication date', 'order' => 'desc'],
-            'title' => ['name' => 'title', 'field' => 'title_sort', 'label' => 'title', 'order' => 'asc'],
-            'random' => ['name' => 'random', 'field' => 'random_'.mt_rand(), 'label' => 'random', 'order' => 'desc'],
-        ];
-        $order_options = [
-            'asc' => 'asc',
-            'desc' => 'desc',
-        ];
-
-        if ($q = $request->get('q')) {
-            $edismax = $query->getEDisMax();
-            $edismax->setQueryFields('title content');
-            $edismax->setMinimumMatch('75%');
-
-            $query->setQuery($q);
-
-            $sort_default = 'rel';
-        } else {
-            //relevance only available when sorting on specific query
-            unset($sort_options['rel']);
-        }
-
-        $sort = $request->query->get('sort', $sort_default);
-        $sort = trim(strtolower($sort));
-        $sort = \array_key_exists($sort, $sort_options) ? $sort : $sort_default;
-
-        $query->addSort($sort_options[$sort]['field'], \in_array($request->query->get('order'), $order_options) ? $request->query->get('order') : $sort_options[$sort]['order']);
 
         // add field filters
         foreach ((array) $request->query->get('filter') as $name => $value) {
@@ -317,20 +154,14 @@ class ContentController extends Controller
                 continue;
             }
 
-            $query->createFilterQuery($name)->setQuery('%1%:%P2%', [$name, $value]);
+            //todo: support this
+            //$query->createFilterQuery($name)->setQuery('%1%:%P2%', [$name, $value]);
         }
 
         // Execute the query
-        $result = $client->select($query);
-
-        /** @var $paginator \Knp\Component\Pager\Paginator */
-        $paginator = $this->get('knp_paginator');
-        $paginator = $paginator->paginate(
-            [$client, $query],
-            $request->query->get('page', 1),
-            $request->query->get('limit', 15),
-            ['sortFieldParameterName' => null]
-        );
+        $page = $request->query->get('page', 1);
+        $limit = $request->query->get('limit', 15);
+        $paginator = $contentProvider->getContentAsPaginator($request->query, $page, $limit, true);
 
         /** @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
         $dm = $this->get('doctrine_mongodb')->getManager();
@@ -341,21 +172,23 @@ class ContentController extends Controller
                 $channels[$channel->getId()] = $channel->getName();
             }
         }
-
+/*
         $active['contenttypes'] = $contentType;
         $active['channels'] = $activeChannels;
         $active['workflow_state'] = $activeStates;
         $active['workflow_assigned'] = $activeAssigned;
         $active['authors'] = $activeAuthors;
-
+*/
+dump($paginator->getCustomParameter('result')->getFacetSet());
         return $this->render('IntegratedContentBundle:content:index.'.$request->getRequestFormat().'.twig', [
+            'filters' => $request->query,
             'types' => $types,
-            'params' => ['sort' => ['current' => $sort, 'default' => $sort_default, 'options' => $sort_options]],
+            'params' => ['sort' => ['current' => 'yoyoyo', 'default' => 'yoyoyo', 'options' => ['yoyoyo' => ['name' => 'yoyoyoyo', 'label' => 'yoyoyo']]]],
             'pager' => $paginator,
             'contentTypes' => $displayTypes,
             'active' => $active,
             'channels' => $channels,
-            'facets' => $result->getFacetSet()->getFacets(),
+            'facets' => $paginator->getCustomParameter('result')->getFacetSet()->getFacets(),
             'locks' => $this->getLocks($paginator),
             'relations' => $relations,
             'facetTitles' => $facetTitles,

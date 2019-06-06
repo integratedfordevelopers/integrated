@@ -78,7 +78,7 @@ class BulkController extends Controller
             $request->query->replace($bulk->getFilters());
         }
 
-        if (!$content = $this->contentProvider->getContentFromSolr($request, $limit + 1)) {
+        if (!$content = $this->contentProvider->getContentAsArray($request->query, $limit + 1)) {
             return $this->redirectToRoute('integrated_content_content_index', $request->query->all());
         }
 

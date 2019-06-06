@@ -143,6 +143,11 @@
                                 </h3>
                                 <ul class="filters_list">
                                     {% for title, count in facet %}
+                                        {% set facetActive = false %}
+                                        {% dump(filters.get(key)) %}
+                                        {% if (filters.has(key) and title in filters.get(key)) %}
+                                            {% set facetActive = true %}
+                                        {% endif %}
                                     <li class="checkbox{% if (loop.index >= 8) and (not (title in active[key]|default)) %} to_show{% endif %}">
                                         <label>
                                             <input {% if title in active[key]|default %}checked="checked"{% endif %} onclick="form.submit();" type="checkbox" name="{{ key }}[]" value="{{ title }}" />

@@ -16,10 +16,11 @@ use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\UserBundle\Model\GroupableInterface;
-use Integrated\Bundle\WorkflowBundle\Solr\Extension\WorkflowExtension;
+use Knp\Component\Pager\Pagination\SlidingPagination;
+use Knp\Component\Pager\Paginator;
 use Solarium\Client;
 use Solarium\QueryType\Select\Query\Query;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
@@ -44,62 +45,75 @@ class ContentProvider
     private $tokenStorage;
 
     /**
-     * @var WorkflowExtension
-     */
-    private $workflowExtension;
-
-    /**
      * @var AuthorizationChecker
      */
     private $authorizationChecker;
 
     /**
+     * @var Paginator
+     */
+    private $paginator;
+
+    /**
      * ContentProvider constructor.
      *
-     * @param Client                $client
-     * @param DocumentManager       $dm
+     * @param Client $client
+     * @param DocumentManager $dm
      * @param TokenStorageInterface $tokenStorage
-     * @param AuthorizationChecker  $authorizationChecker
-     * @param bool                  $workflowExtension
+     * @param AuthorizationChecker $authorizationChecker
+     * @param Paginator $paginator
      */
     public function __construct(
         Client $client,
         DocumentManager $dm,
         TokenStorageInterface $tokenStorage,
         AuthorizationChecker $authorizationChecker,
-        $workflowExtension = false
+        Paginator $paginator
     ) {
         $this->client = $client;
         $this->dm = $dm;
         $this->tokenStorage = $tokenStorage;
-        $this->workflowExtension = $workflowExtension;
+        $this->paginator = $paginator;
         $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
-     * @param Request $request
+     * @param ParameterBag $filters
      * @param $limit
      *
      * @return array
      */
-    public function getContentFromSolr(Request $request, $limit)
+    public function getContentAsSolariumQuery(ParameterBag $filters, $limit, $includeFacets = false)
     {
         $query = $this->client->createSelect();
+        $this->client->getPlugin('postbigrequest');
+
+        if ($includeFacets) {
+            $facetSet = $query->getFacetSet();
+            $facetSet->setMinCount(1);
+            $facetSet->createFacetField('contenttypes')->setField('type_name')->addExclude('contenttypes');
+            $facetSet->createFacetField('channels')->setField('facet_channels')->addExclude('channels');
+
+            $facetSet->createFacetField('workflow_state')->setField('facet_workflow_state')->addExclude('workflow_state');
+
+            $facetSet->createFacetField('workflow_assigned')->setField('facet_workflow_assigned')->addExclude('workflow_assigned');
+
+            $facetSet->createFacetField('authors')->setField('facet_authors')->addExclude('authors');
+
+            $facetSet->createFacetField('properties')->setField('facet_properties')->addExclude('properties');
+        }
 
         // If the request query contains a relation parameter we need to fetch all the targets of the relation in order
         // to filter on these targets.
-        $relation = $request->query->get('relation');
+        $relation = $filters->get('relation');
+        $contentType = [];
         if (null !== $relation) {
-            $contentType = [];
-
             /** @var Relation $relation */
             if ($relation = $this->dm->getRepository(Relation::class)->find($relation)) {
                 foreach ($relation->getTargets() as $target) {
                     $contentType[] = $target->getType();
                 }
             }
-        } else {
-            $contentType = $request->query->get('contenttypes');
         }
 
         $helper = $query->getHelper();
@@ -109,7 +123,7 @@ class ContentProvider
 
         // If the request query contains a properties parameter we need to fetch all the targets of the relation in order
         // to filter on these targets.
-        $propertiesfilter = $request->query->get('properties');
+        $propertiesfilter = $filters->get('properties');
         if (\is_array($propertiesfilter)) {
             $query
                 ->createFilterQuery('properties')
@@ -120,8 +134,7 @@ class ContentProvider
         /** @var Relation $relation */
         foreach ($this->dm->getRepository(Relation::class)->findAll() as $relation) {
             $name = preg_replace('/[^a-zA-Z]/', '', $relation->getName());
-            $facetTitles[$name] = $relation->getName();
-            $relationfilter = $request->query->get($name);
+            $relationfilter = $filters->get($name);
 
             if (\is_array($relationfilter)) {
                 $query
@@ -131,22 +144,17 @@ class ContentProvider
             }
         }
 
-        if (\is_array($contentType)) {
-            if (\count($contentType)) {
-                $query
-                    ->createFilterQuery('contenttypes')
-                    ->addTag('contenttypes')
-                    ->setQuery('type_name: ((%1%))', [implode(') OR (', array_map($filter, $contentType))]);
-            }
+        if (\count($contentType)) {
+            $query
+                ->createFilterQuery('contenttypes')
+                ->addTag('contenttypes')
+                ->setQuery('type_name: ((%1%))', [implode(') OR (', array_map($filter, $contentType))]);
         }
 
-        // If the workflow bundle is loaded then only display the results that the
-        // user has read rights to
-        if ($this->workflowExtension) {
-            $this->addWorkflowFilter($query);
-        }
+        // only display the results that the user has read rights to
+        $this->addWorkflowFilter($query);
 
-        $activeChannels = $request->query->get('channels');
+        $activeChannels = $filters->get('channels');
         if (\is_array($activeChannels)) {
             if (\count($activeChannels)) {
                 $query
@@ -156,7 +164,7 @@ class ContentProvider
             }
         }
 
-        $activeStates = $request->query->get('workflow_state');
+        $activeStates = $filters->get('workflow_state');
         if (\is_array($activeStates)) {
             if (\count($activeStates)) {
                 $query
@@ -166,7 +174,7 @@ class ContentProvider
             }
         }
 
-        $activeAssigned = $request->query->get('workflow_assigned');
+        $activeAssigned = $filters->get('workflow_assigned');
         if (\is_array($activeAssigned)) {
             if (\count($activeAssigned)) {
                 $query
@@ -176,7 +184,7 @@ class ContentProvider
             }
         }
 
-        $activeAuthors = $request->query->get('authors');
+        $activeAuthors = $filters->get('authors');
         if (\is_array($activeAuthors)) {
             if (\count($activeAuthors)) {
                 $query
@@ -201,7 +209,7 @@ class ContentProvider
             'desc' => 'desc',
         ];
 
-        if ($q = $request->get('q')) {
+        if ($q = $filters->get('q')) {
             $edismax = $query->getEDisMax();
             $edismax->setQueryFields('title content');
             $edismax->setMinimumMatch('75%');
@@ -214,25 +222,64 @@ class ContentProvider
             unset($sort_options['rel']);
         }
 
-        $sort = $request->query->get('sort', $sort_default);
+        $sort = $filters->get('sort', $sort_default);
         $sort = trim(strtolower($sort));
         $sort = \array_key_exists($sort, $sort_options) ? $sort : $sort_default;
 
-        $query->addSort($sort_options[$sort]['field'], \in_array($request->query->get('order'), $order_options) ? $request->query->get('order') : $sort_options[$sort]['order']);
+        $query->addSort($sort_options[$sort]['field'], \in_array($filters->get('order'), $order_options) ? $filters->get('order') : $sort_options[$sort]['order']);
 
-        $query->setRows($limit);
-        $iterator = $this->client->select($query)->getIterator();
-        $contents = [];
+        //$query->setRows($limit);
+
+        return $query;
+    }
+
+
+    /**
+     * @param ParameterBag $filters
+     * @param integer $limit
+     * @param boolean $enableFacets
+     * @return SlidingPagination
+     */
+    public function getContentAsPaginator(ParameterBag $filters, int $page, int $limit, bool $enableFacets)
+    {
+        $query = $this->getContentAsSolariumQuery($filters, $limit, $enableFacets);
+
+        $result = $this->client->select($query);
+
+        $paginator = $this->paginator;
+        $paginator = $paginator->paginate(
+            [$this->client, $query],
+            $page,
+            $limit,
+            ['sortFieldParameterName' => null]
+        );
+
+        return $paginator;
+    }
+
+    /**
+     * @param ParameterBag $filters
+     * @param $limit
+     *
+     * @return array
+     */
+    public function getContentAsArray(ParameterBag $filters, $limit)
+    {
+        $query = $this->getContentAsSolariumQuery($filters, $limit);
+
+        $iterator = $query->getIterator();
+
+        $content = [];
 
         while ($iterator->valid()) {
-            $content = $iterator->current();
-            if (isset($content['type_id']) && $content = $this->dm->getRepository(Content::class)->find($content['type_id'])) {
-                $contents[$content->getId()] = $content;
+            $item = $iterator->current();
+            if (isset($item['type_id']) && $item = $this->dm->getRepository(Content::class)->find($item['type_id'])) {
+                $content[$item->getId()] = $item;
             }
             $iterator->next();
         }
 
-        return $contents;
+        return $content;
     }
 
     /**
