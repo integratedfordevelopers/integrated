@@ -43,9 +43,13 @@ class PageCopyPagesType extends AbstractType
             ->field('channel.$id')->equals($options['channel']);
 
         $result = $queryBuilder->getQuery()->execute();
+        /** @var Page $page */
         foreach ($result as $page) {
+            $targetPage = $this->documentManager->getRepository(Page::class)->findBy(['channel' => $options['targetChannel'], 'path' => $page->getPath()]);
+
             $builder->add('page'.$page->getId(), PageCopyPageType::class, [
                 'page' => $page,
+                'copyAction' => ($targetPage === null) ? 'overwrite' : 'create',
             ]);
         }
     }

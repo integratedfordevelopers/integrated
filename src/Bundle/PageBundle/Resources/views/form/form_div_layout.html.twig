@@ -13,7 +13,8 @@
                 <th></th>
                 <th>{% trans %}Title{% endtrans %}</th>
                 <th>{% trans %}URL{% endtrans %}</th>
-                <th>{% trans %}Actions{% endtrans %}</th>
+                <th>{% trans %}Action{% endtrans %}</th>
+                <th>{% trans %}Blocks{% endtrans %}</th>
             </tr>
             </thead>
             <tbody>
@@ -36,12 +37,35 @@
                 {{ form_widget(form.selected) }}
             </td>
             <td>
-
+                {{ page.title }}
             </td>
             <td>
+                {{ page.path }}
+            </td>
+            <td>
+                {{ copyAction }}
+            </td>
+            <td>
+                {% for field in form %}
 
+                    {{ form_row(field) }}
+
+                {% endfor %}
             </td>
         </tr>
+    {% endspaceless %}
+{% endblock %}
+
+{% block page_copy_block_row %}
+    {% spaceless %}
+        <div class="row">
+            <div class="col-md-6">
+                {{ form_widget(form.operation) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_widget(form.newBlockId) }}
+            </div>
+        </div>
     {% endspaceless %}
 {% endblock %}
 

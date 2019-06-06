@@ -28,8 +28,8 @@ class PageCopyType extends AbstractType
             'label' => 'Target channel',
             'placeholder' => '-- choose a target channel --',
             'attr' => [
-                'onchange' => 'document.page_copy.submit();'
-            ]
+                'onchange' => 'document.page_copy.submit();',
+            ],
         ]);
 
         if ($options['targetChannel'] !== null) {
@@ -37,14 +37,14 @@ class PageCopyType extends AbstractType
                 'channel' => $options['channel'],
                 'targetChannel' => $options['targetChannel'],
             ]);
-        }
 
-        $builder->add('actions', SaveCancelType::class, [
-            'cancel_route' => 'integrated_page_page_index',
-            'cancel_route_parameters' => ['channel' => $options['channel']],
-            'label' => 'Copy pages',
-            'button_class' => '',
-        ]);
+            $builder->add('actions', SaveCancelType::class, [
+                'cancel_route' => 'integrated_page_page_index',
+                'cancel_route_parameters' => ['channel' => $options['channel']],
+                'label' => 'Copy pages',
+                'button_class' => '',
+            ]);
+        }
     }
 
     /**
