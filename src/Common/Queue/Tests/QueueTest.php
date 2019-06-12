@@ -97,7 +97,7 @@ class QueueTest extends \PHPUnit\Framework\TestCase
         $this->provider->expects($this->once())
             ->method('pull')
             ->with($this->identicalTo('channel'), $this->identicalTo(1))
-            ->will($this->returnValue([$message]));
+            ->willReturn([$message]);
 
         $this->assertSame([$message], $this->queue->pull());
     }
@@ -110,7 +110,7 @@ class QueueTest extends \PHPUnit\Framework\TestCase
         $this->provider->expects($this->once())
             ->method('pull')
             ->with($this->identicalTo('channel'), $this->identicalTo(42))
-            ->will($this->returnValue([$message1, $message2]));
+            ->willReturn([$message1, $message2]);
 
         $this->assertSame([$message1, $message2], $this->queue->pull(42));
     }
@@ -120,7 +120,7 @@ class QueueTest extends \PHPUnit\Framework\TestCase
         $this->provider->expects($this->once())
             ->method('count')
             ->with($this->identicalTo('channel'))
-            ->will($this->returnValue(42));
+            ->willReturn(42);
 
         $this->assertEquals(42, $this->queue->count());
     }

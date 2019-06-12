@@ -12,14 +12,17 @@
 namespace Integrated\Bundle\ContentBundle\Controller;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
+use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\ContentBundle\Form\Type\ContentTypeFormType;
 use Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType;
 use Integrated\Common\ContentType\Event\ContentTypeEvent;
 use Integrated\Common\ContentType\Events;
+use Integrated\Common\Form\Mapping\MetadataFactory;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Integrated\Common\Form\Mapping\MetadataInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,6 +46,30 @@ class ContentTypeController extends Controller
     protected $metadata;
 
     /**
+     * @var ContentTypeManager
+     */
+    private $contentTypeManager;
+
+    /**
+     * @var EventDispatcher
+     */
+    private $eventDispatcher;
+
+    /**
+     * ContentTypeController constructor.
+     *
+     * @param ContentTypeManager $contentTypeManager
+     * @param EventDispatcher    $eventDispatcher
+     * @param MetadataFactory    $metadataFactory
+     */
+    public function __construct(ContentTypeManager $contentTypeManager, EventDispatcher $eventDispatcher, MetadataFactory $metadataFactory)
+    {
+        $this->contentTypeManager = $contentTypeManager;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->metadata = $metadataFactory;
+    }
+
+    /**
      * Lists all the ContentType documents.
      *
      * @return Response
@@ -51,8 +78,8 @@ class ContentTypeController extends Controller
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 
-        $documents = $this->get('integrated_content.content_type.manager')->getAll();
-        $documentTypes = $this->getMetadata()->getAllMetadata();
+        $documents = $this->contentTypeManager->getAll();
+        $documentTypes = $this->metadata->getAllMetadata();
 
         return $this->render('IntegratedContentBundle:content_type:index.html.twig', [
             'documents' => $documents,
@@ -67,7 +94,7 @@ class ContentTypeController extends Controller
      */
     public function selectAction()
     {
-        $documentTypes = $this->getMetadata()->getAllMetadata();
+        $documentTypes = $this->metadata->getAllMetadata();
 
         return $this->render('IntegratedContentBundle:content_type:select.html.twig', [
             'documentTypes' => $documentTypes,
@@ -105,7 +132,7 @@ class ContentTypeController extends Controller
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 
-        $metadata = $this->getMetadata()->getMetadata($request->get('class'));
+        $metadata = $this->metadata->getMetadata($request->get('class'));
 
         if (!$metadata) {
             return $this->redirect($this->generateUrl('integrated_content_content_type_select'));
@@ -125,8 +152,7 @@ class ContentTypeController extends Controller
 
             $this->get('braincrafted_bootstrap.flash')->success('Item created');
 
-            $dispatcher = $this->get('integrated_content.event_dispatcher');
-            $dispatcher->dispatch(Events::CONTENT_TYPE_CREATED, new ContentTypeEvent($contentType));
+            $this->eventDispatcher->dispatch(Events::CONTENT_TYPE_CREATED, new ContentTypeEvent($contentType));
 
             return $this->redirect($this->generateUrl('integrated_content_content_type_show', ['id' => $contentType->getId()]));
         }
@@ -149,7 +175,7 @@ class ContentTypeController extends Controller
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 
         $contentType = $this->getContentType($id);
-        $metadata = $this->getMetadata()->getMetadata($contentType->getClass());
+        $metadata = $this->metadata->getMetadata($contentType->getClass());
 
         $form = $this->createEditForm($contentType, $metadata);
         $form->handleRequest($request);
@@ -167,8 +193,7 @@ class ContentTypeController extends Controller
 
             $this->get('braincrafted_bootstrap.flash')->success('Item updated');
 
-            $dispatcher = $this->get('integrated_content.event_dispatcher');
-            $dispatcher->dispatch(Events::CONTENT_TYPE_UPDATED, new ContentTypeEvent($contentType));
+            $this->eventDispatcher->dispatch(Events::CONTENT_TYPE_UPDATED, new ContentTypeEvent($contentType));
 
             return $this->redirect($this->generateUrl('integrated_content_content_type_show', ['id' => $contentType->getId()]));
         }
@@ -217,28 +242,18 @@ class ContentTypeController extends Controller
             $dm->remove($contentType);
             $dm->flush();
 
-            $dispatcher = $this->get('integrated_content.event_dispatcher');
-            $dispatcher->dispatch(Events::CONTENT_TYPE_DELETED, new ContentTypeEvent($contentType));
+            $this->eventDispatcher->dispatch(Events::CONTENT_TYPE_DELETED, new ContentTypeEvent($contentType));
 
             // Set flash message
             $this->get('braincrafted_bootstrap.flash')->success('Item deleted');
+
+            return $this->redirect($this->generateUrl('integrated_content_content_type_index'));
         }
 
-        return $this->redirect($this->generateUrl('integrated_content_content_type_index'));
-    }
-
-    /**
-     * Get the metadata factory form the service container.
-     *
-     * @return MetadataFactoryInterface
-     */
-    protected function getMetadata()
-    {
-        if ($this->metadata === null) {
-            $this->metadata = $this->get('integrated_content.metadata.factory');
-        }
-
-        return $this->metadata;
+        return $this->render('IntegratedContentBundle:content_type:delete.html.twig', [
+            'contentType' => $contentType,
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
@@ -251,7 +266,7 @@ class ContentTypeController extends Controller
     private function getContentType($id)
     {
         try {
-            return $this->get('integrated_content.content_type.manager')->getType($id);
+            return $this->contentTypeManager->getType($id);
         } catch (\InvalidArgumentException $e) {
             throw new NotFoundHttpException(sprintf('Content type with id "%s" not found.', $id));
         }

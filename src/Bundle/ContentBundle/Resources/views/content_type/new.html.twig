@@ -16,6 +16,7 @@
         <div class="col-md-12 push-sm-down">
             <h1 class="main-title font-regular">{% trans %}New{% endtrans %}</h1>
             <section class="section-white section-padding section-shadow section-radius">
+                <a class="btn btn-primary" href="{{ path('integrated_content_content_type_index') }}">{% trans %}Back to Overview{% endtrans %}</a>
                 {{ form(form, { 'style': 'horizontal' }) }}
             </section>
         </div>
