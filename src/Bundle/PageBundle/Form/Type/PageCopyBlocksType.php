@@ -22,10 +22,11 @@ class PageCopyBlocksType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        dump($options['blocks']);
         foreach ($options['blocks'] as $id => $block) {
             $builder->add('block_'.$id, PageCopyBlockType::class, [
                 'block' => $block,
+                'channel' => $options['channel'],
+                'targetChannel' => $options['targetChannel'],
             ]);
         }
     }
@@ -35,7 +36,9 @@ class PageCopyBlocksType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(['blocks']);
+        $resolver->setRequired(['blocks', 'channel', 'targetChannel']);
         $resolver->setAllowedTypes('blocks', 'array');
+        $resolver->setAllowedTypes('channel', 'string');
+        $resolver->setAllowedTypes('targetChannel', 'string');
     }
 }

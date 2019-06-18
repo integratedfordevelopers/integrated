@@ -1,19 +1,20 @@
 {% block page_copy_pages_row %}
     {% spaceless %}
-        <table class="table table-hover">
+        <table class="table table-hover" id="copy-table">
             <colgroup>
                 <col style="width: 2em" />
-                <col />
-                <col />
                 <col style="width: 5em" />
+                <col />
+                <col />
+                <col style="width: 40em" />
             </colgroup>
 
             <thead>
             <tr>
                 <th></th>
+                <th>{% trans %}Action{% endtrans %}</th>
                 <th>{% trans %}Title{% endtrans %}</th>
                 <th>{% trans %}URL{% endtrans %}</th>
-                <th>{% trans %}Action{% endtrans %}</th>
                 <th>{% trans %}Blocks{% endtrans %}</th>
             </tr>
             </thead>
@@ -37,15 +38,15 @@
                 {{ form_widget(form.selected) }}
             </td>
             <td>
+                {{ copyAction }}
+            </td>
+            <td>
                 {{ page.title }}
             </td>
             <td>
                 {{ page.path }}
             </td>
-            <td>
-                {{ copyAction }}
-            </td>
-            <td>
+            <td class="copy-pages-blocks">
                 {% for field in form %}
 
                     {{ form_row(field) }}
@@ -59,10 +60,13 @@
 {% block page_copy_block_row %}
     {% spaceless %}
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
+                {{ block.id }}
+            </div>
+            <div class="col-md-4">
                 {{ form_widget(form.operation) }}
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 {{ form_widget(form.newBlockId) }}
             </div>
         </div>

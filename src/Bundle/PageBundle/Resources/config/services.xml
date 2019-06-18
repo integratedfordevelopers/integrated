@@ -42,6 +42,10 @@
             <argument type="service" id="router.default" />
         </service>
 
+        <service id="Integrated\Bundle\PageBundle\Services\PageCopyService">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+        </service>
+
     </services>
 
 </container>

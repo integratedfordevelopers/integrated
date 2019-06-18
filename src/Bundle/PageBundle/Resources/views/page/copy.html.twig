@@ -1,5 +1,18 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
 
+{% block style %}
+    {{ parent() }}
+
+    <style>
+        #copy-table .radio {
+            padding-right: 15px;
+        }
+        #copy-table .radio:last-child {
+            padding-right: 0px;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
     <div class="row">
         <div class="col-md-12 push-sm-down">
@@ -36,5 +49,25 @@
             </section>
         </div>
     </div>
+{% endblock %}
 
+{% block javascript %}
+    {{ parent() }}
+
+    <script>
+    function updateCopyTable() {
+
+    }
+    //        updateCopyTable().
+    $('.copy-pages-blocks input:radio').click(function() {
+        var newBlockIdField = $(this).closest('div.row').find('input:text');
+        if ($(this).val() == '') {
+            newBlockIdField.prop('disabled', true);
+            newBlockIdField.val('');
+        } else {
+            newBlockIdField.prop('disabled', false);
+            newBlockIdField.val(newBlockIdField.data('proposed-block-id'));
+        }
+    });
+    </script>
 {% endblock %}

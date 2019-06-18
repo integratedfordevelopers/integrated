@@ -15,6 +15,7 @@ use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
 use Integrated\Bundle\PageBundle\Document\Page\Page;
 use Integrated\Bundle\PageBundle\Form\Type\PageCopyType;
 use Integrated\Bundle\PageBundle\Form\Type\PageType;
+use Integrated\Bundle\PageBundle\Services\PageCopyService;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -26,6 +27,20 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class PageController extends Controller
 {
+    /**
+     * @var PageCopyService
+     */
+    private $pageCopyService;
+
+    /**
+     * PageController constructor.
+     * @param PageCopyService $pageCopyService
+     */
+    public function __construct(PageCopyService $pageCopyService)
+    {
+        $this->pageCopyService = $pageCopyService;
+    }
+
     /**
      * @param Request $request
      *
@@ -221,7 +236,9 @@ class PageController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $form->getData();
-/*
+
+            $this->pageCopyService->copyPages($channel->getId(), $form->getData());
+            /*
  *
             $channel = $this->getSelectedChannel();
 

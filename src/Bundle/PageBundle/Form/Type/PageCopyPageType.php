@@ -48,6 +48,8 @@ class PageCopyPageType extends AbstractType
         $builder->add('blocks', PageCopyBlocksType::class, [
             'blocks' => $blocks,
             'label' => false,
+            'channel' => $options['channel'],
+            'targetChannel' => $options['targetChannel'],
         ]);
     }
 
@@ -56,9 +58,11 @@ class PageCopyPageType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(['page', 'copyAction']);
+        $resolver->setRequired(['page', 'copyAction', 'channel', 'targetChannel']);
         $resolver->setAllowedTypes('page', Page::class);
         $resolver->setAllowedTypes('copyAction', 'string');
+        $resolver->setAllowedTypes('channel', 'string');
+        $resolver->setAllowedTypes('targetChannel', 'string');
     }
 
     /**

@@ -50,6 +50,8 @@ class PageCopyPagesType extends AbstractType
             $builder->add('page'.$page->getId(), PageCopyPageType::class, [
                 'page' => $page,
                 'copyAction' => ($targetPage === null) ? 'overwrite' : 'create',
+                'channel' => $options['channel'],
+                'targetChannel' => $options['targetChannel'],
             ]);
         }
     }
