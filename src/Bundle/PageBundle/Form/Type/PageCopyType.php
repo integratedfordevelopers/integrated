@@ -32,8 +32,8 @@ class PageCopyType extends AbstractType
                 'onchange' => 'document.page_copy.submit();',
             ],
             'constraints' => [
-                new NotEqualTo($options['channel'])
-            ]
+                new NotEqualTo($options['channel']),
+            ],
         ]);
 
         if ($options['targetChannel'] !== null) {

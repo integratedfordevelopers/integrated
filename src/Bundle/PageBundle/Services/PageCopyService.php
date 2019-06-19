@@ -68,7 +68,8 @@ class PageCopyService
                     [
                         'channel.$id' => $targetChannel->getId(),
                         'path' => $page->getPath(),
-                    ]);
+                    ]
+                );
 
                 if ($existingPage !== null) {
                     $this->documentManager->remove($existingPage);

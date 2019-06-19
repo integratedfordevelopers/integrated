@@ -34,6 +34,7 @@ class PageController extends Controller
 
     /**
      * PageController constructor.
+     *
      * @param PageCopyService $pageCopyService
      */
     public function __construct(PageCopyService $pageCopyService)
@@ -256,7 +257,6 @@ class PageController extends Controller
             return $this->redirect($this->generateUrl('integrated_page_page_index', ['channel' => $channel->getId()]));
  */
         }
-
 
         return $this->render('IntegratedPageBundle:page:copy.html.twig', [
             'pages' => $pagination,

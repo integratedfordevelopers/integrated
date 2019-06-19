@@ -12,8 +12,6 @@
 namespace Integrated\Bundle\PageBundle\Form\Type;
 
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
-use Integrated\Bundle\BlockBundle\Document\Block\InlineTextBlock;
-use Integrated\Bundle\ChannelBundle\Form\Type\ChannelChoiceType;
 use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
 use Integrated\Bundle\PageBundle\Document\Page\Grid\Item;
 use Integrated\Bundle\PageBundle\Document\Page\Grid\ItemsInterface;
