@@ -64,7 +64,7 @@ class NewsController
      */
     public function showAction(ContentTypePage $page, News $news)
     {
-        if (!$article->isPublished() || !$article->hasChannel($this->channelContext->getChannel())) {
+        if (!$news->isPublished() || !$news->hasChannel($this->channelContext->getChannel())) {
             throw new NotFoundHttpException();
         }
 

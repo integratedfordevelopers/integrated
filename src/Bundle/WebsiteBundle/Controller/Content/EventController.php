@@ -64,7 +64,7 @@ class EventController
      */
     public function showAction(ContentTypePage $page, Event $event)
     {
-        if (!$article->isPublished() || !$article->hasChannel($this->channelContext->getChannel())) {
+        if (!$event->isPublished() || !$event->hasChannel($this->channelContext->getChannel())) {
             throw new NotFoundHttpException();
         }
 

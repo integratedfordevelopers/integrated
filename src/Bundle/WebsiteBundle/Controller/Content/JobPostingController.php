@@ -64,7 +64,7 @@ class JobPostingController
      */
     public function showAction(ContentTypePage $page, JobPosting $jobPosting)
     {
-        if (!$article->isPublished() || !$article->hasChannel($this->channelContext->getChannel())) {
+        if (!$jobPosting->isPublished() || !$jobPosting->hasChannel($this->channelContext->getChannel())) {
             throw new NotFoundHttpException();
         }
 

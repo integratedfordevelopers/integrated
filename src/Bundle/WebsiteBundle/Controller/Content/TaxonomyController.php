@@ -64,7 +64,7 @@ class TaxonomyController
      */
     public function showAction(ContentTypePage $page, Taxonomy $taxonomy)
     {
-        if (!$article->isPublished() || !$article->hasChannel($this->channelContext->getChannel())) {
+        if (!$taxonomy->isPublished() || !$taxonomy->hasChannel($this->channelContext->getChannel())) {
             throw new NotFoundHttpException();
         }
 

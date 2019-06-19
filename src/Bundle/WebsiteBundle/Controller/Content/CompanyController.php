@@ -64,7 +64,7 @@ class CompanyController
      */
     public function showAction(ContentTypePage $page, Company $company)
     {
-        if (!$article->isPublished() || !$article->hasChannel($this->channelContext->getChannel())) {
+        if (!$company->isPublished() || !$company->hasChannel($this->channelContext->getChannel())) {
             throw new NotFoundHttpException();
         }
 
