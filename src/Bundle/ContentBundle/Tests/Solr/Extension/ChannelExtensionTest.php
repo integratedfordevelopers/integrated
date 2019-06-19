@@ -14,6 +14,8 @@ namespace Integrated\Bundle\ContentBundle\Tests\Solr\Extension;
 use Integrated\Bundle\ContentBundle\Solr\Extension\ChannelExtension;
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Common\Content\ChannelableInterface;
+use Integrated\Common\ContentType\ContentTypeInterface;
+use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\Converter\Container;
 use Integrated\Common\Converter\ContainerInterface;
 use stdClass;
@@ -27,7 +29,7 @@ class ChannelExtensionTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {
-        self::assertInstanceOf('Integrated\\Common\\Converter\\Type\\TypeExtensionInterface', $this->getInstance());
+        self::assertInstanceOf('Integrated\\Common\\Converter\\Type\\TypeExtensionInterface', $this->getInstance($this->getResolver()));
     }
 
     /**
@@ -37,8 +39,8 @@ class ChannelExtensionTest extends \PHPUnit\Framework\TestCase
     {
         $container = $this->getContainer();
 
-        $this->getInstance()->build($container, $content);
-        $this->getInstance()->build($container, $content); // should clear previous build
+        $this->getInstance($this->getResolver())->build($container, $content);
+        $this->getInstance($this->getResolver())->build($container, $content); // should clear previous build
 
         self::assertEquals($expected, $container->toArray());
     }
@@ -73,20 +75,22 @@ class ChannelExtensionTest extends \PHPUnit\Framework\TestCase
 
         /* @var ContainerInterface $container */
 
-        $this->getInstance()->build($container, new stdClass());
+        $this->getInstance($this->getResolver())->build($container, new stdClass());
     }
 
     public function testGetName()
     {
-        self::assertEquals('integrated.content', $this->getInstance()->getName());
+        self::assertEquals('integrated.content', $this->getInstance($this->getResolver())->getName());
     }
 
     /**
+     * @param ResolverInterface $resolver
+     *
      * @return ChannelExtension
      */
-    protected function getInstance()
+    protected function getInstance(ResolverInterface $resolver)
     {
-        return new ChannelExtension();
+        return new ChannelExtension($resolver);
     }
 
     /**
@@ -128,5 +132,24 @@ class ChannelExtensionTest extends \PHPUnit\Framework\TestCase
         // the code coverage for the container class is ignored for these tests.
 
         return new Container();
+    }
+
+    /**
+     * @param string|null               $type
+     * @param ContentTypeInterface|null $contentType
+     *
+     * @return ResolverInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getResolver(string $type = null, ContentTypeInterface $contentType = null)
+    {
+        $mock = $this->createMock(ResolverInterface::class);
+        if (null !== $type) {
+            $mock->expects($this->any())
+                ->method('getType')
+                ->with($type)
+                ->willReturn($contentType);
+        }
+
+        return $mock;
     }
 }

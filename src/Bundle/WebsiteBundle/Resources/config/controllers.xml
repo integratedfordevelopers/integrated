@@ -46,6 +46,7 @@
         </service>
 
         <service id="integrated_website.controller.content.article" class="%integrated_website.controller.content.article.class%">
+            <argument type="service" id="integrated_content.channel.context" />
             <argument type="service" id="templating" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
             <argument type="service" id="integrated_block.templating.block_manager" />

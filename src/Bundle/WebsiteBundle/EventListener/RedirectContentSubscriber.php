@@ -14,6 +14,7 @@ namespace Integrated\Bundle\WebsiteBundle\EventListener;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\PageBundle\Services\UrlResolver;
+use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Integrated\Common\Content\ContentInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -27,6 +28,11 @@ use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
  */
 class RedirectContentSubscriber implements EventSubscriberInterface
 {
+    /**
+     * @var ChannelContextInterface
+     */
+    protected $channelContext;
+
     /**
      * @var DocumentManager
      */
@@ -48,10 +54,12 @@ class RedirectContentSubscriber implements EventSubscriberInterface
      * @param UrlMatcherInterface $router
      */
     public function __construct(
+        ChannelContextInterface $channelContext,
         DocumentManager $documentManager,
         UrlResolver $urlResolver,
         UrlMatcherInterface $matcher
     ) {
+        $this->channelContext = $channelContext;
         $this->documentManager = $documentManager;
         $this->urlResolver = $urlResolver;
         $this->matcher = $matcher;
@@ -86,7 +94,11 @@ class RedirectContentSubscriber implements EventSubscriberInterface
             'published' => true,
         ]);
 
-        if (!$document instanceof ContentInterface || !$document->isPublished()) {
+        if (!$document instanceof ContentInterface
+            || !$document->isPublished()
+            || !$this->channelContext->getChannel()
+            || !$document->hasChannel($this->channelContext->getChannel())
+        ) {
             return;
         }
 
