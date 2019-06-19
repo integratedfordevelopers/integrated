@@ -192,6 +192,9 @@ class PageController extends Controller
      * @param Request $request
      *
      * @return Response
+     *
+     * @throws \Doctrine\ODM\MongoDB\Mapping\MappingException
+     * @throws \Doctrine\ODM\MongoDB\MongoDBException
      */
     public function copyAction(Request $request)
     {
@@ -236,26 +239,15 @@ class PageController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $form->getData();
+            $data = $form->getData();
 
-            $this->pageCopyService->copyPages($channel->getId(), $form->getData());
-            /*
- *
-            $channel = $this->getSelectedChannel();
+            if ($data['action'] != 'refresh') {
+                $this->pageCopyService->copyPages($channel->getId(), $form->getData());
 
-            $page->setChannel($channel);
+                $this->get('braincrafted_bootstrap.flash')->success('Pages copied');
 
-            $dm = $this->getDocumentManager();
-
-            $dm->persist($page);
-            $dm->flush();
-
-            $this->get('integrated_page.services.route_cache')->clear();
-
-            $this->get('braincrafted_bootstrap.flash')->success('Page created');
-
-            return $this->redirect($this->generateUrl('integrated_page_page_index', ['channel' => $channel->getId()]));
- */
+                return $this->redirect($this->generateUrl('integrated_page_page_index', ['channel' => $channel->getId()]));
+            }
         }
 
         return $this->render('IntegratedPageBundle:page:copy.html.twig', [

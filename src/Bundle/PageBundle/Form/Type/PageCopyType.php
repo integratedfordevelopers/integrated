@@ -14,6 +14,7 @@ namespace Integrated\Bundle\PageBundle\Form\Type;
 use Integrated\Bundle\ChannelBundle\Form\Type\ChannelChoiceType;
 use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotEqualTo;
@@ -25,11 +26,13 @@ class PageCopyType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->add('action', HiddenType::class);
+
         $builder->add('targetChannel', ChannelChoiceType::class, [
             'label' => 'Target channel',
             'placeholder' => '-- choose a target channel --',
             'attr' => [
-                'onchange' => 'document.page_copy.submit();',
+                'onchange' => '$(\'#page_copy_action\').val(\'refresh\');document.page_copy.submit();',
             ],
             'constraints' => [
                 new NotEqualTo($options['channel']),
@@ -47,6 +50,9 @@ class PageCopyType extends AbstractType
                 'cancel_route_parameters' => ['channel' => $options['channel']],
                 'label' => 'Copy pages',
                 'button_class' => '',
+                'attr' => [
+                    'onclick' => '$(\'#page_copy_action\').val(\'\');',
+                ],
             ]);
         }
     }
