@@ -38,7 +38,7 @@ class PageCopyBlockType extends AbstractType
             ],
             'attr' => [
                 'style' => 'inline',
-            ]
+            ],
         ]);
 
         $builder->add('newBlockId', TextType::class, [
@@ -55,7 +55,6 @@ class PageCopyBlockType extends AbstractType
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             $data = $event->getData();
             $form = $event->getForm();
-            dump($data);
 
             if ($data['operation'] != 'clone') {
                 $options = $form->get('newBlockId')->getConfig()->getOptions();
@@ -64,7 +63,6 @@ class PageCopyBlockType extends AbstractType
                 $form->add('newBlockId', TextType::class, $options);
             }
         });
-
     }
 
     /**

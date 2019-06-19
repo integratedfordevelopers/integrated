@@ -45,7 +45,7 @@ class PageCopyPagesType extends AbstractType
         $result = $queryBuilder->getQuery()->execute();
         /** @var Page $page */
         foreach ($result as $page) {
-            $targetPage = $this->documentManager->getRepository(Page::class)->findBy(['channel' => $options['targetChannel'], 'path' => $page->getPath()]);
+            $targetPage = $this->documentManager->getRepository(Page::class)->findOneBy(['channel' => $options['targetChannel'], 'path' => $page->getPath()]);
 
             $builder->add('page'.$page->getId(), PageCopyPageType::class, [
                 'page' => $page,

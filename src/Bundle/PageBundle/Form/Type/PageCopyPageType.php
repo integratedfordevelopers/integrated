@@ -41,7 +41,7 @@ class PageCopyPageType extends AbstractType
         $blocks = [];
         foreach ($page->getGrids() as $grid) {
             if ($grid instanceof Grid) {
-                $blocks = array_merge($blocks, $this->getGridBlocks($grid, $page));
+                $blocks = array_merge($blocks, $this->getGridBlocks($grid));
             }
         }
 
@@ -80,11 +80,10 @@ class PageCopyPageType extends AbstractType
 
     /**
      * @param ItemsInterface $grid
-     * @param Page           $page
      *
      * @return array
      */
-    private function getGridBlocks(ItemsInterface $grid, Page $page)
+    private function getGridBlocks(ItemsInterface $grid)
     {
         $blocks = [];
 
@@ -101,7 +100,7 @@ class PageCopyPageType extends AbstractType
 
             if ($item->getRow()) {
                 foreach ($item->getRow()->getColumns() as $column) {
-                    $blocks = array_merge($blocks, $this->getGridBlocks($column, $page));
+                    $blocks = array_merge($blocks, $this->getGridBlocks($column));
                 }
             }
         }

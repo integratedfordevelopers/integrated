@@ -44,6 +44,7 @@
 
         <service id="Integrated\Bundle\PageBundle\Services\PageCopyService">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="integrated_page.services.route_cache"/>
         </service>
 
     </services>
