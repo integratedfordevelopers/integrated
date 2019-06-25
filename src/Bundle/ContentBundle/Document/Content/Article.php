@@ -60,6 +60,12 @@ class Article extends Content
 
     /**
      * @var string
+     * @Type\Field(type="Symfony\Component\Form\Extension\Core\Type\UrlType", options={"label" = "Source URL"})
+     */
+    protected $sourceUrl;
+
+    /**
+     * @var string
      */
     protected $locale;
 
@@ -239,6 +245,30 @@ class Article extends Content
     public function setSource($source)
     {
         $this->source = $source;
+
+        return $this;
+    }
+
+    /**
+     * Get the source URL of the document.
+     *
+     * @return string
+     */
+    public function getSourceUrl()
+    {
+        return $this->sourceUrl;
+    }
+
+    /**
+     * Set the source of the document.
+     *
+     * @param string $sourceUrl
+     *
+     * @return $this
+     */
+    public function setSourceUrl($sourceUrl)
+    {
+        $this->sourceUrl = $sourceUrl;
 
         return $this;
     }

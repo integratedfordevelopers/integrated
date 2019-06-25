@@ -1,0 +1,18 @@
+{% extends integrated_active_theme('base.html.twig') %}
+
+{% block title %}{{ company.name }}{% endblock %}
+
+{% block meta %}
+    {{ parent() }}
+
+    {% include integrated_active_theme('widgets/canonical.html.twig') with {'content': company} only %}
+{% endblock %}
+
+{% block content %}
+    {% include 'IntegratedWebsiteBundle::json-ld.html.twig' with {content: company} %}
+
+    <h1>{{ company.name }}</h1>
+
+    {{ company.description|integrated_content }}
+
+{% endblock %}

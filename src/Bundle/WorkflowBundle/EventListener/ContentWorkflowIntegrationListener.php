@@ -44,6 +44,7 @@ class ContentWorkflowIntegrationListener implements EventSubscriberInterface
             $builder->add('extension_workflow', WorkflowFormType::class, [
                 'property_path' => 'extensions[integrated.extension.workflow]',
                 'workflow' => $event->getContentType()->getOption('workflow'),
+                'contentType' => $event->getContentType()->getId(),
             ]);
 
             if ($builder->has('disabled')) {

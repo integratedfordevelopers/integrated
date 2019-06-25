@@ -559,6 +559,10 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
             $this->channels->add($channel);
         }
 
+        if (null === $this->primaryChannel) {
+            $this->setPrimaryChannel($channel);
+        }
+
         return $this;
     }
 
@@ -593,11 +597,11 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     }
 
     /**
-     * @param Channel|null $primaryChannel
+     * @param ChannelInterface|null $primaryChannel
      *
      * @return $this
      */
-    public function setPrimaryChannel(Channel $primaryChannel = null)
+    public function setPrimaryChannel(ChannelInterface $primaryChannel = null)
     {
         $this->primaryChannel = $primaryChannel;
 

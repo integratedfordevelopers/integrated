@@ -1,0 +1,16 @@
+{% if app.request.attributes.get('integrated_block_edit') %}
+    <div class="panel panel-info" id="create-channel-block-{{ id }}">
+        <div class="panel-heading">
+            {% trans with { '%name%': name|default('undefined') } %}Block "%name%" can be created{% endtrans %}
+
+            <button class="btn btn-default" type="button"
+                    data-action="integrated-website-block-new-channel-block"
+                    data-id="{{ id }}"
+                    data-name="{{ name }}"
+                    data-class="{{ class }}"
+                    data-csrf-token="{{ csrf_token('create-channel-block') }}"
+            >Create block</button>
+
+        </div>
+    </div>
+{% endif %}
