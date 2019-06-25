@@ -154,7 +154,11 @@ class RelatedContentBlockHandler extends BlockHandler
             $query->sort($block->getSortBy(), $block->getSortDirection());
         }
 
-        $query->field('channels.$id')->equals($request->attributes->get('_channel', 'undefined'));
+        if ($request === null || !$request->attributes->has('_channel')) {
+            throw new \Exception('Channel not set');
+        }
+
+        $query->field('channels.$id')->equals($request->attributes->get('_channel'));
 
         return $query;
     }
