@@ -43,7 +43,7 @@ class Exporter implements ExporterInterface
     private $dm;
 
     /**
-     * @var ExporterInterface[][]
+     * @var ConnectorExporterInterface[][]
      */
     private $cache = [];
 
@@ -91,7 +91,7 @@ class Exporter implements ExporterInterface
      * @param ChannelInterface $channel
      * @param ?\DateTime       $publicationDate
      *
-     * @return ExporterInterface[]
+     * @return ConnectorExporterInterface[]
      */
     protected function getExporters(ChannelInterface $channel, $publicationDate)
     {

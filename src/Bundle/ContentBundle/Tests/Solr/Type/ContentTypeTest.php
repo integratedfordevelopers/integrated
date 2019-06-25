@@ -28,16 +28,6 @@ use stdClass;
  */
 class ContentTypeTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var ObjectRepository | \PHPUnit_Framework_MockObject_MockObject[][]
-     */
-    private $repository;
-
-    protected function setUp()
-    {
-        $this->repository = $this->createMock(ObjectRepository::class);
-    }
-
     public function testInterface()
     {
         self::assertInstanceOf('Integrated\\Common\\Converter\\Type\\TypeInterface', $this->getInstance());
