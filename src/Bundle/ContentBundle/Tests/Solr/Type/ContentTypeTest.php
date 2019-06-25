@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\ContentBundle\Tests\Solr\Type;
 
-use Doctrine\Common\Persistence\ObjectRepository;
 use Integrated\Bundle\ContentBundle\Solr\Type\ContentType;
 use Integrated\Bundle\ContentBundle\Tests\Fixtures\__CG__\ProxyObject;
 use Integrated\Bundle\ContentBundle\Tests\Fixtures\Object1;
