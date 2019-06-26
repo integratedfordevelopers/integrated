@@ -46,6 +46,7 @@
         </service>
 
         <service id="integrated_website.controller.content.article" class="%integrated_website.controller.content.article.class%">
+            <argument type="service" id="integrated_content.channel.context" />
             <argument type="service" id="templating" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
             <argument type="service" id="integrated_block.templating.block_manager" />
@@ -53,6 +54,7 @@
         </service>
 
         <service id="integrated_website.controller.content.news" class="%integrated_website.controller.content.news.class%">
+            <argument type="service" id="integrated_content.channel.context" />
             <argument type="service" id="templating" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
             <argument type="service" id="integrated_block.templating.block_manager" />
@@ -60,6 +62,7 @@
         </service>
 
         <service id="integrated_website.controller.content.company" class="%integrated_website.controller.content.company.class%">
+            <argument type="service" id="integrated_content.channel.context" />
             <argument type="service" id="templating" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
             <argument type="service" id="integrated_block.templating.block_manager" />
@@ -67,6 +70,7 @@
         </service>
 
         <service id="integrated_website.controller.content.event" class="%integrated_website.controller.content.event.class%">
+            <argument type="service" id="integrated_content.channel.context" />
             <argument type="service" id="templating" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
             <argument type="service" id="integrated_block.templating.block_manager" />
@@ -74,6 +78,7 @@
         </service>
 
         <service id="integrated_website.controller.content.job_posting" class="%integrated_website.controller.content.job_posting.class%">
+            <argument type="service" id="integrated_content.channel.context" />
             <argument type="service" id="templating" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
             <argument type="service" id="integrated_block.templating.block_manager" />
@@ -81,6 +86,7 @@
         </service>
 
         <service id="integrated_website.controller.content.taxonomy" class="%integrated_website.controller.content.taxonomy.class%">
+            <argument type="service" id="integrated_content.channel.context" />
             <argument type="service" id="templating" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
             <argument type="service" id="integrated_block.templating.block_manager" />

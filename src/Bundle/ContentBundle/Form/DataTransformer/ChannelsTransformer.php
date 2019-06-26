@@ -46,18 +46,25 @@ class ChannelsTransformer implements DataTransformerInterface
             }
         }
 
+        $defaults = [];
         if (isset($value['defaults'])) {
-            $defaults = [];
-
             // TODO filter out invalid channels
 
             foreach ($value['defaults'] as $channel) {
                 $defaults[$channel['id']]['selected'] = true;
+                $defaults[$channel['id']]['restrict'] = isset($channel['restrict']) ? (bool) $channel['restrict'] : false;
                 $defaults[$channel['id']]['enforce'] = isset($channel['enforce']) ? (bool) $channel['enforce'] : false;
             }
-
-            $result['defaults'] = $defaults;
         }
+
+        if (isset($value['restricted'])) {
+            // TODO filter out invalid channels
+
+            foreach ($value['restricted'] as $channel) {
+                $defaults[$channel]['restrict'] = true;
+            }
+        }
+        $result['defaults'] = $defaults;
 
         return $result;
     }
@@ -70,6 +77,7 @@ class ChannelsTransformer implements DataTransformerInterface
         $result = [
             'disabled' => 0,
             'defaults' => [],
+            'restricted' => [],
         ];
 
         if ($value === null || $value === '') {
@@ -90,8 +98,12 @@ class ChannelsTransformer implements DataTransformerInterface
             if ($options['selected']) {
                 $result['defaults'][$id] = [
                     'id' => $id,
+                    'restrict' => $options['restrict'] ? true : false,
                     'enforce' => $options['enforce'] ? true : false,
                 ];
+            }
+            if ($options['restrict'] == true) {
+                $result['restricted'][] = $id;
             }
         }
 

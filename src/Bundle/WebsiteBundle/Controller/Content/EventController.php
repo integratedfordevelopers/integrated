@@ -15,6 +15,7 @@ use Integrated\Bundle\BlockBundle\Templating\BlockManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Event;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
+use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Symfony\Bundle\TwigBundle\TwigEngine;
 
 /**
@@ -22,6 +23,11 @@ use Symfony\Bundle\TwigBundle\TwigEngine;
  */
 class EventController
 {
+    /**
+     * @var ChannelContextInterface
+     */
+    protected $channelContext;
+
     /**
      * @var TwigEngine
      */
@@ -42,8 +48,9 @@ class EventController
      * @param ThemeManager $themeManager
      * @param BlockManager $blockManager
      */
-    public function __construct(TwigEngine $templating, ThemeManager $themeManager, BlockManager $blockManager)
+    public function __construct(ChannelContextInterface $channelContext, TwigEngine $templating, ThemeManager $themeManager, BlockManager $blockManager)
     {
+        $this->channelContext = $channelContext;
         $this->templating = $templating;
         $this->themeManager = $themeManager;
         $this->blockManager = $blockManager;
@@ -57,6 +64,10 @@ class EventController
      */
     public function showAction(ContentTypePage $page, Event $event)
     {
+        if (!$event->isPublished() || !$event->hasChannel($this->channelContext->getChannel())) {
+            throw new NotFoundHttpException();
+        }
+
         $this->blockManager->setDocument($event);
 
         return $this->templating->renderResponse(
