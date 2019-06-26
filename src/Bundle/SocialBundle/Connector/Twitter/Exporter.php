@@ -68,7 +68,7 @@ class Exporter implements ExporterInterface
             return;
         }
 
-        $response = false;
+        $response = null;
 
         try {
             $postResponse = $this->twitter->post(
