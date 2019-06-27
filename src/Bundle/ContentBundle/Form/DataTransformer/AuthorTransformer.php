@@ -22,6 +22,16 @@ use Symfony\Component\Form\DataTransformerInterface;
  */
 class AuthorTransformer implements DataTransformerInterface
 {
+    /**
+     * @var ManagerRegistry
+     */
+    private $mr;
+
+    /**
+     * AuthorTransformer constructor.
+     *
+     * @param ManagerRegistry $mr
+     */
     public function __construct(ManagerRegistry $mr)
     {
         $this->mr = $mr;

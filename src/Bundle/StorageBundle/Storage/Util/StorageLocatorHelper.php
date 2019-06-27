@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\StorageBundle\Storage\Util;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Integrated\Bundle\StorageBundle\Storage\Mapping\Metadata;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 
 /**
@@ -32,7 +33,7 @@ class StorageLocatorHelper implements StorageInterface
     protected $pathname;
 
     /**
-     * @var Storage\Metadata
+     * @var Metadata
      */
     protected $metadata;
 

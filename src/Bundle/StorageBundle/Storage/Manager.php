@@ -107,6 +107,8 @@ class Manager implements ManagerInterface
                         sprintf(
                             '%sThe filesystem %s did not properly return the file %s: %s',
                             self::LOG_PREFIX,
+                            $key,
+                            $storage->getIdentifier(),
                             $e->getMessage()
                         )
                     );

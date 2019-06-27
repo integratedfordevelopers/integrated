@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\MongoDb\ContentType\Exception;
+namespace Integrated\MongoDB\ContentType\Exception;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
