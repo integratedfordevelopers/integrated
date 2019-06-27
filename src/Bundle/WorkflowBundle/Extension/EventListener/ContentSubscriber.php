@@ -415,6 +415,8 @@ E-mail: '.$person->getEmail().'',
                     return true;
                 }
                 $permissionObject = $contentType;
+            } else {
+                return false;
             }
         }
 
