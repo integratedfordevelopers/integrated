@@ -108,7 +108,7 @@ class IndexerRunCommand extends Command
                 'w',
                 InputOption::VALUE_REQUIRED,
                 'Time in milliseconds to wait between runs (in combination with --full or --daemon)',
-                '0'
+                0
             )
             ->addArgument(
                 'processes',
