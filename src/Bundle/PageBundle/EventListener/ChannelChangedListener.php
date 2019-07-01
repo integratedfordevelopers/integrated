@@ -15,6 +15,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\PageBundle\Services\ContentTypePageService;
+use Integrated\Bundle\PageBundle\Services\RouteCache;
 use Integrated\Common\Channel\Event\ChannelEvent;
 use Integrated\Common\Channel\Events;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -35,13 +36,20 @@ class ChannelChangedListener implements EventSubscriberInterface
     protected $contentTypePageService;
 
     /**
+     * @var RouteCache
+     */
+    protected $routeCache;
+
+    /**
      * @param DocumentManager        $dm
      * @param ContentTypePageService $contentTypePageService
+     * @param RouteCache             $routeCache
      */
-    public function __construct(DocumentManager $dm, ContentTypePageService $contentTypePageService)
+    public function __construct(DocumentManager $dm, ContentTypePageService $contentTypePageService, RouteCache $routeCache)
     {
         $this->dm = $dm;
         $this->contentTypePageService = $contentTypePageService;
+        $this->routeCache = $routeCache;
     }
 
     /**
@@ -63,7 +71,15 @@ class ChannelChangedListener implements EventSubscriberInterface
     {
         $channel = $event->getChannel();
 
-        $contentTypes = $this->getContentTypeRepository()->findBy(['options.channels.disabled' => 0]);
+        $contentTypes = $this->getContentTypeRepository()->findBy(
+            [
+                'options.channels.disabled' => 0,
+                'options.publication' => ['$ne' => 1],
+                'options.channels.restricted' => ['$ne' => $channel->getId()],
+            ]
+        );
+
+        $routesChanged = false;
 
         /** @var ContentType $contentType */
         foreach ($contentTypes as $contentType) {
@@ -72,7 +88,12 @@ class ChannelChangedListener implements EventSubscriberInterface
                 'contentType.$id' => $contentType->getId(),
             ])) {
                 $this->contentTypePageService->addContentType($contentType, $channel);
+                $routesChanged = true;
             }
+        }
+
+        if ($routesChanged) {
+            $this->routeCache->clear();
         }
     }
 

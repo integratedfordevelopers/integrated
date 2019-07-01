@@ -6,3 +6,4 @@ script:
 - php7.1 vendor/bin/phpcs
 - php7.1 vendor/bin/php-cs-fixer fix --verbose --show-progress=none --dry-run
 - php7.1 vendor/bin/phpunit -c phpunit.xml.dist
+- php7.1 vendor/bin/phpstan analyse --no-progress
