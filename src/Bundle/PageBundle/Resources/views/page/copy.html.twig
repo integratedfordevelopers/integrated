@@ -55,10 +55,6 @@
     {{ parent() }}
 
     <script>
-    function updateCopyTable() {
-
-    }
-    //        updateCopyTable().
     $('.copy-pages-blocks input:radio').click(function() {
         var newBlockIdField = $(this).closest('div.row').find('input:text');
         if ($(this).val() == '') {

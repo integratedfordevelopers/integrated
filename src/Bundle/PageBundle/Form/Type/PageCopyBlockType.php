@@ -47,9 +47,7 @@ class PageCopyBlockType extends AbstractType
             'attr' => [
                 'data-proposed-block-id' => str_replace($options['channel'], $options['targetChannel'], $options['block']->getId()),
                 'style' => 'height: 26px;',
-                //'disabled' => ($builder->get('newBlockId')->getData() != '') ? false : true,
             ],
-//            $builder->get('newBlockId')->getData()
         ]);
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {

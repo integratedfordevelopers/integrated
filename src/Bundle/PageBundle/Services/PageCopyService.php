@@ -51,7 +51,7 @@ class PageCopyService
     public function copyPages(string $channel, array $data)
     {
         $targetChannel = $this->documentManager->getRepository(Channel::class)->find($data['targetChannel']);
-        if ($targetChannel === false) {
+        if ($targetChannel === null) {
             throw new \Exception('Channel not found');
         }
 
