@@ -21,6 +21,11 @@
             <tag name="form.type" alias="integrated_page_content_type_page" />
         </service>
 
+        <service id="Integrated\Bundle\PageBundle\Form\Type\PageCopyPagesType">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <tag name="form.type" />
+        </service>
+
     </services>
 
 </container>

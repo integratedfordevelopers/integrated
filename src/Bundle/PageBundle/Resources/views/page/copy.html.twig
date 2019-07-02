@@ -1,0 +1,69 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+
+{% block style %}
+    {{ parent() }}
+
+    <style>
+        #copy-table .radio {
+            padding-right: 15px;
+        }
+        #copy-table .radio:last-child {
+            padding-right: 0px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 push-sm-down">
+            <ul class="list-inline">
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown" role="button">{% trans %}Options{% endtrans %} <b class="caret"></b></a>
+                    <ul role="menu" class="dropdown-menu">
+                        <li role="presentation">
+                            <a href="{{ path('integrated_page_page_new', { 'channel': selectedChannel.id }) }}" tabindex="-1" role="menuitem">{% trans %}New page{% endtrans %}</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('integrated_page_page_new', { 'channel': selectedChannel.id }) }}" tabindex="-1" role="menuitem">{% trans %}Copy selected pages{% endtrans %}</a>
+                        </li>
+                    </ul>
+
+                <li class="dropdown pull-right">
+                    <a href="#" data-toggle="dropdown" role="button">{{ selectedChannel.name }} <b class="caret"></b></a>
+                    <ul role="menu" class="dropdown-menu">
+                        {% for channel in channels %}
+                            <li role="presentation">
+                                <a href="{{ path('integrated_page_page_copy', { 'channel': channel.id }) }}" tabindex="-1" role="menuitem">{{ channel.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
+
+            <section class="section-white section-padding section-shadow section-radius">
+
+                {% form_theme form with ['IntegratedPageBundle:form:form_div_layout.html.twig'] %}
+
+                {{ form(form) }}
+
+            </section>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+
+    <script>
+    $('.copy-pages-blocks input:radio').click(function() {
+        var newBlockIdField = $(this).closest('div.row').find('input:text');
+        if ($(this).val() == '') {
+            newBlockIdField.prop('disabled', true);
+            newBlockIdField.val('');
+        } else {
+            newBlockIdField.prop('disabled', false);
+            newBlockIdField.val(newBlockIdField.data('proposed-block-id'));
+        }
+    });
+    </script>
+{% endblock %}
