@@ -284,146 +284,146 @@ class ImportController extends Controller
         try {
             $data = $this->importFile->toArray($importDefinition);
 
-        $contentType = $this->documentManager->find(
-            ContentType::class,
-            $importDefinition->getContentType()
-        );
+            $contentType = $this->documentManager->find(
+                ContentType::class,
+                $importDefinition->getContentType()
+            );
 
-        $context = new SerializationContext();
-        $context->setSerializeNull(true);
+            $context = new SerializationContext();
+            $context->setSerializeNull(true);
 
-        $serializer = SerializerBuilder::create()
+            $serializer = SerializerBuilder::create()
             ->addMetadataDir(realpath(__DIR__.'/../../ContentBundle/Resources/serializer'))
             ->setObjectConstructor(new InitializedObjectConstructor(new UnserializeObjectConstructor()))
             ->build();
-        $contentTypeFields = json_decode($serializer->serialize($contentType->create(), 'json', $context), true);
+            $contentTypeFields = json_decode($serializer->serialize($contentType->create(), 'json', $context), true);
 
-        $fields = $this->processor->getFields();
+            $fields = $this->processor->getFields();
 
-        foreach ($contentTypeFields as $contentTypeField => $contentTypeValue) {
-            $matchCol = false;
-            if (!$importDefinition->getFields()) {
-                if (isset($data[0])) {
-                    $col = 1;
-                    foreach ($data[0] as $dataValue) {
-                        $dataName = strtolower(preg_replace('/[^A-Za-z0-9]/', '', $dataValue));
-                        $contentTypeFieldName = strtolower(preg_replace('/[^A-Za-z0-9]/', '', $contentTypeField));
-                        if ($dataName == $contentTypeFieldName) {
-                            if (!$matchCol) {
-                                $matchCol = $col;
+            foreach ($contentTypeFields as $contentTypeField => $contentTypeValue) {
+                $matchCol = false;
+                if (!$importDefinition->getFields()) {
+                    if (isset($data[0])) {
+                        $col = 1;
+                        foreach ($data[0] as $dataValue) {
+                            $dataName = strtolower(preg_replace('/[^A-Za-z0-9]/', '', $dataValue));
+                            $contentTypeFieldName = strtolower(preg_replace('/[^A-Za-z0-9]/', '', $contentTypeField));
+                            if ($dataName == $contentTypeFieldName) {
+                                if (!$matchCol) {
+                                    $matchCol = $col;
+                                }
                             }
+                            ++$col;
                         }
-                        ++$col;
+                    }
+                }
+                //check current field
+
+                $fields['field-'.$contentTypeField] = ['label' => $contentTypeField, 'matchCol' => $matchCol];
+            }
+
+            $fields['author-author'] = ['label' => 'Author', 'matchCol' => false];
+
+            $configs = $this->entityManager->getRepository(Config::class)->findAll();
+            foreach ($configs as $config) {
+                $fields['connector-'.$config->getId()] = ['label' => 'ID for '.$config->getName(), 'matchCol' => false];
+            }
+
+            $relations = $this->documentManager->getRepository(Relation::class)->findAll();
+            foreach ($relations as $relation) {
+                $fields['relation-'.$relation->getId()] = ['label' => 'Relation '.$relation->getName(), 'matchCol' => false];
+            }
+
+            if ($request->request->get('action') == 'go') {
+                if (isset($data[0])) {
+                    $cols = \count($data[0]);
+                    $fields2 = [];
+                    for ($col = 0; $col < $cols; ++$col) {
+                        $mappedField = $request->request->get('col'.$col, null);
+                        if ($mappedField) {
+                            $field = new ImportField();
+                            $field->setColumn($col);
+                            $field->setSourceField($data[0][$col]);
+                            $field->setMappedField($mappedField);
+                            $fields2[] = $field;
+                        }
+                    }
+
+                    $importDefinition->setFields($fields2);
+                    $this->documentManager->flush();
+                }
+
+                return $this->redirectToRoute('integrated_import_summary', ['importDefinition' => $importDefinition->getId()]);
+            }
+
+            //do some checks to generate some warnings
+            if ($importDefinition->getFields()) {
+                foreach ($importDefinition->getFields() as $field) {
+                    if (isset($fields[$field->getMappedField()])) {
+                        if ($field->getSourceField()) {
+                            $column = array_search($field->getSourceField(), $data[0]);
+                            if ($column === false) {
+                                $this->get('braincrafted_bootstrap.flash')->alert('Warning: field '.$field->getSourceField().' is not available in the import any more will be ignored');
+                                continue;
+                            }
+                            if ($column != $field->getColumn()) {
+                                $this->get('braincrafted_bootstrap.flash')->alert('Warning: column '.$field->getSourceField().' is on another position now');
+                            }
+                        } else {
+                            $column = $field->getColumn();
+                        }
+                        $fields[$field->getMappedField()]['matchCol'] = $column;
+                    } else {
+                        $this->get('braincrafted_bootstrap.flash')->alert('Warning: mapped field is not available and will be ignored: '.$field->getMappedField());
                     }
                 }
             }
-            //check current field
 
-            $fields['field-'.$contentTypeField] = ['label' => $contentTypeField, 'matchCol' => $matchCol];
-        }
-
-        $fields['author-author'] = ['label' => 'Author', 'matchCol' => false];
-
-        $configs = $this->entityManager->getRepository(Config::class)->findAll();
-        foreach ($configs as $config) {
-            $fields['connector-'.$config->getId()] = ['label' => 'ID for '.$config->getName(), 'matchCol' => false];
-        }
-
-        $relations = $this->documentManager->getRepository(Relation::class)->findAll();
-        foreach ($relations as $relation) {
-            $fields['relation-'.$relation->getId()] = ['label' => 'Relation '.$relation->getName(), 'matchCol' => false];
-        }
-
-        if ($request->request->get('action') == 'go') {
-            if (isset($data[0])) {
-                $cols = \count($data[0]);
-                $fields2 = [];
-                for ($col = 0; $col < $cols; ++$col) {
-                    $mappedField = $request->request->get('col'.$col, null);
-                    if ($mappedField) {
-                        $field = new ImportField();
-                        $field->setColumn($col);
-                        $field->setSourceField($data[0][$col]);
-                        $field->setMappedField($mappedField);
-                        $fields2[] = $field;
-                    }
-                }
-
-                $importDefinition->setFields($fields2);
-                $this->documentManager->flush();
+            $columnItemCount = [];
+            foreach ($data[0] as $columnName) {
+                $columnItemCount[$columnName] = 0;
             }
 
-            return $this->redirectToRoute('integrated_import_summary', ['importDefinition' => $importDefinition->getId()]);
-        }
-
-        //do some checks to generate some warnings
-        if ($importDefinition->getFields()) {
-            foreach ($importDefinition->getFields() as $field) {
-                if (isset($fields[$field->getMappedField()])) {
-                    if ($field->getSourceField()) {
-                        $column = array_search($field->getSourceField(), $data[0]);
-                        if ($column === false) {
-                            $this->get('braincrafted_bootstrap.flash')->alert('Warning: field '.$field->getSourceField().' is not available in the import any more will be ignored');
+            //display at least 2 sample rows for each column and minimum 20 rows, don't display the rest
+            $rowNumber = 0;
+            foreach ($data as $index => $row) {
+                if ($rowNumber >= 1) {
+                    $showThisRow = false;
+                    if ($rowNumber <= 20) {
+                        $showThisRow = true;
+                    }
+                    foreach ($row as $column => $value) {
+                        if ($columnItemCount[$column] >= 2) {
                             continue;
                         }
-                        if ($column != $field->getColumn()) {
-                            $this->get('braincrafted_bootstrap.flash')->alert('Warning: column '.$field->getSourceField().' is on another position now');
-                        }
-                    } else {
-                        $column = $field->getColumn();
-                    }
-                    $fields[$field->getMappedField()]['matchCol'] = $column;
-                } else {
-                    $this->get('braincrafted_bootstrap.flash')->alert('Warning: mapped field is not available and will be ignored: '.$field->getMappedField());
-                }
-            }
-        }
-
-        $columnItemCount = [];
-        foreach ($data[0] as $columnName) {
-            $columnItemCount[$columnName] = 0;
-        }
-
-        //display at least 2 sample rows for each column and minimum 20 rows, don't display the rest
-        $rowNumber = 0;
-        foreach ($data as $index => $row) {
-            if ($rowNumber >= 1) {
-                $showThisRow = false;
-                if ($rowNumber <= 20) {
-                    $showThisRow = true;
-                }
-                foreach ($row as $column => $value) {
-                    if ($columnItemCount[$column] >= 2) {
-                        continue;
-                    }
-                    if (\is_array($value)) {
-                        if (\count($value) > 0) {
+                        if (\is_array($value)) {
+                            if (\count($value) > 0) {
+                                ++$columnItemCount[$column];
+                                $showThisRow = true;
+                            }
+                        } elseif ($value != '') {
                             ++$columnItemCount[$column];
                             $showThisRow = true;
                         }
-                    } elseif ($value != '') {
-                        ++$columnItemCount[$column];
-                        $showThisRow = true;
+                    }
+                    if (!$showThisRow) {
+                        unset($data[$index]);
                     }
                 }
-                if (!$showThisRow) {
-                    unset($data[$index]);
+                ++$rowNumber;
+            }
+
+            //todo: id for connector
+            //todo: relations match
+
+            //prepare data for display
+            foreach ($data as $index => $row) {
+                foreach ($row as $index2 => $value2) {
+                    if (\is_array($value2)) {
+                        $data[$index][$index2] = implode(', ', $value2);
+                    }
                 }
             }
-            ++$rowNumber;
-        }
-
-        //todo: id for connector
-        //todo: relations match
-
-        //prepare data for display
-        foreach ($data as $index => $row) {
-            foreach ($row as $index2 => $value2) {
-                if (\is_array($value2)) {
-                    $data[$index][$index2] = implode(', ', $value2);
-                }
-            }
-        }
         } catch (\Exception $e) {
             $this->get('braincrafted_bootstrap.flash')->error('Unable to read import file: '.$e->getMessage());
             $fields = [];
@@ -1144,9 +1144,9 @@ class ImportController extends Controller
 
                     $result['success'][] = 'Post '.$row['wp:post_id'].' imported';
                 } catch (\Exception $e) {
-                    $result['errors'][] = 'Item '.(string) $newObject.' failed: '.$e->getMessage() . ' ' . nl2br($e->getTraceAsString()) . ' ' . $e->getFile() . ' ' . $e->getLine();
+                    $result['errors'][] = 'Item '.(string) $newObject.' failed: '.$e->getMessage().' '.nl2br($e->getTraceAsString()).' '.$e->getFile().' '.$e->getLine();
                 } catch (\Throwable $e) {
-                    $result['errors'][] = 'Item '.(string) $newObject.' fatal: '.$e->getMessage() . ' ' . nl2br($e->getTraceAsString()) . ' ' . $e->getFile() . ' ' . $e->getLine();
+                    $result['errors'][] = 'Item '.(string) $newObject.' fatal: '.$e->getMessage().' '.nl2br($e->getTraceAsString()).' '.$e->getFile().' '.$e->getLine();
                 }
             }
         }

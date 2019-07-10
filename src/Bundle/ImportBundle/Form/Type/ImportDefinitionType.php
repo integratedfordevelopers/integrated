@@ -35,25 +35,38 @@ class ImportDefinitionType extends AbstractType
             'class' => Channel::class,
             'choice_label' => 'name',
             'multiple' => true,
-            'expanded' => true
+            'expanded' => true,
         ]);
         $builder->add('imageBaseUrl', UrlType::class, ['label' => 'Base URL for images', 'required' => false]);
-        $builder->add('imageContentType', ContentTypeChoice::class,
-            ['label' => 'Content type for images', 'required' => false, 'multiple' => false]);
-        $builder->add('imageRelation', DocumentType::class, [
-            'label' => 'Relation for images',
-            'multiple' => false,
-            'required' => false,
-            'query_builder' => function (DocumentRepository $dr) {
-                return $dr->createQueryBuilder()->sort('name');
-            },
-            'class' => Relation::class,
-            'choice_label' => 'name',
-            'choice_value' => 'id'
-        ]);
-        $builder->add('fileContentType', ContentTypeChoice::class,
-            ['label' => 'Content type for files', 'required' => false, 'multiple' => false]);
-        $builder->add('fileRelation', DocumentType::class, [
+        $builder->add(
+            'imageContentType',
+            ContentTypeChoice::class,
+            ['label' => 'Content type for images', 'required' => false, 'multiple' => false]
+        );
+        $builder->add(
+            'imageRelation',
+            DocumentType::class,
+            [
+                'label' => 'Relation for images',
+                'multiple' => false,
+                'required' => false,
+                'query_builder' => function (DocumentRepository $dr) {
+                    return $dr->createQueryBuilder()->sort('name');
+                },
+                'class' => Relation::class,
+                'choice_label' => 'name',
+                'choice_value' => 'id',
+            ]
+        );
+        $builder->add(
+            'fileContentType',
+            ContentTypeChoice::class,
+            ['label' => 'Content type for files', 'required' => false, 'multiple' => false]
+        );
+        $builder->add(
+            'fileRelation',
+            DocumentType::class,
+            [
                 'label' => 'Relation for files',
                 'multiple' => false,
                 'required' => false,
@@ -62,7 +75,7 @@ class ImportDefinitionType extends AbstractType
                 },
                 'class' => Relation::class,
                 'choice_label' => 'name',
-                'choice_value' => 'id'
+                'choice_value' => 'id',
             ]
         );
     }
