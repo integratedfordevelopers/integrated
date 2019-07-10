@@ -38,12 +38,13 @@ class ContentTypePageController extends Controller
         $channel = $this->getSelectedChannel();
 
         $builder = $this->getDocumentManager()->createQueryBuilder(ContentTypePage::class)
-            ->field('channel.$id')->equals($channel->getId());
+            ->field('channel.$id')->equals($channel->getId())
+            ->sort('contentType');
 
         $pagination = $this->getPaginator()->paginate(
             $builder,
             $request->query->get('page', 1),
-            20
+            25
         );
 
         return $this->render('IntegratedPageBundle:content_type_page:index.html.twig', [
@@ -69,7 +70,7 @@ class ContentTypePageController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $channel = $this->getSelectedChannel();
+            $channel = $page->getChannel();
 
             $this->getDocumentManager()->flush();
 

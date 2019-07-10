@@ -125,6 +125,8 @@ class RelatedContentBlockHandler extends BlockHandler
             return null;
         }
 
+        $request = $this->requestStack->getCurrentRequest();
+
         switch ($block->getTypeBlock()) {
             case RelatedContentBlock::SHOW_LINKED_BY:
                 $query = $this->getLinkedByQuery($document, $block);
@@ -151,6 +153,12 @@ class RelatedContentBlockHandler extends BlockHandler
         if ($block->getSortBy()) {
             $query->sort($block->getSortBy(), $block->getSortDirection());
         }
+
+        if ($request === null || !$request->attributes->has('_channel')) {
+            throw new \Exception('Channel not set');
+        }
+
+        $query->field('channels.$id')->equals($request->attributes->get('_channel'));
 
         return $query;
     }

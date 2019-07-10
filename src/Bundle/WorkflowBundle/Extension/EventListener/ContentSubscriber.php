@@ -13,6 +13,7 @@ namespace Integrated\Bundle\WorkflowBundle\Extension\EventListener;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
+use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\UserBundle\Model\Group;
 use Integrated\Bundle\UserBundle\Model\User;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
@@ -140,7 +141,7 @@ class ContentSubscriber implements ContentSubscriberInterface
             $data['assigned'] = $this->container->get('integrated_user.user.manager')->find($data['assigned']);
         }
 
-        if ($data['assigned'] && !$this->hasAssignedAccess($data['assigned'], $data['state'], $data['state'] == $workflow->getDefault())) {
+        if ($data['assigned'] && !$this->hasAssignedAccess($data['assigned'], $data['state'], $content)) {
             $data['assigned'] = null;
         }
 
@@ -392,11 +393,11 @@ E-mail: '.$person->getEmail().'',
     /**
      * @param User             $assigned
      * @param Definition\State $state
-     * @param bool|true        $isDefault
+     * @param ContentInterface $content
      *
      * @return bool
      */
-    protected function hasAssignedAccess(User $assigned, Definition\State $state, $isDefault = true)
+    protected function hasAssignedAccess(User $assigned, Definition\State $state, ContentInterface $content)
     {
         $groups = [];
         /** @var Group $group */
@@ -404,14 +405,25 @@ E-mail: '.$person->getEmail().'',
             $groups[] = $group->getId();
         }
 
-        $canWrite = false;
-        foreach ($state->getPermissions() as $permission) {
-            if (\in_array($permission->getGroup(), $groups) && $permission->getMask() >= PermissionInterface::WRITE) {
-                $canWrite = true;
+        if (\count($state->getPermissions()) > 0) {
+            $permissionObject = $state;
+        } else {
+            //permissions inherited from content type
+            $contentType = $this->getContainer()->get('doctrine_mongodb.odm.document_manager')->getRepository(ContentType::class)->find($content->getContentType());
+            if ($contentType) {
+                if (\count($contentType->getPermissions()) == 0) {
+                    return true;
+                }
+                $permissionObject = $contentType;
+            } else {
+                return false;
             }
         }
-        if ($isDefault || $canWrite) {
-            return true;
+
+        foreach ($permissionObject->getPermissions() as $permission) {
+            if (\in_array($permission->getGroup(), $groups) && $permission->getMask() >= PermissionInterface::WRITE) {
+                return true;
+            }
         }
 
         return false;

@@ -181,11 +181,11 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
 
         $graphNode = $this->createMock(GraphNode::class);
         $graphNode->method('offsetGet')
-            ->will($this->returnCallback(
+            ->willReturnCallback(
                 function ($key) use ($graphNodeArray) {
                     return $graphNodeArray[$key];
                 }
-            ));
+            );
 
         $facebookResponse = $this->getFacebookResponse();
         $facebookResponse->method('getGraphNode')

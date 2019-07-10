@@ -65,7 +65,7 @@ abstract class ContentTest extends \PHPUnit\Framework\TestCase
         // Stub getReferences
         $relation->expects($this->once())
             ->method('getReferences')
-            ->will($this->returnValue(new ArrayCollection()));
+            ->willReturn(new ArrayCollection());
 
         // Create relations collection
         $relations = new ArrayCollection([$relation]);
@@ -197,7 +197,7 @@ abstract class ContentTest extends \PHPUnit\Framework\TestCase
      */
     public function testCustomFieldsFunction()
     {
-        $this->isInstanceOf(CustomFields::class, $this->getContent()->getCustomFields());
+        $this->assertInstanceOf(CustomFields::class, $this->getContent()->getCustomFields());
 
         $fields = new CustomFields(['field1' => 'value1', 'field2' => 'value2']);
         $this->assertSame($fields, $this->getContent()->setCustomFields($fields)->getCustomFields());

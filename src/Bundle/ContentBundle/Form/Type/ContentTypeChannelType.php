@@ -35,6 +35,10 @@ class ContentTypeChannelType extends AbstractType
             'label' => $channel->getName(),
         ]);
 
+        $builder->add('restrict', CheckboxType::class, [
+            'required' => false,
+        ]);
+
         $builder->add('enforce', CheckboxType::class, [
             'required' => false,
         ]);

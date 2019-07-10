@@ -156,7 +156,7 @@ class ContentFormTypeTest extends \PHPUnit\Framework\TestCase
 
                 return true;
             },
-            function (FieldEvent $argument) use ($builder, $field) {
+            function (FieldEvent $argument) {
                 self::assertSame($this->type, $argument->getContentType());
                 self::assertSame($this->metadata, $argument->getMetadata());
                 self::assertSame(['key' => 'value'], $argument->getOptions());

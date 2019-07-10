@@ -28,8 +28,6 @@ class SuggestionQuery extends Query implements WorkflowMarkerInterface
     private $query = null;
 
     /**
-     * {@inheritdoc}
-     *
      * @param string | array $options
      */
     public function __construct($options = null)

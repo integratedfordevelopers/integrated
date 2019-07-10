@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\ContentBundle\Tests\Solr\Type;
 
-use Doctrine\Common\Persistence\ObjectRepository;
 use Integrated\Bundle\ContentBundle\Solr\Type\ContentType;
 use Integrated\Bundle\ContentBundle\Tests\Fixtures\__CG__\ProxyObject;
 use Integrated\Bundle\ContentBundle\Tests\Fixtures\Object1;
@@ -28,16 +27,6 @@ use stdClass;
  */
 class ContentTypeTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var ObjectRepository | \PHPUnit_Framework_MockObject_MockObject[][]
-     */
-    private $repository;
-
-    protected function setUp()
-    {
-        $this->repository = $this->createMock(ObjectRepository::class);
-    }
-
     public function testInterface()
     {
         self::assertInstanceOf('Integrated\\Common\\Converter\\Type\\TypeInterface', $this->getInstance());
@@ -110,7 +99,7 @@ class ContentTypeTest extends \PHPUnit\Framework\TestCase
      */
     protected function getInstance()
     {
-        return new ContentType($this->repository);
+        return new ContentType();
     }
 
     /**
