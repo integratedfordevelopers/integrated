@@ -36,9 +36,6 @@ class ImportField
      */
     protected $options = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getOptions()
     {
         return $this->options;

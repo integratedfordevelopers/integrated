@@ -45,6 +45,7 @@
         "phpoffice/phpspreadsheet": "~1.4",
         "sensio/framework-extra-bundle": "~5.0",
         "solarium/solarium": "~3.8",
+        "sunra/php-simple-html-dom-parser": "~1.5.2",
         "swiftmailer/swiftmailer": "~6.1",
         "twbs/bootstrap": "~3.3",
         "vihuvac/recaptcha-bundle": "~2.1"

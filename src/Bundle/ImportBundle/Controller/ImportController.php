@@ -16,7 +16,6 @@ use Integrated\Bundle\ContentBundle\Document\Content\Image;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 use Integrated\Bundle\ContentBundle\Document\Content\Taxonomy;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
-use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ImportBundle\Document\Embedded\ImportField;
 use Integrated\Bundle\ImportBundle\Document\ImportDefinition;
@@ -34,7 +33,6 @@ use JMS\Serializer\Exception\RuntimeException;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -256,7 +254,7 @@ class ImportController extends Controller
             'IntegratedImportBundle::chooseFile.html.twig',
             [
                 'importDefinition' => $importDefinition,
-                'form' => $form->createView()
+                'form' => $form->createView(),
             ]
         );
     }
@@ -613,11 +611,11 @@ class ImportController extends Controller
 
                         $youtubeRexEg = '/(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?\/?.*(?:watch|embed)?(?:.*v=|v\/|\/)([\w-_]+)/';
                         $content = preg_replace_callback($youtubeRexEg, function ($matches) {
-                            if (strlen(trim($matches[1])) == 11) {
+                            if (\strlen(trim($matches[1])) == 11) {
                                 return '[object type="youtube" id="'.trim($matches[1]).'"]';
-                            } else {
-                                return $matches[0];
                             }
+
+                            return $matches[0];
                         }, $content);
 
                         $content = preg_replace('/\[caption.*?\]/', '', $content);
@@ -832,9 +830,10 @@ class ImportController extends Controller
                                         $newObject->addRelation($relation);
                                     }
 
-                                    $element->outertext = '<img src="/storage/'.$file->getId().'.pdf" class="img-responsive" title="'.htmlspecialchars($title).'" alt="'.htmlspecialchars($title).'" data-integrated-id="'.$file->getId().'" />';
+                                    $element->outertext = '<img src="/storage/'.$file->getId().'.pdf"'
+                                        .'class="img-responsive" title="'.htmlspecialchars($title).'"'
+                                        .'alt="'.htmlspecialchars($title).'" data-integrated-id="'.$file->getId().'" />';
                                 }
-
                             }
                         }
 
@@ -883,7 +882,9 @@ class ImportController extends Controller
                                     $newObject->addRelation($relation);
                                 }
 
-                                $img->outertext = '<img src="/storage/'.$image->getId().'.jpg" class="img-responsive" title="'.htmlspecialchars($image->getTitle()).'" alt="'.htmlspecialchars($image->getTitle()).'" data-integrated-id="'.$image->getId().'" />';
+                                $img->outertext = '<img src="/storage/'.$image->getId().'.jpg" class="img-responsive"'
+                                    .' title="'.htmlspecialchars($image->getTitle()).'" alt="'.htmlspecialchars($image->getTitle()).'"'
+                                    .' data-integrated-id="'.$image->getId().'" />';
                                 continue;
                             }
 
@@ -962,7 +963,7 @@ class ImportController extends Controller
                     $col = 0;
                     foreach ($row as $value) {
                         if (!isset($fieldMapping[$data[0][$col]])) {
-                            $col++;
+                            ++$col;
                             continue;
                         }
                         $mappedField = $fieldMapping[$data[0][$col]];
@@ -1087,10 +1088,6 @@ class ImportController extends Controller
                             }
 
                             if (!$skipImage) {
-                                if ($newObject->getReferencesByRelationType('embedded')) {
-                                    file_put_contents('/tmp/skipreport.txt', $newObject->getTitle() . "\n",
-                                        FILE_APPEND);
-                                }
                                 $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
                                 $relation->setRelationId($importDefinition->getImageRelation()->getId());
                                 $relation->setRelationType('embedded');
@@ -1180,12 +1177,12 @@ class ImportController extends Controller
             $name = substr($name, 3);
         }
 
-        while (strpos($name, "  ") !== false) {
-            $name = str_replace("  ", " ", $name);
+        while (strpos($name, '  ') !== false) {
+            $name = str_replace('  ', ' ', $name);
         }
 
-        if (strpos($name, " ") !== false) {
-            list($firstname, $lastname) = explode(" ", $name, 2);
+        if (strpos($name, ' ') !== false) {
+            list($firstname, $lastname) = explode(' ', $name, 2);
         } else {
             $firstname = '';
             $lastname = $name;
@@ -1217,5 +1214,4 @@ class ImportController extends Controller
 
         return $person;
     }
-
 }

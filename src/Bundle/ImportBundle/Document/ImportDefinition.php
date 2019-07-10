@@ -199,6 +199,7 @@ class ImportDefinition
 
     /**
      * @param ChannelInterface $channel
+     *
      * @return bool
      */
     public function hasChannel(ChannelInterface $channel)
@@ -231,7 +232,7 @@ class ImportDefinition
     }
 
     /**
-     * @return Field[]
+     * @return ImportField[]
      */
     public function getFields()
     {
@@ -239,7 +240,7 @@ class ImportDefinition
     }
 
     /**
-     * @return Field
+     * @return ImportField
      */
     public function getField($name)
     {
@@ -254,6 +255,7 @@ class ImportDefinition
 
     /**
      * @param $name
+     *
      * @return bool
      */
     public function hasField($name)
@@ -276,7 +278,6 @@ class ImportDefinition
     {
         $this->fields = $fields;
     }
-    
 
     /**
      * @return string
@@ -343,7 +344,7 @@ class ImportDefinition
     }
 
     /**
-     * @return null|Relation
+     * @return Relation|null
      */
     public function getFileRelation(): ?Relation
     {
