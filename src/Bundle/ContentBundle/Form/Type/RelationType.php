@@ -49,8 +49,7 @@ class RelationType extends AbstractType
                         'align_with_widget' => true,
                     ],
                 ]
-            )
-        ;
+            );
     }
 
     /**

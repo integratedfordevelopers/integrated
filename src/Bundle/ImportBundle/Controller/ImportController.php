@@ -21,6 +21,7 @@ use Integrated\Bundle\ImportBundle\Document\Embedded\ImportField;
 use Integrated\Bundle\ImportBundle\Document\ImportDefinition;
 use Integrated\Bundle\ImportBundle\Form\Type\ImportDefinitionType;
 use Integrated\Bundle\ImportBundle\Import\ImportFile;
+use Integrated\Bundle\ImportBundle\Import\ImportProcessor;
 use Integrated\Bundle\ImportBundle\Serializer\InitializedObjectConstructor;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage\Metadata as StorageMetadata;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata;
@@ -67,6 +68,11 @@ class ImportController extends Controller
     protected $storageManager;
 
     /**
+     * @var ImportProcessor
+     */
+    private $processor;
+
+    /**
      * ImportController constructor.
      *
      * @param ContentTypeManager $contentTypeManager
@@ -74,19 +80,22 @@ class ImportController extends Controller
      * @param EntityManager      $entityManager
      * @param ImportFile         $importFile
      * @param Manager            $storageManager
+     * @param ImportProcessor    $processor
      */
     public function __construct(
         ContentTypeManager $contentTypeManager,
         DocumentManager $documentManager,
         EntityManager $entityManager,
         ImportFile $importFile,
-        Manager $storageManager
+        Manager $storageManager,
+        ImportProcessor $processor
     ) {
         $this->contentTypeManager = $contentTypeManager;
         $this->documentManager = $documentManager;
         $this->entityManager = $entityManager;
         $this->importFile = $importFile;
         $this->storageManager = $storageManager;
+        $this->processor = $processor;
     }
 
     /**
@@ -272,7 +281,8 @@ class ImportController extends Controller
         ini_set('max_execution_time', 3600);
         ini_set('memory_limit', '4G');
 
-        $data = $this->importFile->toArray($importDefinition);
+        try {
+            $data = $this->importFile->toArray($importDefinition);
 
         $contentType = $this->documentManager->find(
             ContentType::class,
@@ -288,7 +298,7 @@ class ImportController extends Controller
             ->build();
         $contentTypeFields = json_decode($serializer->serialize($contentType->create(), 'json', $context), true);
 
-        $fields = ['' => ['label' => '- ignore -', 'matchCol' => false]];
+        $fields = $this->processor->getFields();
 
         foreach ($contentTypeFields as $contentTypeField => $contentTypeValue) {
             $matchCol = false;
@@ -414,6 +424,11 @@ class ImportController extends Controller
                 }
             }
         }
+        } catch (\Exception $e) {
+            $this->get('braincrafted_bootstrap.flash')->error('Unable to read import file: '.$e->getMessage());
+            $fields = [];
+            $data = [];
+        }
 
         return $this->render(
             'IntegratedImportBundle::composeDefinition.html.twig',
@@ -471,7 +486,7 @@ class ImportController extends Controller
         $session = new Session();
         $session->save();
 
-        $start = $request->get('start', 0);
+        $start = $request->get('start', 1);
 
         $result = [];
         $result['done'] = true;
@@ -482,8 +497,9 @@ class ImportController extends Controller
         $data = $this->importFile->toArray($importDefinition);
         $totalRowNumber = \count($data);
         $rowsPerRequest = max(20, min(200, (int) $totalRowNumber / 20));
-        if ($start == 0) {
-            $rowsPerRequest = 2;
+        if ($start <= 1) {
+            $start = 1;
+            $rowsPerRequest = 3;
         }
 
         $rowNumber = -1;
@@ -575,6 +591,7 @@ class ImportController extends Controller
                     }
 
                     //todo, make optional (or remove)
+                    /*
                     $doubleArticle = $this->documentManager->getRepository(Article::class)->findOneBy(['title' => $newObject->getTitle()]);
                     if ($doubleArticle) {
                         //do not import duplicate articles, except for files
@@ -585,6 +602,7 @@ class ImportController extends Controller
                             $result['warnings'][] = 'Item "'.$newObject->getTitle().'" already imported, place as food article';
                         }
                     }
+                    */
                     if (isset($row['publiceren_van']) && $row['publiceren_van'] != '') {
                         $newObject->getPublishTime()->setStartDate(new \DateTime('@'.$row['publiceren_van']));
                     } else {
@@ -708,6 +726,10 @@ class ImportController extends Controller
                         }
 
                         $html = HtmlDomParser::str_get_html($newHtml);
+                        if ($html === false) {
+                            $result['warnings'][] = 'No valid HTML for '.$newObject->getTitle().', content ignored';
+                            $html = HtmlDomParser::str_get_html('<p></p>');
+                        }
 
                         foreach ($html->find('a') as $element) {
                             if (!$importDefinition->getImageContentType() || !$importDefinition->getImageRelation()) {
@@ -755,6 +777,7 @@ class ImportController extends Controller
                                 if (filesize($tmpfile) == 0) {
                                     //echo $file . "\n";
                                     //echo "FILE HAS 0 BYTES\n";
+                                    unlink($tmpfile);
                                     continue;
                                 }
 
@@ -1112,14 +1135,18 @@ class ImportController extends Controller
                         );
                     }
 
+                    if (isset($row['meta_yoast_wpseo_canonical']) && $newObject instanceof Article) {
+                        $newObject->setSourceUrl($row['meta_yoast_wpseo_canonical']);
+                    }
+
                     $this->documentManager->persist($newObject);
                     $this->documentManager->flush();
 
                     $result['success'][] = 'Post '.$row['wp:post_id'].' imported';
                 } catch (\Exception $e) {
-                    $result['errors'][] = 'Item '.(string) $newObject.' failed: '.$e->getMessage();
+                    $result['errors'][] = 'Item '.(string) $newObject.' failed: '.$e->getMessage() . ' ' . nl2br($e->getTraceAsString()) . ' ' . $e->getFile() . ' ' . $e->getLine();
                 } catch (\Throwable $e) {
-                    $result['errors'][] = 'Item '.(string) $newObject.' fatal: '.$e->getMessage();
+                    $result['errors'][] = 'Item '.(string) $newObject.' fatal: '.$e->getMessage() . ' ' . nl2br($e->getTraceAsString()) . ' ' . $e->getFile() . ' ' . $e->getLine();
                 }
             }
         }
