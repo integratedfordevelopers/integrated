@@ -5,5 +5,9 @@
                   expose="true"
                   type="DateTime"
         />
+        <property name="updatedAt"
+                  expose="true"
+                  type="DateTime"
+        />
     </class>
 </serializer>

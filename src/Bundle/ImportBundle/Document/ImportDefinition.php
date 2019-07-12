@@ -85,6 +85,16 @@ class ImportDefinition
     private $fileRelation;
 
     /**
+     * @var string
+     */
+    private $connectionUrl;
+
+    /**
+     * @var string
+     */
+    private $connectionQuery;
+
+    /**
      * ImportDefition constructor.
      */
     public function __construct()
@@ -362,5 +372,37 @@ class ImportDefinition
     public function __clone()
     {
         $this->id = null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConnectionUrl(): ?string
+    {
+        return $this->connectionUrl;
+    }
+
+    /**
+     * @param string $connectionUrl
+     */
+    public function setConnectionUrl(?string $connectionUrl): void
+    {
+        $this->connectionUrl = $connectionUrl;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConnectionQuery(): ?string
+    {
+        return $this->connectionQuery;
+    }
+
+    /**
+     * @param string $connectionQuery
+     */
+    public function setConnectionQuery(?string $connectionQuery): void
+    {
+        $this->connectionQuery = $connectionQuery;
     }
 }

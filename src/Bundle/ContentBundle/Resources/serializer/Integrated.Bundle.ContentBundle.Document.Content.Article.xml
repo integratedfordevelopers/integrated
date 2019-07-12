@@ -21,5 +21,17 @@
                   expose="true"
                   type="string"
         />
+        <property name="source"
+                  expose="true"
+                  type="string"
+        />
+        <property name="sourceUrl"
+                  expose="true"
+                  type="string"
+        />
+        <property name="address"
+                  expose="true"
+                  type="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address"
+        />
     </class>
 </serializer>

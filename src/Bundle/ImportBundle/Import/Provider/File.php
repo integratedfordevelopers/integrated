@@ -1,16 +1,16 @@
 <?php
 
-namespace Integrated\Bundle\ImportBundle\Import;
+namespace Integrated\Bundle\ImportBundle\Import\Provider;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Integrated\Bundle\ContentBundle\Document\Content\File;
+use Integrated\Bundle\ContentBundle\Document\Content\File as ContentFile;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
 use Integrated\Bundle\ImportBundle\Document\ImportDefinition;
 use Integrated\Bundle\StorageBundle\Storage\Cache\AppCache;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
-class ImportFile
+class File
 {
     /**
      * @var AppCache
@@ -54,7 +54,7 @@ class ImportFile
             $contentTypeFile = new ContentType();
             $contentTypeFile->setId('import_file');
             $contentTypeFile->setName('Import file');
-            $contentTypeFile->setClass(File::class);
+            $contentTypeFile->setClass(ContentFile::class);
             $contentTypeFile->setOptions(['channels' => ['disabled' => 2]]);
 //            $contentTypeFile->addPermission(); todo: add permissions
             $contentTypeFile->setFields([$file]);
@@ -77,7 +77,7 @@ class ImportFile
         $file = null;
         if ($importDefinition->getFileId()) {
             $file = $this->documentManager->find(
-                File::class,
+                ContentFile::class,
                 $importDefinition->getFileId()
             );
         }

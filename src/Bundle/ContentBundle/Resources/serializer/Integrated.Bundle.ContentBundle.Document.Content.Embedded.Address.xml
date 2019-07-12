@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<serializer>
+    <class name="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address" exclusion-policy="all">
+        <property name="name"
+                  expose="true"
+                  type="string"
+        />
+        <property name="city"
+                  expose="true"
+                  type="string"
+        />
+    </class>
+</serializer>

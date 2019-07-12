@@ -17,6 +17,7 @@ use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChoice;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -78,5 +79,7 @@ class ImportDefinitionType extends AbstractType
                 'choice_value' => 'id',
             ]
         );
+        $builder->add('connection_url', TextType::class, ['label' => 'Database connection URL']);
+        $builder->add('connection_query', TextareaType::class, ['label' => 'Database query']);
     }
 }

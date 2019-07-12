@@ -20,7 +20,8 @@ use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ImportBundle\Document\Embedded\ImportField;
 use Integrated\Bundle\ImportBundle\Document\ImportDefinition;
 use Integrated\Bundle\ImportBundle\Form\Type\ImportDefinitionType;
-use Integrated\Bundle\ImportBundle\Import\ImportFile;
+use Integrated\Bundle\ImportBundle\Import\Provider\Doctrine;
+use Integrated\Bundle\ImportBundle\Import\Provider\File as ImportFile;
 use Integrated\Bundle\ImportBundle\Import\ImportProcessor;
 use Integrated\Bundle\ImportBundle\Serializer\InitializedObjectConstructor;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage\Metadata as StorageMetadata;
@@ -73,12 +74,18 @@ class ImportController extends Controller
     private $processor;
 
     /**
+     * @var Doctrine
+     */
+    private $doctrine;
+
+    /**
      * ImportController constructor.
      *
      * @param ContentTypeManager $contentTypeManager
      * @param DocumentManager    $documentManager
      * @param EntityManager      $entityManager
      * @param ImportFile         $importFile
+     * @param Doctrine           $doctrine
      * @param Manager            $storageManager
      * @param ImportProcessor    $processor
      */
@@ -87,6 +94,7 @@ class ImportController extends Controller
         DocumentManager $documentManager,
         EntityManager $entityManager,
         ImportFile $importFile,
+        Doctrine $doctrine,
         Manager $storageManager,
         ImportProcessor $processor
     ) {
@@ -94,6 +102,7 @@ class ImportController extends Controller
         $this->documentManager = $documentManager;
         $this->entityManager = $entityManager;
         $this->importFile = $importFile;
+        $this->doctrine = $doctrine;
         $this->storageManager = $storageManager;
         $this->processor = $processor;
     }
@@ -202,15 +211,17 @@ class ImportController extends Controller
      */
     public function chooseFile(Request $request, ImportDefinition $importDefinition)
     {
-        $contentType = $this->documentManager->find(
-            ContentType::class,
-            $importDefinition->getContentType()
-        );
-
         $contentTypeFile = $this->importFile->getContentType();
 
         $file = false;
         $method = 'PUT';
+
+        if ($importDefinition->getConnectionUrl() && $importDefinition->getConnectionQuery()) {
+            return $this->redirect(
+                $this->generateUrl('integrated_import_definition', ['importDefinition' => $importDefinition->getId()])
+            );
+        }
+
         if ($importDefinition->getFileId()) {
             $file = $this->documentManager->find(File::class, $importDefinition->getFileId());
         }
@@ -282,7 +293,11 @@ class ImportController extends Controller
         ini_set('memory_limit', '4G');
 
         try {
-            $data = $this->importFile->toArray($importDefinition);
+            if ($importDefinition->getConnectionUrl() && $importDefinition->getConnectionQuery()) {
+                $data = $this->doctrine->toArray($importDefinition);
+            } else {
+                $data = $this->importFile->toArray($importDefinition);
+            }
 
             $contentType = $this->documentManager->find(
                 ContentType::class,
@@ -301,25 +316,35 @@ class ImportController extends Controller
             $fields = $this->processor->getFields();
 
             foreach ($contentTypeFields as $contentTypeField => $contentTypeValue) {
-                $matchCol = false;
-                if (!$importDefinition->getFields()) {
-                    if (isset($data[0])) {
-                        $col = 1;
-                        foreach ($data[0] as $dataValue) {
-                            $dataName = strtolower(preg_replace('/[^A-Za-z0-9]/', '', $dataValue));
-                            $contentTypeFieldName = strtolower(preg_replace('/[^A-Za-z0-9]/', '', $contentTypeField));
-                            if ($dataName == $contentTypeFieldName) {
-                                if (!$matchCol) {
-                                    $matchCol = $col;
+                $contentTypeFields = [];
+                if (is_array($contentTypeValue)) {
+                    foreach ($contentTypeValue as $contentTypeField2 => $contentTypeValue2) {
+                        $contentTypeFields[] = $contentTypeField.'.'.$contentTypeField2;
+                    }
+                } else {
+                    $contentTypeFields[] = $contentTypeField;
+                }
+                foreach ($contentTypeFields as $contentTypeField) {
+                    $matchCol = false;
+                    if (!$importDefinition->getFields()) {
+                        if (isset($data[0])) {
+                            $col = 1;
+                            foreach ($data[0] as $dataValue) {
+                                $dataName = strtolower(preg_replace('/[^A-Za-z0-9]/', '', $dataValue));
+                                $contentTypeFieldName = strtolower(preg_replace('/[^A-Za-z0-9]/', '', $contentTypeField));
+                                if ($dataName == $contentTypeFieldName) {
+                                    if (!$matchCol) {
+                                        $matchCol = $col;
+                                    }
                                 }
+                                ++$col;
                             }
-                            ++$col;
                         }
                     }
-                }
-                //check current field
+                    //check current field
 
-                $fields['field-'.$contentTypeField] = ['label' => $contentTypeField, 'matchCol' => $matchCol];
+                    $fields['field-'.$contentTypeField] = ['label' => $contentTypeField, 'matchCol' => $matchCol];
+                }
             }
 
             $fields['author-author'] = ['label' => 'Author', 'matchCol' => false];
@@ -393,6 +418,9 @@ class ImportController extends Controller
                         $showThisRow = true;
                     }
                     foreach ($row as $column => $value) {
+                        if (!isset($columnItemCount[$column])) {
+                            $columnItemCount[$column] = 0;
+                        }
                         if ($columnItemCount[$column] >= 2) {
                             continue;
                         }
@@ -425,7 +453,7 @@ class ImportController extends Controller
                 }
             }
         } catch (\Exception $e) {
-            $this->get('braincrafted_bootstrap.flash')->error('Unable to read import file: '.$e->getMessage());
+            $this->get('braincrafted_bootstrap.flash')->error('Unable to read import file: '.$e->getMessage().$e->getTraceAsString());
             $fields = [];
             $data = [];
         }
@@ -445,7 +473,11 @@ class ImportController extends Controller
         ini_set('max_execution_time', 3600);
         ini_set('memory_limit', '4G');
 
-        $data = $this->importFile->toArray($importDefinition);
+        if ($importDefinition->getConnectionUrl() && $importDefinition->getConnectionQuery()) {
+            $data = $this->doctrine->toArray($importDefinition);
+        } else {
+            $data = $this->importFile->toArray($importDefinition);
+        }
 
         //found out which fields are not in the definition
         $ignoredFields = $data[0];
@@ -494,7 +526,12 @@ class ImportController extends Controller
         $result['warnings'] = [];
         $result['errors'] = [];
 
-        $data = $this->importFile->toArray($importDefinition);
+        if ($importDefinition->getConnectionUrl() && $importDefinition->getConnectionQuery()) {
+            $data = $this->doctrine->toArray($importDefinition);
+        } else {
+            $data = $this->importFile->toArray($importDefinition);
+        }
+
         $totalRowNumber = \count($data);
         $rowsPerRequest = max(20, min(200, (int) $totalRowNumber / 20));
         if ($start <= 1) {
@@ -549,7 +586,13 @@ class ImportController extends Controller
 
                     if ($mappedField) {
                         if (strpos($mappedField, 'field-') === 0) {
-                            $newData[str_replace('field-', '', $mappedField)] = $value;
+                            $mappedField = str_replace('field-', '', $mappedField);
+                            $mappedFieldParts = explode(".", $mappedField);
+                            if (count($mappedFieldParts) == 2) {
+                                $newData[$mappedFieldParts[0]][$mappedFieldParts[1]] = $value;
+                            } else {
+                                $newData[$mappedField] = $value;
+                            }
                         }
                     }
                 }
@@ -560,6 +603,34 @@ class ImportController extends Controller
                 //wordpress
                 //todo: move to WP filter
                 $newData['created_at'] = str_replace(' ', 'T', $newData['created_at']).'+2:00';
+                //$newData['datecreated'] = date("Y-m-d\TH:i:s+1:00", $newData['datecreated']);
+            }
+
+            if (isset($newData['updated_at'])) {
+                //wordpress
+                //todo: move to WP filter
+                $newData['updated_at'] = str_replace(' ', 'T', $newData['updated_at']).'+2:00';
+            }
+
+            if (isset($newData['start_date'])) {
+                //wordpress
+                //todo: move to WP filter
+                if (strlen($newData['start_date']) == 10) {
+                    $date =  new \DateTime($newData['start_date']);
+                    $newData['start_date'] = $date->format(\DateTime::ISO8601);
+//                    $newData['start_date'] = $newData['start_date'].'T00:00:00';
+                }
+                //$newData['datecreated'] = date("Y-m-d\TH:i:s+1:00", $newData['datecreated']);
+            }
+
+            if (isset($newData['end_date'])) {
+                //wordpress
+                //todo: move to WP filter
+                if (strlen($newData['end_date']) == 10) {
+                    $date =  new \DateTime($newData['end_date']);
+                    $newData['end_date'] = $date->format(\DateTime::ISO8601);
+//                        $newData['end_date'].'T00:00:00';
+                }
                 //$newData['datecreated'] = date("Y-m-d\TH:i:s+1:00", $newData['datecreated']);
             }
 
@@ -1142,7 +1213,12 @@ class ImportController extends Controller
                     $this->documentManager->persist($newObject);
                     $this->documentManager->flush();
 
-                    $result['success'][] = 'Post '.$row['wp:post_id'].' imported';
+                    $import_id = $newObject->getId();
+                    if (isset($row['wp:post_id'])) {
+                        $import_id = $row['wp:post_id'];
+                    }
+
+                    $result['success'][] = 'Item '.$import_id.' ('.(string)$newObject.') imported';
                 } catch (\Exception $e) {
                     $result['errors'][] = 'Item '.(string) $newObject.' failed: '.$e->getMessage().' '.nl2br($e->getTraceAsString()).' '.$e->getFile().' '.$e->getLine();
                 } catch (\Throwable $e) {
