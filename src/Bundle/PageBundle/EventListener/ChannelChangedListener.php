@@ -42,7 +42,7 @@ class ChannelChangedListener implements EventSubscriberInterface
     protected $routeCache;
 
     /**
-     * @var ContentTypeInformationc
+     * @var ContentTypeInformation
      */
     private $contentTypeInformation;
 

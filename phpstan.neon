@@ -7,6 +7,7 @@ parameters:
     -
       message: '#does not call parent constructor#'
       path: */ContainerAware*
+  reportUnmatchedIgnoredErrors: false
   level: 1
   paths:
     - src/
