@@ -1109,7 +1109,22 @@ class ImportController extends Controller
                                 }
 
                                 foreach ($value as $valueName) {
-                                    $link = $this->documentManager->getRepository(Taxonomy::class)->findOneBy(['title' => $valueName, 'contentType' => $targetContentType->getId()]);
+                                    $link = false;
+                                    if ($targetContentType->getClass() == Taxonomy::class) {
+                                        $link = $this->documentManager->getRepository(Taxonomy::class)->findOneBy(['title' => $valueName, 'contentType' => $targetContentType->getId()]);
+                                    }
+
+                                    if ($targetContentType->getClass() == Image::class) {
+                                        $path = '/home/testpi-integrated/importfiles/tw/images/header/original/'.$valueName;
+                                        if (!file_exists($path)) {
+                                            $path = '/home/testpi-integrated/importfiles/tw/images/header/'.$valueName;
+                                        }
+                                        if (!file_exists($path)) {
+                                            $result['warnings'][] = 'File not found 1st: '.$path.' for '.$newObject->getTitle();
+                                            continue;
+                                        }
+                                    }
+
                                     if (!$link) {
                                         $link = $targetContentType->create();
                                         $link->setTitle($valueName);
@@ -1117,6 +1132,34 @@ class ImportController extends Controller
 
                                         $this->documentManager->persist($link);
                                         $this->documentManager->flush();
+                                    }
+
+                                    if ($link instanceof Image) {
+                                        $path = '/home/testpi-integrated/importfiles/tw/images/header/original/'.$valueName;
+                                        if (!file_exists($path)) {
+                                            $path = '/home/testpi-integrated/importfiles/tw/images/header/'.$valueName;
+                                        }
+
+                                        if (file_exists($path)) {
+                                            $storage = $this->storageManager->write(
+                                                new MemoryReader(
+                                                    file_get_contents($path),
+                                                    new StorageMetadata(
+                                                        pathinfo($path, PATHINFO_EXTENSION),
+                                                        mime_content_type($path),
+                                                        new ArrayCollection(),
+                                                        new ArrayCollection()
+                                                    )
+                                                )
+                                            );
+                                            $link->setFile($storage);
+                                            $this->documentManager->flush();
+
+                                            $result['warnings'][] = 'File found and added: '.$path.' for '.$link->getTitle();
+                                        } else {
+                                            $result['warnings'][] = 'File not found: '.$path.' for '.$newObject->getTitle();
+                                        }
+
                                     }
 
                                     $relation2->addReference($link);
