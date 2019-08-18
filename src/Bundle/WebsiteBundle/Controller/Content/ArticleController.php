@@ -11,13 +11,14 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Controller\Content;
 
-use Integrated\Bundle\BlockBundle\Templating\BlockManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
+use Integrated\Bundle\ThemeBundle\Exception\CircularFallbackException;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
-use Integrated\Common\Content\Channel\ChannelContextInterface;
+use Integrated\Bundle\WebsiteBundle\Service\ContentService;
 use Symfony\Bundle\TwigBundle\TwigEngine;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Response;
+use Twig\Error\Error;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -25,9 +26,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ArticleController
 {
     /**
-     * @var ChannelContextInterface
+     * @var ContentService
      */
-    protected $channelContext;
+    private $contentService;
 
     /**
      * @var TwigEngine
@@ -40,36 +41,28 @@ class ArticleController
     protected $themeManager;
 
     /**
-     * @var BlockManager
-     */
-    protected $blockManager;
-
-    /**
-     * @param TwigEngine   $templating
+     * @param ContentService $contentService
+     * @param TwigEngine $templating
      * @param ThemeManager $themeManager
-     * @param BlockManager $blockManager
      */
-    public function __construct(ChannelContextInterface $channelContext, TwigEngine $templating, ThemeManager $themeManager, BlockManager $blockManager)
+    public function __construct(ContentService $contentService, TwigEngine $templating, ThemeManager $themeManager)
     {
-        $this->channelContext = $channelContext;
+        $this->contentService = $contentService;
         $this->templating = $templating;
         $this->themeManager = $themeManager;
-        $this->blockManager = $blockManager;
     }
 
     /**
      * @param ContentTypePage $page
-     * @param Article         $article
+     * @param Article $article
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
+     * @throws CircularFallbackException
+     * @throws Error
      */
     public function showAction(ContentTypePage $page, Article $article)
     {
-        if (!$article->isPublished() || !$article->hasChannel($this->channelContext->getChannel())) {
-            throw new NotFoundHttpException();
-        }
-
-        $this->blockManager->setDocument($article);
+        $this->contentService->prepare($article);
 
         return $this->templating->renderResponse(
             $this->themeManager->locateTemplate('content/article/show/'.$page->getLayout()),
