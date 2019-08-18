@@ -38,7 +38,7 @@ class PageController extends Controller
      * PageController constructor.
      *
      * @param ChannelContextInterface $channelContext
-     * @param PageCopyService $pageCopyService
+     * @param PageCopyService         $pageCopyService
      */
     public function __construct(ChannelContextInterface $channelContext, PageCopyService $pageCopyService)
     {

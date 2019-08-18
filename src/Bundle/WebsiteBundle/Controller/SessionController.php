@@ -15,7 +15,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SessionController extends AbstractController
@@ -27,6 +26,7 @@ class SessionController extends AbstractController
 
     /**
      * SessionController constructor.
+     *
      * @param SessionInterface $session
      */
     public function __construct(SessionInterface $session)
@@ -35,8 +35,9 @@ class SessionController extends AbstractController
     }
 
     /**
-     * @param string $sessionId
+     * @param string  $sessionId
      * @param Request $request
+     *
      * @return RedirectResponse
      */
     public function enterSessionAction(string $sessionId, Request $request)
@@ -46,7 +47,7 @@ class SessionController extends AbstractController
         $response = new RedirectResponse($page);
 
         if ($this->getUser() == false) {
-            $sessionId = preg_replace("/[^a-zA-Z0-9]+/", "", $sessionId);
+            $sessionId = preg_replace('/[^a-zA-Z0-9]+/', '', $sessionId);
 
             $response->headers->setCookie(new Cookie('PHPSESSID', $sessionId));
         }

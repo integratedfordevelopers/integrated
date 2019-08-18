@@ -77,6 +77,7 @@ class WebsiteToolbarListener implements EventSubscriberInterface
 
     /**
      * @param Response $response
+     *
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
@@ -95,7 +96,7 @@ class WebsiteToolbarListener implements EventSubscriberInterface
                 [
                     'message' => $this->toolbarMessage,
                     'layoutEditable' => $this->websiteEditableChecker->checkEditable(),
-                    'content' => $this->contentItem
+                    'content' => $this->contentItem,
                 ]
             );
 

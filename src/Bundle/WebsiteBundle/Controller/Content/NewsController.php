@@ -11,13 +11,11 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Controller\Content;
 
-use Integrated\Bundle\BlockBundle\Templating\BlockManager;
 use Integrated\Bundle\ContentBundle\Document\Content\News;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
-use Integrated\Common\Content\Channel\ChannelContextInterface;
+use Integrated\Bundle\WebsiteBundle\Service\ContentService;
 use Symfony\Bundle\TwigBundle\TwigEngine;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @author Koen Prins <koen@e-active.nl>
@@ -25,9 +23,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class NewsController
 {
     /**
-     * @var ChannelContextInterface
+     * @var ContentService
      */
-    protected $channelContext;
+    private $contentService;
 
     /**
      * @var TwigEngine
@@ -40,21 +38,15 @@ class NewsController
     protected $themeManager;
 
     /**
-     * @var BlockManager
+     * @param ContentService $contentService
+     * @param TwigEngine     $templating
+     * @param ThemeManager   $themeManager
      */
-    protected $blockManager;
-
-    /**
-     * @param TwigEngine   $templating
-     * @param ThemeManager $themeManager
-     * @param BlockManager $blockManager
-     */
-    public function __construct(ChannelContextInterface $channelContext, TwigEngine $templating, ThemeManager $themeManager, BlockManager $blockManager)
+    public function __construct(ContentService $contentService, TwigEngine $templating, ThemeManager $themeManager)
     {
-        $this->channelContext = $channelContext;
+        $this->contentService = $contentService;
         $this->templating = $templating;
         $this->themeManager = $themeManager;
-        $this->blockManager = $blockManager;
     }
 
     /**
@@ -65,11 +57,7 @@ class NewsController
      */
     public function showAction(ContentTypePage $page, News $news)
     {
-        if (!$news->isPublished() || !$news->hasChannel($this->channelContext->getChannel())) {
-            throw new NotFoundHttpException();
-        }
-
-        $this->blockManager->setDocument($news);
+        $this->contentService->prepare($news);
 
         return $this->templating->renderResponse(
             $this->themeManager->locateTemplate('content/news/show/'.$page->getLayout()),

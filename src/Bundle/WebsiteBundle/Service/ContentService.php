@@ -43,9 +43,9 @@ class ContentService
 
     /**
      * @param ChannelContextInterface $channelContext
-     * @param AuthorizationChecker $authorizationChecker
-     * @param BlockManager $blockManager
-     * @param WebsiteToolbarListener $websiteToolbarListener
+     * @param AuthorizationChecker    $authorizationChecker
+     * @param BlockManager            $blockManager
+     * @param WebsiteToolbarListener  $websiteToolbarListener
      */
     public function __construct(ChannelContextInterface $channelContext, AuthorizationChecker $authorizationChecker, BlockManager $blockManager, WebsiteToolbarListener $websiteToolbarListener)
     {
@@ -57,6 +57,7 @@ class ContentService
 
     /**
      * @param Content $document
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Integrated\Bundle\ThemeBundle\Exception\CircularFallbackException
      * @throws \Twig\Error\Error

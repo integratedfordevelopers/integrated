@@ -42,8 +42,8 @@ class ArticleController
 
     /**
      * @param ContentService $contentService
-     * @param TwigEngine $templating
-     * @param ThemeManager $themeManager
+     * @param TwigEngine     $templating
+     * @param ThemeManager   $themeManager
      */
     public function __construct(ContentService $contentService, TwigEngine $templating, ThemeManager $themeManager)
     {
@@ -54,9 +54,10 @@ class ArticleController
 
     /**
      * @param ContentTypePage $page
-     * @param Article $article
+     * @param Article         $article
      *
      * @return Response
+     *
      * @throws CircularFallbackException
      * @throws Error
      */

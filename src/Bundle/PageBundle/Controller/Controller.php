@@ -28,6 +28,7 @@ class Controller extends BaseController
 
     /**
      * Controller constructor.
+     *
      * @param ChannelContextInterface $channelContext
      */
     public function __construct(ChannelContextInterface $channelContext)
@@ -72,7 +73,7 @@ class Controller extends BaseController
             'channel',
             $request->cookies->get(
                 'channel',
-                $this->channelContext->getChannel() ? $this->channelContext->getChannel()->getId()  : null
+                $this->channelContext->getChannel() ? $this->channelContext->getChannel()->getId() : null
             )
         );
 
