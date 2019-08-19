@@ -59,6 +59,7 @@ class PersonController
      * @param Person          $person
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     *
      * @throws \Integrated\Bundle\ThemeBundle\Exception\CircularFallbackException
      * @throws \Twig\Error\Error
      */
