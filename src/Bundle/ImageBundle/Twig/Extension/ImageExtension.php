@@ -167,6 +167,7 @@ class ImageExtension extends \Twig_Extension
             if ($image instanceof Storage) {
                 return $image->getMetadata->getCredits();
             }
+
             return null;
         } elseif (filter_var($image, FILTER_VALIDATE_URL)) {
             return null;
@@ -175,6 +176,7 @@ class ImageExtension extends \Twig_Extension
         //detect json format
         if (strpos($image, '{') === 0) {
             $imageData = @json_decode($image);
+
             return $imageData->metadata->credits ?? null;
         }
     }
