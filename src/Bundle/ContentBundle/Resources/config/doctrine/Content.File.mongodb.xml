@@ -11,6 +11,10 @@
 
         <embed-one field="file" target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage" />
 
+        <lifecycle-callbacks>
+            <lifecycle-callback type="preUpdate" method="updateCreditsOnPreUpdate"/>
+        </lifecycle-callbacks>
+
     </document>
 
 </doctrine-mongo-mapping>

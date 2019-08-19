@@ -65,7 +65,8 @@ class Metadata implements MetadataInterface
                 $this->metadata,
                 [
                     'headers' => array_replace($this->headers, ['Content-Type' => $this->mimeType]),
-                ]
+                ],
+                ['credits' => $this->getCredits()]
             )
         );
     }

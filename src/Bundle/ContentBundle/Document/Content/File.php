@@ -136,6 +136,12 @@ class File extends Content implements FileInterface
         return $this;
     }
 
+    public function updateCreditsOnPreUpdate() {
+        if ($this->getFile()) {
+            $this->getFile()->getMetadata()->setCredits($this->getCredits());
+        }
+    }
+
     /**
      * @return string
      */
