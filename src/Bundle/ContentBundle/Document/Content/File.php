@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content;
 
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Content\Document\Storage\FileInterface;
@@ -72,6 +73,10 @@ class File extends Content implements FileInterface
     public function setFile(StorageInterface $file = null)
     {
         $this->file = $file;
+
+        if ($file instanceof Storage) {
+            $file->getMetadata()->setCredits($this->getCredits());
+        }
 
         return $this;
     }
@@ -136,8 +141,9 @@ class File extends Content implements FileInterface
         return $this;
     }
 
-    public function updateCreditsOnPreUpdate() {
-        if ($this->getFile()) {
+    public function updateCreditsOnPreUpdate()
+    {
+        if ($this->getFile() instanceof Storage) {
             $this->getFile()->getMetadata()->setCredits($this->getCredits());
         }
     }

@@ -13,6 +13,7 @@
 
         <lifecycle-callbacks>
             <lifecycle-callback type="preUpdate" method="updateCreditsOnPreUpdate"/>
+            <lifecycle-callback type="prePersist" method="updateCreditsOnPreUpdate"/>
         </lifecycle-callbacks>
 
     </document>
