@@ -7,8 +7,14 @@
 
         <field fieldName="title" type="string" />
         <field fieldName="description" type="string" />
+        <field fieldName="credits" type="string" />
 
         <embed-one field="file" target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage" />
+
+        <lifecycle-callbacks>
+            <lifecycle-callback type="preUpdate" method="updateCreditsOnPreUpdate"/>
+            <lifecycle-callback type="prePersist" method="updateCreditsOnPreUpdate"/>
+        </lifecycle-callbacks>
 
     </document>
 

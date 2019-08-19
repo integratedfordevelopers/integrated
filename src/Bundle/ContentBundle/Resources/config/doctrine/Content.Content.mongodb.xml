@@ -17,6 +17,7 @@
         <field fieldName="published" type="boolean" />
         <field fieldName="disabled" type="boolean" />
         <field fieldName="customFields" type="hash" />
+        <field fieldName="copyrightRestrictions" type="string" />
 
         <embed-one
             field="publishTime"

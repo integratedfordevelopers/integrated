@@ -114,6 +114,12 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     protected $customFields;
 
     /**
+     * @var string
+     * @Type\Field(options={"label" = "Copyright restrictions"})
+     */
+    protected $copyrightRestrictions;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -632,6 +638,26 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
         }
 
         $this->customFields = $customFields;
+
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getCopyrightRestrictions(): ?string
+    {
+        return $this->copyrightRestrictions;
+    }
+
+    /**
+     * @param ?string $copyrightRestrictions
+     *
+     * @return Content
+     */
+    public function setCopyrightRestrictions(?string $copyrightRestrictions): self
+    {
+        $this->copyrightRestrictions = $copyrightRestrictions;
 
         return $this;
     }
