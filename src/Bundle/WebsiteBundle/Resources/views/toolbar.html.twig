@@ -23,7 +23,7 @@
                     {% trans %}Cancel{% endtrans %}
                 </a>
             {% else %}
-                {% if content is defined %}
+                {% if content is defined and content is not null %}
                 <a href="{{ path('integrated_content_content_edit', {'id': content.id}) }}" class="btn btn-default navbar-btn">
                     {% trans %}Edit{% endtrans %}
                 </a> &nbsp;
