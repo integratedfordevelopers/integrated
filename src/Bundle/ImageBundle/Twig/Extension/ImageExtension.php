@@ -167,7 +167,6 @@ class ImageExtension extends \Twig_Extension
             if ($image instanceof Storage) {
                 return $image->getMetadata->getCredits();
             }
-
             return null;
         } elseif (filter_var($image, FILTER_VALIDATE_URL)) {
             return null;
