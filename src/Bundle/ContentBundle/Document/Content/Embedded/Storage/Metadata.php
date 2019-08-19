@@ -30,6 +30,11 @@ class Metadata implements MetadataInterface
     protected $mimeType;
 
     /**
+     * @var string
+     */
+    protected $credits;
+
+    /**
      * @var array
      */
     protected $headers = [];
@@ -79,6 +84,22 @@ class Metadata implements MetadataInterface
     public function getMimeType()
     {
         return $this->mimeType;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getCredits(): ?string
+    {
+        return $this->credits;
+    }
+
+    /**
+     * @param ?string $credits
+     */
+    public function setCredits(?string $credits): void
+    {
+        $this->credits = $credits;
     }
 
     /**

@@ -51,6 +51,12 @@ class File extends Content implements FileInterface
     protected $description;
 
     /**
+     * @var string
+     * @Type\Field
+     */
+    protected $credits;
+
+    /**
      * {@inheritdoc}
      */
     public function getFile()
@@ -106,6 +112,26 @@ class File extends Content implements FileInterface
     public function setDescription($description)
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getCredits(): ?string
+    {
+        return $this->credits;
+    }
+
+    /**
+     * @param string $credits
+     *
+     * @return File
+     */
+    public function setCredits(string $credits): self
+    {
+        $this->credits = $credits;
 
         return $this;
     }
