@@ -70,7 +70,7 @@ $(".relation-items").each(function() {
                 image = '<img src="' + image + '"/>'
             }
 
-            return $('<div class="select2-selected">' + image + data.text + '</div>');
+            return $('<div class="select2-selected"><a href="'+Routing.generate('integrated_content_content_edit', {id: data.id})+'">' + image + data.text + '</a></div>');
         }
     });
 

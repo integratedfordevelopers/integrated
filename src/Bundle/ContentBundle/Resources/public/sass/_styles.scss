@@ -29,6 +29,10 @@ label.is-primary-channel {
     margin: 0 5px 0 -5px;
     max-height: 40px;
   }
+
+  a {
+    color: $color-dusty-gray;
+  }
 }
 
 .button-submitted {

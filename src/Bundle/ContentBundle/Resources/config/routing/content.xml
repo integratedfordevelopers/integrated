@@ -30,6 +30,7 @@
 
 	<route id="integrated_content_content_edit" path="/{id}"  methods="GET">
 		<default key="_controller">IntegratedContentBundle:Content:edit</default>
+		<option key="expose">true</option>
 	</route>
 
 	<route id="integrated_content_content_edit_rest" path="/{id}" methods="PUT">
