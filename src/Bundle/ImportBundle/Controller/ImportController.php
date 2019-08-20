@@ -647,8 +647,64 @@ class ImportController extends Controller
                     continue;
                 }
 
+                if ($newObject instanceof Person) {
+                    if (empty($newObject->getFirstName()) && strpos($newObject->getLastName(), ' ') !== false) {
+                        list($firstName, $lastName) = explode(' ', $newObject->getLastName(), 2);
+                        $newObject->setFirstName($firstName);
+                        $newObject->setLastName($lastName);
+                    }
+
+                    if (!empty($row['picture_src'])) {
+                        $path = '/home/testpi-integrated/importfiles/tw/images/auteurfotos/'.$row['picture_src'];
+                        if (!file_exists($path)) {
+                            $path = '/home/testpi-integrated/importfiles/tw/images/auteurfotos/'.$row['picture_src'];
+                        }
+
+                        if (file_exists($path)) {
+                            $storage = $this->storageManager->write(
+                                new MemoryReader(
+                                    file_get_contents($path),
+                                    new StorageMetadata(
+                                        pathinfo($path, PATHINFO_EXTENSION),
+                                        mime_content_type($path),
+                                        new ArrayCollection(),
+                                        new ArrayCollection()
+                                    )
+                                )
+                            );
+                            $newObject->setPicture($storage);
+                        }
+                    }
+                }
+
                 try {
                     //todo: move to Wordpress filter
+                    if (isset($row['wp:post_id']) && $importDefinition->getImageBaseUrl()) {
+                        //todo image base URL to general base URL
+                        $doubleArticle = $this->documentManager->getRepository(Content::class)->findOneBy([
+                            'metadata.data.wpPostId' => $row['wp:post_id'],
+                            'metadata.data.importImageBaseUrl' => $importDefinition->getImageBaseUrl(),
+                        ]);
+                        if ($doubleArticle) {
+                            $result['warnings'][] = 'Wordpress post '.$row['wp:post_id'].' already imported';
+                            continue;
+                        }
+                    }
+
+
+
+                    if (isset($row['contentitem_id']) && $importDefinition->getImageBaseUrl()) {
+                        $doubleArticle = $this->documentManager->getRepository(Content::class)->findOneBy([
+                            'metadata.data.externalId' => $row['contentitem_id'],
+                            'metadata.data.importImageBaseUrl' => $importDefinition->getImageBaseUrl(),
+                        ]);
+                        if ($doubleArticle) {
+                            $result['warnings'][] = 'Item '.$row['contentitem_id'].' already imported';
+                            continue;
+                        }
+                    }
+
+
                     if (isset($row['wp:post_id']) && $importDefinition->getImageBaseUrl()) {
                         //todo image base URL to general base URL
                         $doubleArticle = $this->documentManager->getRepository(Content::class)->findOneBy([
@@ -1051,6 +1107,12 @@ class ImportController extends Controller
                     }
 
                     foreach ($importDefinition->getChannels() as $channel) {
+                        if ($newObject instanceof Person) {
+                            dump($newData);
+                            if ($row['own_page'] != 1) {
+                                continue;
+                            }
+                        }
                         $newObject->addChannel($channel);
                     }
 
@@ -1105,7 +1167,7 @@ class ImportController extends Controller
                                 $relation2->setRelationType($relation->getType());
 
                                 if (!\is_array($value)) {
-                                    $value = [$value];
+                                    $value = explode(',', $value);
                                 }
 
                                 foreach ($value as $valueName) {
@@ -1123,12 +1185,19 @@ class ImportController extends Controller
                                             $result['warnings'][] = 'File not found 1st: '.$path.' for '.$newObject->getTitle();
                                             continue;
                                         }
+                                        $link = $this->documentManager->getRepository(Image::class)->findOneBy(['externalId' => 'header/'.$valueName, 'importImageBaseUrl' => $importDefinition->getImageBaseUrl()]);
                                     }
 
                                     if (!$link) {
                                         $link = $targetContentType->create();
                                         $link->setTitle($valueName);
-                                        $link->setMetaData(new Metadata(['importDate' => date('Ymd')]));
+                                        $link->setMetaData(new Metadata(
+                                            [
+                                                'importDate' => date('Ymd'),
+                                                'externalId' => 'header/'.$valueName,
+                                                'importImageBaseUrl' => $importDefinition->getImageBaseUrl(),
+                                            ]
+                                        ));
 
                                         $this->documentManager->persist($link);
                                         $this->documentManager->flush();
@@ -1153,6 +1222,11 @@ class ImportController extends Controller
                                                 )
                                             );
                                             $link->setFile($storage);
+
+                                            if (!empty($row['credits'])) {
+                                                $link->setCredits($row['credits']);
+                                            }
+
                                             $this->documentManager->flush();
 
                                             $result['warnings'][] = 'File found and added: '.$path.' for '.$link->getTitle();
@@ -1249,6 +1323,17 @@ class ImportController extends Controller
                         );
                     }
 
+                    if (isset($row['contentitem_id'])) {
+                        $newObject->setMetaData(
+                            new Metadata(
+                                [
+                                    'externalId' => $row['contentitem_id'],
+                                    'importImageBaseUrl' => $importDefinition->getImageBaseUrl(),
+                                ]
+                            )
+                        );
+                    }
+
                     if (isset($row['meta_yoast_wpseo_canonical']) && $newObject instanceof Article) {
                         $newObject->setSourceUrl($row['meta_yoast_wpseo_canonical']);
                     }
@@ -1316,7 +1401,7 @@ class ImportController extends Controller
     protected function addAuthor($name)
     {
         $dm = $this->documentManager;
-        $type = 'person';
+        $type = 'tech_persoon';
 
         $name = trim($name);
         if (stripos($name, 'by ') === 0) {
