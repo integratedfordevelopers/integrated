@@ -1108,7 +1108,6 @@ class ImportController extends Controller
 
                     foreach ($importDefinition->getChannels() as $channel) {
                         if ($newObject instanceof Person) {
-                            dump($newData);
                             if ($row['own_page'] != 1) {
                                 continue;
                             }
@@ -1172,8 +1171,8 @@ class ImportController extends Controller
 
                                 foreach ($value as $valueName) {
                                     $link = false;
-                                    if ($targetContentType->getClass() == Taxonomy::class) {
-                                        $link = $this->documentManager->getRepository(Taxonomy::class)->findOneBy(['title' => $valueName, 'contentType' => $targetContentType->getId()]);
+                                    if ($targetContentType->getClass() == Taxonomy::class || $targetContentType->getClass() == Article::class) {
+                                        $link = $this->documentManager->getRepository(Content::class)->findOneBy(['title' => $valueName, 'contentType' => $targetContentType->getId()]);
                                     }
 
                                     if ($targetContentType->getClass() == Image::class) {
@@ -1185,7 +1184,7 @@ class ImportController extends Controller
                                             $result['warnings'][] = 'File not found 1st: '.$path.' for '.$newObject->getTitle();
                                             continue;
                                         }
-                                        $link = $this->documentManager->getRepository(Image::class)->findOneBy(['externalId' => 'header/'.$valueName, 'importImageBaseUrl' => $importDefinition->getImageBaseUrl()]);
+                                        $link = $this->documentManager->getRepository(Image::class)->findOneBy(['metadata.data.externalId' => 'header/'.$valueName, 'metadata.data.importImageBaseUrl' => $importDefinition->getImageBaseUrl()]);
                                     }
 
                                     if (!$link) {
