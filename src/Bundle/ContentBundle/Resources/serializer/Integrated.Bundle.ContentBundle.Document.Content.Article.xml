@@ -5,6 +5,10 @@
                   expose="true"
                   type="string"
         />
+        <property name="subtitle"
+                  expose="true"
+                  type="string"
+        />
         <property name="intro"
                   expose="true"
                   type="string"

@@ -25,7 +25,6 @@ use Integrated\Bundle\ImportBundle\Import\Provider\File as ImportFile;
 use Integrated\Bundle\ImportBundle\Import\ImportProcessor;
 use Integrated\Bundle\ImportBundle\Serializer\InitializedObjectConstructor;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage\Metadata as StorageMetadata;
-use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata;
 use Integrated\Bundle\StorageBundle\Storage\Manager;
 use Integrated\Bundle\StorageBundle\Storage\Reader\MemoryReader;
 use Integrated\Common\Content\Form\ContentFormType;
@@ -334,7 +333,7 @@ class ImportController extends Controller
                                 $contentTypeFieldName = strtolower(preg_replace('/[^A-Za-z0-9]/', '', $contentTypeField));
                                 if ($dataName == $contentTypeFieldName) {
                                     if (!$matchCol) {
-                                        $matchCol = $col;
+                                        $matchCol = [$col];
                                     }
                                 }
                                 ++$col;
@@ -348,6 +347,7 @@ class ImportController extends Controller
             }
 
             $fields['author-author'] = ['label' => 'Author', 'matchCol' => false];
+            $fields['meta-meta'] = ['label' => 'Metadata', 'matchCol' => false];
 
             $configs = $this->entityManager->getRepository(Config::class)->findAll();
             foreach ($configs as $config) {
@@ -397,7 +397,10 @@ class ImportController extends Controller
                         } else {
                             $column = $field->getColumn();
                         }
-                        $fields[$field->getMappedField()]['matchCol'] = $column;
+                        if ($fields[$field->getMappedField()]['matchCol'] == false) {
+                            $fields[$field->getMappedField()]['matchCol'] = [];
+                        }
+                        $fields[$field->getMappedField()]['matchCol'][] = $column;
                     } else {
                         $this->get('braincrafted_bootstrap.flash')->alert('Warning: mapped field is not available and will be ignored: '.$field->getMappedField());
                     }
@@ -934,7 +937,7 @@ class ImportController extends Controller
                                         $file->setContentType($contentTT);
                                         $file->setTitle($title);
                                         $file->setFile($storage);
-                                        $file->setMetaData(new Metadata(['importDate' => date('Ymd')]));
+                                        $file->getMetadata()->set('importDate', date('Ymd'));
 
                                         $this->documentManager->persist($file);
                                         $this->documentManager->flush($file);
@@ -957,7 +960,7 @@ class ImportController extends Controller
                                         $file->setContentType($importDefinition->getImageContentType());
                                         $file->setTitle($title);
                                         $file->setFile($storage);
-                                        $file->setMetaData(new Metadata(['importDate' => date('Ymd')]));
+                                        $file->getMetadata()->set('importDate', date('Ymd'));
 
                                         $this->documentManager->persist($file);
                                         $this->documentManager->flush($file);
@@ -1075,7 +1078,7 @@ class ImportController extends Controller
                                 $file->setContentType($importDefinition->getImageContentType());
                                 $file->setTitle($title);
                                 $file->setFile($storage);
-                                $file->setMetaData(new Metadata(['importDate' => date('Ymd')]));
+                                $file->getMetadata()->set('importDate', date('Ymd'));
 
                                 $this->documentManager->persist($file);
                                 $this->documentManager->flush($file);
@@ -1116,7 +1119,7 @@ class ImportController extends Controller
                     }
 
                     $col = 0;
-                    foreach ($row as $value) {
+                    foreach ($row as $name => $value) {
                         if (!isset($fieldMapping[$data[0][$col]])) {
                             ++$col;
                             continue;
@@ -1132,6 +1135,12 @@ class ImportController extends Controller
                                         $newObject->addAuthor($author);
                                     }
                                 }
+                            }
+                        }
+
+                        if (strpos($mappedField, 'meta-') === 0) {
+                            if (trim($value) != '') {
+                                $newObject->getMetadata()->set($name, $value);
                             }
                         }
 
@@ -1190,13 +1199,9 @@ class ImportController extends Controller
                                     if (!$link) {
                                         $link = $targetContentType->create();
                                         $link->setTitle($valueName);
-                                        $link->setMetaData(new Metadata(
-                                            [
-                                                'importDate' => date('Ymd'),
-                                                'externalId' => 'header/'.$valueName,
-                                                'importImageBaseUrl' => $importDefinition->getImageBaseUrl(),
-                                            ]
-                                        ));
+                                        $link->getMetadata()->set('importDate', date('Ymd'));
+                                        $link->getMetadata()->set('externalId', 'header/'.$valueName);
+                                        $link->getMetadata()->set('importImageBaseUrl', $importDefinition->getImageBaseUrl());
 
                                         $this->documentManager->persist($link);
                                         $this->documentManager->flush();
@@ -1310,27 +1315,16 @@ class ImportController extends Controller
                     }
 
                     if (isset($row['wp:post_id'])) {
-                        $newObject->setMetaData(
-                            new Metadata(
-                                [
-                                    'wpPostId' => $row['wp:post_id'],
-                                    'wpUrl' => (isset($row['wp:attachment_url'])) ? $row['wp:attachment_url'] : $row['link'],
-                                    'importDate' => date('Ymd'),
-                                    'importImageBaseUrl' => $importDefinition->getImageBaseUrl(),
-                                ]
-                            )
-                        );
+                        $newObject->getMetadata()->set('wpPostId', $row['wp:post_id']);
+                        $newObject->getMetadata()->set('wpUrl', (isset($row['wp:attachment_url'])) ? $row['wp:attachment_url'] : $row['link']);
+                        $newObject->getMetadata()->set('importDate', date('Ymd'));
+                        $newObject->getMetadata()->set('importImageBaseUrl', $importDefinition->getImageBaseUrl());
                     }
 
                     if (isset($row['contentitem_id'])) {
-                        $newObject->setMetaData(
-                            new Metadata(
-                                [
-                                    'externalId' => $row['contentitem_id'],
-                                    'importImageBaseUrl' => $importDefinition->getImageBaseUrl(),
-                                ]
-                            )
-                        );
+                        $newObject->getMetadata()->set('externalId', $row['contentitem_id']);
+                        $newObject->getMetadata()->set('importDate', date('Ymd'));
+                        $newObject->getMetadata()->set('importImageBaseUrl', $importDefinition->getImageBaseUrl());
                     }
 
                     if (isset($row['meta_yoast_wpseo_canonical']) && $newObject instanceof Article) {
