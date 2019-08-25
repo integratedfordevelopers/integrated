@@ -59,7 +59,7 @@
                         <th>
                             <select name="col{{ colIndex }}" id="col{{ colIndex }}" class="import-fieldchoice">
                                 {% for fieldKey, field in fields %}
-                                    <option value="{{ fieldKey }}" {% if field.matchCol is same as(colIndex) %} selected="selected"{% endif %}>{{ field.label }}</option>
+                                    <option value="{{ fieldKey }}" {% if colIndex in field.matchCol %} selected="selected"{% endif %}>{{ field.label }}</option>
                                 {% endfor %}
                             </select>
                         </th>
