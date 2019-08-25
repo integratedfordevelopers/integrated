@@ -165,7 +165,7 @@ class ImageExtension extends \Twig_Extension
     {
         if ($image instanceof StorageInterface) {
             if ($image instanceof Storage) {
-                return $image->getMetadata->getCredits();
+                return $image->getMetadata()->getCredits();
             }
 
             return null;
