@@ -13,6 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Content\Document\Storage\FileInterface;
@@ -408,6 +409,38 @@ class Article extends Content
         }
 
         return null;
+    }
+
+    /**
+     * updateAuthorRelationOnPreUpdate.
+     */
+    public function updateAuthorRelationOnPreUpdate()
+    {
+        $authors = [];
+        foreach ($this->getAuthors() as $author) {
+            if ($author->getPerson() !== false) {
+                $authors[] = $author->getPerson();
+            }
+        }
+
+        if ($relation = $this->getRelation('__authors')) {
+            foreach ($relation->getReferences() as $reference) {
+                if (($key = array_search($reference, $authors)) !== false) {
+                    unset($authors[$key]);
+                } else {
+                    $relation->getReferences()->removeElement($reference);
+                }
+            }
+        } elseif (count($authors) > 0) {
+            $relation = new Relation();
+            $relation->setRelationId('__authors');
+            $relation->setRelationType('author');
+            $this->addRelation($relation);
+        }
+
+        foreach ($authors as $author) {
+            $this->getRelation('__authors')->addReference($author);
+        }
     }
 
     /**
