@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\WebsiteBundle\EventListener;
 
+use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\WebsiteBundle\Service\EditableChecker;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,6 +32,16 @@ class WebsiteToolbarListener implements EventSubscriberInterface
      * @var EditableChecker
      */
     protected $websiteEditableChecker;
+
+    /*
+     * @var string
+     */
+    protected $toolbarMessage = '';
+
+    /*
+     * @var Content
+     */
+    protected $contentItem = null;
 
     /**
      * @param \Twig_Environment $twig
@@ -59,13 +70,20 @@ class WebsiteToolbarListener implements EventSubscriberInterface
             return;
         }
 
-        if ($this->websiteEditableChecker->checkEditable()) {
+        if ($this->websiteEditableChecker->checkEditable() || $this->contentItem !== null) {
             $this->injectToolbar($event->getResponse());
         }
     }
 
     /**
      * @param Response $response
+     *
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
     protected function injectToolbar(Response $response)
     {
@@ -73,12 +91,32 @@ class WebsiteToolbarListener implements EventSubscriberInterface
         $pos = stripos($content, '<body');
 
         if (false !== $pos) {
-            $toolbar = $this->twig->render('IntegratedWebsiteBundle::toolbar.html.twig');
+            $toolbar = $this->twig->render(
+                'IntegratedWebsiteBundle::toolbar.html.twig',
+                [
+                    'message' => $this->toolbarMessage,
+                    'layoutEditable' => $this->websiteEditableChecker->checkEditable(),
+                    'content' => $this->contentItem,
+                ]
+            );
 
             $end = stripos($content, '>', $pos) + 1;
             $content = substr_replace($content, "\n".$toolbar, $end, 0);
 
             $response->setContent($content);
         }
+    }
+
+    /**
+     * @param string $message
+     */
+    public function setToolbarMessage(string $message)
+    {
+        $this->toolbarMessage = $message;
+    }
+
+    public function setContentItem(Content $content)
+    {
+        $this->contentItem = $content;
     }
 }

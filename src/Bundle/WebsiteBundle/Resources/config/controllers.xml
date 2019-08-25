@@ -47,43 +47,43 @@
             </call>
         </service>
 
+        <service id="Integrated\Bundle\WebsiteBundle\Controller\SessionController">
+            <argument type="service" id="session" />
+            <tag name="controller.service_arguments"/>
+        </service>
+
         <service id="integrated_website.controller.content.article" class="%integrated_website.controller.content.article.class%">
-            <argument type="service" id="integrated_content.channel.context" />
+            <argument type="service" id="integrated_website.service.content_service" />
             <argument type="service" id="templating" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
-            <argument type="service" id="integrated_block.templating.block_manager" />
             <tag name="integrated_page.contenttype_controller" class="%integrated_website.controller.content_type.article.class%" />
         </service>
 
         <service id="integrated_website.controller.content.news" class="%integrated_website.controller.content.news.class%">
-            <argument type="service" id="integrated_content.channel.context" />
+            <argument type="service" id="integrated_website.service.content_service" />
             <argument type="service" id="templating" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
-            <argument type="service" id="integrated_block.templating.block_manager" />
             <tag name="integrated_page.contenttype_controller" class="%integrated_website.controller.content_type.news.class%" />
         </service>
 
         <service id="integrated_website.controller.content.company" class="%integrated_website.controller.content.company.class%">
-            <argument type="service" id="integrated_content.channel.context" />
+            <argument type="service" id="integrated_website.service.content_service" />
             <argument type="service" id="templating" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
-            <argument type="service" id="integrated_block.templating.block_manager" />
             <tag name="integrated_page.contenttype_controller" class="%integrated_website.controller.content_type.company.class%" />
         </service>
 
         <service id="integrated_website.controller.content.event" class="%integrated_website.controller.content.event.class%">
-            <argument type="service" id="integrated_content.channel.context" />
+            <argument type="service" id="integrated_website.service.content_service" />
             <argument type="service" id="templating" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
-            <argument type="service" id="integrated_block.templating.block_manager" />
             <tag name="integrated_page.contenttype_controller" class="%integrated_website.controller.content_type.event.class%" />
         </service>
 
         <service id="integrated_website.controller.content.job_posting" class="%integrated_website.controller.content.job_posting.class%">
-            <argument type="service" id="integrated_content.channel.context" />
+            <argument type="service" id="integrated_website.service.content_service" />
             <argument type="service" id="templating" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
-            <argument type="service" id="integrated_block.templating.block_manager" />
             <tag name="integrated_page.contenttype_controller" class="%integrated_website.controller.content_type.job_posting.class%" />
         </service>
 
@@ -96,10 +96,9 @@
         </service>
 
         <service id="integrated_website.controller.content.taxonomy" class="%integrated_website.controller.content.taxonomy.class%">
-            <argument type="service" id="integrated_content.channel.context" />
+            <argument type="service" id="integrated_website.service.content_service" />
             <argument type="service" id="templating" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
-            <argument type="service" id="integrated_block.templating.block_manager" />
             <tag name="integrated_page.contenttype_controller" class="%integrated_website.controller.content_type.taxonomy.class%" />
         </service>
 

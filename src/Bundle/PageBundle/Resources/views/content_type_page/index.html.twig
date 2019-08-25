@@ -1,5 +1,17 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
 
+{% block crumbs %}
+    <div class="breadcrumb-holder">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="active">
+                    {% trans %}Content type pages{% endtrans %}
+                </li>
+            </ol>
+        </div>
+    </div>
+{% endblock %}
+
 {% block content %}
     <div class="row">
         <div class="col-md-12 push-sm-down">
