@@ -1,5 +1,17 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
 
+{% block crumbs %}
+    <div class="breadcrumb-holder">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="active">
+                    {% trans %}Pages{% endtrans %}
+                </li>
+            </ol>
+        </div>
+    </div>
+{% endblock %}
+
 {% block content %}
     <div class="row">
         <div class="col-md-12 push-sm-down">
@@ -64,7 +76,18 @@
                                 {{ page.title }}
                             </td>
                             <td>
+                                {% set domain = page.channel.primaryDomain|default(page.channel.domains(0))|default("") %}
+                                {% if (domain != "") %}
+                                    {% if (domain == app.request.httphost) %}
+                                        <a href="/{{ page.path }}">
+                                    {% else %}
+                                        <a href="//{{ domain }}{{ path('integrated_website_enter_session', {'sessionId': app.session.id, 'path': page.path}) }}">
+                                    {% endif %}
+                                {% endif %}
                                 {{ page.path }}
+                                {% if (domain != "") %}
+                                    </a>
+                                {% endif %}
                             </td>
                             <td>
                                 <a href="{{ path('integrated_page_page_edit', { 'id': page.id, 'channel': selectedChannel.id }) }}" title="{% trans %}Edit{% endtrans %}">
