@@ -88,10 +88,9 @@
         </service>
 
         <service id="integrated_website.controller.content.person" class="%integrated_website.controller.content.person.class%">
-            <argument type="service" id="integrated_content.channel.context" />
+            <argument type="service" id="integrated_website.service.content_service" />
             <argument type="service" id="templating" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
-            <argument type="service" id="integrated_block.templating.block_manager" />
             <tag name="integrated_page.contenttype_controller" class="%integrated_website.controller.content_type.person.class%" />
         </service>
 
