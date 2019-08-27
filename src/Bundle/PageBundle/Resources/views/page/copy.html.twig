@@ -13,21 +13,23 @@
     </style>
 {% endblock %}
 
+{% block crumbs %}
+    <div class="breadcrumb-holder">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{{ path('integrated_page_page_index') }}">{% trans %}Pages{% endtrans %}</a>
+                </li>
+                <li class="active">{% trans %}Copy pages{% endtrans %}</li>
+            </ol>
+        </div>
+    </div>
+{% endblock %}
+
 {% block content %}
     <div class="row">
         <div class="col-md-12 push-sm-down">
             <ul class="list-inline">
-                <li class="dropdown">
-                    <a href="#" data-toggle="dropdown" role="button">{% trans %}Options{% endtrans %} <b class="caret"></b></a>
-                    <ul role="menu" class="dropdown-menu">
-                        <li role="presentation">
-                            <a href="{{ path('integrated_page_page_new', { 'channel': selectedChannel.id }) }}" tabindex="-1" role="menuitem">{% trans %}New page{% endtrans %}</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('integrated_page_page_new', { 'channel': selectedChannel.id }) }}" tabindex="-1" role="menuitem">{% trans %}Copy selected pages{% endtrans %}</a>
-                        </li>
-                    </ul>
-
                 <li class="dropdown pull-right">
                     <a href="#" data-toggle="dropdown" role="button">{{ selectedChannel.name }} <b class="caret"></b></a>
                     <ul role="menu" class="dropdown-menu">

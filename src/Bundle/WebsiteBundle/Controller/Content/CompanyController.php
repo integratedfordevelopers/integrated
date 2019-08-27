@@ -11,13 +11,11 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Controller\Content;
 
-use Integrated\Bundle\BlockBundle\Templating\BlockManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Company;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
-use Integrated\Common\Content\Channel\ChannelContextInterface;
+use Integrated\Bundle\WebsiteBundle\Service\ContentService;
 use Symfony\Bundle\TwigBundle\TwigEngine;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -25,9 +23,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class CompanyController
 {
     /**
-     * @var ChannelContextInterface
+     * @var ContentService
      */
-    protected $channelContext;
+    private $contentService;
 
     /**
      * @var TwigEngine
@@ -40,21 +38,15 @@ class CompanyController
     protected $themeManager;
 
     /**
-     * @var BlockManager
+     * @param ContentService $contentService
+     * @param TwigEngine     $templating
+     * @param ThemeManager   $themeManager
      */
-    protected $blockManager;
-
-    /**
-     * @param TwigEngine   $templating
-     * @param ThemeManager $themeManager
-     * @param BlockManager $blockManager
-     */
-    public function __construct(ChannelContextInterface $channelContext, TwigEngine $templating, ThemeManager $themeManager, BlockManager $blockManager)
+    public function __construct(ContentService $contentService, TwigEngine $templating, ThemeManager $themeManager)
     {
-        $this->channelContext = $channelContext;
+        $this->contentService = $contentService;
         $this->templating = $templating;
         $this->themeManager = $themeManager;
-        $this->blockManager = $blockManager;
     }
 
     /**
@@ -65,11 +57,7 @@ class CompanyController
      */
     public function showAction(ContentTypePage $page, Company $company)
     {
-        if (!$company->isPublished() || !$company->hasChannel($this->channelContext->getChannel())) {
-            throw new NotFoundHttpException();
-        }
-
-        $this->blockManager->setDocument($company);
+        $this->contentService->prepare($company);
 
         return $this->templating->renderResponse(
             $this->themeManager->locateTemplate('content/company/show/'.$page->getLayout()),

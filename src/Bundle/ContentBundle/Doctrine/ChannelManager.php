@@ -113,7 +113,7 @@ class ChannelManager implements ChannelManagerInterface
      */
     public function findAll()
     {
-        return $this->repository->findAll();
+        return $this->repository->findBy([], ['name' => 1]);
     }
 
     /**

@@ -75,8 +75,24 @@
                             {% endif %}
                         {% endif %}
 
-                        <div class="aside-item-holder section-white">
-                            <div class="item_row" id="used-by"></div>
+                        {% if content is defined %}
+                            {% if content.getChannels|length > 0 %}
+                                <div class="aside-item-holder section-white">
+                                    {% for channel in content.getChannels %}
+                                        {% set domain = channel.primaryDomain|default(channel.domains(0))|default("") %}
+                                        {% if (domain != "") %}
+                                            {% if (domain == app.request.httphost) %}
+                                                <a href="{{ integrated_url(content) }}">View on {{ channel.name }}</a><br />
+                                            {% else %}
+                                                <a href="//{{ domain }}{{ path('integrated_website_enter_session', {'sessionId': app.session.id, 'path': integrated_url(content)}) }}">View on {{ channel.name }}</a><br />
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endif %}
+
+                        <div class="aside-item-holder section-white" id="used-by">
                         </div>
 
                         {% block content_history %}
@@ -174,6 +190,9 @@
 
             data.title = "{% trans %}Used by{% endtrans %}";
 
+            if (data.pagination.numFound == 0) {
+                cnt.hide();
+            }
             cnt.html(optionsTemplate(data)).find('.content_column_inner').append(paginationTemplate(data));
             cnt.find('.pagination a').click(function(ev){
                 ev.preventDefault();

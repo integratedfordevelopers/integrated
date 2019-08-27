@@ -13,6 +13,7 @@ namespace Integrated\Bundle\PageBundle\Controller;
 
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Bundle\PageBundle\Form\Type\ContentTypePageType;
+use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -24,6 +25,16 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ContentTypePageController extends Controller
 {
+    /**
+     * PageController constructor.
+     *
+     * @param ChannelContextInterface $channelContext
+     */
+    public function __construct(ChannelContextInterface $channelContext)
+    {
+        parent::__construct($channelContext);
+    }
+
     /**
      * @param Request $request
      *

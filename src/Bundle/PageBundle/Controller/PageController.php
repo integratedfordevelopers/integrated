@@ -16,8 +16,10 @@ use Integrated\Bundle\PageBundle\Document\Page\Page;
 use Integrated\Bundle\PageBundle\Form\Type\PageCopyType;
 use Integrated\Bundle\PageBundle\Form\Type\PageType;
 use Integrated\Bundle\PageBundle\Services\PageCopyService;
+use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,10 +37,13 @@ class PageController extends Controller
     /**
      * PageController constructor.
      *
-     * @param PageCopyService $pageCopyService
+     * @param ChannelContextInterface $channelContext
+     * @param PageCopyService         $pageCopyService
      */
-    public function __construct(PageCopyService $pageCopyService)
+    public function __construct(ChannelContextInterface $channelContext, PageCopyService $pageCopyService)
     {
+        parent::__construct($channelContext);
+
         $this->pageCopyService = $pageCopyService;
     }
 
@@ -70,11 +75,17 @@ class PageController extends Controller
             return $this->render('IntegratedPageBundle:page:error.html.twig');
         }
 
-        return $this->render('IntegratedPageBundle:page:index.html.twig', [
+        $response = $this->render('IntegratedPageBundle:page:index.html.twig', [
             'pages' => $pagination,
             'channels' => $this->getChannels(),
             'selectedChannel' => $channel,
         ]);
+
+        if ($request->query->has('channel')) {
+            $response->headers->setCookie(new Cookie('channel', $request->query->get('channel')));
+        }
+
+        return $response;
     }
 
     /**
