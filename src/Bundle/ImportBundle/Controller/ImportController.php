@@ -885,6 +885,12 @@ class ImportController extends Controller
                                 continue;
                             }
 
+                            if (stripos($href, '.pdf') !== false
+                                && (!$importDefinition->getFileContentType()
+                                || !$importDefinition->getFileRelation())) {
+                                continue;
+                            }
+
                             foreach ($element->find('img') as $img) {
                                 $title = $img->title;
                                 if (!$title) {
@@ -923,9 +929,7 @@ class ImportController extends Controller
                                     )
                                 );
 
-                                if (stripos($href, '.pdf') !== false
-                                    && $importDefinition->getFileContentType()
-                                    && $importDefinition->getFileRelation()) {
+                                if (stripos($href, '.pdf') !== false) {
                                     $contentTT = $importDefinition->getFileContentType();
                                     $file = $this->documentManager->getRepository(File::class)->findOneBy([
                                         'contentType' => $contentTT,
