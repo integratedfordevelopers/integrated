@@ -115,6 +115,9 @@ class WebsiteToolbarListener implements EventSubscriberInterface
         $this->toolbarMessage = $message;
     }
 
+    /**
+     * @param Content $content
+     */
     public function setContentItem(Content $content)
     {
         $this->contentItem = $content;

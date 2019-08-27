@@ -56,7 +56,7 @@ class ContentService
     }
 
     /**
-     * @param Content $document
+     * @param Content $content
      *
      * @return \Symfony\Component\HttpFoundation\Response
      *
