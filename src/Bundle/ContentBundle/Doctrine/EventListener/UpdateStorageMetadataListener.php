@@ -37,14 +37,14 @@ class UpdateStorageMetadataListener implements EventSubscriber
         $dm = $args->getDocumentManager();
         $uow = $dm->getUnitOfWork();
 
-        foreach (\array_merge($uow->getScheduledDocumentInsertions(), $uow->getScheduledDocumentUpdates()) as $document) {
+        foreach (array_merge($uow->getScheduledDocumentInsertions(), $uow->getScheduledDocumentUpdates()) as $document) {
             if ($document instanceof File) {
                 /** @var $document File */
                 if ($document->getFile() instanceof Storage) {
                     $document->getFile()->getMetadata()->setCredits($document->getCredits());
                     $document->getFile()->getMetadata()->setDescription($document->getDescription());
 
-                    $class = $dm->getClassMetadata(get_class($document));
+                    $class = $dm->getClassMetadata(\get_class($document));
                     $uow->recomputeSingleDocumentChangeSet($class, $document);
                 }
             }
