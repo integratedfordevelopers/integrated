@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\ContentBundle\Doctrine\EventListener;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Event\OnFlushEventArgs;
 use Doctrine\ODM\MongoDB\Events;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
@@ -38,7 +37,7 @@ class UpdateStorageMetadataListener implements EventSubscriber
         $dm = $args->getDocumentManager();
         $uow = $dm->getUnitOfWork();
 
-        foreach (array_merge($uow->getScheduledDocumentInsertions(), $uow->getScheduledDocumentUpdates()) as $document) {
+        foreach (\array_merge($uow->getScheduledDocumentInsertions(), $uow->getScheduledDocumentUpdates()) as $document) {
             if ($document instanceof File) {
                 /** @var $document File */
                 if ($document->getFile() instanceof Storage) {
