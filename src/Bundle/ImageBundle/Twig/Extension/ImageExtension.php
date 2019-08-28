@@ -72,6 +72,7 @@ class ImageExtension extends \Twig_Extension
         return [
             new \Twig_SimpleFunction('integrated_image', [$this, 'image'], ['is_safe' => ['html']]),
             new \Twig_SimpleFunction('integrated_image_credits', [$this, 'imageCredits'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('integrated_image_description', [$this, 'imageDescription'], ['is_safe' => ['html']]),
             new \Twig_SimpleFunction('image_json', [$this, 'imageJson'], ['is_safe' => ['html']]),
             new \Twig_SimpleFunction('web_image', [$this, 'webImage'], ['is_safe' => ['html']]),
             new \Twig_SimpleFunction('image', [$this, 'image'], ['is_safe' => ['html']]),
@@ -163,14 +164,8 @@ class ImageExtension extends \Twig_Extension
      */
     public function imageCredits($image)
     {
-        if ($image instanceof StorageInterface) {
-            if ($image instanceof Storage) {
-                return $image->getMetadata()->getCredits();
-            }
-
-            return null;
-        } elseif (filter_var($image, FILTER_VALIDATE_URL)) {
-            return null;
+        if ($image instanceof Storage) {
+            return $image->getMetadata()->getCredits();
         }
 
         //detect json format
@@ -179,6 +174,29 @@ class ImageExtension extends \Twig_Extension
 
             return $imageData->metadata->credits ?? null;
         }
+
+        return null;
+    }
+
+    /**
+     * @param $image
+     *
+     * @return string
+     */
+    public function imageDescription($image)
+    {
+        if ($image instanceof Storage) {
+            return $image->getMetadata()->getDescription();
+        }
+
+        //detect json format
+        if (strpos($image, '{') === 0) {
+            $imageData = @json_decode($image);
+
+            return $imageData->metadata->description ?? null;
+        }
+
+        return null;
     }
 
     /**

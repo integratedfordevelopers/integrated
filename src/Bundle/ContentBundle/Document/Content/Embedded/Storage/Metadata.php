@@ -35,6 +35,11 @@ class Metadata implements MetadataInterface
     protected $credits;
 
     /**
+     * @var string
+     */
+    protected $description;
+
+    /**
      * @var array
      */
     protected $headers = [];
@@ -66,7 +71,8 @@ class Metadata implements MetadataInterface
                 [
                     'headers' => array_replace($this->headers, ['Content-Type' => $this->mimeType]),
                 ],
-                ['credits' => $this->getCredits()]
+                ['credits' => $this->getCredits()],
+                ['description' => $this->getDescription()]
             )
         );
     }
@@ -101,6 +107,22 @@ class Metadata implements MetadataInterface
     public function setCredits(?string $credits): void
     {
         $this->credits = $credits;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param ?string $description
+     */
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
     }
 
     /**
