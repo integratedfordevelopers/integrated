@@ -177,7 +177,7 @@ class ThemeManager
                     //try default.html.twig for all themes as a second fallback
                     $fallback = null;
                     $this->fallbackStack = [];
-                    $template = dirname($template).'/default.html.twig';
+                    $template = \dirname($template).'/default.html.twig';
                 } else {
                     throw CircularFallbackException::templateNotFound(
                         $template,
