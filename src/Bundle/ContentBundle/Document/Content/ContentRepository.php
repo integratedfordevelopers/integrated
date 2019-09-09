@@ -44,7 +44,7 @@ class ContentRepository extends DocumentRepository
                 }
 
                 $contentIds[] = $contentItem->getId();
-            } 
+            }
 
             if ($contentItem instanceof DocumentInterface) {
                 $contentIds[] = $contentItem->__get('type_id');
