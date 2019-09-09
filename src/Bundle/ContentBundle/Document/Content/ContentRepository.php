@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Solarium\QueryType\Select\Result\DocumentInterface;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Common\Content\ContentInterface;
@@ -43,6 +44,10 @@ class ContentRepository extends DocumentRepository
                 }
 
                 $contentIds[] = $contentItem->getId();
+            } 
+
+            if ($contentItem instanceof DocumentInterface) {
+                $contentIds[] = $contentItem->__get('type_id');
             }
         }
 
