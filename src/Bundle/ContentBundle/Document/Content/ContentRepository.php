@@ -40,20 +40,23 @@ class ContentRepository extends DocumentRepository
         foreach ($content as $contentItem) {
             if ($contentItem instanceof ContentInterface) {
                 if (!$excludeContent) {
-                    $excludeContent = $contentItem;
+                    $excludeContent = $contentItem->getId();
                 }
 
                 $contentIds[] = $contentItem->getId();
             }
 
             if ($contentItem instanceof DocumentInterface) {
+                if (!$excludeContent) {
+                    $excludeContent = $contentItem->__get('type_id');
+                }
                 $contentIds[] = $contentItem->__get('type_id');
             }
         }
 
         $query = $this->createQueryBuilder()
             ->field('relations.references.$id')->in($contentIds)
-            ->field('id')->notEqual($excludeContent->getId());
+            ->field('id')->notEqual($excludeContent instanceof Content ? $excludeContent->getId() : $excludeContent);
 
         if ($filterPublished) {
             $query->field('disabled')->equals(false)
