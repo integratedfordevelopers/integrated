@@ -1,5 +1,17 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
 
+{% block crumbs %}
+    <div class="breadcrumb-holder">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="active">
+                    {% trans %}Pages{% endtrans %}
+                </li>
+            </ol>
+        </div>
+    </div>
+{% endblock %}
+
 {% block content %}
     <div class="row">
         <div class="col-md-12 push-sm-down">
@@ -8,10 +20,12 @@
                     <a href="#" data-toggle="dropdown" role="button">{% trans %}Options{% endtrans %} <b class="caret"></b></a>
                     <ul role="menu" class="dropdown-menu">
                         <li role="presentation">
-                            <a href="{{ path('integrated_page_page_new', { 'channel': selectedChannel.id }) }}" tabindex="-1" role="menuitem">{% trans %}New{% endtrans %}</a>
+                            <a href="{{ path('integrated_page_page_new', { 'channel': selectedChannel.id }) }}" tabindex="-1" role="menuitem">{% trans %}New page{% endtrans %}</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('integrated_page_page_copy', { 'channel': selectedChannel.id }) }}" tabindex="-1" role="menuitem">{% trans %}Copy pages{% endtrans %}</a>
                         </li>
                     </ul>
-                </li>
 
                 <li class="dropdown pull-right">
                     <a href="#" data-toggle="dropdown" role="button">{{ selectedChannel.name }} <b class="caret"></b></a>
@@ -39,7 +53,7 @@
 
             <section class="section-white section-padding section-shadow section-radius">
 
-                <table class="table">
+                <table class="table table-hover">
                     <colgroup>
                         <col />
                         <col />
@@ -62,7 +76,18 @@
                                 {{ page.title }}
                             </td>
                             <td>
+                                {% set domain = page.channel.primaryDomain|default(page.channel.domains(0))|default("") %}
+                                {% if (domain != "") %}
+                                    {% if (domain == app.request.httphost) %}
+                                        <a href="/{{ page.path }}">
+                                    {% else %}
+                                        <a href="//{{ domain }}{{ path('integrated_website_enter_session', {'sessionId': app.session.id, 'path': page.path}) }}">
+                                    {% endif %}
+                                {% endif %}
                                 {{ page.path }}
+                                {% if (domain != "") %}
+                                    </a>
+                                {% endif %}
                             </td>
                             <td>
                                 <a href="{{ path('integrated_page_page_edit', { 'id': page.id, 'channel': selectedChannel.id }) }}" title="{% trans %}Edit{% endtrans %}">

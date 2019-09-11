@@ -75,7 +75,7 @@ class Container implements ContainerInterface
      */
     public function has($key)
     {
-        return array_key_exists($key, $this->data);
+        return \array_key_exists($key, $this->data);
     }
 
     /**
@@ -83,7 +83,7 @@ class Container implements ContainerInterface
      */
     public function get($key)
     {
-        return array_key_exists($key, $this->data) ? $this->data[$key] : null;
+        return \array_key_exists($key, $this->data) ? $this->data[$key] : null;
     }
 
     /**

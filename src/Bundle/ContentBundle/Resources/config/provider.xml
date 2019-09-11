@@ -28,6 +28,7 @@
             <argument type="service" id="solarium.client" />
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
             <argument type="service" id="security.token_storage" />
+            <argument type="service" id="security.authorization_checker" />
             <argument>false</argument>
         </service>
 

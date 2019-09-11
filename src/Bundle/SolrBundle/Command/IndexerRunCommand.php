@@ -114,7 +114,7 @@ class IndexerRunCommand extends Command
                 'processes',
                 InputArgument::OPTIONAL,
                 'Creates a number of proccess that run the queue',
-                0
+                '0'
             )
             ->addOption(
                 'blocking',
@@ -156,7 +156,7 @@ The <info>%command.name%</info> command starts a indexer run.
     private function runInternal($lock, OutputInterface $output)
     {
         try {
-            $lock = $this->lockFactory->createLock(self::class.md5(__DIR__));
+            $lock = $this->lockFactory->createLock(md5(__DIR__.$lock));
             $lock->acquire(true);
 
             try {

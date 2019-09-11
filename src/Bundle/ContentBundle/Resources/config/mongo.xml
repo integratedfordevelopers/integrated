@@ -67,6 +67,10 @@
             <tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />
         </service>
 
+        <service id="Integrated\Bundle\ContentBundle\Doctrine\EventListener\UpdateStorageMetadataListener">
+            <tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />
+        </service>
+
 	</services>
 
 </container>

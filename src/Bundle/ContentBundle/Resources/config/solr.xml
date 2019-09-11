@@ -27,6 +27,7 @@
         </service>
 
         <service id="integrated_content.solr.channel.extension" class="Integrated\Bundle\ContentBundle\Solr\Extension\ChannelExtension" public="false">
+            <argument type="service" id="integrated_content.resolver" />
             <tag name="integrated_solr.type_extension" />
         </service>
 
@@ -36,6 +37,7 @@
         </service>
 
         <service id="integrated_content.solr.pub_active.extension" class="Integrated\Bundle\ContentBundle\Solr\Extension\PubActiveExtension" public="false">
+            <argument type="service" id="integrated_content.resolver" />
             <tag name="integrated_solr.type_extension" />
         </service>
 
@@ -45,6 +47,10 @@
             <argument type="service" id="integrated_content.resolver" />
 
             <tag name="serializer.normalizer" priority="32" />
+        </service>
+
+        <service id="integrated_content.solr.shorttag_filter.extension" class="Integrated\Bundle\ContentBundle\Solr\Extension\ShorttagFilterExtension" public="false">
+            <tag name="integrated_solr.type_extension" />
         </service>
 
     </services>

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\ContentType\Tests\Form\Registry;
+namespace Integrated\Common\ContentType\Tests\Form\Custom\Type;
 
 use Integrated\Common\ContentType\Form\Custom\Type\Registry;
 

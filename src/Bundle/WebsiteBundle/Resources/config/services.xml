@@ -31,5 +31,19 @@
             <argument type="service" id="request_stack" />
         </service>
 
+        <service id="integrated_website.service.content_service" class="Integrated\Bundle\WebsiteBundle\Service\ContentService">
+            <argument id="integrated_content.channel.context" type="service"/>
+            <argument id="security.authorization_checker" type="service"/>
+            <argument id="integrated_block.templating.block_manager" type="service"/>
+            <argument id="integrated_website.website_toolbar" type="service"/>
+        </service>
+
+        <service id="integrated_website.event_listener.content_youtube_listener" class="Integrated\Bundle\WebsiteBundle\EventListener\Objects\ContentYoutubeListener">
+            <argument type="service" id="integrated_theme.templating.theme_manager" />
+            <argument type="service" id="templating" />
+            <argument>%kernel.environment%</argument>
+            <tag name="kernel.event_listener" event="content.event" method="process" />
+        </service>
+
     </services>
 </container>

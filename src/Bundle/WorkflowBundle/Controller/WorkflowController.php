@@ -15,6 +15,8 @@ use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
+use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\UserBundle\Model\Group;
 use Integrated\Bundle\UserBundle\Model\User;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
@@ -200,6 +202,7 @@ class WorkflowController extends Controller
         $stateId = $request->get('state');
 
         $isDefaultState = false;
+
         if (empty($stateId)) {
             $workflowId = $request->get('workflow');
             $repository = $this->getDoctrine()->getRepository('IntegratedWorkflowBundle:Definition');
@@ -210,6 +213,10 @@ class WorkflowController extends Controller
         } else {
             $repository = $this->getDoctrine()->getRepository('IntegratedWorkflowBundle:Definition\State');
             $state = $repository->find($stateId);
+        }
+
+        if (!$state) {
+            return new JsonResponse(['users' => [], 'fields' => []]);
         }
 
         /** @var User $currentUser */
@@ -223,13 +230,28 @@ class WorkflowController extends Controller
 
         $groups = [];
         $currentUserCanWrite = false;
-        foreach ($state->getPermissions() as $permission) {
-            if ($permission->getMask() >= PermissionInterface::WRITE) {
-                $group = $permission->getGroup();
-                $groups[] = $group;
 
-                if (\in_array($group, $currentUserGroups)) {
-                    $currentUserCanWrite = true;
+        $permissionObject = false;
+        if (\count($state->getPermissions()) > 0) {
+            $permissionObject = $state;
+        } else {
+            //permissions inherited from content type
+            $contentType = $this->get('doctrine_mongodb.odm.document_manager')->getRepository(ContentType::class)->find($request->get('contentType'));
+            if ($contentType && \count($contentType->getPermissions()) > 0) {
+                $permissionObject = $contentType;
+            }
+        }
+
+        //use workflow permissions
+        if ($permissionObject) {
+            foreach ($permissionObject->getPermissions() as $permission) {
+                if ($permission->getMask() >= PermissionInterface::WRITE) {
+                    $group = $permission->getGroup();
+                    $groups[] = $group;
+
+                    if (\in_array($group, $currentUserGroups)) {
+                        $currentUserCanWrite = true;
+                    }
                 }
             }
         }
@@ -239,7 +261,7 @@ class WorkflowController extends Controller
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $userRepository->createQueryBuilder('u');
 
-        if (!$isDefaultState || !$currentUserCanWrite) {
+        if ($permissionObject && (!$isDefaultState || !$currentUserCanWrite)) {
             $queryBuilder->join('u.groups', 'ug');
             $queryBuilder->where('ug.id IN (:groups)')->setParameter('groups', $groups);
         }
@@ -247,7 +269,17 @@ class WorkflowController extends Controller
         $users = [];
         /** @var User $item */
         foreach ($queryBuilder->getQuery()->getResult() as $item) {
-            $users[$item->getId()] = $item->getUsername();
+            if ($item->getRelation() instanceof Person) {
+                $users[] = [
+                    'id' => $item->getId(),
+                    'name' => $item->getRelation()->getFirstname().' '.$item->getRelation()->getLastName(),
+                    ];
+            } else {
+                $users[] = [
+                    'id' => $item->getId(),
+                    'name' => $item->getUsername(),
+                ];
+            }
         }
 
         $fieldsCodes = [
@@ -264,6 +296,10 @@ class WorkflowController extends Controller
                 'disabled' => $state->getDeadline() == StateVisibleConfig::DISABLED,
             ],
         ];
+
+        usort($users, function ($a, $b) {
+            return $a['name'] > $b['name'];
+        });
 
         return new JsonResponse(['users' => $users, 'fields' => $fieldsCodes]);
     }

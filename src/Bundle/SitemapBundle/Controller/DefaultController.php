@@ -14,6 +14,7 @@ namespace Integrated\Bundle\SitemapBundle\Controller;
 use DateTime;
 use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
+use Integrated\Bundle\ContentBundle\Services\ContentTypeInformation;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -36,23 +37,34 @@ class DefaultController extends Controller
     private $context;
 
     /**
+     * @var ContentTypeInformation
+     */
+    private $contentTypeInformation;
+
+    /**
      * @param ManagerRegistry         $registry
      * @param ChannelContextInterface $context
      * @param ContainerInterface      $container
+     * @param ContentTypeInformation  $contentTypeInformation
      */
     public function __construct(
         ManagerRegistry $registry,
         ChannelContextInterface $context,
-        ContainerInterface $container
+        ContainerInterface $container,
+        ContentTypeInformation $contentTypeInformation
     ) {
         $this->registry = $registry;
         $this->context = $context;
         $this->container = $container;
+        $this->contentTypeInformation = $contentTypeInformation;
     }
 
     /**
      * @return array
+     *
      * @Template
+     *
+     * @throws \Exception
      */
     public function indexAction()
     {
@@ -64,11 +76,15 @@ class DefaultController extends Controller
 
         $now = new DateTime();
 
-        $count = $this->registry->getManagerForClass(Content::class)->createQueryBuilder(Content::class)
+        $queryBuilder = $this->registry->getManagerForClass(Content::class)->createQueryBuilder(Content::class);
+        $count = $queryBuilder
             ->field('channels.$id')->equals($channel->getId())
             ->field('disabled')->equals(false)
             ->field('publishTime.startDate')->lte($now)
             ->field('publishTime.endDate')->gte($now)
+            ->field('contentType')->in($this->contentTypeInformation->getPublishingAllowedContentTypes($channel->getId()))
+            ->addOr($queryBuilder->expr()->field('primaryChannel.$id')->equals($channel->getId()))
+            ->addOr($queryBuilder->expr()->field('primaryChannel')->exists(false))
             ->getQuery()
             ->count();
 
@@ -87,6 +103,8 @@ class DefaultController extends Controller
      * @return array
      *
      * @Template
+     *
+     * @throws \Exception
      */
     public function listAction($page)
     {
@@ -104,12 +122,17 @@ class DefaultController extends Controller
 
         $now = new DateTime();
 
-        $documents = $this->registry->getManagerForClass(Content::class)->createQueryBuilder(Content::class)
+        $queryBuilder = $this->registry->getManagerForClass(Content::class)->createQueryBuilder(Content::class);
+
+        $documents = $queryBuilder
             ->select('contentType', 'slug', 'createdAt', 'class')
             ->field('channels.$id')->equals($channel->getId())
             ->field('disabled')->equals(false)
             ->field('publishTime.startDate')->lte($now)
             ->field('publishTime.endDate')->gte($now)
+            ->field('contentType')->in($this->contentTypeInformation->getPublishingAllowedContentTypes($channel->getId()))
+            ->addOr($queryBuilder->expr()->field('primaryChannel.$id')->equals($channel->getId()))
+            ->addOr($queryBuilder->expr()->field('primaryChannel')->exists(false))
             ->sort('_id')
             ->skip(--$page * 50000)
             ->limit(50000)

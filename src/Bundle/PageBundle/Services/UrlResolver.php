@@ -78,7 +78,7 @@ class UrlResolver
     {
         return preg_replace_callback(
             '/(#)([\s\S]+?)(#)/',
-            function ($matches) use ($page) {
+            function ($matches) {
                 return sprintf('{%s}', $matches[2]);
             },
             $page->getPath()

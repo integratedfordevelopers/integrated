@@ -19,66 +19,91 @@
 {% endblock %}
 
 {% block content %}
-
     {% block filters %}
-    <div class="filters_row"></div>
+        <div class="filters_row"></div>
     {% endblock %}
 
-<div class="row">
+    <div class="row">
+        <div class="col-md-8 push-sm-down">
+            {% block content_title %}
+                <h1 class="main-title font-regular">{% trans %}Edit{% endtrans %} {{ type.name|trans }}</h1>
+            {% endblock %}
 
-    <div class="col-md-8 push-sm-down">
-        <section class="section-white section-padding section-shadow section-radius">
-            {{ form(form, { 'style': 'horizontal', 'label_col': 4, 'widget_col': 8, 'col_size': 'sm' }) }}
+            <section class="section-white section-padding section-shadow section-radius">
+                {% block content_form %}
+                    {{ form(form, { 'style': 'horizontal', 'label_col': 4, 'widget_col': 8, 'col_size': 'sm' }) }}
+                {% endblock %}
 
-            {% if form.offsetGet('relations').count() %}
-                <input type="hidden" id="default_references" value="{{ references }}">
-                <div class="form-horizontal relations margin-top">
-                    {% for relation in form.relations %}
-                        <div class="form-group">
-                            <label class="control-label col-sm-4" for="{{ relation.vars.name }}">{{ relation.vars.attr['data-title'] }}</label>
-                            <div class="col-sm-8 relation">
-                                <div class="input-group">
-                                    <select
-                                        multiple
-                                        id="{{ relation.vars.name }}"
-                                        data-multiple="{{ relation.vars.attr['data-multiple'] }}"
-                                        data-types="{{ relation.vars.attr['data-types'] }}"
-                                        class="relation-items form-control"
-                                        style="display: none; width: 100%"
-                                    >
-                                    </select>
-                                    <span class="input-group-addon" data-add="1"></span>
+                {% block content_relations %}
+                    {% if form.offsetGet('relations').count() %}
+                        <input type="hidden" id="default_references" value="{{ references }}">
+                        <div class="form-horizontal relations margin-top">
+                            {% for relation in form.relations %}
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" for="{{ relation.vars.name }}">{{ relation.vars.attr['data-title'] }}</label>
+                                    <div class="col-sm-8 relation">
+                                        <div class="input-group">
+                                            <select
+                                                multiple
+                                                id="{{ relation.vars.name }}"
+                                                data-multiple="{{ relation.vars.attr['data-multiple'] }}"
+                                                data-types="{{ relation.vars.attr['data-types'] }}"
+                                                class="relation-items form-control"
+                                                style="display: none; width: 89%"
+                                            >
+                                            </select>
+                                            <span class="input-group-addon" data-add="1"></span>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        </section>
-    </div>
-
-    <div class="col-md-4">
-        <aside>
-
-            <div class="aside-holder section-gray section-shadow section-radius">
-
-                {% if content is defined %}
-                    {% if content.isPublished and content.getChannels|length > 0 %}
-                        <div class="aside-item-holder">
-                            <h2 class="font-medium color-green"><i class="integrate-icon-ok-circled"></i> {% trans %}Published{% endtrans %}</h2>
+                            {% endfor %}
                         </div>
                     {% endif %}
-                {% endif %}
+                {% endblock %}
+            </section>
+        </div>
 
-                <div class="aside-item-holder section-white">
-                    <div class="item_row" id="used-by"></div>
+        <div class="col-md-4">
+            <aside>
+                <div class="aside-holder section-gray section-shadow section-radius">
+                    {% block sidebar %}
+                        {% if content is defined %}
+                            {% if content.isPublished and content.getChannels|length > 0 %}
+                                <div class="aside-item-holder">
+                                    <h2 class="font-medium color-green"><i class="integrate-icon-ok-circled"></i> {% trans %}Published{% endtrans %}</h2>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+
+                        {% if content is defined %}
+                            {% if content.getChannels|length > 0 %}
+                                <div class="aside-item-holder section-white">
+                                    {% for channel in content.getChannels %}
+                                        {% set domain = channel.primaryDomain|default(channel.domains(0))|default("") %}
+                                        {% if (domain != "") %}
+                                            {% if (domain == app.request.httphost) %}
+                                                <a href="{{ integrated_url(content) }}">View on {{ channel.name }}</a><br />
+                                            {% else %}
+                                                <a href="//{{ domain }}{{ path('integrated_website_enter_session', {'sessionId': app.session.id, 'path': integrated_url(content)}) }}">View on {{ channel.name }}</a><br />
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endif %}
+
+                        <div class="aside-item-holder section-white" id="used-by">
+                        </div>
+
+                        {% block content_history %}
+                            {% if hasContentHistoryBundle %}
+                                {{ render(controller('integrated_content_history.controller.content_history:historyAction', { 'content': content })) }}
+                            {% endif %}
+                        {% endblock %}
+                    {% endblock %}
                 </div>
-
-                {% if hasContentHistoryBundle %}
-                    {{ render(controller('integrated_content_history.controller.content_history:historyAction', { 'content': content })) }}
-                {% endif %}
-            </div>
-        </aside>
+            </aside>
+        </div>
     </div>
 
     {% autoescape 'js' %}
@@ -123,24 +148,25 @@
         {% endverbatim %}
     {% endautoescape %}
 
-
-    <div class="modal fade" id="content-edit-modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">{% trans %}Unsaved changes{% endtrans %}</h4>
-                </div>
-                <div class="modal-body">
-                    <p>{% trans %}You have unsaved changes. When you leave this page your changes will be lost.{% endtrans %}</p>
-                    <p>{% trans %}Are you sure you want to leave this page?{% endtrans %}</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary live-page">{% trans %}Leave this page{% endtrans %}</button>
-                    <button type="button" class="btn btn-gray-thin" data-dismiss="modal">{% trans %}Stay on page{% endtrans %}</button>
+    {% block edit_modal %}
+        <div class="modal fade" id="content-edit-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">{% trans %}Unsaved changes{% endtrans %}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>{% trans %}You have unsaved changes. When you leave this page your changes will be lost.{% endtrans %}</p>
+                        <p>{% trans %}Are you sure you want to leave this page?{% endtrans %}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary live-page">{% trans %}Leave this page{% endtrans %}</button>
+                        <button type="button" class="btn btn-gray-thin" data-dismiss="modal">{% trans %}Stay on page{% endtrans %}</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    {% endblock %}
 {% endblock %}
 
 {% block javascript %}
@@ -164,6 +190,9 @@
 
             data.title = "{% trans %}Used by{% endtrans %}";
 
+            if (data.pagination.numFound == 0) {
+                cnt.hide();
+            }
             cnt.html(optionsTemplate(data)).find('.content_column_inner').append(paginationTemplate(data));
             cnt.find('.pagination a').click(function(ev){
                 ev.preventDefault();

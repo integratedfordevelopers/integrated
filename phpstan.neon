@@ -1,0 +1,13 @@
+includes:
+  - vendor/phpstan/phpstan-doctrine/extension.neon
+parameters:
+  ignoreErrors:
+    - '#Instantiated class Imagick not found#'
+    - '#on an unknown class Imagick#'
+    -
+      message: '#does not call parent constructor#'
+      path: */ContainerAware*
+  reportUnmatchedIgnoredErrors: false
+  level: 1
+  paths:
+    - src/

@@ -13,6 +13,7 @@ namespace Integrated\Bundle\ImageBundle\Twig\Extension;
 
 use Gregwar\ImageBundle\Extensions\ImageTwig;
 use Gregwar\ImageBundle\Services\ImageHandling;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
 use Integrated\Bundle\ImageBundle\Converter\WebFormatConverter;
 use Integrated\Bundle\ImageBundle\Factory\StorageModelFactory;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
@@ -70,6 +71,8 @@ class ImageExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction('integrated_image', [$this, 'image'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('integrated_image_credits', [$this, 'imageCredits'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('integrated_image_description', [$this, 'imageDescription'], ['is_safe' => ['html']]),
             new \Twig_SimpleFunction('image_json', [$this, 'imageJson'], ['is_safe' => ['html']]),
             new \Twig_SimpleFunction('web_image', [$this, 'webImage'], ['is_safe' => ['html']]),
             new \Twig_SimpleFunction('image', [$this, 'image'], ['is_safe' => ['html']]),
@@ -142,6 +145,8 @@ class ImageExtension extends \Twig_Extension
             if (\in_array($metadata->getExtension(), $this->mimicFormats)) {
                 return $this->imageMimicHandling->open($image);
             }
+        } elseif (filter_var($image, FILTER_VALIDATE_URL)) {
+            return $this->imageMimicHandling->open($image);
         }
 
         //detect json format
@@ -150,6 +155,48 @@ class ImageExtension extends \Twig_Extension
         }
 
         return $this->imageHandling->open($image);
+    }
+
+    /**
+     * @param $image
+     *
+     * @return string
+     */
+    public function imageCredits($image)
+    {
+        if ($image instanceof Storage) {
+            return $image->getMetadata()->getCredits();
+        }
+
+        //detect json format
+        if (strpos($image, '{') === 0) {
+            $imageData = @json_decode($image);
+
+            return $imageData->metadata->credits ?? null;
+        }
+
+        return null;
+    }
+
+    /**
+     * @param $image
+     *
+     * @return string
+     */
+    public function imageDescription($image)
+    {
+        if ($image instanceof Storage) {
+            return $image->getMetadata()->getDescription();
+        }
+
+        //detect json format
+        if (strpos($image, '{') === 0) {
+            $imageData = @json_decode($image);
+
+            return $imageData->metadata->description ?? null;
+        }
+
+        return null;
     }
 
     /**

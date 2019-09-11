@@ -85,8 +85,11 @@ abstract class Block implements BlockInterface
      */
     protected $locked = false;
 
-    public function __construct()
+    public function __construct($id = null)
     {
+        if ($id) {
+            $this->id = $id;
+        }
         $this->createdAt = new \DateTime();
         $this->publishedAt = new \DateTime();
         $this->updatedAt = new \DateTime();
@@ -98,6 +101,14 @@ abstract class Block implements BlockInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @param string $id
+     */
+    public function setId(string $id)
+    {
+        $this->id = $id;
     }
 
     /**

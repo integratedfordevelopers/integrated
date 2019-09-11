@@ -135,7 +135,12 @@ class RelatedContentBlock extends Block
 
     /**
      * @var array
-     * @Type\Field(type="Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChoice")
+     * @Type\Field(
+     *     type="Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChoice",
+     *     options={
+     *         "required"=false
+     *     }
+     * )
      */
     protected $contentTypes;
 

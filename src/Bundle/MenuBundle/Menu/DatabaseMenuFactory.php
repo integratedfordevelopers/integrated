@@ -84,10 +84,6 @@ class DatabaseMenuFactory implements FactoryInterface
         if (isset($array['name'])) {
             $menu = $this->createItem($array['name']);
 
-            if (isset($value['id'])) {
-                $menu->setId($value['id']);
-            }
-
             if (isset($array['children'])) {
                 $menu->setChildren($this->parseChildren((array) $array['children']));
             }

@@ -47,26 +47,27 @@
                     }
                 };
             }
-
         }
     </script>
-
 {% endblock style %}
 
 </head>
 <body>
+{% block form_theme %}
+    {% if form is defined %}
+        {% form_theme form with ['IntegratedContentBundle:form:form_div_layout.html.twig'] %}
+    {% endif %}
+{% endblock %}
+
 {% block header %}
     <nav class="navbar megamenu">
         <div class="container">
-
             {% include 'IntegratedContentBundle:partials:block.navigation.html.twig' %}
-
             {% include 'IntegratedContentBundle:partials:block.logo.html.twig' %}
 
             {{ render(controller('IntegratedContentBundle:Content:navdropdowns')) }}
 
             {% include 'IntegratedContentBundle:partials:block.search.html.twig' %}
-
         </div>
     </nav>
 {% endblock %}
@@ -95,7 +96,6 @@
 </div>
 
 {% block javascript %}
-
     <script src="//code.jquery.com/jquery.js"></script>
     <script src="{{ asset('/js/bootstrap.js') }}"></script>
 
@@ -103,7 +103,6 @@
     <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
 
     {% javascripts
-        '@integrated_js'
         '@IntegratedContentBundle/Resources/public/components/corejs-typeahead/dist/typeahead.bundle.js'
         '@IntegratedContentBundle/Resources/public/components/handlebars/handlebars.js'
         '@IntegratedContentBundle/Resources/public/components/modernizr/modernizr.js'
@@ -112,6 +111,7 @@
         '@IntegratedContentBundle/Resources/public/components/jquery-placeholder/jquery.placeholder.js'
         '@IntegratedContentBundle/Resources/public/components/moment/min/moment-with-locales.js'
         '@IntegratedContentBundle/Resources/public/js/scripts.js'
+        '@integrated_js'
     %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
@@ -129,7 +129,6 @@
             {% include 'IntegratedLockingBundle::locking.refresh.html.twig' with { 'lock': locking.lock } %}
         {% endif %}
     {% endblock locking %}
-
 {% endblock javascript %}
 
 </body>

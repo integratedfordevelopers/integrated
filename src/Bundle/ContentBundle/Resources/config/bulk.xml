@@ -15,7 +15,31 @@
             <argument type="service" id="integrated_content.bulk.handler_registry"/>
         </service>
 
-        <service id="integrated_content.bulk.action.relaction_add_handler_factory" class="Integrated\Bundle\ContentBundle\Bulk\RelationHandlerFactory" public="false">
+        <service id="integrated_content.bulk.action.channel_add_handler_factory" class="Integrated\Bundle\ContentBundle\Bulk\ChannelHandlerFactory" public="false">
+            <argument type="string">Integrated\Bundle\ContentBundle\Bulk\ChannelAddHandler</argument>
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="security.authorization_checker" />
+
+            <tag name="integrated_content.bulk.handler" class="Integrated\Bundle\ContentBundle\Bulk\ChannelAddHandler" />
+        </service>
+
+        <service id="integrated_content.bulk.action.channel_remove_handler_factory" class="Integrated\Bundle\ContentBundle\Bulk\ChannelHandlerFactory" public="false">
+            <argument type="string">Integrated\Bundle\ContentBundle\Bulk\ChannelRemoveHandler</argument>
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="security.authorization_checker" />
+
+            <tag name="integrated_content.bulk.handler" class="Integrated\Bundle\ContentBundle\Bulk\ChannelRemoveHandler" />
+        </service>
+
+        <service id="integrated_content.bulk.action.contenttype_handler_factory" class="Integrated\Bundle\ContentBundle\Bulk\ContentTypeHandlerFactory" public="false">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="integrated_queue.solr_indexer" />
+            <argument type="service" id="integrated_content.services.search.content.referenced" />
+
+            <tag name="integrated_content.bulk.handler" class="Integrated\Bundle\ContentBundle\Bulk\ContentTypeHandler" />
+        </service>
+
+        <service id="integrated_content.bulk.action.relation_add_handler_factory" class="Integrated\Bundle\ContentBundle\Bulk\RelationHandlerFactory" public="false">
             <argument type="string">Integrated\Bundle\ContentBundle\Bulk\RelationAddHandler</argument>
 
             <tag name="integrated_content.bulk.handler" class="Integrated\Bundle\ContentBundle\Bulk\RelationAddHandler" />
@@ -34,6 +58,14 @@
         </service>
 
         <service id="integrated_content.bulk.form.provider" alias="integrated_content.bulk.form.chian_provider" />
+
+        <service id="integrated_content.bulk.form.channel_provider" class="Integrated\Bundle\ContentBundle\Bulk\ChannelFormProvider" public="false">
+            <tag name="integrated_content.bulk.form.provider" />
+        </service>
+
+        <service id="integrated_content.bulk.form.contenttype_provider" class="Integrated\Bundle\ContentBundle\Bulk\ContentTypeFormProvider" public="false">
+            <tag name="integrated_content.bulk.form.provider" />
+        </service>
 
         <service id="integrated_content.bulk.form.relation_provider" class="Integrated\Bundle\ContentBundle\Bulk\RelationFormProvider" public="false">
             <argument type="service" id="doctrine_mongodb" />
