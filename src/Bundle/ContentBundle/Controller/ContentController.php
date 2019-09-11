@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
+use Doctrine\ODM\MongoDB\DocumentNotFoundException;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Content\Image;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
@@ -1111,16 +1112,20 @@ class ContentController extends Controller
         /** @var \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation $relation */
         foreach ($content->getRelations() as $relation) {
             foreach ($relation->getReferences() as $reference) {
-                $properties = [
-                    'id' => $reference->getId(),
-                    'title' => method_exists($reference, 'getTitle') ? $reference->getTitle() : $reference->getId(),
-                ];
+                try {
+                    $properties = [
+                        'id' => $reference->getId(),
+                        'title' => method_exists($reference, 'getTitle') ? $reference->getTitle() : $reference->getId(),
+                    ];
 
-                if ($reference instanceof Image) {
-                    $properties['image'] = $this->get('integrated_image.twig_extension')->image($reference->getFile())->cropResize(250, 250)->jpeg();
+                    if ($reference instanceof Image) {
+                        $properties['image'] = $this->get('integrated_image.twig_extension')->image($reference->getFile())->cropResize(250, 250)->jpeg();
+                    }
+
+                    $references[$relation->getRelationId()][] = $properties;
+                } catch (DocumentNotFoundException $exception) {
+                    //ignore missing references
                 }
-
-                $references[$relation->getRelationId()][] = $properties;
             }
         }
 
