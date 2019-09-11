@@ -12,10 +12,10 @@
 namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Integrated\Common\Content\ContentInterface;
 use Solarium\QueryType\Select\Result\DocumentInterface;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
-use Integrated\Common\Content\ContentInterface;
 
 /**
  * Class ContentRepository.
@@ -48,15 +48,15 @@ class ContentRepository extends DocumentRepository
 
             if ($contentItem instanceof DocumentInterface) {
                 if (!$excludeContent) {
-                    $excludeContent = $contentItem->__get('type_id');
+                    $excludeContent = $contentItem->type_id);
                 }
-                $contentIds[] = $contentItem->__get('type_id');
+                $contentIds[] = $contentItem->type_id);
             }
         }
 
         $query = $this->createQueryBuilder()
             ->field('relations.references.$id')->in($contentIds)
-            ->field('id')->notEqual($excludeContent instanceof Content ? $excludeContent->getId() : $excludeContent);
+            ->field('id')->notEqual($excludeContent->getId());
 
         if ($filterPublished) {
             $query->field('disabled')->equals(false)
