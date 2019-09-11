@@ -658,12 +658,12 @@ class ImportController extends Controller
                     }
 
                     if (!empty($row['picture_src'])) {
-                        $path = '/home/testpi-integrated/importfiles/tw/images/auteurfotos/'.$row['picture_src'];
-                        if (!file_exists($path)) {
-                            $path = '/home/testpi-integrated/importfiles/tw/images/auteurfotos/'.$row['picture_src'];
+                        $path = false;
+                        foreach ($importDefinition->getChannels() as $channel) {
+                            $path = '/home/testpi-integrated/importfiles/'.$channel->getId().'/images/auteurfotos/'.$row['picture_src'];
                         }
 
-                        if (file_exists($path)) {
+                        if ($path !== false && file_exists($path)) {
                             $storage = $this->storageManager->write(
                                 new MemoryReader(
                                     file_get_contents($path),
@@ -1184,16 +1184,21 @@ class ImportController extends Controller
 
                                 foreach ($value as $valueName) {
                                     $link = false;
+                                    $valueName = trim($valueName);
                                     if ($targetContentType->getClass() == Taxonomy::class || $targetContentType->getClass() == Article::class) {
                                         $link = $this->documentManager->getRepository(Content::class)->findOneBy(['title' => $valueName, 'contentType' => $targetContentType->getId()]);
                                     }
 
                                     if ($targetContentType->getClass() == Image::class) {
-                                        $path = '/home/testpi-integrated/importfiles/tw/images/header/original/'.$valueName;
-                                        if (!file_exists($path)) {
-                                            $path = '/home/testpi-integrated/importfiles/tw/images/header/'.$valueName;
+                                        $path = false;
+                                        foreach ($importDefinition->getChannels() as $channel) {
+                                            foreach (['header/original', 'header'] as $folder) {
+                                                if (!file_exists($path)) {
+                                                    $path = '/home/testpi-integrated/importfiles/' . $channel->getId() . '/images/' . $folder . '/' . $valueName;
+                                                }
+                                            }
                                         }
-                                        if (!file_exists($path)) {
+                                        if ($path === false || !file_exists($path)) {
                                             $result['warnings'][] = 'File not found 1st: '.$path.' for '.$newObject->getTitle();
                                             continue;
                                         }
@@ -1207,17 +1212,25 @@ class ImportController extends Controller
                                         $link->getMetadata()->set('externalId', 'header/'.$valueName);
                                         $link->getMetadata()->set('importImageBaseUrl', $importDefinition->getImageBaseUrl());
 
+                                        foreach ($importDefinition->getChannels() as $channel) {
+                                            $link->addChannel($channel);
+                                        }
+
                                         $this->documentManager->persist($link);
                                         $this->documentManager->flush();
                                     }
 
                                     if ($link instanceof Image) {
-                                        $path = '/home/testpi-integrated/importfiles/tw/images/header/original/'.$valueName;
-                                        if (!file_exists($path)) {
-                                            $path = '/home/testpi-integrated/importfiles/tw/images/header/'.$valueName;
+                                        $path = false;
+                                        foreach ($importDefinition->getChannels() as $channel) {
+                                            foreach (['header/original', 'header'] as $folder) {
+                                                if (!file_exists($path)) {
+                                                    $path = '/home/testpi-integrated/importfiles/' . $channel->getId() . '/images/' . $folder . '/' . $valueName;
+                                                }
+                                            }
                                         }
 
-                                        if (file_exists($path)) {
+                                        if ($path !== false && file_exists($path)) {
                                             $storage = $this->storageManager->write(
                                                 new MemoryReader(
                                                     file_get_contents($path),
