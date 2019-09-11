@@ -48,9 +48,10 @@ class ContentRepository extends DocumentRepository
 
             if ($contentItem instanceof DocumentInterface) {
                 if (!$excludeContent) {
-                    $excludeContent = $contentItem->type_id);
+                    $excludeContent = $contentItem->type_id;
                 }
-                $contentIds[] = $contentItem->type_id);
+
+                $contentIds[] = $contentItem->type_id;
             }
         }
 
