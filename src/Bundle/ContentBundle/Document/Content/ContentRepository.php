@@ -57,7 +57,7 @@ class ContentRepository extends DocumentRepository
 
         $query = $this->createQueryBuilder()
             ->field('relations.references.$id')->in($contentIds)
-            ->field('id')->notEqual($excludeContent->getId());
+            ->field('id')->notEqual($excludeContent instanceof Content ? $excludeContent->getId() : $excludeContent);
 
         if ($filterPublished) {
             $query->field('disabled')->equals(false)
