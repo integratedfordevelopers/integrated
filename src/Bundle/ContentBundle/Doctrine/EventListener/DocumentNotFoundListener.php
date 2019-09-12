@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ContentBundle\Doctrine\EventListener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\DocumentNotFoundEventArgs;
-use Doctrine\ODM\MongoDB\Event\OnFlushEventArgs;
 use Doctrine\ODM\MongoDB\Events;
 
 class DocumentNotFoundListener implements EventSubscriber
