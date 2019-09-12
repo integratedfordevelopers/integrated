@@ -13,9 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\MongoDB\Query\Builder;
 use Doctrine\ODM\MongoDB\DocumentRepository;
-use Exception;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Common\Content\ContentInterface;
 use Solarium\QueryType\Select\Result\DocumentInterface;
@@ -35,8 +33,9 @@ class ContentRepository extends DocumentRepository
      * @param Content|null    $excludeContent
      * @param bool            $filterPublished
      *
-     * @return Builder
-     * @throws Exception
+     * @return \Doctrine\MongoDB\Query\Builder
+     *
+     * @throws \Exception
      */
     public function getUsedBy(ArrayCollection $content, Relation $relation = null, Content $excludeContent = null, $filterPublished = true)
     {
@@ -65,8 +64,8 @@ class ContentRepository extends DocumentRepository
 
         if ($filterPublished) {
             $query->field('disabled')->equals(false)
-                ->field('publishTime.startDate')->lte(new \DateTime())
-                ->field('publishTime.endDate')->gte(new \DateTime());
+                ->field('publishTime.startDate')->lte(new DateTime())
+                ->field('publishTime.endDate')->gte(new DateTime());
         }
 
         if ($relation) {
