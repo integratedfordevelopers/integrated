@@ -11,11 +11,14 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\MongoDB\Query\Builder;
+use Doctrine\ODM\MongoDB\DocumentRepository;
+use Exception;
+use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Common\Content\ContentInterface;
 use Solarium\QueryType\Select\Result\DocumentInterface;
-use Doctrine\ODM\MongoDB\DocumentRepository;
-use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 
 /**
  * Class ContentRepository.
@@ -32,7 +35,8 @@ class ContentRepository extends DocumentRepository
      * @param Content|null    $excludeContent
      * @param bool            $filterPublished
      *
-     * @return \Doctrine\MongoDB\Query\Builder
+     * @return Builder
+     * @throws Exception
      */
     public function getUsedBy(ArrayCollection $content, Relation $relation = null, Content $excludeContent = null, $filterPublished = true)
     {
@@ -57,7 +61,7 @@ class ContentRepository extends DocumentRepository
 
         $query = $this->createQueryBuilder()
             ->field('relations.references.$id')->in($contentIds)
-            ->field('id')->notEqual($excludeContent instanceof Content ? $excludeContent->getId() : $excludeContent);
+            ->field('id')->notEqual($excludeContent);
 
         if ($filterPublished) {
             $query->field('disabled')->equals(false)
@@ -83,7 +87,7 @@ class ContentRepository extends DocumentRepository
 
         /** @var Content $document */
         foreach ($documents as $document) {
-            /** @var \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation $relation */
+            /** @var Embedded\Relation $relation */
             foreach ($document->getRelations() as $relation) {
                 foreach ($relation->getReferences() as $reference) {
                     if ($reference->getId() == $id) {
