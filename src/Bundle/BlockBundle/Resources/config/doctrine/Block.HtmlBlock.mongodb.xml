@@ -10,6 +10,13 @@
         <field name="publishedTitle" type="string" />
         <field name="useTitle" type="boolean" />
 
+        <reference-one
+            field="requiredRelation"
+            target-document="Integrated\Bundle\ContentBundle\Document\Relation\Relation"
+        />
+
+        <reference-many field="requiredItems" target-document="Integrated\Bundle\ContentBundle\Document\Content\Content" />
+
     </document>
 
 </doctrine-mongo-mapping>
