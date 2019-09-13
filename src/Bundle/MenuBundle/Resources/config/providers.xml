@@ -26,6 +26,14 @@
             <tag name="knp_menu.provider" />
         </service>
 
+        <service id="Integrated\Bundle\MenuBundle\Provider\BreadcrumbMenuProvider">
+            <argument type="service" id="knp_menu.factory" />
+            <argument type="service" id="channel.context" />
+            <argument type="service" id="request_stack" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <tag name="knp_menu.provider" />
+        </service>
+
     </services>
 
 </container>
