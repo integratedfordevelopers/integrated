@@ -113,8 +113,7 @@ class BlockHandler implements BlockHandlerInterface
         if ($block instanceof BlockRequiredItemsInterface) {
             if ($block->getRequiredRelation() && \count($block->getRequiredItems())) {
                 $allow = false;
-                if (
-                    $this->getDocument() instanceof ContentInterface
+                if ($this->getDocument() instanceof ContentInterface
                     && $relation = $this->getDocument()->getRelation($block->getRequiredRelation()->getId())
                 ) {
                     foreach ($relation->getReferences() as $reference) {
