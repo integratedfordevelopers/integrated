@@ -45,6 +45,11 @@ class User implements UserInterface
     protected $email = null;
 
     /**
+     * @var \DateTime
+     */
+    protected $createdAt;
+
+    /**
      * @var Collection | GroupInterface[]
      */
     protected $groups;
@@ -83,6 +88,7 @@ class User implements UserInterface
     {
         $this->groups = new ArrayCollection();
         $this->roles = new ArrayCollection();
+        $this->createdAt = new \DateTime();
     }
 
     /**
@@ -183,6 +189,15 @@ class User implements UserInterface
     {
         return $this->email;
     }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
 
     /**
      * @param GroupInterface $group
@@ -380,16 +395,17 @@ class User implements UserInterface
     /**
      * Get the string representation of the user object.
      *
-     * This can be use full for debugging
+     * This can be useful for debugging
      *
      * @return string
      */
     public function __toString()
     {
         return sprintf(
-            "ID: %s\nUsername: %s\nEnabled: %s\nLocked: %s\nExpired (account): %s\nExpired (credentials): %s",
+            "ID: %s\nUsername: %s\n CreatedAt: %s\nEnabled: %s\nLocked: %s\nExpired (account): %s\nExpired (credentials): %s",
             $this->getId(),
             $this->getUsername(),
+            $this->getCreatedAt(),
             $this->isEnabled() ? 'TRUE' : 'FALSE',
             $this->isAccountNonLocked() ? 'FALSE' : 'TRUE',
             $this->isAccountNonExpired() ? 'FALSE' : 'TRUE',

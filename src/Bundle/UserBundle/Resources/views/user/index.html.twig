@@ -25,8 +25,10 @@
                         <tr>
                             <th>#</th>
                             <th>Username</th>
+                            <th>Scope</th>
+                            <th>Datum aangemaakt</th>
                             <th>Relation</th>
-                            <th>Actions</th>
+                            <th>Acties</th>
                         </tr>
                     </thead>
 
@@ -37,6 +39,8 @@
                         <tr>
                             <td>{{ user.id }}</td>
                             <td>{{ user.username }}</td>
+                            <td>{{ user.scope.name }}</td>
+                            <td>{{ user.createdAt|date('d-m-y') }}</td>
                             <td>{% if user.relation.id|default %}
                                     <a href="{{ path('integrated_content_content_edit', {id: user.relation.id}) }}">{{ user.relation.name|default }} {{ user.relation.firstname|default }} {{ user.relation.lastname|default }}</a>
                                 {% endif %}
