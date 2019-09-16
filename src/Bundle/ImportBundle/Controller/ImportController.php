@@ -1012,6 +1012,15 @@ class ImportController extends Controller
                                 $href = rtrim($importDefinition->getImageBaseUrl(), '/').$href;
                             }
 
+                            if (strpos($href, '../../upload/') === 0) {
+                                $href = str_replace('../../upload/', '', $href);
+                                foreach ($importDefinition->getChannels() as $channel) {
+                                    if (file_exists('/home/testpi-integrated/importfiles/'.$channel->getId().'/'.$href)) {
+                                        $href = '/home/testpi-integrated/importfiles/'.$channel->getId().'/'.$href;
+                                    }
+                                }
+                            }
+
                             /*
                              * Wordpress
                              */
