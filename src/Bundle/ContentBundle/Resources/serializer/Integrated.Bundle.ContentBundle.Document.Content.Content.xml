@@ -9,5 +9,9 @@
                   expose="true"
                   type="DateTime"
         />
+        <property name="slug"
+                  expose="true"
+                  type="string"
+        />
     </class>
 </serializer>

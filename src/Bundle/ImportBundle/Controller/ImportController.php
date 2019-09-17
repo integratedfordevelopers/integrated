@@ -744,6 +744,161 @@ class ImportController extends Controller
                     }
 
                     $imgIds = [];
+
+                    foreach ($importDefinition->getChannels() as $channel) {
+                        if ($newObject instanceof Person) {
+                            if ($row['own_page'] != 1) {
+                                continue;
+                            }
+                        }
+                        $newObject->addChannel($channel);
+                    }
+
+                    $col = 0;
+                    foreach ($row as $name => $value) {
+                        if (!isset($fieldMapping[$data[0][$col]])) {
+                            ++$col;
+                            continue;
+                        }
+                        $mappedField = $fieldMapping[$data[0][$col]];
+
+                        if (strpos($mappedField, 'author-') === 0) {
+                            if (trim($value) != '') {
+                                foreach (explode(',', $value) as $auteur) {
+                                    if (trim($auteur) != '') {
+                                        $author = new Author();
+                                        $author->setPerson($this->addAuthor($auteur));
+                                        $newObject->addAuthor($author);
+                                    }
+                                }
+                            }
+                        }
+
+                        if (strpos($mappedField, 'meta-') === 0) {
+                            if (trim($value) != '') {
+                                $newObject->getMetadata()->set($name, $value);
+                            }
+                        }
+
+                        if (strpos($mappedField, 'connector-') === 0) {
+                            $connectorId = str_replace('connector-', '', $mappedField);
+                            $connectorConfig = $this->entityManager->getRepository(Config::class)->find($connectorId);
+
+                            $connector = new Connector();
+                            $connector->setConfigId($connectorId);
+                            $connector->setConfigAdapter($connectorConfig->getAdapter());
+                            $connector->setExternalId($value);
+
+                            $newObject->addConnector($connector);
+                        }
+
+                        if (strpos($mappedField, 'relation-') === 0) {
+                            $relationId = str_replace('relation-', '', $mappedField);
+                            $relation = $this->documentManager->getRepository(Relation::class)->find($relationId);
+
+                            $targets = $relation->getTargets();
+                            $targetContentType = $targets[0];
+                            //TODO: allow choose content type
+
+                            /*$targetContentType = $this->documentManager->find(
+                                ContentType::class,
+                                $target
+                            );*/
+
+                            if ($value) {
+                                $relation2 = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
+                                $relation2->setRelationId($relation->getId());
+                                $relation2->setRelationType($relation->getType());
+
+                                if (!\is_array($value)) {
+                                    $value = explode(',', $value);
+                                }
+
+                                foreach ($value as $valueName) {
+                                    $link = false;
+                                    $valueName = trim($valueName);
+                                    if ($targetContentType->getClass() == Taxonomy::class || $targetContentType->getClass() == Article::class) {
+                                        $link = $this->documentManager->getRepository(Content::class)->findOneBy(['title' => $valueName, 'contentType' => $targetContentType->getId()]);
+                                    }
+
+                                    if ($targetContentType->getClass() == Image::class) {
+                                        $path = false;
+                                        foreach ($importDefinition->getChannels() as $channel) {
+                                            foreach (['header/original', 'header'] as $folder) {
+                                                if (!file_exists($path)) {
+                                                    $path = '/home/testpi-integrated/importfiles/' . $channel->getId() . '/images/' . $folder . '/' . $valueName;
+                                                }
+                                            }
+                                        }
+                                        if ($path === false || !file_exists($path)) {
+                                            $result['warnings'][] = 'File not found 1st: '.$path.' for '.$newObject->getTitle();
+                                            continue;
+                                        }
+                                        $link = $this->documentManager->getRepository(Image::class)->findOneBy(['metadata.data.externalId' => 'header/'.$valueName, 'metadata.data.importImageBaseUrl' => $importDefinition->getImageBaseUrl()]);
+                                    }
+
+                                    if (!$link) {
+                                        $link = $targetContentType->create();
+                                        $link->setTitle($valueName);
+                                        $link->getMetadata()->set('importDate', date('Ymd'));
+                                        $link->getMetadata()->set('externalId', 'header/'.$valueName);
+                                        $link->getMetadata()->set('importImageBaseUrl', $importDefinition->getImageBaseUrl());
+
+                                        foreach ($importDefinition->getChannels() as $channel) {
+                                            $link->addChannel($channel);
+                                        }
+
+                                        $this->documentManager->persist($link);
+                                        $this->documentManager->flush();
+                                    }
+
+                                    if ($link instanceof Image) {
+                                        $path = false;
+                                        foreach ($importDefinition->getChannels() as $channel) {
+                                            foreach (['header/original', 'header'] as $folder) {
+                                                if (!file_exists($path)) {
+                                                    $path = '/home/testpi-integrated/importfiles/' . $channel->getId() . '/images/' . $folder . '/' . $valueName;
+                                                }
+                                            }
+                                        }
+
+                                        if ($path !== false && file_exists($path)) {
+                                            $storage = $this->storageManager->write(
+                                                new MemoryReader(
+                                                    file_get_contents($path),
+                                                    new StorageMetadata(
+                                                        pathinfo($path, PATHINFO_EXTENSION),
+                                                        mime_content_type($path),
+                                                        new ArrayCollection(),
+                                                        new ArrayCollection()
+                                                    )
+                                                )
+                                            );
+                                            $link->setFile($storage);
+
+                                            if (!empty($row['credits'])) {
+                                                $link->setCredits($row['credits']);
+                                            }
+
+                                            $this->documentManager->flush();
+
+                                            $result['warnings'][] = 'File found and added: '.$path.' for '.$link->getTitle();
+                                        } else {
+                                            $result['warnings'][] = 'File not found: '.$path.' for '.$newObject->getTitle();
+                                        }
+
+                                    }
+
+                                    $relation2->addReference($link);
+                                }
+
+                                $newObject->addRelation($relation2);
+                            }
+                        }
+
+                        ++$col;
+                    }
+
                     if ($newObject instanceof Article) {
                         $content = $newObject->getContent();
 
@@ -887,7 +1042,7 @@ class ImportController extends Controller
 
                             if (stripos($href, '.pdf') !== false
                                 && (!$importDefinition->getFileContentType()
-                                || !$importDefinition->getFileRelation())) {
+                                    || !$importDefinition->getFileRelation())) {
                                 continue;
                             }
 
@@ -1120,160 +1275,6 @@ class ImportController extends Controller
                         $html = (string) $html;
 
                         $newObject->setContent($html);
-                    }
-
-                    foreach ($importDefinition->getChannels() as $channel) {
-                        if ($newObject instanceof Person) {
-                            if ($row['own_page'] != 1) {
-                                continue;
-                            }
-                        }
-                        $newObject->addChannel($channel);
-                    }
-
-                    $col = 0;
-                    foreach ($row as $name => $value) {
-                        if (!isset($fieldMapping[$data[0][$col]])) {
-                            ++$col;
-                            continue;
-                        }
-                        $mappedField = $fieldMapping[$data[0][$col]];
-
-                        if (strpos($mappedField, 'author-') === 0) {
-                            if (trim($value) != '') {
-                                foreach (explode(',', $value) as $auteur) {
-                                    if (trim($auteur) != '') {
-                                        $author = new Author();
-                                        $author->setPerson($this->addAuthor($auteur));
-                                        $newObject->addAuthor($author);
-                                    }
-                                }
-                            }
-                        }
-
-                        if (strpos($mappedField, 'meta-') === 0) {
-                            if (trim($value) != '') {
-                                $newObject->getMetadata()->set($name, $value);
-                            }
-                        }
-
-                        if (strpos($mappedField, 'connector-') === 0) {
-                            $connectorId = str_replace('connector-', '', $mappedField);
-                            $connectorConfig = $this->entityManager->getRepository(Config::class)->find($connectorId);
-
-                            $connector = new Connector();
-                            $connector->setConfigId($connectorId);
-                            $connector->setConfigAdapter($connectorConfig->getAdapter());
-                            $connector->setExternalId($value);
-
-                            $newObject->addConnector($connector);
-                        }
-
-                        if (strpos($mappedField, 'relation-') === 0) {
-                            $relationId = str_replace('relation-', '', $mappedField);
-                            $relation = $this->documentManager->getRepository(Relation::class)->find($relationId);
-
-                            $targets = $relation->getTargets();
-                            $targetContentType = $targets[0];
-                            //TODO: allow choose content type
-
-                            /*$targetContentType = $this->documentManager->find(
-                                ContentType::class,
-                                $target
-                            );*/
-
-                            if ($value) {
-                                $relation2 = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
-                                $relation2->setRelationId($relation->getId());
-                                $relation2->setRelationType($relation->getType());
-
-                                if (!\is_array($value)) {
-                                    $value = explode(',', $value);
-                                }
-
-                                foreach ($value as $valueName) {
-                                    $link = false;
-                                    $valueName = trim($valueName);
-                                    if ($targetContentType->getClass() == Taxonomy::class || $targetContentType->getClass() == Article::class) {
-                                        $link = $this->documentManager->getRepository(Content::class)->findOneBy(['title' => $valueName, 'contentType' => $targetContentType->getId()]);
-                                    }
-
-                                    if ($targetContentType->getClass() == Image::class) {
-                                        $path = false;
-                                        foreach ($importDefinition->getChannels() as $channel) {
-                                            foreach (['header/original', 'header'] as $folder) {
-                                                if (!file_exists($path)) {
-                                                    $path = '/home/testpi-integrated/importfiles/' . $channel->getId() . '/images/' . $folder . '/' . $valueName;
-                                                }
-                                            }
-                                        }
-                                        if ($path === false || !file_exists($path)) {
-                                            $result['warnings'][] = 'File not found 1st: '.$path.' for '.$newObject->getTitle();
-                                            continue;
-                                        }
-                                        $link = $this->documentManager->getRepository(Image::class)->findOneBy(['metadata.data.externalId' => 'header/'.$valueName, 'metadata.data.importImageBaseUrl' => $importDefinition->getImageBaseUrl()]);
-                                    }
-
-                                    if (!$link) {
-                                        $link = $targetContentType->create();
-                                        $link->setTitle($valueName);
-                                        $link->getMetadata()->set('importDate', date('Ymd'));
-                                        $link->getMetadata()->set('externalId', 'header/'.$valueName);
-                                        $link->getMetadata()->set('importImageBaseUrl', $importDefinition->getImageBaseUrl());
-
-                                        foreach ($importDefinition->getChannels() as $channel) {
-                                            $link->addChannel($channel);
-                                        }
-
-                                        $this->documentManager->persist($link);
-                                        $this->documentManager->flush();
-                                    }
-
-                                    if ($link instanceof Image) {
-                                        $path = false;
-                                        foreach ($importDefinition->getChannels() as $channel) {
-                                            foreach (['header/original', 'header'] as $folder) {
-                                                if (!file_exists($path)) {
-                                                    $path = '/home/testpi-integrated/importfiles/' . $channel->getId() . '/images/' . $folder . '/' . $valueName;
-                                                }
-                                            }
-                                        }
-
-                                        if ($path !== false && file_exists($path)) {
-                                            $storage = $this->storageManager->write(
-                                                new MemoryReader(
-                                                    file_get_contents($path),
-                                                    new StorageMetadata(
-                                                        pathinfo($path, PATHINFO_EXTENSION),
-                                                        mime_content_type($path),
-                                                        new ArrayCollection(),
-                                                        new ArrayCollection()
-                                                    )
-                                                )
-                                            );
-                                            $link->setFile($storage);
-
-                                            if (!empty($row['credits'])) {
-                                                $link->setCredits($row['credits']);
-                                            }
-
-                                            $this->documentManager->flush();
-
-                                            $result['warnings'][] = 'File found and added: '.$path.' for '.$link->getTitle();
-                                        } else {
-                                            $result['warnings'][] = 'File not found: '.$path.' for '.$newObject->getTitle();
-                                        }
-
-                                    }
-
-                                    $relation2->addReference($link);
-                                }
-
-                                $newObject->addRelation($relation2);
-                            }
-                        }
-
-                        ++$col;
                     }
 
                     if (isset($row['wp:attachment_url']) && $newObject instanceof File) {
