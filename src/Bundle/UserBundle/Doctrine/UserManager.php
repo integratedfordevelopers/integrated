@@ -190,4 +190,9 @@ class UserManager implements UserManagerInterface
     {
         return $this->repository->createQueryBuilder('User');
     }
+
+    public function filterUsersBy($data)
+    {
+        // TODO
+    }
 }

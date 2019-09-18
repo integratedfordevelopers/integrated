@@ -17,7 +17,7 @@
 		<field name="password" />
 		<field name="salt" column="password_salt" nullable="true" />
 		<field name="email" unique="true" nullable="true" />
-        <field name="createdAt" type="datetime"></field>
+        <field name="createdAt" type="datetime" />
 		<field name="locked" type="boolean" />
 		<field name="enabled" type="boolean" />
 		<field name="relation" nullable="true" />
