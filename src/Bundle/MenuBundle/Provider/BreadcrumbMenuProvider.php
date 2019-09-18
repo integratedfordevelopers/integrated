@@ -14,6 +14,7 @@ namespace Integrated\Bundle\MenuBundle\Provider;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\PageBundle\Document\Page\Page;
+use Integrated\Bundle\PageBundle\Services\UrlResolver;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Knp\Menu\FactoryInterface;
@@ -50,17 +51,24 @@ class BreadcrumbMenuProvider implements MenuProviderInterface
     private $documentManager;
 
     /**
+     * @var UrlResolver
+     */
+    private $urlResolver;
+
+    /**
      * @param FactoryInterface        $factory
      * @param ChannelContextInterface $channelContext
      * @param RequestStack            $requestStack
      * @param DocumentManager         $documentManager
+     * @param UrlResolver             $urlResolver
      */
-    public function __construct(FactoryInterface $factory, ChannelContextInterface $channelContext, RequestStack $requestStack, DocumentManager $documentManager)
+    public function __construct(FactoryInterface $factory, ChannelContextInterface $channelContext, RequestStack $requestStack, DocumentManager $documentManager, UrlResolver $urlResolver)
     {
         $this->factory = $factory;
         $this->channelContext = $channelContext;
         $this->request = $requestStack->getMasterRequest();
         $this->documentManager = $documentManager;
+        $this->urlResolver = $urlResolver;
     }
 
     /**
@@ -83,7 +91,6 @@ class BreadcrumbMenuProvider implements MenuProviderInterface
 
         $parts = explode('/', $url);
         $url = '';
-        $i = 1;
         foreach ($parts as $part) {
             $url .= $part;
             $page = $this->documentManager->getRepository(Page::class)->findOneBy(['path' => ($url == '') ? '/' : $url, 'channel.$id' => $channel]);
@@ -92,11 +99,11 @@ class BreadcrumbMenuProvider implements MenuProviderInterface
                 /* @var $page Page */
                 $menu->addChild(
                     $page->getTitle(),
-                    ['uri' => $url]
+                    ['uri' => ($url == '') ? '/' : $url]
                 );
-            } elseif ($i == \count($parts)) {
+            } else {
                 $contentItem = $this->documentManager->getRepository(Content::class)->findOneBy(['slug' => $part, 'channels.$id' => $channel]);
-                if ($contentItem !== null && $contentItem->isPublished()) {
+                if ($contentItem !== null && $contentItem->isPublished() && strpos($this->urlResolver->generateUrl($contentItem), $url) !== false) {
                     /* @var $page Page */
                     $menu->addChild(
                         (string) $contentItem,
@@ -106,7 +113,6 @@ class BreadcrumbMenuProvider implements MenuProviderInterface
             }
 
             $url .= '/';
-            ++$i;
         }
 
         $this->menus[$channel] = $menu;

@@ -31,6 +31,7 @@
             <argument type="service" id="channel.context" />
             <argument type="service" id="request_stack" />
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="integrated_page.services.url_resolver" />
             <tag name="knp_menu.provider" />
         </service>
 
