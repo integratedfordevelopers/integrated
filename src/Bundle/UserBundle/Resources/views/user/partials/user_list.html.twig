@@ -1,0 +1,55 @@
+<section class="section-white section-padding section-shadow section-radius">
+    <table class="table table-hover">
+
+        <colgroup>
+            <col style="width: 3em" />
+            <col />
+            <col />
+            <col style="width: 5em" />
+        </colgroup>
+
+        <thead>
+        <tr>
+            <th>{{ knp_pagination_sortable(users, '#', 'id') }}</th>
+            <th>{{ knp_pagination_sortable(users, 'Username', 'username')}}</th>
+            <th>{{ knp_pagination_sortable(users, 'Scope', 'scope.name')}}</th>
+            <th>{{ knp_pagination_sortable(users, 'Datum aangemaaakt', 'createdAt')}}</th>
+            <th>Relation</th>
+            <th>Acties</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        {% for user in users %}
+
+            <tr>
+                <td>{{ user.id }}</td>
+
+                {% if user.enabled == false %}
+                    <td style="color: lightgrey">{{ user.username }}</td>
+                {% else %}
+                    <td>{{ user.username }}</td>
+                {% endif %}
+
+                <td>{{ user.scope.name }}</td>
+                <td>{{ user.createdAt|date('d-m-Y') }}</td>
+                <td>{% if user.relation.id|default %}
+                        <a href="{{ path('integrated_content_content_edit', {id: user.relation.id}) }}">{{ user.relation.name|default }} {{ user.relation.firstname|default }} {{ user.relation.lastname|default }}</a>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('integrated_user_user_edit', {'id': user.id}) }}" title="{% trans %}Edit{% endtrans %}"><span class="glyphicon glyphicon-edit"></span></a>
+                    <a href="{{ path('integrated_user_user_delete', {'id': user.id}) }}" title="{% trans %}Delete{% endtrans %}"><span class="glyphicon glyphicon-remove-circle"></span></a>
+                </td>
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    {{ knp_pagination_render(users) }}
+
+</section>

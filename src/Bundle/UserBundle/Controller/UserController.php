@@ -11,15 +11,16 @@
 
 namespace Integrated\Bundle\UserBundle\Controller;
 
-use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Integrated\Bundle\UserBundle\Form\Type\DeleteFormType;
+use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Integrated\Bundle\UserBundle\Form\Type\UserFilterType;
 use Integrated\Bundle\UserBundle\Form\Type\UserFormType;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -37,16 +38,20 @@ class UserController extends Controller
             throw $this->createAccessDeniedException();
         }
 
-        /** @var $paginator \Knp\Component\Pager\Paginator */
-        $paginator = $this->get('knp_paginator');
-        $paginator = $paginator->paginate(
+        $data = $request->query->get('integrated_user_filter');
+
+        $facetFilter = $this->createForm(UserFilterType::class, null);
+        $facetFilter->handleRequest($request);
+
+        $pagination = $this->getPaginator()->paginate(
             $this->getManager()->findAll(),
             $request->query->get('page', 1),
             15
         );
 
         return $this->render('IntegratedUserBundle:user:index.html.twig', [
-            'users' => $paginator,
+            'users' => $pagination,
+            'facetFilter' => $facetFilter->createView(),
         ]);
     }
 
@@ -270,5 +275,13 @@ class UserController extends Controller
         }
 
         return $this->container->get('integrated_user.user.manager');
+    }
+
+    /**
+     * @return \Knp\Component\Pager\Paginator
+     */
+    protected function getPaginator()
+    {
+        return $this->get('knp_paginator');
     }
 }
