@@ -4,6 +4,7 @@ namespace Integrated\Bundle\ImportBundle\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\UnitOfWork;
 use Doctrine\ORM\EntityManager;
 use Integrated\Bundle\ChannelBundle\Model\Config;
 use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
@@ -641,6 +642,16 @@ class ImportController extends Controller
                 $context = new DeserializationContext();
                 $target = $contentType->create();
 
+                if (isset($row['contentitem_id']) && $importDefinition->getImageBaseUrl()) {
+                    $doubleArticle = $this->documentManager->getRepository(Content::class)->findOneBy([
+                        'metadata.data.externalId' => $row['contentitem_id'],
+                        'metadata.data.importImageBaseUrl' => $importDefinition->getImageBaseUrl(),
+                    ]);
+                    if ($doubleArticle) {
+                        $result['warnings'][] = 'Item '.$row['contentitem_id'].' already imported - updating';
+                        $target = $doubleArticle;
+                    }
+                }
                 $context->setAttribute('target', $target);
 
                 try {
@@ -648,6 +659,15 @@ class ImportController extends Controller
                 } catch (RuntimeException $e) {
                     $result['errors'][] = 'Data error: '.$e->getMessage();
                     continue;
+                }
+
+                if ($importDefinition->getImageRelation()) {
+                    if ($relation = $newObject->getRelation($importDefinition->getImageRelation()->getId())) {
+                        $newObject->removeRelation($relation);
+                    }
+                    if ($relation = $newObject->getRelation('__editor_image')) {
+                        $newObject->removeRelation($relation);
+                    }
                 }
 
                 if ($newObject instanceof Person) {
@@ -694,18 +714,6 @@ class ImportController extends Controller
                         }
                     }
 
-
-
-                    if (isset($row['contentitem_id']) && $importDefinition->getImageBaseUrl()) {
-                        $doubleArticle = $this->documentManager->getRepository(Content::class)->findOneBy([
-                            'metadata.data.externalId' => $row['contentitem_id'],
-                            'metadata.data.importImageBaseUrl' => $importDefinition->getImageBaseUrl(),
-                        ]);
-                        if ($doubleArticle) {
-                            $result['warnings'][] = 'Item '.$row['contentitem_id'].' already imported';
-                            continue;
-                        }
-                    }
 
 
                     if (isset($row['wp:post_id']) && $importDefinition->getImageBaseUrl()) {
@@ -763,6 +771,8 @@ class ImportController extends Controller
                         $mappedField = $fieldMapping[$data[0][$col]];
 
                         if (strpos($mappedField, 'author-') === 0) {
+                            /** @var $newObject Article */
+                            $newObject->getAuthors()->clear();
                             if (trim($value) != '') {
                                 foreach (explode(',', $value) as $auteur) {
                                     if (trim($auteur) != '') {
@@ -794,6 +804,10 @@ class ImportController extends Controller
 
                         if (strpos($mappedField, 'relation-') === 0) {
                             $relationId = str_replace('relation-', '', $mappedField);
+                            if ($relation = $newObject->getRelation($relationId)) {
+                                $newObject->removeRelation($relation);
+                            }
+
                             $relation = $this->documentManager->getRepository(Relation::class)->find($relationId);
 
                             $targets = $relation->getTargets();
@@ -824,7 +838,7 @@ class ImportController extends Controller
                                     if ($targetContentType->getClass() == Image::class) {
                                         $path = false;
                                         foreach ($importDefinition->getChannels() as $channel) {
-                                            foreach (['header/original', 'header'] as $folder) {
+                                            foreach (['header/original', 'header', 'editie/header'] as $folder) {
                                                 if (!file_exists($path)) {
                                                     $path = '/home/testpi-integrated/importfiles/' . $channel->getId() . '/images/' . $folder . '/' . $valueName;
                                                 }
@@ -855,7 +869,7 @@ class ImportController extends Controller
                                     if ($link instanceof Image) {
                                         $path = false;
                                         foreach ($importDefinition->getChannels() as $channel) {
-                                            foreach (['header/original', 'header'] as $folder) {
+                                            foreach (['header/original', 'header', 'editie/header'] as $folder) {
                                                 if (!file_exists($path)) {
                                                     $path = '/home/testpi-integrated/importfiles/' . $channel->getId() . '/images/' . $folder . '/' . $valueName;
                                                 }
@@ -881,8 +895,6 @@ class ImportController extends Controller
                                             }
 
                                             $this->documentManager->flush();
-
-                                            $result['warnings'][] = 'File found and added: '.$path.' for '.$link->getTitle();
                                         } else {
                                             $result['warnings'][] = 'File not found: '.$path.' for '.$newObject->getTitle();
                                         }
@@ -899,8 +911,12 @@ class ImportController extends Controller
                         ++$col;
                     }
 
-                    if ($newObject instanceof Article) {
-                        $content = $newObject->getContent();
+                    if ($newObject instanceof Article || $newObject instanceof Person) {
+                        if ($newObject instanceof Article) {
+                            $content = $newObject->getContent();
+                        } else {
+                            $content = $newObject->getDescription();
+                        }
 
                         $content = preg_replace_callback(
                             '/\[gallery ids\="(.+?)".*?\]/',
@@ -1012,7 +1028,9 @@ class ImportController extends Controller
 
                         $html = HtmlDomParser::str_get_html($newHtml);
                         if ($html === false) {
-                            $result['warnings'][] = 'No valid HTML for '.$newObject->getTitle().', content ignored';
+                            if ($newHtml != '') {
+                                $result['warnings'][] = 'No valid HTML for '.(string) $newObject.', content ignored'.$newHtml;
+                            }
                             $html = HtmlDomParser::str_get_html('<p></p>');
                         }
 
@@ -1274,7 +1292,11 @@ class ImportController extends Controller
 
                         $html = (string) $html;
 
-                        $newObject->setContent($html);
+                        if ($newObject instanceof Article) {
+                            $newObject->setContent($html);
+                        } else {
+                            $newObject->setDescription($html);
+                        }
                     }
 
                     if (isset($row['wp:attachment_url']) && $newObject instanceof File) {
@@ -1358,7 +1380,23 @@ class ImportController extends Controller
                         $newObject->setSourceUrl($row['meta_yoast_wpseo_canonical']);
                     }
 
-                    $this->documentManager->persist($newObject);
+                    //premium articles
+                    if ($newObject->getMetadata()->get('premium') == 1) {
+                        if ($relation = $newObject->getRelation('premium')) {
+                            $newObject->removeRelation($relation);
+                        }
+
+                        $premiumItem = $this->documentManager->getRepository(Taxonomy::class)->findOneBy(['contentType' => 'premium', 'title' => 'Premium']);
+                        $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
+                        $relation->addReference($premiumItem);
+                        $relation->setRelationType('taxonomy');
+                        $relation->setRelationId('premium');
+                        $newObject->addRelation($relation);
+                    }
+
+                    if ($this->documentManager->getUnitOfWork()->getDocumentState($newObject) !== UnitOfWork::STATE_MANAGED) {
+                        $this->documentManager->persist($newObject);
+                    }
                     $this->documentManager->flush();
 
                     $import_id = $newObject->getId();
@@ -1421,7 +1459,7 @@ class ImportController extends Controller
     protected function addAuthor($name)
     {
         $dm = $this->documentManager;
-        $type = 'tech_persoon';
+        $type = 'maritiem_persoon';
 
         $name = trim($name);
         if (stripos($name, 'by ') === 0) {
