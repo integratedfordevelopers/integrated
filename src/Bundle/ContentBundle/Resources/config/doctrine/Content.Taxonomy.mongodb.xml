@@ -7,6 +7,7 @@
 
         <field fieldName="title" type="string" />
         <field fieldName="description" type="string" />
+        <field fieldName="rank" type="string" />
 
     </document>
 

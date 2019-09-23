@@ -16,6 +16,8 @@ use Doctrine\Common\Collections\Collection;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Content\Document\Storage\FileInterface;
+use Integrated\Common\Content\RankableInterface;
+use Integrated\Common\Content\RankTrait;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
 /**
@@ -25,8 +27,10 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
  *
  * @Type\Document("Article")
  */
-class Article extends Content
+class Article extends Content implements RankableInterface
 {
+    use RankTrait;
+
     /**
      * @var string
      * @Type\Field
