@@ -45,6 +45,12 @@ class FilterQueryProvider
                 ->setParameter('scope', $scope);
         }
 
+        if ($data['q']) {
+            $users
+                ->andWhere('User.username = :q')
+                ->setParameter('q', $data['q']);
+        }
+
         return $users->getQuery()->getResult();
     }
 }
