@@ -45,7 +45,7 @@ class User implements UserInterface
     protected $email = null;
 
     /**
-     * @var \DateTime
+     * @var \DateTimeInterface
      */
     protected $createdAt;
 
@@ -191,7 +191,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTimeInterface
      */
     public function getCreatedAt()
     {

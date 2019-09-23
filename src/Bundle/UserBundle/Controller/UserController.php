@@ -39,12 +39,13 @@ class UserController extends Controller
         }
 
         $data = $request->query->get('integrated_user_filter');
+        $queryProvider = $this->get('integrated_user.provider.filter_query');
 
         $facetFilter = $this->createForm(UserFilterType::class, null);
         $facetFilter->handleRequest($request);
 
         $pagination = $this->getPaginator()->paginate(
-            $this->getManager()->findAll(),
+            $queryProvider->filterUsersBy($data),
             $request->query->get('page', 1),
             15
         );
