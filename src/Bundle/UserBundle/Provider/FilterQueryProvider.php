@@ -24,33 +24,34 @@ class FilterQueryProvider
      *
      * @return array
      */
-    public function filterUsersBy($data)
+    public function getUsers($data)
     {
-        $groups = isset($data['groups']) ? array_filter($data['groups']) : null;
-        $scope = isset($data['scope']) ? array_filter($data['scope']) : null;
-
-        $users = $this->userManager->createQueryBuilder()->select('User');
-
-        if ($groups) {
-            $users
-                ->leftJoin('User.groups', 'Groups')
-                ->where('Groups IN (:groups)')
-                ->setParameter('groups', $groups);
+        if (!$data) {
+            return $this->userManager->findAll();
         }
 
-        if ($scope) {
-            $users
+        $queryBuilder = $this->userManager->createQueryBuilder()->select('User');
+
+        if (isset($data['groups'])) {
+            $queryBuilder
+                ->leftJoin('User.groups', 'Groups')
+                ->where('Groups IN (:groups)')
+                ->setParameter('groups', array_filter($data['groups']));
+        }
+
+        if (isset($data['scope'])) {
+            $queryBuilder
                 ->leftJoin('User.scope', 'Scope')
                 ->andWhere('Scope IN (:scope)')
-                ->setParameter('scope', $scope);
+                ->setParameter('scope', array_filter($data['scope']));
         }
 
         if ($data['q']) {
-            $users
+            $queryBuilder
                 ->andWhere('User.username = :q')
                 ->setParameter('q', $data['q']);
         }
 
-        return $users->getQuery()->getResult();
+        return $queryBuilder->getQuery()->getResult();
     }
 }

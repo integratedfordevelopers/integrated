@@ -1,4 +1,7 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
+
+{% form_theme facetFilter 'IntegratedBlockBundle:form:form_div_filter.html.twig' %}
+
 {% block content %}
     <div class="row">
         <div class="col-md-8 push-sm-down">
@@ -28,6 +31,15 @@
                             </span>
                         </div>
                     </div>
+
+                    <div class="aside-item-holder {% if facetFilter.groups|length == 0 %} hidden{% endif %}">
+                        {{ form_row(facetFilter.groups) }}
+                    </div>
+
+                    <div class="aside-item-holder {% if facetFilter.scope|length == 0 %} hidden{% endif %}">
+                        {{ form_row(facetFilter.scope) }}
+                    </div>
+
                     {{ form_end(facetFilter) }}
                 </div>
             </aside>
