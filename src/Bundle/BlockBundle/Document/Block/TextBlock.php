@@ -14,6 +14,7 @@ namespace Integrated\Bundle\BlockBundle\Document\Block;
 use Doctrine\Common\Collections\ArrayCollection;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Common\Block\BlockRequiredItemsInterface;
+use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Symfony\Component\Validator\Constraints as Assert;
 
