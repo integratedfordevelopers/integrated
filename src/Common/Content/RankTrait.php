@@ -15,6 +15,13 @@ trait RankTrait
 {
     /**
      * @var string|null
+     * @Type\Field(
+     *     type="Integrated\Bundle\FormTypeBundle\Form\Type\ContentRankType",
+     *     options={
+     *         "label" = "Rank",
+     *         "route" = "integrated_content_rank_lookup"
+     *     }
+     * )
      */
     protected $rank;
 

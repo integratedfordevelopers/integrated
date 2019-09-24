@@ -1,0 +1,9 @@
+{% spaceless %}
+{% set items = [{'id': '-first-', 'title': 'First item'}] %}
+{% for content in pager %}
+    {% set item = {'id': content.rank,'title': 'Before '~content.title|default('(no title)'), 'content': null, 'image': null} %}
+    {% set items = items|merge([item]) %}
+{% endfor %}
+{% set data = {'items': items} %}
+{% endspaceless %}
+{{ data|json_encode(constant('JSON_PRETTY_PRINT'))|raw }}

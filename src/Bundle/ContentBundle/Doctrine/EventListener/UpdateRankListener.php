@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\SlugBundle\EventListener;
+namespace Integrated\Bundle\ContentBundle\Doctrine\EventListener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
@@ -32,37 +32,12 @@ use Metadata\MetadataFactoryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
-/**
- * Doctrine ORM and ODM subscriber for slug generation.
- *
- * @author Ger Jan van den Bosch <gerjan@e-active.nl>
- */
-class SluggableSubscriber implements EventSubscriber
+class UpdateRankListener implements EventSubscriber
 {
     /**
-     * @var MetadataFactoryInterface
      */
-    private $metadataFactory;
-
-    /**
-     * @var SluggerInterface
-     */
-    private $slugger;
-
-    /**
-     * @var PropertyAccessor
-     */
-    private $propertyAccessor;
-
-    /**
-     * @param MetadataFactoryInterface $metadataFactory
-     * @param SluggerInterface         $slugger
-     */
-    public function __construct(MetadataFactoryInterface $metadataFactory, SluggerInterface $slugger)
+    public function __construct()
     {
-        $this->metadataFactory = $metadataFactory;
-        $this->slugger = $slugger;
-        $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
     }
 
     /**
@@ -94,12 +69,8 @@ class SluggableSubscriber implements EventSubscriber
                     continue;
                 }
 
-                if (!is_array($changeset)) {
-                    return null;
-                }
-
                 if ($document->getRank() == '-first-') {
-                    $min = 'aaaaaaaaaa';
+                    $min = 'a';
                     $max = $dm->createQueryBuilder(Content::class)
                         ->field('rank')->notEqual(null)
                         ->sort('rank', 1)
@@ -108,7 +79,7 @@ class SluggableSubscriber implements EventSubscriber
                         ->getQuery()
                         ->getSingleResult();
                     if ($max === null) {
-                        $max = 'ZZZZZZZZZZ';
+                        $max = 'Z';
                     } else {
                         $max = $max['rank'];
                     }
@@ -129,7 +100,7 @@ class SluggableSubscriber implements EventSubscriber
                         ->getQuery()
                         ->getSingleResult();
                     if ($min == null) {
-                        $min = 'aaaaaaaaaa';
+                        $min = 'a';
                     } else {
                         $min = $min['rank'];
                     }
@@ -147,24 +118,37 @@ class SluggableSubscriber implements EventSubscriber
     /**
      * @param string $min
      * @param string $max
-     * @param int $level
+     *
+     * @return string
      */
-    private function calculateRank(string $min, string $max, $level = 0) {
-        $char1 = $min{$level};
-        $char2 = $max{$level};
-
-        if ($char1 == $char2) {
-            return $this->calculateRank($min, $max, ($level+1));
+    private function calculateRank(string $min, string $max)
+    {
+        while (strlen($min) < strlen($max)) {
+            $min = $min.'a';
         }
 
-        if ($char1 === null) {
-            //$char1 =
+        while (strlen($max) < strlen($min)) {
+            $max = $max.'Z';
         }
-        $num1 = $this->charToNum($char1);
-        $num2 = $this->charToNum($char2);
-        if (($num2 - $num1) < 2) {
 
+        $result = '';
+        for ($i = 0; $i < strlen($min); $i++) {
+            $char1 = $min{$i};
+            $char2 = $max{$i};
+
+            $num1 = $this->charToNum($char1);
+            $num2 = $this->charToNum($char2);
+
+            $char = $this->numToChar(floor(($num1 + $num2) / 2));
+
+            $result .= $char;
         }
+
+        if ($result == $min) {
+            $result .= 'A';
+        }
+
+        return $result;
     }
 
     /**
@@ -189,7 +173,7 @@ class SluggableSubscriber implements EventSubscriber
      */
     private function numToChar(int $number)
     {
-        if ($number <= 26) {
+        if ($number < 26) {
             $number = $number + 97;
         } else {
             $number = $number + 39;

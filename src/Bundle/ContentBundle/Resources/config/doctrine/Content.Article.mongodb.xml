@@ -13,7 +13,7 @@
         <field fieldName="intro" type="string" />
         <field fieldName="description" type="string" />
         <field fieldName="content" type="string" />
-        <field fieldName="rank" type="string" />
+        <field fieldName="rank" type="string" index="true" />
 
         <embed-one
                 field="address"
