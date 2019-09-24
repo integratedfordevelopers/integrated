@@ -11,7 +11,7 @@
 
 namespace Integrated\Common\Locks;
 
-use Datetime;
+use DateTime;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

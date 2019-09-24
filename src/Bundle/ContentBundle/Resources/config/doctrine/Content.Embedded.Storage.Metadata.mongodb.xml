@@ -7,6 +7,8 @@
 
         <field fieldName="extension" type="string" />
         <field fieldName="mimeType" type="string" />
+        <field fieldName="credits" type="string" />
+        <field fieldName="description" type="string" />
         <field fieldName="headers" type="hash" />
         <field fieldName="metadata" type="hash" />
 

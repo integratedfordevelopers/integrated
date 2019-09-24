@@ -60,17 +60,19 @@
 </script>
 <script id="used-by-template" type="text/x-handlebars-template">
     {{#hasItems pagination.numFound}}
-    <h3 class="title">{{this.title}} <small>({{pagination.numFound}})</small></h3>
-    <div class="content_column_inner">
-        <ul class="custom_list li_with_margin">
-            {{#each items}}
-            <li>
-                <a href="{{this.href}}" target="_blank">
-                    {{this.title}}
-                </a>
-            </li>
-            {{/each}}
-        </ul>
+    <div class="item_row">
+        <h3 class="title">{{this.title}} <small>({{pagination.numFound}})</small></h3>
+        <div class="content_column_inner">
+            <ul class="custom_list li_with_margin">
+                {{#each items}}
+                <li>
+                    <a href="{{this.href}}" target="_blank">
+                        {{this.title}}
+                    </a>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
     </div>
     {{/hasItems}}
 </script>

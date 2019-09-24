@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Tests\Diff;
+namespace Integrated\Bundle\ContentHistoryBundle\Tests\Diff;
 
 use Integrated\Bundle\ContentHistoryBundle\Diff\ArrayComparer;
 

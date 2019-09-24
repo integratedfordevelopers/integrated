@@ -104,6 +104,14 @@ abstract class Block implements BlockInterface
     }
 
     /**
+     * @param string $id
+     */
+    public function setId(string $id)
+    {
+        $this->id = $id;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getTitle()

@@ -10,7 +10,7 @@
         "jquery-placeholder": "~2.1",
         "bourbon": "~4.2.3",
         "tinymce": "~4.1.10",
-        "select2": "~4.0.0",
+        "select2": "4.0.5",
         "moment": "~2.17"
     }
 }

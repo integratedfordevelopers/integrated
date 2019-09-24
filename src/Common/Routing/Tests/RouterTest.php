@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Routing\Queue\Tests;
+namespace Integrated\Common\Routing\Tests;
 
 use Integrated\Common\Routing\Router;
 use stdClass;
