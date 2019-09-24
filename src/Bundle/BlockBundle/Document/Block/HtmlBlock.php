@@ -102,7 +102,7 @@ class HtmlBlock extends Block implements BlockRequiredItemsInterface
     }
 
     /**
-     * @return ?Relation
+     * @return Relation|null
      */
     public function getRequiredRelation()
     {
@@ -110,15 +110,15 @@ class HtmlBlock extends Block implements BlockRequiredItemsInterface
     }
 
     /**
-     * @param ?Relation $requiredRelation
+     * @param Relation|null $requiredRelation
      */
-    public function setRequiredRelation($requiredRelation)
+    public function setRequiredRelation(?Relation $requiredRelation)
     {
         $this->requiredRelation = $requiredRelation;
     }
 
     /**
-     * @return array
+     * @return ContentInterface[]
      */
     public function getRequiredItems()
     {
@@ -126,15 +126,11 @@ class HtmlBlock extends Block implements BlockRequiredItemsInterface
     }
 
     /**
-     * @param array $requiredItems
-     *
-     * @return $this
+     * @param ContentInterface[] $requiredItems
      */
     public function setRequiredItems(array $requiredItems)
     {
         $this->requiredItems = new ArrayCollection($requiredItems);
-
-        return $this;
     }
 
     /**

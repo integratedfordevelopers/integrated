@@ -12,20 +12,21 @@
 namespace Integrated\Common\Block;
 
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
+use Integrated\Common\Content\ContentInterface;
 
 interface BlockRequiredItemsInterface
 {
     /**
      * Get the (optional) required relation.
      *
-     * @return ?Relation
+     * @return Relation|null
      */
     public function getRequiredRelation();
 
     /**
      * Get the (optional) required items.
      *
-     * @return array
+     * @return ContentInterface[]
      */
     public function getRequiredItems();
 }
