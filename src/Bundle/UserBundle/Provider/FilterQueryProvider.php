@@ -2,6 +2,7 @@
 
 namespace Integrated\Bundle\UserBundle\Provider;
 
+use Doctrine\ORM\Query\ResultSetMapping;
 use Integrated\Bundle\UserBundle\Doctrine\UserManager;
 
 class FilterQueryProvider
@@ -53,5 +54,22 @@ class FilterQueryProvider
         }
 
         return $queryBuilder->getQuery()->getResult();
+    }
+
+    public function getGroupChoices($data)
+    {
+        $objectManager = $this->userManager->getObjectManager();
+
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('name', 'name');
+
+        $sql = 'SELECT name FROM security_groups';
+
+        $query = $objectManager->createNativeQuery($sql, $rsm);
+        $query->getResult();
+    }
+
+    public function getScopeChoices($data)
+    {
     }
 }
