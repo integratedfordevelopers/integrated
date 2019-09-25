@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\FormTypeBundle\Form\Type;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Integrated\Bundle\FormTypeBundle\Form\DataTransformer\ContentRankTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -53,18 +52,6 @@ class ContentRankType extends AbstractType
         $this->repositoryClass = $repositoryClass;
         $this->route = $route;
         $this->params = $params;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        /*
-        $builder->addViewTransformer(
-            new ContentRankTransformer($this->dm->getRepository($options['repository_class'])),
-            true
-        );*/
     }
 
     /**
