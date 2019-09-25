@@ -671,7 +671,10 @@ class ImportController extends Controller
                 }
 
                 if ($newObject instanceof Person) {
-                    if (empty($newObject->getFirstName()) && strpos($newObject->getLastName(), ' ') !== false) {
+                    if (strpos($newObject->getLastName(), ' ') !== false
+                    &&
+                        (empty($newObject->getFirstName()) ||  strpos($newObject->getLastName(), $newObject->getFirstName()) !== false)
+                    ) {
                         list($firstName, $lastName) = explode(' ', $newObject->getLastName(), 2);
                         $newObject->setFirstName($firstName);
                         $newObject->setLastName($lastName);
@@ -777,7 +780,7 @@ class ImportController extends Controller
                                 foreach (explode(',', $value) as $auteur) {
                                     if (trim($auteur) != '') {
                                         $author = new Author();
-                                        $author->setPerson($this->addAuthor($auteur));
+                                        $author->setPerson($this->addAuthor($auteur, $importDefinition->getImageBaseUrl()));
                                         $newObject->addAuthor($author);
                                     }
                                 }
@@ -892,6 +895,14 @@ class ImportController extends Controller
 
                                             if (!empty($row['credits'])) {
                                                 $link->setCredits($row['credits']);
+                                            }
+
+                                            $imageAltName = str_replace('_src', '_alt', $name);
+                                            if (!empty($row[$imageAltName])) {
+                                                $link->setDescription($row[$imageAltName]);
+                                            }
+                                            if (!empty($row['image_footer'])) {
+                                                $link->setDescription($row['image_footer']);
                                             }
 
                                             $this->documentManager->flush();
@@ -1456,7 +1467,7 @@ class ImportController extends Controller
         return $form;
     }
 
-    protected function addAuthor($name)
+    protected function addAuthor($name, $baseUrl)
     {
         $dm = $this->documentManager;
         $type = 'maritiem_persoon';
@@ -1487,8 +1498,18 @@ class ImportController extends Controller
             ->field('contentType')->equals($type)
             ->field('firstName')->equals($firstname)
             ->field('lastName')->equals($lastname)
+            ->field('metadata.data.importImageBaseUrl')->equals($baseUrl)
             ->getQuery()
             ->getSingleResult();
+        if (!$person) {
+            $person = $dm
+                ->createQueryBuilder(Person::class)
+                ->field('contentType')->equals($type)
+                ->field('firstName')->equals($firstname)
+                ->field('lastName')->equals($lastname)
+                ->getQuery()
+                ->getSingleResult();
+        }
 
         if (!$person) {
             $person = new Person();
