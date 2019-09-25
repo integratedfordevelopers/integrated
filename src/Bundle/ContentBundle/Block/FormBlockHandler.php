@@ -112,7 +112,7 @@ class FormBlockHandler extends BlockHandler
 
         $content = $contentType->create();
 
-        $this->eventDispatcher->dispatch(FormBlockEvent::PRE_LOAD, new FormBlockEvent($content));
+        $this->eventDispatcher->dispatch(FormBlockEvent::PRE_LOAD, new FormBlockEvent($content, $block));
 
         $form = $this->createForm($content, ['method' => 'post', 'content_type' => $contentType], $block);
 
@@ -126,12 +126,12 @@ class FormBlockHandler extends BlockHandler
                     $content->addChannel($channel);
                 }
 
-                $this->eventDispatcher->dispatch(FormBlockEvent::PRE_FLUSH, new FormBlockEvent($content));
+                $this->eventDispatcher->dispatch(FormBlockEvent::PRE_FLUSH, new FormBlockEvent($content, $block));
 
                 $this->documentManager->persist($content);
                 $this->documentManager->flush();
 
-                $this->eventDispatcher->dispatch(FormBlockEvent::POST_FLUSH, new FormBlockEvent($content));
+                $this->eventDispatcher->dispatch(FormBlockEvent::POST_FLUSH, new FormBlockEvent($content, $block));
 
                 $data = $request->request->get($form->getName());
 

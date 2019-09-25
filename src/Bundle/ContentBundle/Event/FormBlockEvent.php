@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Event;
 
+use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Content\ContentInterface;
 use Symfony\Component\EventDispatcher\Event;
 
@@ -23,16 +24,22 @@ class FormBlockEvent extends Event
     const POST_FLUSH = 'form_block.post_flush';
 
     /**
-     * @var string
+     * @var ContentInterface
      */
     protected $content;
 
     /**
+     * @var BlockInterface|null
+     */
+    protected $block;
+
+    /**
      * @param ContentInterface $content
      */
-    public function __construct($content)
+    public function __construct($content, $block = null)
     {
         $this->content = $content;
+        $this->block = $block;
     }
 
     /**
@@ -51,6 +58,26 @@ class FormBlockEvent extends Event
     public function setContent($content)
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * @return BlockInterface|null
+     */
+    public function getBlock()
+    {
+        return $this->block;
+    }
+
+    /**
+     * @param BlockInterface|null $block
+     *
+     * @return $this
+     */
+    public function setBlock(?BlockInterface $block)
+    {
+        $this->block = $block;
 
         return $this;
     }
