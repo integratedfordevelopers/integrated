@@ -71,7 +71,7 @@ class ContentChoicesTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
-        if (null === $value) {
+        if (null === $value || $value == '') {
             return [];
         } elseif (\is_array($value)) {
             $documents = $ids = [];
