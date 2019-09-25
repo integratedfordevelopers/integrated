@@ -265,7 +265,6 @@
     {% integrated_javascripts mode='prepend'
     'bundles/integratedformtype/js/content_choice.js' %}
     {% endintegrated_javascripts %}
-
     {% set attr = attr|merge({
         'data-ajax-url' : path(route, params),
         'data-allow-clear' : (allow_clear ? 'true' : 'false'),
@@ -288,15 +287,14 @@
     {% endintegrated_javascripts %}
 
     {% set attr = attr|merge({
-        'data-ajax-url' : path(route, params),
+        'data-ajax-url' : path(route, params|merge({'current': data})),
         'data-allow-clear' : (allow_clear ? 'true' : 'false'),
         'class' : (attr.class|default('') ~ ' form-control integrated_content_choice')|trim
     }) %}
     {% spaceless %}
         <select {{ block('widget_attributes') }}>
             {% if data %}
-                {# todo publishable title INTEGRATED-364 #}
-                <option value="{{ data.id }}" selected="selected">{{ data }}</option>
+                <option value="{{ data }}" selected="selected">Keep current position</option>
             {% endif %}
         </select>
     {% endspaceless %}

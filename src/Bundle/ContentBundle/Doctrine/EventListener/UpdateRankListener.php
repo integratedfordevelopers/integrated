@@ -12,30 +12,12 @@
 namespace Integrated\Bundle\ContentBundle\Doctrine\EventListener;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ObjectRepository;
-use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\DocumentRepository;
 use Doctrine\ODM\MongoDB\Event\OnFlushEventArgs;
-use Doctrine\ODM\MongoDB\UnitOfWork as ODMUnitOfWork;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\UnitOfWork as ORMUnitOfWork;
-use Integrated\Bundle\ContentBundle\Document\Content\Article;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
-use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
-use Integrated\Bundle\SlugBundle\Mapping\Metadata\PropertyMetadata;
-use Integrated\Bundle\SlugBundle\Slugger\SluggerInterface;
 use Integrated\Common\Content\RankableInterface;
-use Metadata\MetadataFactoryInterface;
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class UpdateRankListener implements EventSubscriber
 {
-    /**
-     */
     public function __construct()
     {
     }
@@ -46,7 +28,7 @@ class UpdateRankListener implements EventSubscriber
     public function getSubscribedEvents()
     {
         return [
-            'onFlush'
+            'onFlush',
         ];
     }
 
@@ -70,7 +52,7 @@ class UpdateRankListener implements EventSubscriber
                 }
 
                 if ($document->getRank() == '-first-') {
-                    $min = 'a';
+                    $min = 'A';
                     $max = $dm->createQueryBuilder(Content::class)
                         ->field('rank')->notEqual(null)
                         ->sort('rank', 1)
@@ -79,32 +61,37 @@ class UpdateRankListener implements EventSubscriber
                         ->getQuery()
                         ->getSingleResult();
                     if ($max === null) {
-                        $max = 'Z';
+                        $max = 'z';
                     } else {
                         $max = $max['rank'];
                     }
 
                     $document->setRank($this->calculateRank($min, $max));
                 } else {
+                    if (preg_match('/[^a-zA-Z]/', $document->getRank())) {
+                        dump(preg_match('/[^a-zA-Z]/', $document->getRank()));
+                        throw new \Exception('Rank can only contain [a-zA-Z]: '.$document->getRank());
+                    }
+
                     $rankDocument = $dm->getRepository(Content::class)->findOneBy(['rank' => $document->getRank()]);
                     if ($rankDocument === null || $rankDocument->getId() == $document->getId()) {
                         continue;
                     }
 
-                    $min = $dm->createQueryBuilder(Content::class)
+                    $min = $document->getRank();
+                    $max = $dm->createQueryBuilder(Content::class)
                         ->field('rank')->notEqual(null)
-                        ->field('rank')->lt($document->getRank())
-                        ->sort('rank', -1)
+                        ->field('rank')->gt($document->getRank())
+                        ->sort('rank', 1)
                         ->select('rank')
                         ->hydrate(false)
                         ->getQuery()
                         ->getSingleResult();
-                    if ($min == null) {
-                        $min = 'a';
+                    if ($max == null) {
+                        $max = 'z';
                     } else {
-                        $min = $min['rank'];
+                        $max = $max['rank'];
                     }
-                    $max = $document->getRank();
 
                     $document->setRank($this->calculateRank($min, $max));
                 }
@@ -124,11 +111,11 @@ class UpdateRankListener implements EventSubscriber
     private function calculateRank(string $min, string $max)
     {
         while (strlen($min) < strlen($max)) {
-            $min = $min.'a';
+            $min = $min.'A';
         }
 
         while (strlen($max) < strlen($min)) {
-            $max = $max.'Z';
+            $max = $max.'z';
         }
 
         $result = '';
@@ -145,7 +132,7 @@ class UpdateRankListener implements EventSubscriber
         }
 
         if ($result == $min) {
-            $result .= 'A';
+            $result .= 'a';
         }
 
         return $result;
@@ -153,15 +140,16 @@ class UpdateRankListener implements EventSubscriber
 
     /**
      * @param string $char
+     *
      * @return int
      */
     private function charToNum(string $char)
     {
         $number = ord($char);
         if ($number >= 97) {
-            $number = $number - 97;
+            $number = $number - 71;
         } else {
-            $number = $number - 39;
+            $number = $number - 65;
         }
 
         return $number;
@@ -169,14 +157,15 @@ class UpdateRankListener implements EventSubscriber
 
     /**
      * @param int $number
+     *
      * @return string
      */
     private function numToChar(int $number)
     {
         if ($number < 26) {
-            $number = $number + 97;
+            $number = $number + 65;
         } else {
-            $number = $number + 39;
+            $number = $number + 71;
         }
 
         return chr($number);

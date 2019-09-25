@@ -186,6 +186,15 @@ class ContentProvider
             }
         }
 
+        $hasFields = $request->query->get('hasFields');
+        if (\is_array($hasFields)) {
+            foreach ($hasFields as $field) {
+                $query
+                    ->createFilterQuery('hasField_'.$field)
+                    ->setQuery($field.':[* TO *]');
+            }
+        }
+
         // sorting
         $sort_default = 'changed';
         $sort_options = [
@@ -195,7 +204,7 @@ class ContentProvider
             'time' => ['name' => 'time', 'field' => 'pub_time', 'label' => 'publication date', 'order' => 'desc'],
             'title' => ['name' => 'title', 'field' => 'title_sort', 'label' => 'title', 'order' => 'asc'],
             'random' => ['name' => 'random', 'field' => 'random_'.mt_rand(), 'label' => 'random', 'order' => 'desc'],
-            'rank' => ['name' => 'rank', 'field' => 'rank_sort', 'label' => 'rank', 'order' => 'asc'],
+            'rank' => ['name' => 'rank', 'field' => 'rank', 'label' => 'rank', 'order' => 'asc'],
         ];
         $order_options = [
             'asc' => 'asc',
