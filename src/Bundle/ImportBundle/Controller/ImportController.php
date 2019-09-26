@@ -1075,7 +1075,7 @@ class ImportController extends Controller
                                 && stripos($href, '.gif') === false
                                 && stripos($href, '.pdf') === false
                             ) {
-                                //continue;
+                                continue;
                             }
 
                             if (stripos($href, '.pdf') !== false
