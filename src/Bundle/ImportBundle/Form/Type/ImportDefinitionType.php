@@ -79,6 +79,11 @@ class ImportDefinitionType extends AbstractType
                 'choice_value' => 'id',
             ]
         );
+        $builder->add(
+            'authorContentType',
+            ContentTypeChoice::class,
+            ['label' => 'Content type for author', 'required' => false, 'multiple' => false]
+        );
         $builder->add('connection_url', TextType::class, ['label' => 'Database connection URL', 'required' => false]);
         $builder->add('connection_query', TextareaType::class, ['label' => 'Database query', 'required' => false]);
     }

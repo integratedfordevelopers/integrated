@@ -87,6 +87,11 @@ class ImportDefinition
     /**
      * @var string
      */
+    private $authorContentType;
+
+    /**
+     * @var string
+     */
     private $connectionUrl;
 
     /**
@@ -367,6 +372,22 @@ class ImportDefinition
     public function setFileRelation(?Relation $fileRelation): void
     {
         $this->fileRelation = $fileRelation;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthorContentType(): ?string
+    {
+        return $this->authorContentType;
+    }
+
+    /**
+     * @param string $authorContentType
+     */
+    public function setAuthorContentType(?string $authorContentType): void
+    {
+        $this->authorContentType = $authorContentType;
     }
 
     public function __clone()

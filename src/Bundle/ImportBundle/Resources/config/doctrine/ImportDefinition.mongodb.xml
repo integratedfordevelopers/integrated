@@ -14,6 +14,7 @@
         <field fieldName="imageBaseUrl" type="string"/>
         <field fieldName="imageContentType" type="string"/>
         <field fieldName="fileContentType" type="string"/>
+        <field fieldName="authorContentType" type="string"/>
         <field fieldName="connectionUrl" type="string"/>
         <field fieldName="connectionQuery" type="string"/>
 

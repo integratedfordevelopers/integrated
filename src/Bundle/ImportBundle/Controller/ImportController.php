@@ -780,7 +780,7 @@ class ImportController extends Controller
                                 foreach (explode(',', $value) as $auteur) {
                                     if (trim($auteur) != '') {
                                         $author = new Author();
-                                        $author->setPerson($this->addAuthor($auteur, $importDefinition->getImageBaseUrl()));
+                                        $author->setPerson($this->addAuthor($auteur, $importDefinition->getImageBaseUrl(), $importDefinition->getAuthorContentType()));
                                         $newObject->addAuthor($author);
                                     }
                                 }
@@ -1060,13 +1060,22 @@ class ImportController extends Controller
                             }
                             $title = false;
 
+                            if (strpos($href, '../../upload/') === 0) {
+                                $href = str_replace('../../upload/', '', $href);
+                                foreach ($importDefinition->getChannels() as $channel) {
+                                    if (file_exists('/home/testpi-integrated/importfiles/'.$channel->getId().'/'.$href)) {
+                                        $href = '/home/testpi-integrated/importfiles/'.$channel->getId().'/'.$href;
+                                    }
+                                }
+                            }
+
                             if (stripos($href, '.png') === false
                                 && stripos($href, '.jpg') === false
                                 && stripos($href, '.jpeg') === false
                                 && stripos($href, '.gif') === false
                                 && stripos($href, '.pdf') === false
                             ) {
-                                continue;
+                                //continue;
                             }
 
                             if (stripos($href, '.pdf') !== false
@@ -1086,9 +1095,9 @@ class ImportController extends Controller
                                 }
                             }
 
-                            if (!$title && stripos($href, '.pdf') !== false) {
+                            if (!$title) {
                                 $title = basename($href);
-                                $title = str_replace('.pdf', '', $title);
+                                $title = str_replace('.'.pathinfo($href, PATHINFO_EXTENSION), '', $title);
                             }
 
                             if ($title) {
@@ -1113,7 +1122,7 @@ class ImportController extends Controller
                                     )
                                 );
 
-                                if (stripos($href, '.pdf') !== false) {
+                                //if (stripos($href, '.pdf') !== false) {
                                     $contentTT = $importDefinition->getFileContentType();
                                     $file = $this->documentManager->getRepository(File::class)->findOneBy([
                                         'contentType' => $contentTT,
@@ -1137,8 +1146,9 @@ class ImportController extends Controller
                                     $relation->addReference($file);
                                     $newObject->addRelation($relation);
 
-                                    $element->href = '/storage/'.$file->getId().'.pdf';
-                                } else {
+                                    $element->href = '/storage/'.$file->getId().'.'.pathinfo($href, PATHINFO_EXTENSION);
+
+                                /*} else {
                                     $file = $this->documentManager->getRepository(Image::class)->findOneBy([
                                         'contentType' => $importDefinition->getImageContentType(),
                                         'file.identifier' => $storage->getIdentifier(),
@@ -1174,7 +1184,7 @@ class ImportController extends Controller
                                     $element->outertext = '<img src="/storage/'.$file->getId().'.pdf"'
                                         .'class="img-responsive" title="'.htmlspecialchars($title).'"'
                                         .'alt="'.htmlspecialchars($title).'" data-integrated-id="'.$file->getId().'" />';
-                                }
+                                }*/
                             }
                         }
 
@@ -1467,10 +1477,13 @@ class ImportController extends Controller
         return $form;
     }
 
-    protected function addAuthor($name, $baseUrl)
+    protected function addAuthor($name, $baseUrl, $type)
     {
+        if ($type === null) {
+            throw new \Exception('Please choose an author content type');
+        }
+
         $dm = $this->documentManager;
-        $type = 'maritiem_persoon';
 
         $name = trim($name);
         if (stripos($name, 'by ') === 0) {
