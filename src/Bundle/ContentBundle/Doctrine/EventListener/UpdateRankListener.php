@@ -34,6 +34,8 @@ class UpdateRankListener implements EventSubscriber
 
     /**
      * @param OnFlushEventArgs $args
+     *
+     * @throws \Exception
      */
     public function onFlush(OnFlushEventArgs $args)
     {
@@ -57,6 +59,7 @@ class UpdateRankListener implements EventSubscriber
                         ->field('rank')->notEqual(null)
                         ->sort('rank', 1)
                         ->select('rank')
+                        ->limit(1)
                         ->hydrate(false)
                         ->getQuery()
                         ->getSingleResult();
@@ -69,7 +72,6 @@ class UpdateRankListener implements EventSubscriber
                     $document->setRank($this->calculateRank($min, $max));
                 } else {
                     if (preg_match('/[^a-zA-Z]/', $document->getRank())) {
-                        dump(preg_match('/[^a-zA-Z]/', $document->getRank()));
                         throw new \Exception('Rank can only contain [a-zA-Z]: '.$document->getRank());
                     }
 
@@ -84,6 +86,7 @@ class UpdateRankListener implements EventSubscriber
                         ->field('rank')->gt($document->getRank())
                         ->sort('rank', 1)
                         ->select('rank')
+                        ->limit(1)
                         ->hydrate(false)
                         ->getQuery()
                         ->getSingleResult();
@@ -110,18 +113,18 @@ class UpdateRankListener implements EventSubscriber
      */
     private function calculateRank(string $min, string $max)
     {
-        while (strlen($min) < strlen($max)) {
+        while (\strlen($min) < \strlen($max)) {
             $min = $min.'A';
         }
 
-        while (strlen($max) < strlen($min)) {
+        while (\strlen($max) < \strlen($min)) {
             $max = $max.'z';
         }
 
         $result = '';
-        for ($i = 0; $i < strlen($min); $i++) {
-            $char1 = $min{$i};
-            $char2 = $max{$i};
+        for ($i = 0; $i < \strlen($min); ++$i) {
+            $char1 = $min[$i];
+            $char2 = $max[$i];
 
             $num1 = $this->charToNum($char1);
             $num2 = $this->charToNum($char2);
@@ -145,7 +148,7 @@ class UpdateRankListener implements EventSubscriber
      */
     private function charToNum(string $char)
     {
-        $number = ord($char);
+        $number = \ord($char);
         if ($number >= 97) {
             $number = $number - 71;
         } else {
@@ -168,6 +171,6 @@ class UpdateRankListener implements EventSubscriber
             $number = $number + 71;
         }
 
-        return chr($number);
+        return \chr($number);
     }
 }
