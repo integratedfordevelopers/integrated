@@ -58,15 +58,37 @@ class FilterQueryProvider
 
     public function getGroupChoices($data)
     {
+        $sql = 'SELECT s.id, s.name, count(g.group_id) as count FROM security_groups s LEFT JOIN security_user_groups g ON s.id = g.group_id WHERE g.user_id IN (:users) GROUP BY g.group_id HAVING count > 0';
+
+        $query = $this->userManager->getObjectManager()->createNativeQuery($sql, $this->getMapping());
+
+        return $this->prepareChoices($query, $data);
+    }
+
+    public function getScopeChoices($data)
+    {
+        $sql = 'SELECT s.id, s.name, count(u.scope) as count FROM security_scopes s LEFT JOIN security_users u ON s.id = u.scope WHERE u.id IN (:users) GROUP BY u.scope HAVING count > 0';
+
+        $query = $this->userManager->getObjectManager()->createNativeQuery($sql, $this->getMapping());
+
+        return $this->prepareChoices($query, $data);
+    }
+
+    private function getMapping()
+    {
         $mapping = new ResultSetMapping();
         $mapping->addScalarResult('id', 'id');
         $mapping->addScalarResult('count', 'count');
         $mapping->addScalarResult('name', 'name');
 
-        $query = $this->userManager->getObjectManager()->createNativeQuery(
-            'SELECT s.id, s.name, count(g.group_id) as count FROM security_groups s LEFT JOIN security_user_groups g ON s.id = g.group_id WHERE g.user_id IN (:users) GROUP BY g.group_id HAVING count > 0', $mapping);
+        return $mapping;
+    }
 
-        $query->setParameter('users', array_map(function($data) { return $data->getId(); }, $data));
+    private function prepareChoices($query, $data)
+    {
+        $query->setParameter('users', array_map(function ($data) {
+            return $data->getId();
+        }, $data));
 
         $choices = [];
         foreach ($query->getResult() as $result) {
@@ -74,9 +96,5 @@ class FilterQueryProvider
         }
 
         return $choices;
-    }
-
-    public function getScopeChoices($data)
-    {
     }
 }
