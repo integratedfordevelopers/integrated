@@ -198,7 +198,6 @@ class User implements UserInterface
         return $this->createdAt;
     }
 
-
     /**
      * @param GroupInterface $group
      */
