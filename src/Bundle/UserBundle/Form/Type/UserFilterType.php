@@ -33,17 +33,18 @@ class UserFilterType extends AbstractType
 
         $builder
             ->add('q', TextType::class, [
-                'attr' => ['placeholder' => 'Filter username',],])
+                'attr' => ['placeholder' => 'Filter username'],
+            ])
             ->add('groups', ChoiceType::class, [
                 'choices' => $this->filterQueryProvider->getGroupChoices($options['users']),
                 'multiple' => true,
                 'expanded' => true,
-                ])
+            ])
             ->add('scope', ChoiceType::class, [
                 'choices' => $this->filterQueryProvider->getScopeChoices($options['users']),
                 'multiple' => true,
                 'expanded' => true,
-                ]);
+            ]);
     }
 
     /**

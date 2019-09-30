@@ -62,16 +62,16 @@ class FilterQueryProvider
 
         $query = $this->userManager->getObjectManager()->createNativeQuery($sql, $this->getMapping());
 
-        return $this->prepareChoices($query, $data);
+        return $this->formatChoices($query, $data);
     }
 
     public function getScopeChoices($data)
     {
-        $sql = 'SELECT s.id, s.name, count(u.scope) as count FROM security_scopes s LEFT JOIN security_users u ON s.id = u.scope WHERE u.id IN (:users) GROUP BY u.scope HAVING count > 0';
+        $sql = 'SELECT s.id, s.name, count(u.scope) as count FROM security_scopes s LEFT JOIN security_users u ON s.id = u.scope WHERE u.id IN (:users) GROUP BY u.scope';
 
         $query = $this->userManager->getObjectManager()->createNativeQuery($sql, $this->getMapping());
 
-        return $this->prepareChoices($query, $data);
+        return $this->formatChoices($query, $data);
     }
 
     private function getMapping()
@@ -84,7 +84,7 @@ class FilterQueryProvider
         return $mapping;
     }
 
-    private function prepareChoices($query, $data)
+    private function formatChoices($query, $data)
     {
         $query->setParameter('users', array_map(function ($data) {
             return $data->getId();
