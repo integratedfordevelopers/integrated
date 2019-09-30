@@ -47,10 +47,10 @@ class FilterQueryProvider
                 ->setParameter('scope', array_filter($data['scope']));
         }
 
-        if ($data['q']) {
+        if (isset($data['q'])) {
             $queryBuilder
-                ->andWhere('User.username = :q')
-                ->setParameter('q', $data['q']);
+                ->andWhere('User.username LIKE :q')
+                ->setParameter('q', '%'.$data['q'].'%');
         }
 
         return $queryBuilder->getQuery()->getResult();
@@ -58,15 +58,22 @@ class FilterQueryProvider
 
     public function getGroupChoices($data)
     {
-        $objectManager = $this->userManager->getObjectManager();
+        $mapping = new ResultSetMapping();
+        $mapping->addScalarResult('id', 'id');
+        $mapping->addScalarResult('count', 'count');
+        $mapping->addScalarResult('name', 'name');
 
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('name', 'name');
+        $query = $this->userManager->getObjectManager()->createNativeQuery(
+            'SELECT s.id, s.name, count(g.group_id) as count FROM security_groups s LEFT JOIN security_user_groups g ON s.id = g.group_id WHERE g.user_id IN (:users) GROUP BY g.group_id HAVING count > 0', $mapping);
 
-        $sql = 'SELECT name FROM security_groups';
+        $query->setParameter('users', array_map(function($data) { return $data->getId(); }, $data));
 
-        $query = $objectManager->createNativeQuery($sql, $rsm);
-        $query->getResult();
+        $choices = [];
+        foreach ($query->getResult() as $result) {
+            $choices[sprintf('%s %d', $result['name'], $result['count'])] = $result['id'];
+        }
+
+        return $choices;
     }
 
     public function getScopeChoices($data)

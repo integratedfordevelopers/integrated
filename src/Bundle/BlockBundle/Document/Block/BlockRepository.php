@@ -36,7 +36,7 @@ class BlockRepository extends DocumentRepository
         }
 
         $groupCountBlock = $qb->getQuery()->getIterator();
-
+        dump($groupCountBlock);
         $typeCount = [];
         foreach ($groupCountBlock as $result) {
             $typeCount[$result['class']] = $result['total'];
