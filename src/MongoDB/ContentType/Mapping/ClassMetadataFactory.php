@@ -65,6 +65,8 @@ class ClassMetadataFactory extends BaseClassMetadataFactory
     {
         $this->matcher = new ClassMetadataLoadFinderSubscriber();
         $this->builder = new DiscriminatorMapBuilderSubscriber($this);
+
+        parent::__construct();
     }
 
     public function addManagedClass($class)
