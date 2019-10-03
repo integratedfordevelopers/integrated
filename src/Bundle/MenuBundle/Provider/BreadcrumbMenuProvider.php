@@ -47,7 +47,7 @@ class BreadcrumbMenuProvider implements MenuProviderInterface
         }
         $menu = $this->menuFactory->createItem($name, $options);
 
-        foreach ($this->breadcrumbResolver->getBreadCrumb() as $breadcrumbItem) {
+        foreach ($this->breadcrumbResolver->getBreadcrumb() as $breadcrumbItem) {
             $menu->addChild(
                 $breadcrumbItem->getName(),
                 ['uri' => $breadcrumbItem->getUrl()]

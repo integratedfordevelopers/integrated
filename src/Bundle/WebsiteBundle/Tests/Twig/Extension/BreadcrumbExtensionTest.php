@@ -44,7 +44,9 @@ class BreadcrumbExtensionTest extends \PHPUnit\Framework\TestCase
     {
         $this->breadcrumbMenuProvider = $this->createMock('Integrated\Bundle\MenuBundle\Provider\BreadcrumbMenuProvider');
         $this->menuTwigHelper = $this->createMock('Knp\Menu\Twig\Helper');
-        $this->breadcrumbExtension = new BreadcrumbExtension($this->breadcrumbMenuProvider, $this->menuTwigHelper, self::TEMPLATE);
+        $this->breadcrumbResolver = $this->createMock('Integrated\Bundle\PageBundle\Breadcrumb\BreadcrumbResolver');
+
+        $this->breadcrumbExtension = new BreadcrumbExtension($this->breadcrumbMenuProvider, $this->menuTwigHelper, $this->breadcrumbResolver, self::TEMPLATE);
     }
 
     /**

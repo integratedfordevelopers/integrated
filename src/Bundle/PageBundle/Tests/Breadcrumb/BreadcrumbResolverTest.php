@@ -71,14 +71,18 @@ class BreadcrumbResolverTest extends \PHPUnit\Framework\TestCase
         $this->request = $this->createMock('Symfony\Component\HttpFoundation\Request');
         $this->requestStack->method('getMasterRequest')->willReturn($this->request);
 
-        $this->breadcrumbResolver = new BreadcrumbResolver($this->documentManager, $this->urlResolver,
-            $this->channelContext, $this->requestStack);
+        $this->breadcrumbResolver = new BreadcrumbResolver(
+            $this->documentManager,
+            $this->urlResolver,
+            $this->channelContext,
+            $this->requestStack
+        );
     }
 
     /**
      * Test getBreadCrumb.
      */
-    public function testGetBreadCrumb()
+    public function testGetBreadcrumb()
     {
         $channel = new Channel();
         $channel->setId('my_channel');
@@ -137,6 +141,6 @@ class BreadcrumbResolverTest extends \PHPUnit\Framework\TestCase
             ->with(['path' => '/my/page', 'channel.$id' => 'my_channel'])
             ->willReturn($page);
 
-        $this->assertContainsOnlyInstancesOf(BreadcrumbItem::class, $this->breadcrumbResolver->getBreadCrumb());
+        $this->assertContainsOnlyInstancesOf(BreadcrumbItem::class, $this->breadcrumbResolver->getBreadcrumb());
     }
 }

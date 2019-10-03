@@ -64,7 +64,7 @@ class BreadcrumbResolver
     /**
      * @return BreadcrumbItem[]
      */
-    public function getBreadCrumb()
+    public function getBreadcrumb()
     {
         if (isset($this->breadcrumb)) {
             return $this->breadcrumb;

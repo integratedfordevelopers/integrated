@@ -48,7 +48,7 @@ class BreadcrumbProviderTest extends \PHPUnit\Framework\TestCase
 
         $menuItem1 = new BreadcrumbItem('Item 1', '/url1');
         $menuItem2 = new BreadcrumbItem('Item 2', '/url2');
-        $this->breadcrumbResolver->method('getBreadCrumb')->willReturn([$menuItem1, $menuItem2]);
+        $this->breadcrumbResolver->method('getBreadcrumb')->willReturn([$menuItem1, $menuItem2]);
     }
 
     /**

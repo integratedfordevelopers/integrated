@@ -12,6 +12,8 @@
 namespace Integrated\Bundle\WebsiteBundle\Twig\Extension;
 
 use Integrated\Bundle\MenuBundle\Provider\BreadcrumbMenuProvider;
+use Integrated\Bundle\PageBundle\Breadcrumb\BreadcrumbItem;
+use Integrated\Bundle\PageBundle\Breadcrumb\BreadcrumbResolver;
 use Knp\Menu\Twig\Helper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Twig\Extension\AbstractExtension;
@@ -30,34 +32,31 @@ class BreadcrumbExtension extends AbstractExtension
     protected $helper;
 
     /**
+     * @var BreadcrumbResolver
+     */
+    private $breadcrumbResolver;
+
+    /**
      * @var string
      */
     protected $template;
 
     /**
-     * @var OptionsResolver
-     */
-    protected $resolver;
-
-    /**
      * @param BreadcrumbMenuProvider $provider
      * @param Helper                 $helper
+     * @param BreadcrumbResolver     $breadcrumbResolver
      * @param string                 $template
      */
     public function __construct(
         BreadcrumbMenuProvider $provider,
         Helper $helper,
-        $template
+        BreadcrumbResolver $breadcrumbResolver,
+        string $template
     ) {
         $this->provider = $provider;
         $this->helper = $helper;
-
-        $this->resolver = new OptionsResolver();
-        $this->resolver->setDefaults([
-            'depth' => 1,
-            'style' => 'tabs',
-            'template' => $template,
-        ]);
+        $this->breadcrumbResolver = $breadcrumbResolver;
+        $this->template = $template;
     }
 
     /**
@@ -71,6 +70,11 @@ class BreadcrumbExtension extends AbstractExtension
                 [$this, 'renderBreadcrumb'],
                 ['is_safe' => ['html'], 'needs_context' => false]
             ),
+            new TwigFunction(
+                'integrated_breadcrumb_items',
+                [$this, 'getBreadcrumb'],
+                ['is_safe' => ['html'], 'needs_context' => false]
+            ),
         ];
     }
 
@@ -81,7 +85,13 @@ class BreadcrumbExtension extends AbstractExtension
      */
     public function renderBreadcrumb(array $options = [])
     {
-        $options = $this->resolver->resolve($options);
+        $optionsResolver = new OptionsResolver();
+        $optionsResolver->setDefaults([
+            'depth' => 1,
+            'style' => 'tabs',
+            'template' => $this->template,
+        ]);
+        $options = $optionsResolver->resolve($options);
 
         $menu = $this->provider->get('breadcrumb');
 
@@ -92,6 +102,15 @@ class BreadcrumbExtension extends AbstractExtension
         }
 
         return $html;
+    }
+
+
+    /**
+     * @return BreadcrumbItem[]
+     */
+    public function getBreadcrumb()
+    {
+        return $this->breadcrumbResolver->getBreadcrumb();
     }
 
     /**
