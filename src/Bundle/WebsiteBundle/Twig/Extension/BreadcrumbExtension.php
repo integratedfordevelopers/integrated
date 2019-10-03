@@ -104,7 +104,6 @@ class BreadcrumbExtension extends AbstractExtension
         return $html;
     }
 
-
     /**
      * @return BreadcrumbItem[]
      */
