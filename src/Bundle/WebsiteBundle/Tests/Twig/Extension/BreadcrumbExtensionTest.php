@@ -33,6 +33,11 @@ class BreadcrumbExtensionTest extends \PHPUnit\Framework\TestCase
     protected $breadcrumbMenuProvider;
 
     /**
+     * @var BreadcrumbResolver | \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $breadcrumbResolver;
+
+    /**
      * @var BreadcrumbExtension | \PHPUnit_Framework_MockObject_MockObject
      */
     protected $breadcrumbExtension;
