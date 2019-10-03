@@ -13,6 +13,7 @@ namespace Integrated\Bundle\BlockBundle\Block;
 
 use Integrated\Common\Block\BlockHandlerInterface;
 use Integrated\Common\Block\BlockInterface;
+use Integrated\Common\Block\BlockRequiredItemsInterface;
 use Integrated\Common\Content\ContentInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -109,6 +110,10 @@ class BlockHandler implements BlockHandlerInterface
      */
     public function execute(BlockInterface $block, array $options)
     {
+        if (!$this->isAllowed($block)) {
+            return '';
+        }
+
         return $this->render([
             'block' => $block,
             'document' => $this->getDocument(),
@@ -122,5 +127,41 @@ class BlockHandler implements BlockHandlerInterface
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+    }
+
+    /**
+     * @param BlockInterface $block
+     *
+     * @return bool
+     */
+    private function isAllowed(BlockInterface $block)
+    {
+        if (!$block instanceof BlockRequiredItemsInterface) {
+            return true;
+        }
+
+        if (!$relation = $block->getRequiredRelation()) {
+            return true;
+        }
+
+        if (\count($block->getRequiredItems()) == 0) {
+            return true;
+        }
+
+        if (!$this->getDocument() instanceof ContentInterface) {
+            return false;
+        }
+
+        if ($relation = $this->getDocument()->getRelation($block->getRequiredRelation()->getId())) {
+            foreach ($relation->getReferences() as $reference) {
+                foreach ($block->getRequiredItems() as $requiredItem) {
+                    if ($requiredItem->getId() == $reference->getId()) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 }

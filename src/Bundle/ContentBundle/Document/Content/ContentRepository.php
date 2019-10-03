@@ -39,6 +39,10 @@ class ContentRepository extends DocumentRepository
      */
     public function getUsedBy(ArrayCollection $content, Relation $relation = null, Content $excludeContent = null, $filterPublished = true)
     {
+        if ($excludeContent !== null) {
+            $excludeContent = $excludeContent->getId();
+        }
+
         $contentIds = [];
         foreach ($content as $contentItem) {
             if ($contentItem instanceof ContentInterface) {
