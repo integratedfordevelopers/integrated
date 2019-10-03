@@ -11,6 +11,7 @@
 namespace Integrated\Bundle\WebsiteBundle\Tests\Twig\Extension;
 
 use Integrated\Bundle\MenuBundle\Provider\BreadcrumbMenuProvider;
+use Integrated\Bundle\PageBundle\Breadcrumb\BreadcrumbResolver;
 use Integrated\Bundle\WebsiteBundle\Twig\Extension\BreadcrumbExtension;
 use Knp\Menu\Twig\Helper;
 use Twig\TwigFunction;
