@@ -61,6 +61,9 @@ class BreadcrumbResolver
         $this->request = $requestStack->getMasterRequest();
     }
 
+    /**
+     * @return BreadcrumbItem[]
+     */
     public function getBreadCrumb()
     {
         if (isset($this->breadcrumb)) {
@@ -68,12 +71,15 @@ class BreadcrumbResolver
         }
 
         $channel = $this->channelContext->getChannel();
+        $this->breadcrumb = [];
 
         if (!$channel instanceof ChannelInterface) {
-            return [];
+            return $this->breadcrumb;
         }
 
         $channel = $channel->getId();
+        $pageRepository = $this->documentManager->getRepository(Page::class);
+        $contentRepository = $this->documentManager->getRepository(Content::class);
 
         $url = $this->request->getPathInfo();
 
@@ -83,15 +89,20 @@ class BreadcrumbResolver
             $url .= $part;
 
             //support Page
-            if ($page = $this->documentManager->getRepository(Page::class)->findOneBy(['path' => ($url == '') ? '/' : $url, 'channel.$id' => $channel])) {
+            if ($page = $pageRepository->findOneBy(['path' => ($url == '') ? '/' : $url, 'channel.$id' => $channel])) {
                 /* @var Page $page */
                 $this->breadcrumb[] = new BreadcrumbItem($page->getTitle(), ($url == '') ? '/' : $url);
                 $url .= '/';
                 continue;
             }
 
+            if ($url == '') {
+                $url .= '/';
+                continue;
+            }
+
             //support Content
-            if ($content = $this->documentManager->getRepository(Content::class)->findOneBy(['slug' => $part, 'channels.$id' => $channel])) {
+            if ($content = $contentRepository->findOneBy(['slug' => $part, 'channels.$id' => $channel])) {
                 /* @var Content $content */
                 if ($content->isPublished() && strpos($this->urlResolver->generateUrl($content), $url) !== false) {
                     $this->breadcrumb[] = new BreadcrumbItem((string) $content, $url);
