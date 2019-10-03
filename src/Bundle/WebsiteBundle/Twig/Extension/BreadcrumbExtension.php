@@ -69,19 +69,17 @@ class BreadcrumbExtension extends AbstractExtension
             new TwigFunction(
                 'integrated_breadcrumb',
                 [$this, 'renderBreadcrumb'],
-                ['is_safe' => ['html'], 'needs_context' => true]
+                ['is_safe' => ['html'], 'needs_context' => false]
             ),
         ];
     }
 
     /**
-     * @param array  $context
-     * @param string $name
-     * @param array  $options
+     * @param array $options
      *
      * @return string
      */
-    public function renderBreadcrumb($context, array $options = [])
+    public function renderBreadcrumb(array $options = [])
     {
         $options = $this->resolver->resolve($options);
 

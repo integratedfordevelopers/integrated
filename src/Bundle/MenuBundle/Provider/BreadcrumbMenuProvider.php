@@ -42,6 +42,9 @@ class BreadcrumbMenuProvider implements MenuProviderInterface
      */
     public function get($name, array $options = [])
     {
+        if ($name !== 'breadcrumb') {
+            throw new \Exception('This provider can be used for menu "breadcrumb" only');
+        }
         $menu = $this->menuFactory->createItem($name, $options);
 
         foreach ($this->breadcrumbResolver->getBreadCrumb() as $breadcrumbItem) {
