@@ -188,10 +188,12 @@ class ThemeManager
             //try default.html.twig for all themes as a second fallback
             $template = \dirname($template).'/default.html.twig';
             $this->fallbackStack = [];
+
             return $this->locateTemplate($template);
         }
 
         $this->fallbackStack = [];
+
         return null;
     }
 
