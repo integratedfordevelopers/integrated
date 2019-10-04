@@ -173,17 +173,10 @@ class ThemeManager
 
         foreach ($theme->getFallback() as $fallback) {
             if (isset($this->fallbackStack[$fallback])) {
-                if (basename($template) != 'default.html.twig') {
-                    //try default.html.twig for all themes as a second fallback
-                    $fallback = null;
-                    $this->fallbackStack = [];
-                    $template = \dirname($template).'/default.html.twig';
-                } else {
-                    throw CircularFallbackException::templateNotFound(
-                        $template,
-                        array_merge(array_keys($this->fallbackStack), [$fallback])
-                    );
-                }
+                throw CircularFallbackException::templateNotFound(
+                    $template,
+                    array_merge(array_keys($this->fallbackStack), [$fallback])
+                );
             }
 
             if ($resource = $this->locateTemplate($template, $fallback)) {
@@ -191,6 +184,14 @@ class ThemeManager
             }
         }
 
+        if (basename($template) != 'default.html.twig') {
+            //try default.html.twig for all themes as a second fallback
+            $template = \dirname($template).'/default.html.twig';
+            $this->fallbackStack = [];
+            return $this->locateTemplate($template);
+        }
+
+        $this->fallbackStack = [];
         return null;
     }
 
