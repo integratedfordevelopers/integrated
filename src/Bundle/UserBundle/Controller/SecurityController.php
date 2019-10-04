@@ -30,7 +30,7 @@ class SecurityController extends Controller
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('integrated_content_content_index');
         }
-        
+
         $form = $this->createForm(
             LoginFormType::class,
             null,
