@@ -43,9 +43,6 @@ class BreadcrumbExtensionTest extends \PHPUnit\Framework\TestCase
      */
     protected $breadcrumbExtension;
 
-    /**
-     * Setup the test.
-     */
     protected function setup()
     {
         $this->breadcrumbMenuProvider = $this->createMock('Integrated\Bundle\MenuBundle\Provider\BreadcrumbMenuProvider');
@@ -55,17 +52,11 @@ class BreadcrumbExtensionTest extends \PHPUnit\Framework\TestCase
         $this->breadcrumbExtension = new BreadcrumbExtension($this->breadcrumbMenuProvider, $this->menuTwigHelper, $this->breadcrumbResolver, self::TEMPLATE);
     }
 
-    /**
-     * Test instanceOf.
-     */
     public function testInstanceOf()
     {
         $this->assertInstanceOf('Twig\Extension\AbstractExtension', $this->breadcrumbExtension);
     }
 
-    /**
-     * Test render breadcrumb.
-     */
     public function testRenderBreadcrumb()
     {
         $this->createMock('Integrated\Bundle\MenuBundle\Provider\BreadcrumbMenuProvider');
@@ -80,17 +71,11 @@ class BreadcrumbExtensionTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('', $this->breadcrumbExtension->renderBreadcrumb());
     }
 
-    /**
-     * Test render breadcrumb.
-     */
     public function testName()
     {
         $this->assertEquals('integrated_breadcrumb_menu', $this->breadcrumbExtension->getName());
     }
 
-    /**
-     * Test render breadcrumb.
-     */
     public function testGetFunctions()
     {
         $this->assertContainsOnlyInstancesOf(TwigFunction::class, $this->breadcrumbExtension->getFunctions());

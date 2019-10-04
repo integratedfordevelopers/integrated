@@ -40,7 +40,7 @@ class BreadcrumbResolver
     /**
      * @var BreadcrumbItem[]
      */
-    protected $breadcrumb = null;
+    protected $breadcrumbItems = null;
 
     /**
      * @var Request|null
@@ -66,54 +66,47 @@ class BreadcrumbResolver
      */
     public function getBreadcrumb()
     {
-        if (isset($this->breadcrumb)) {
-            return $this->breadcrumb;
+        if (isset($this->breadcrumbItems)) {
+            return $this->breadcrumbItems;
         }
 
         $channel = $this->channelContext->getChannel();
-        $this->breadcrumb = [];
+        $this->breadcrumbItems = [];
 
         if (!$channel instanceof ChannelInterface) {
-            return $this->breadcrumb;
+            return $this->breadcrumbItems;
         }
 
-        $channel = $channel->getId();
         $pageRepository = $this->documentManager->getRepository(Page::class);
         $contentRepository = $this->documentManager->getRepository(Content::class);
 
         $url = $this->request->getPathInfo();
 
         $parts = explode('/', $url);
-        $url = '';
+        $i = 0;
         foreach ($parts as $part) {
-            $url .= $part;
-
-            //support Page
-            if ($page = $pageRepository->findOneBy(['path' => ($url == '') ? '/' : $url, 'channel.$id' => $channel])) {
-                /* @var Page $page */
-                $this->breadcrumb[] = new BreadcrumbItem($page->getTitle(), ($url == '') ? '/' : $url);
-                $url .= '/';
-                continue;
+            $url = implode('/', \array_slice($parts, 0, ++$i));
+            if ($url === '') {
+                $url = '/';
             }
 
-            if ($url == '') {
-                $url .= '/';
+            //support Page
+            if ($page = $pageRepository->findOneBy(['path' => $url, 'channel.$id' => $channel->getId()])) {
+                /* @var Page $page */
+                $this->breadcrumbItems[] = new BreadcrumbItem($page->getTitle(), $page->getPath());
                 continue;
             }
 
             //support Content
-            if ($content = $contentRepository->findOneBy(['slug' => $part, 'channels.$id' => $channel])) {
+            if (!empty($part) && $content = $contentRepository->findOneBy(['slug' => $part, 'channels.$id' => $channel->getId()])) {
                 /* @var Content $content */
                 if ($content->isPublished() && strpos($this->urlResolver->generateUrl($content), $url) !== false) {
-                    $this->breadcrumb[] = new BreadcrumbItem((string) $content, $url);
+                    $this->breadcrumbItems[] = new BreadcrumbItem((string) $content, $url);
                 }
-                $url .= '/';
                 continue;
             }
-
-            $url .= '/';
         }
 
-        return $this->breadcrumb;
+        return $this->breadcrumbItems;
     }
 }

@@ -10,6 +10,7 @@
 
 namespace Integrated\Bundle\PageBundle\Tests\Breadcrumb;
 
+use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
@@ -18,13 +19,13 @@ use Integrated\Bundle\PageBundle\Breadcrumb\BreadcrumbItem;
 use Integrated\Bundle\PageBundle\Breadcrumb\BreadcrumbResolver;
 use Integrated\Bundle\PageBundle\Document\Page\Page;
 use Integrated\Bundle\PageBundle\Services\UrlResolver;
+use Integrated\Common\Content\Channel\ChannelContext;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-/**
- * Test for BreadcrumbResolver.
- */
-class BreadcrumbResolverTest extends \PHPUnit\Framework\TestCase
+class BreadcrumbResolverTest extends TestCase
 {
     const TEMPLATE = 'default';
 
@@ -58,17 +59,14 @@ class BreadcrumbResolverTest extends \PHPUnit\Framework\TestCase
      */
     protected $breadcrumbResolver;
 
-    /**
-     * Setup the test.
-     */
     protected function setup()
     {
-        $this->documentManager = $this->createMock('Doctrine\ODM\MongoDB\DocumentManager');
-        $this->urlResolver = $this->createMock('Integrated\Bundle\PageBundle\Services\UrlResolver');
-        $this->channelContext = $this->createMock('Integrated\Common\Content\Channel\ChannelContext');
-        $this->requestStack = $this->createMock('Symfony\Component\HttpFoundation\RequestStack');
+        $this->documentManager = $this->createMock(DocumentManager::class);
+        $this->urlResolver = $this->createMock(UrlResolver::class);
+        $this->channelContext = $this->createMock(ChannelContext::class);
+        $this->requestStack = $this->createMock(RequestStack::class);
 
-        $this->request = $this->createMock('Symfony\Component\HttpFoundation\Request');
+        $this->request = $this->createMock(Request::class);
         $this->requestStack->method('getMasterRequest')->willReturn($this->request);
 
         $this->breadcrumbResolver = new BreadcrumbResolver(
@@ -79,9 +77,6 @@ class BreadcrumbResolverTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * Test getBreadCrumb.
-     */
     public function testGetBreadcrumb()
     {
         $channel = new Channel();
@@ -90,26 +85,34 @@ class BreadcrumbResolverTest extends \PHPUnit\Framework\TestCase
         $this->request->method('getPathInfo')->willReturn('/my/page/my-article');
         $this->channelContext->method('getChannel')->willReturn($channel);
 
-        $pageRepository = $this->createMock('Doctrine\Common\Persistence\ObjectRepository');
+        $pageRepository = $this->createMock(ObjectRepository::class);
         $this->documentManager
             ->expects($this->at(0))
             ->method('getRepository')
             ->with(Page::class)->willReturn($pageRepository);
 
-        $contentRepository = $this->createMock('Doctrine\Common\Persistence\ObjectRepository');
+        $contentRepository = $this->createMock(ObjectRepository::class);
         $this->documentManager
             ->expects($this->at(1))
             ->method('getRepository')
             ->with(Content::class)
             ->willReturn($contentRepository);
 
+        $this->urlResolver
+            ->expects($this->once())
+            ->method('generateUrl')
+            ->willReturn('/my');
+
         $page = new Page();
         $page->setTitle('My page');
         $page->setPath('/my/page');
 
         $article = new Article();
-        $page->setTitle('My article');
-        $article->setSlug('my-article');
+        $article->setTitle('My article');
+        $article->setSlug('my');
+        $article->addChannel($channel);
+        $article->getPublishTime()->setStartDate(new \DateTime());
+        $article->getPublishTime()->setEndDate(new \DateTime('next week'));
 
         $pageRepository
             ->expects($this->at(0))
@@ -141,6 +144,10 @@ class BreadcrumbResolverTest extends \PHPUnit\Framework\TestCase
             ->with(['path' => '/my/page', 'channel.$id' => 'my_channel'])
             ->willReturn($page);
 
-        $this->assertContainsOnlyInstancesOf(BreadcrumbItem::class, $this->breadcrumbResolver->getBreadcrumb());
+        $expectedResult = [
+            new BreadcrumbItem('My article', '/my'),
+            new BreadcrumbItem('My page', '/my/page'),
+        ];
+        $this->assertEquals($expectedResult, $this->breadcrumbResolver->getBreadcrumb());
     }
 }

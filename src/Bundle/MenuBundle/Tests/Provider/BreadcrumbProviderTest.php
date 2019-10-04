@@ -13,17 +13,17 @@ namespace Integrated\Bundle\MenuBundle\Tests\Provider;
 use Integrated\Bundle\MenuBundle\Provider\BreadcrumbMenuProvider;
 use Integrated\Bundle\PageBundle\Breadcrumb\BreadcrumbItem;
 use Integrated\Bundle\PageBundle\Breadcrumb\BreadcrumbResolver;
+use Knp\Menu\FactoryInterface;
+use Knp\Menu\Provider\MenuProviderInterface;
+use PHPUnit\Framework\TestCase;
 
-/**
- * Test for BreadcrumbProvider.
- */
-class BreadcrumbProviderTest extends \PHPUnit\Framework\TestCase
+class BreadcrumbProviderTest extends TestCase
 {
     const VALID_MENU = 'breadcrumb';
     const INVALID_MENU = 'invalid_menu';
 
     /**
-     * @var \Knp\Menu\FactoryInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var FactoryInterface | \PHPUnit_Framework_MockObject_MockObject
      */
     protected $menuFactory;
 
@@ -42,21 +42,18 @@ class BreadcrumbProviderTest extends \PHPUnit\Framework\TestCase
      */
     protected function setup()
     {
-        $this->menuFactory = $this->createMock('Knp\Menu\FactoryInterface');
-        $this->breadcrumbResolver = $this->createMock('Integrated\Bundle\PageBundle\Breadcrumb\BreadcrumbResolver');
+        $this->menuFactory = $this->createMock(FactoryInterface::class);
+        $this->breadcrumbResolver = $this->createMock(BreadcrumbResolver::class);
         $this->breadcrumbMenuProvider = new BreadcrumbMenuProvider($this->menuFactory, $this->breadcrumbResolver);
 
-        $menuItem1 = new BreadcrumbItem('Item 1', '/url1');
-        $menuItem2 = new BreadcrumbItem('Item 2', '/url2');
+        $menuItem1 = new BreadcrumbItem('Item 1', '/my');
+        $menuItem2 = new BreadcrumbItem('Item 2', '/my/page');
         $this->breadcrumbResolver->method('getBreadcrumb')->willReturn([$menuItem1, $menuItem2]);
     }
 
-    /**
-     * Test instanceOf.
-     */
     public function testInstanceOf()
     {
-        $this->assertInstanceOf('Knp\Menu\Provider\MenuProviderInterface', $this->breadcrumbMenuProvider);
+        $this->assertInstanceOf(MenuProviderInterface::class, $this->breadcrumbMenuProvider);
     }
 
     /**
@@ -64,9 +61,7 @@ class BreadcrumbProviderTest extends \PHPUnit\Framework\TestCase
      */
     public function testHasFunctionWithInvalidMenu()
     {
-        $this->expectException(\Exception::class);
-
-        $this->breadcrumbMenuProvider->has(self::INVALID_MENU);
+        $this->assertFalse($this->breadcrumbMenuProvider->has(self::INVALID_MENU));
     }
 
     /**
@@ -74,15 +69,6 @@ class BreadcrumbProviderTest extends \PHPUnit\Framework\TestCase
      */
     public function testHasFunctionWithValidMenu()
     {
-        /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject  $menu */
-        $menu = $this->createMock('Knp\Menu\ItemInterface');
-
-        $this->menuFactory
-            ->expects($this->once())
-            ->method('createItem')
-            ->with(self::VALID_MENU)
-            ->willReturn($menu);
-
         $this->assertTrue($this->breadcrumbMenuProvider->has(self::VALID_MENU));
     }
 
@@ -91,7 +77,7 @@ class BreadcrumbProviderTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetFunctionWithInvalidMenu()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         $this->breadcrumbMenuProvider->get(self::INVALID_MENU);
     }

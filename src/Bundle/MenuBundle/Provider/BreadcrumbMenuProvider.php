@@ -20,7 +20,7 @@ class BreadcrumbMenuProvider implements MenuProviderInterface
     /**
      * @var FactoryInterface
      */
-    protected $menuFactory = null;
+    protected $menuFactory;
 
     /**
      * @var BreadcrumbResolver
@@ -43,7 +43,7 @@ class BreadcrumbMenuProvider implements MenuProviderInterface
     public function get($name, array $options = [])
     {
         if ($name !== 'breadcrumb') {
-            throw new \Exception('This provider can be used for menu "breadcrumb" only');
+            throw new \InvalidArgumentException('This provider can be used for menu "breadcrumb" only');
         }
         $menu = $this->menuFactory->createItem($name, $options);
 
@@ -62,6 +62,6 @@ class BreadcrumbMenuProvider implements MenuProviderInterface
      */
     public function has($name, array $options = [])
     {
-        return null !== $this->get($name, $options);
+        return $name === 'breadcrumb';
     }
 }
