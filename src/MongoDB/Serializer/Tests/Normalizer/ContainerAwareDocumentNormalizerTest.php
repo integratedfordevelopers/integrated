@@ -44,7 +44,7 @@ class ContainerAwareDocumentNormalizerTest extends \PHPUnit\Framework\TestCase
     public function testGetDocumentManager()
     {
         $manger = $this->getMockBuilder('Doctrine\ODM\MongoDB\DocumentManager')->disableOriginalConstructor()->getMock();
-        $this->container->expects($this->once())->method('get')->with($this->identicalTo('the-service-id'))->will($this->returnValue($manger));
+        $this->container->expects($this->once())->method('get')->with($this->identicalTo('the-service-id'))->willReturn($manger);
 
         $class = new \ReflectionClass($this->normalizer);
 

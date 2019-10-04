@@ -1,5 +1,17 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
 
+{% block crumbs %}
+    <div class="breadcrumb-holder">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="active">
+                    {% trans %}Content type pages{% endtrans %}
+                </li>
+            </ol>
+        </div>
+    </div>
+{% endblock %}
+
 {% block content %}
     <div class="row">
         <div class="col-md-12 push-sm-down">
@@ -35,13 +47,15 @@
                     <colgroup>
                         <col />
                         <col />
+                        <col />
                         <col style="width: 5em" />
                     </colgroup>
 
                     <thead>
                         <tr>
-                            <th>{% trans %}ContentType{% endtrans %}</th>
+                            <th>{% trans %}Content type{% endtrans %}</th>
                             <th>{% trans %}URL{% endtrans %}</th>
+                            <th>{% trans %}Layout{% endtrans %}</th>
                             <th>{% trans %}Actions{% endtrans %}</th>
                         </tr>
                     </thead>
@@ -55,6 +69,9 @@
                             </td>
                             <td>
                                 {{ page.path }}
+                            </td>
+                            <td>
+                                {{ page.layout }}
                             </td>
                             <td>
                                 <a href="{{ path('integrated_page_content_type_page_edit', { 'id': page.id}) }}" title="{% trans %}Edit{% endtrans %}">

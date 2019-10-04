@@ -8,7 +8,8 @@
     <import resource="@IntegratedWebsiteBundle/Resources/config/routing/menu.xml" prefix="/menu" />
 
     <import resource="@IntegratedWebsiteBundle/Resources/config/routing/search_selection.xml" />
-    
+    <import resource="@IntegratedWebsiteBundle/Resources/config/routing/session.xml" />
+
     <import resource="." type="integrated_website_page" />
     <import resource="." type="integrated_website_content_type_page" />
 </routes>

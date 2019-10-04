@@ -15,6 +15,10 @@
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
         </service>
 
+        <service id="Integrated\Bundle\ContentBundle\Services\ContentTypeInformation">
+            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+        </service>
+
         <!-- Overwrite the default form.type_extension.form.request_handler service with our own -->
         <service id="form.type_extension.form.request_handler" alias="integrated_content.form_request_handler" />
         <service id="integrated_content.form_request_handler" class="%integrated_content.form_request_handler%">

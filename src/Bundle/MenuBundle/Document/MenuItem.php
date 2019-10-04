@@ -33,8 +33,7 @@ class MenuItem extends KnpMenuItem
      */
     public function __construct($name, DatabaseMenuFactory $factory)
     {
-        $this->name = (string) $name;
-        $this->factory = $factory;
+        parent::__construct($name, $factory);
     }
 
     /**

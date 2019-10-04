@@ -48,9 +48,7 @@
                                 {{ document.id }}
                             </td>
                             <td>
-                                <a href="{{ path('integrated_content_content_type_show', {'id': document.id}) }}">
-                                    {{ document.name }}
-                                </a>
+                                {{ document.name }}
                             </td>
                             <td>
                                 {% for type in documentTypes %}
@@ -63,8 +61,14 @@
                                 {{ document.createdAt|localizeddate("medium", "none") }}
                             </td>
                             <td>
+                                <a href="{{ path('integrated_content_content_type_show', {'id': document.id}) }}" title="{% trans %}Information{% endtrans %}">
+                                    {{ icon('info-sign') }}
+                                </a>
                                 <a href="{{ path('integrated_content_content_type_edit', {'id': document.id}) }}" title="{% trans %}Edit{% endtrans %}">
                                     {{ icon('pencil') }}
+                                </a>
+                                <a class="href-red" href="{{ path('integrated_content_content_type_delete_rest', {'id': document.id}) }}" title="{% trans %}Remove{% endtrans %}">
+                                    {{ icon('trash') }}
                                 </a>
                             </td>
                         </tr>
