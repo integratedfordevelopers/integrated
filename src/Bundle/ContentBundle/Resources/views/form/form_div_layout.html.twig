@@ -221,19 +221,42 @@
                 $("#{{ id }}").select2({
                     multiple: true,
                     ajax: {
-                        url: "{{ path('integrated_content_content_index', { 'contenttypes': contentTypes, '_format': 'json' })|raw }}",
+                        url: "{{ path('integrated_content_content_index', { 'contenttypes': contentTypes|keys, '_format': 'json' })|raw }}",
                         dataType: 'json',
                         data: function (term, page) {
+                            if (term.term) {
+                                query = term.term+'*';
+                            } else {
+                                query = '';
+                            }
                             return {
-                                q: term.term,
+                                q: query,
                                 page_limit: 10
                             };
                         },
                         processResults: function (data) {
                             return {
                                 results: $.map(data.items, function (item) {
+                                    if (!this.authorValues) {
+                                        this.authorValues = [];
+                                    }
+                                    title = item.title;
+                                    type = item.type;
+                                    switch (type) {
+                                        {% for contentTypeId, contentTypeName in contentTypes %}
+                                        case '{{ contentTypeId }}':
+                                            type = '{{ contentTypeName|escape('js') }}';
+                                            break;
+                                        {% endfor %}
+                                    }
+
+                                    if (this.authorValues.indexOf(title) == -1) {
+                                        this.authorValues.push(item.title);
+                                    } else {
+                                        title = title+' ('+type+')';
+                                    }
                                     return {
-                                        text: item.title,
+                                        text: title,
                                         id: item.id
                                     }
                                 })
