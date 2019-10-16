@@ -19,6 +19,7 @@ use Integrated\Common\Content\ContentInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Exception\ExceptionInterface;
 use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
@@ -79,6 +80,10 @@ class RedirectContentSubscriber implements EventSubscriberInterface
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
         if (!$event->isMasterRequest()) {
+            return;
+        }
+
+        if (!$event->getException() instanceof NotFoundHttpException) {
             return;
         }
 
