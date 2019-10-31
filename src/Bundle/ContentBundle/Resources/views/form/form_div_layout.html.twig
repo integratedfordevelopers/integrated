@@ -235,11 +235,19 @@
                             };
                         },
                         processResults: function (data) {
+                            $.map(data.items, function (item) {
+                                var value = item.title;
+                                if (this.authorValues === undefined) {
+                                    this.authorValues = {};
+                                }
+                                if (this.authorValues[value] === undefined) {
+                                    this.authorValues[value] = 1;
+                                } else {
+                                    this.authorValues[value] = this.authorValues[value] + 1;
+                                }
+                            });
                             return {
                                 results: $.map(data.items, function (item) {
-                                    if (!this.authorValues) {
-                                        this.authorValues = [];
-                                    }
                                     title = item.title;
                                     type = item.type;
                                     switch (type) {
@@ -249,10 +257,7 @@
                                             break;
                                         {% endfor %}
                                     }
-
-                                    if (this.authorValues.indexOf(title) == -1) {
-                                        this.authorValues.push(item.title);
-                                    } else {
+                                    if (this.authorValues[title] > 1) {
                                         title = title+' ('+type+')';
                                     }
                                     return {
