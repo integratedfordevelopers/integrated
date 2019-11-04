@@ -489,7 +489,12 @@ class ContentController extends Controller
 
             if ($locking['new']) {
                 if ($request->isMethod('get')) {
-                    return $this->redirect($this->generateUrl('integrated_content_content_edit', ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]));
+                    $parameters = array_merge($request->query->all(), [
+                        'id' => $content->getId(),
+                        'lock' => $locking['lock']->getId()
+                    ]);
+
+                    return $this->redirect($this->generateUrl('integrated_content_content_edit', $parameters));
                 }
 
                 $locking['locked'] = false;
