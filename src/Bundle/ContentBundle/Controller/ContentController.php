@@ -491,7 +491,7 @@ class ContentController extends Controller
                 if ($request->isMethod('get')) {
                     $parameters = array_merge($request->query->all(), [
                         'id' => $content->getId(),
-                        'lock' => $locking['lock']->getId()
+                        'lock' => $locking['lock']->getId(),
                     ]);
 
                     return $this->redirect($this->generateUrl('integrated_content_content_edit', $parameters));
