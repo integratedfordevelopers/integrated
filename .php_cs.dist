@@ -11,6 +11,10 @@ return PhpCsFixer\Config::create()
         'no_useless_return' => true,
         'protected_to_private' => false,
         'yoda_style' => null,
+        'no_superfluous_phpdoc_tags' => false,
+        'single_line_throw' => false,
+        'php_unit_mock_short_will_return' => false,
+        'ordered_imports' => false,
     ])
     ->setRiskyAllowed(true)
     ->setFinder(
