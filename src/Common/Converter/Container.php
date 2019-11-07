@@ -101,7 +101,6 @@ class Container implements ContainerInterface
      *
      * @param mixed $value
      *
-     *
      * @trows UnexpectedTypeException if $value is not a scalar type
      */
     protected static function validateAndReturn($value)
