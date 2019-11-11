@@ -506,6 +506,10 @@
                 <source>Relation</source>
                 <target>Relatie</target>
             </trans-unit>
+            <trans-unit id="130">
+                <source>Form submitted</source>
+                <target>Formulier ingestuurd</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
