@@ -16,6 +16,8 @@ use Integrated\Bundle\StorageBundle\Storage\Util\DirectoryUtil;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\Cache\CacheInterface;
 use Integrated\Common\Storage\ManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -38,13 +40,20 @@ class AppCache implements CacheInterface
     protected $directory;
 
     /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
+    /**
      * @param string           $directory
      * @param ManagerInterface $managerInterface
+     * @param RequestStack     $requestStack
      */
-    public function __construct($directory, ManagerInterface $managerInterface)
+    public function __construct($directory, ManagerInterface $managerInterface, RequestStack $requestStack)
     {
         $this->fileManager = $managerInterface;
         $this->directory = $directory;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -54,6 +63,19 @@ class AppCache implements CacheInterface
      */
     public function path(StorageInterface $storage)
     {
+        if ($storage->getPathname() && $this->requestStack instanceof RequestStack) {
+            //bypass cache for local files
+            $request = $this->requestStack->getMasterRequest();
+            if ($request instanceof Request) {
+                $file = $request->server->get('DOCUMENT_ROOT').$request->getBasePath().$storage->getPathname();
+                if (file_exists($file)) {
+                    $file = new \SplFileInfo($file);
+
+                    return $file->openFile('r');
+                }
+            }
+        }
+
         // Attempt to make a local copy of the file, it's probably not in a public storage
         $file = DirectoryUtil::cachePathFile(sprintf(self::CACHE_PATH, $this->directory), $storage);
 
