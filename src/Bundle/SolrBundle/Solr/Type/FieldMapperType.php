@@ -272,16 +272,15 @@ class FieldMapperType implements TypeInterface
      */
     protected function combine(array $data, $separator)
     {
-        $results = null;
-        while ($results === null && \count($data) > 0) {
-            $results = array_shift($data);
-        }
+        $data = array_filter($data, function ($value) {
+            return $value !== null;
+        });
+
+        $results = array_shift($data);
         $results = \is_array($results) ? $results : [$results];
 
         while ($value = array_shift($data)) {
-            if ($value === null) {
-                continue;
-            } elseif (\is_array($value)) {
+            if (\is_array($value)) {
                 $replacement = [];
 
                 foreach ($value as $array_value) {
