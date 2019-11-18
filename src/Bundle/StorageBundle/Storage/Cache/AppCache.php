@@ -16,7 +16,6 @@ use Integrated\Bundle\StorageBundle\Storage\Util\DirectoryUtil;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\Cache\CacheInterface;
 use Integrated\Common\Storage\ManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -103,7 +102,6 @@ class AppCache implements CacheInterface
             $this->directory
         );
     }
-
 
     /**
      * @param StorageInterface $storage
