@@ -4,7 +4,7 @@
 
     <embedded-document name="Integrated\Bundle\PageBundle\Document\Page\Grid\Row">
 
-        <embed-many field="columns" target-document="Integrated\Bundle\PageBundle\Document\Page\Grid\Column" strategy="set" />
+        <embed-many field="columns" target-document="Integrated\Bundle\PageBundle\Document\Page\Grid\Column" />
 
     </embedded-document>
 
