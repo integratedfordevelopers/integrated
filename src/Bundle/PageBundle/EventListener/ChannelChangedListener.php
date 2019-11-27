@@ -14,6 +14,7 @@ namespace Integrated\Bundle\PageBundle\EventListener;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
+use Integrated\Bundle\ContentBundle\Services\ContentTypeInformation;
 use Integrated\Bundle\PageBundle\Services\ContentTypePageService;
 use Integrated\Bundle\PageBundle\Services\RouteCache;
 use Integrated\Common\Channel\Event\ChannelEvent;
@@ -41,15 +42,26 @@ class ChannelChangedListener implements EventSubscriberInterface
     protected $routeCache;
 
     /**
+     * @var ContentTypeInformation
+     */
+    private $contentTypeInformation;
+
+    /**
      * @param DocumentManager        $dm
      * @param ContentTypePageService $contentTypePageService
      * @param RouteCache             $routeCache
+     * @param ContentTypeInformation $contentTypeInformation
      */
-    public function __construct(DocumentManager $dm, ContentTypePageService $contentTypePageService, RouteCache $routeCache)
-    {
+    public function __construct(
+        DocumentManager $dm,
+        ContentTypePageService $contentTypePageService,
+        RouteCache $routeCache,
+        ContentTypeInformation $contentTypeInformation
+    ) {
         $this->dm = $dm;
         $this->contentTypePageService = $contentTypePageService;
         $this->routeCache = $routeCache;
+        $this->contentTypeInformation = $contentTypeInformation;
     }
 
     /**
@@ -71,18 +83,17 @@ class ChannelChangedListener implements EventSubscriberInterface
     {
         $channel = $event->getChannel();
 
-        $contentTypes = $this->getContentTypeRepository()->findBy(
-            [
-                'options.channels.disabled' => 0,
-                'options.publication' => ['$ne' => 1],
-                'options.channels.restricted' => ['$ne' => $channel->getId()],
-            ]
-        );
+        $contentTypes = $this->getContentTypeRepository()->findAll();
 
         $routesChanged = false;
 
         /** @var ContentType $contentType */
         foreach ($contentTypes as $contentType) {
+            if (!\in_array($contentType->getId(), $this->contentTypeInformation->getPublishingAllowedContentTypes($channel->getId()))) {
+                $this->deletePagesByContentType($contentType, $channel->getId());
+                continue;
+            }
+
             if (!$this->getPageRepository()->findOneBy([
                 'channel.$id' => $channel->getId(),
                 'contentType.$id' => $contentType->getId(),
@@ -111,6 +122,22 @@ class ChannelChangedListener implements EventSubscriberInterface
     protected function deletePagesByChannel(Channel $channel)
     {
         $pages = $this->getPageRepository()->findBy(['channel.$id' => $channel->getId()]);
+
+        foreach ($pages as $page) {
+            $this->dm->remove($page);
+            $this->dm->flush($page);
+        }
+    }
+
+    /**
+     * @param ContentType $contentType
+     */
+    protected function deletePagesByContentType(ContentType $contentType, $channelId)
+    {
+        $criteria = ['contentType.$id' => $contentType->getId()];
+        $criteria['channel.$id'] = $channelId;
+
+        $pages = $this->getPageRepository()->findBy($criteria);
 
         foreach ($pages as $page) {
             $this->dm->remove($page);

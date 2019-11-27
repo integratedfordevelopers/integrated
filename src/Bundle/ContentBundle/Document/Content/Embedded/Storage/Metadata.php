@@ -30,6 +30,16 @@ class Metadata implements MetadataInterface
     protected $mimeType;
 
     /**
+     * @var string
+     */
+    protected $credits;
+
+    /**
+     * @var string
+     */
+    protected $description;
+
+    /**
      * @var array
      */
     protected $headers = [];
@@ -60,7 +70,9 @@ class Metadata implements MetadataInterface
                 $this->metadata,
                 [
                     'headers' => array_replace($this->headers, ['Content-Type' => $this->mimeType]),
-                ]
+                ],
+                ['credits' => $this->getCredits()],
+                ['description' => $this->getDescription()]
             )
         );
     }
@@ -79,6 +91,38 @@ class Metadata implements MetadataInterface
     public function getMimeType()
     {
         return $this->mimeType;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getCredits(): ?string
+    {
+        return $this->credits;
+    }
+
+    /**
+     * @param ?string $credits
+     */
+    public function setCredits(?string $credits): void
+    {
+        $this->credits = $credits;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param ?string $description
+     */
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
     }
 
     /**
