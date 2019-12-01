@@ -23,6 +23,8 @@
         <service id="integrated_menu.provider.database_menu_provider" class="%integrated_menu.provider.database_menu_provider.class%" public="true">
             <argument type="service" id="channel.context" />
             <argument type="service" id="integrated_menu.document.menu.repository" />
+            <argument type="service" id="integrated_content.provider.solarium" />
+            <argument type="service" id="integrated_page.services.solr_url_extractor" />
             <tag name="knp_menu.provider" />
         </service>
 

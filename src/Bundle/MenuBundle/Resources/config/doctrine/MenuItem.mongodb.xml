@@ -4,9 +4,13 @@
 
     <embedded-document name="Integrated\Bundle\MenuBundle\Document\MenuItem" collection="menu">
 
-        <field fieldName="id" id="true" strategy="UUID" />
-        <field fieldName="name" type="string" />
-        <field fieldName="uri" type="string" />
+        <field field-name="id" id="true" strategy="UUID" />
+        <field field-name="name" type="string" />
+        <field field-name="uri" type="string" />
+
+        <reference-one
+            field="searchSelection"
+            target-document="Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection" />
 
         <embed-many field="children" target-document="Integrated\Bundle\MenuBundle\Document\MenuItem" />
 

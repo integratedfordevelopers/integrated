@@ -195,7 +195,8 @@
                     callback: function() {
                         item.update({
                             name: $('#name').val(),
-                            uri:  $('#uri').val()
+                            uri:  $('#uri').val(),
+                            searchSelection: $('#searchSelection').val()
                         });
                     }
                 }
@@ -212,7 +213,8 @@
 
         var html = $(template({
             name: item.getValue('name'),
-            uri:  item.getValue('uri')
+            uri:  item.getValue('uri'),
+            searchSelection: item.getValue('searchSelection')
         }));
 
         bootbox.dialog({
@@ -231,7 +233,8 @@
                     callback: function() {
                         item.update({
                             name: $('#name').val(),
-                            uri:  $('#uri').val()
+                            uri:  $('#uri').val(),
+                            searchSelection: $('#searchSelection').val()
                         });
                     }
                 }

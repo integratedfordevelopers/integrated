@@ -94,6 +94,7 @@ class MenuExtension extends \Twig_Extension
             'depth' => 1,
             'style' => 'tabs',
             'template' => $template,
+            'editMode' => false,
         ]);
 
         $this->generator = new UuidGenerator();
@@ -126,7 +127,11 @@ class MenuExtension extends \Twig_Extension
         $options = $this->resolver->resolve($options);
 
         $edit = $this->request && $this->request->attributes->get('integrated_menu_edit');
-        $menu = $this->provider->get($name);
+        if ($edit) {
+            $options['editMode'] = true;
+        }
+
+        $menu = $this->provider->get($name, $options);
 
         $html = '';
 

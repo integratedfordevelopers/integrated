@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\MenuBundle\Document;
 
 use Doctrine\Common\Collections\Collection;
+use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
 use Integrated\Bundle\MenuBundle\Menu\DatabaseMenuFactory;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
@@ -26,6 +27,11 @@ class MenuItem extends KnpMenuItem
      * @var string
      */
     protected $id;
+
+    /**
+     * @var SearchSelection
+     */
+    protected $searchSelection;
 
     /**
      * @param string              $name
@@ -52,6 +58,26 @@ class MenuItem extends KnpMenuItem
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * @return SearchSelection|null
+     */
+    public function getSearchSelection()
+    {
+        return $this->searchSelection;
+    }
+
+    /**
+     * @param SearchSelection|null $searchSelection
+     *
+     * @return $this
+     */
+    public function setSearchSelection(?SearchSelection $searchSelection = null)
+    {
+        $this->searchSelection = $searchSelection;
 
         return $this;
     }
@@ -166,6 +192,10 @@ class MenuItem extends KnpMenuItem
 
         if ($this->getUri()) {
             $array['uri'] = $this->getUri();
+        }
+
+        if ($this->getSearchSelection()) {
+            $array['searchSelection'] = $this->getSearchSelection()->getId();
         }
 
         if (true === $nested) {

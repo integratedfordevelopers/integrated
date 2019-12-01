@@ -12,10 +12,15 @@
 namespace Integrated\Bundle\MenuBundle\Provider;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
+use Integrated\Bundle\ContentBundle\Provider\SolariumProvider;
+use Integrated\Bundle\MenuBundle\Document\MenuItem;
+use Integrated\Bundle\PageBundle\Services\SolrUrlExtractor;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Knp\Menu\ItemInterface;
+use Knp\Menu\MenuFactory;
 use Knp\Menu\Provider\MenuProviderInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -38,13 +43,27 @@ class DatabaseMenuProvider implements MenuProviderInterface
     protected $menus = [];
 
     /**
-     * @param ChannelContextInterface $channelContext
-     * @param DocumentRepository      $repository
+     * @var SolariumProvider
      */
-    public function __construct(ChannelContextInterface $channelContext, DocumentRepository $repository)
+    private $solariumProvider;
+
+    /**
+     * @var solrUrlExtractor
+     */
+    private $urlExtractor;
+
+    /**
+     * @param ChannelContextInterface $channelContext
+     * @param DocumentRepository $repository
+     * @param SolariumProvider $solariumProvider
+     * @param solrUrlExtractor $urlExtractor
+     */
+    public function __construct(ChannelContextInterface $channelContext, DocumentRepository $repository, SolariumProvider $solariumProvider, solrUrlExtractor $urlExtractor)
     {
         $this->channelContext = $channelContext;
         $this->repository = $repository;
+        $this->solariumProvider = $solariumProvider;
+        $this->urlExtractor = $urlExtractor;
     }
 
     /**
@@ -62,6 +81,10 @@ class DatabaseMenuProvider implements MenuProviderInterface
             if ($menu = $this->repository->findOneBy(['name' => $name, 'channel.$id' => $channel])) {
                 if ($menu instanceof ItemInterface) {
                     $this->resolveParent($menu);
+                }
+
+                if (isset($options['editMode']) && $options['editMode'] === false) {
+                    $this->parseSearchSelections($menu);
                 }
 
                 $this->menus[$name][$channel] = $menu;
@@ -91,6 +114,33 @@ class DatabaseMenuProvider implements MenuProviderInterface
 
             if ($child->hasChildren()) {
                 $this->resolveParent($child); // recursion
+            }
+        }
+    }
+
+    /**
+     * @param ItemInterface $menu
+     */
+    protected function parseSearchSelections(ItemInterface $menu)
+    {
+        $factory = new MenuFactory();
+
+        $children = [];
+        foreach ($menu->getChildren() as $child) {
+            if ($child instanceof MenuItem && $child->getSearchSelection() !== null) {
+                $result = $this->solariumProvider->execute($child->getSearchSelection(), new Request([], [], ['_channel' => $this->channelContext->getChannel()->getId()]));
+                foreach ($result as $row) {
+                    $children[] = $factory->createItem($row['title'], ['uri' => $this->urlExtractor->getUrl($row, $this->channelContext->getChannel()->getId())]);
+                }
+            } else {
+                $children[] = $child;
+            }
+        }
+        $menu->setChildren($children);
+
+        foreach ($menu->getChildren() as $child) {
+            if ($child->hasChildren()) {
+                $this->parseSearchSelections($child);
             }
         }
     }
