@@ -26,6 +26,12 @@
             <tag name="knp_menu.provider" />
         </service>
 
+        <service id="Integrated\Bundle\MenuBundle\Provider\BreadcrumbMenuProvider">
+            <argument type="service" id="knp_menu.factory" />
+            <argument type="service" id="Integrated\Bundle\PageBundle\Breadcrumb\BreadcrumbResolver" />
+            <tag name="knp_menu.provider" />
+        </service>
+
     </services>
 
 </container>

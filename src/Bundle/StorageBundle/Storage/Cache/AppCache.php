@@ -16,6 +16,7 @@ use Integrated\Bundle\StorageBundle\Storage\Util\DirectoryUtil;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\Cache\CacheInterface;
 use Integrated\Common\Storage\ManagerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -30,21 +31,28 @@ class AppCache implements CacheInterface
     /**
      * @var ManagerInterface
      */
-    protected $fileManager;
+    private $fileManager;
 
     /**
      * @var string
      */
-    protected $directory;
+    private $directory;
+
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
 
     /**
      * @param string           $directory
      * @param ManagerInterface $managerInterface
+     * @param RequestStack     $requestStack
      */
-    public function __construct($directory, ManagerInterface $managerInterface)
+    public function __construct(string $directory, ManagerInterface $managerInterface, RequestStack $requestStack)
     {
         $this->fileManager = $managerInterface;
         $this->directory = $directory;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -54,6 +62,10 @@ class AppCache implements CacheInterface
      */
     public function path(StorageInterface $storage)
     {
+        if ($file = $this->getLocalFile($storage)) {
+            return $file;
+        }
+
         // Attempt to make a local copy of the file, it's probably not in a public storage
         $file = DirectoryUtil::cachePathFile(sprintf(self::CACHE_PATH, $this->directory), $storage);
 
@@ -89,5 +101,26 @@ class AppCache implements CacheInterface
             'The directory %s is not writable or the cache directory does not exist.',
             $this->directory
         );
+    }
+
+    /**
+     * @param StorageInterface $storage
+     *
+     * @return bool|\SplFileObject
+     */
+    private function getLocalFile(StorageInterface $storage)
+    {
+        if (!$storage->getPathname()) {
+            return false;
+        }
+
+        if ($request = $this->requestStack->getMasterRequest()) {
+            $file = $request->server->get('DOCUMENT_ROOT').$request->getBasePath().$storage->getPathname();
+            if (file_exists($file)) {
+                return new \SplFileObject($file, 'r');
+            }
+        }
+
+        return false;
     }
 }
