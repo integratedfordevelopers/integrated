@@ -272,6 +272,10 @@ class FieldMapperType implements TypeInterface
      */
     protected function combine(array $data, $separator)
     {
+        $data = array_filter($data, function ($value) {
+            return $value !== null;
+        });
+
         $results = array_shift($data);
         $results = \is_array($results) ? $results : [$results];
 
