@@ -159,11 +159,9 @@ class RelatedContentBlockHandler extends BlockHandler
 
         $query->field('channels.$id')->equals($request->attributes->get('_channel'));
 
-        if ($block->getSortBy() && $block->getTypeBlock() == RelatedContentBlock::SHOW_LINKED_BY) {
-            if ($block->getSortBy() == 'linked') {
-                return $this->getSortedLinkedByItems($query, $document, $block);
-            }
-
+        if ($block->getSortBy() == 'linked' && $block->getTypeBlock() == RelatedContentBlock::SHOW_LINKED_BY) {
+            return $this->getSortedLinkedByItems($query, $document, $block);
+        } elseif ($block->getSortBy()) {
             $query->sort($block->getSortBy(), $block->getSortDirection());
         }
 
