@@ -34,6 +34,11 @@ class MenuItem extends KnpMenuItem
     protected $searchSelection;
 
     /**
+     * @var int
+     */
+    protected $maxItems;
+
+    /**
      * @param string              $name
      * @param DatabaseMenuFactory $factory
      */
@@ -78,6 +83,26 @@ class MenuItem extends KnpMenuItem
     public function setSearchSelection(?SearchSelection $searchSelection = null)
     {
         $this->searchSelection = $searchSelection;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getMaxItems()
+    {
+        return $this->maxItems;
+    }
+
+    /**
+     * @param int|null $maxItems
+     *
+     * @return $this
+     */
+    public function setMaxItems($maxItems)
+    {
+        $this->maxItems = $maxItems;
 
         return $this;
     }
@@ -196,6 +221,10 @@ class MenuItem extends KnpMenuItem
 
         if ($this->getSearchSelection()) {
             $array['searchSelection'] = $this->getSearchSelection()->getId();
+        }
+
+        if ($this->getMaxItems()) {
+            $array['maxItems'] = $this->getMaxItems();
         }
 
         if (true === $nested) {

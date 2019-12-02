@@ -62,8 +62,8 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
 
     /**
      * @param ContentBlock|SearchSelection $subject
-     * @param Request      $request
-     * @param array        $options
+     * @param Request                      $request
+     * @param array                        $options
      *
      * @return \Knp\Component\Pager\Pagination\PaginationInterface
      */
@@ -112,8 +112,8 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
 
     /**
      * @param ContentBlock|SearchSelection $subject
-     * @param Request      $request
-     * @param array        $options
+     * @param Request                      $request
+     * @param array                        $options
      *
      * @return Query
      */
@@ -188,10 +188,10 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
     }
 
     /**
-     * @param Query        $query
+     * @param Query                        $query
      * @param ContentBlock|SearchSelection $subject
-     * @param array        $request
-     * @param array        $options
+     * @param array                        $request
+     * @param array                        $options
      *
      * @return int
      */

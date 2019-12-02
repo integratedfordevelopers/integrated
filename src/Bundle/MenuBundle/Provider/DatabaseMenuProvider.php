@@ -54,9 +54,9 @@ class DatabaseMenuProvider implements MenuProviderInterface
 
     /**
      * @param ChannelContextInterface $channelContext
-     * @param DocumentRepository $repository
-     * @param SolariumProvider $solariumProvider
-     * @param solrUrlExtractor $urlExtractor
+     * @param DocumentRepository      $repository
+     * @param SolariumProvider        $solariumProvider
+     * @param solrUrlExtractor        $urlExtractor
      */
     public function __construct(ChannelContextInterface $channelContext, DocumentRepository $repository, SolariumProvider $solariumProvider, solrUrlExtractor $urlExtractor)
     {
