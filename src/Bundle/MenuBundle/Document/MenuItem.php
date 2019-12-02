@@ -24,9 +24,24 @@ use Knp\Menu\MenuItem as KnpMenuItem;
 class MenuItem extends KnpMenuItem
 {
     /**
+     * Use an URI als link.
+     */
+    const TYPE_LINK_URI = 0;
+
+    /**
+     * Use a search selection for the links.
+     */
+    const TYPE_LINK_SEARCH_SELECTION = 1;
+
+    /**
      * @var string
      */
     protected $id;
+
+    /**
+     * @var int
+     */
+    protected $typeLink;
 
     /**
      * @var SearchSelection
@@ -68,6 +83,30 @@ class MenuItem extends KnpMenuItem
     }
 
     /**
+     * @return int
+     */
+    public function getTypeLink(): int
+    {
+        if ($this->typeLink === null) {
+            return MenuItem::TYPE_LINK_URI;
+        }
+
+        return $this->typeLink;
+    }
+
+    /**
+     * @param int $typeLink
+     *
+     * @return MenuItem
+     */
+    public function setTypeLink(int $typeLink): self
+    {
+        $this->typeLink = $typeLink;
+
+        return $this;
+    }
+
+    /**
      * @return SearchSelection|null
      */
     public function getSearchSelection()
@@ -80,7 +119,7 @@ class MenuItem extends KnpMenuItem
      *
      * @return $this
      */
-    public function setSearchSelection(?SearchSelection $searchSelection = null)
+    public function setSearchSelection(?SearchSelection $searchSelection = null): self
     {
         $this->searchSelection = $searchSelection;
 
@@ -100,7 +139,7 @@ class MenuItem extends KnpMenuItem
      *
      * @return $this
      */
-    public function setMaxItems($maxItems)
+    public function setMaxItems($maxItems): self
     {
         $this->maxItems = $maxItems;
 

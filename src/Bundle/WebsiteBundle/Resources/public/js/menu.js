@@ -155,6 +155,19 @@
         Menu: {
             create: function(element) {
                 return new Menu(element);
+            },
+            updateLinkType: function() {
+                if (jQuery('#typeLinkUri').prop("checked")) {
+                    jQuery('#integrated-row-uri').show();
+                    jQuery('#integrated-row-searchSelection').hide();
+                    jQuery('#integrated-row-maxItems').hide();
+                }
+
+                if (jQuery('#typeLinkSearchSelection').prop("checked")) {
+                    jQuery('#integrated-row-uri').hide();
+                    jQuery('#integrated-row-searchSelection').show();
+                    jQuery('#integrated-row-maxItems').show();
+                }
             }
         }
     });
@@ -184,7 +197,9 @@
 
         var item = new Item($(this));
         var template = Handlebars.compile($('#integrated_website_template_modal_menu_edit').html());
-        var html = $(template());
+        var html = $(template({
+            typeLinkUri: true
+        }));
 
         bootbox.dialog({
             title: 'Add menu item',
@@ -194,14 +209,17 @@
                     label: 'Save',
                     callback: function() {
                         item.update({
-                            name: $('#name').val(),
-                            uri:  $('#uri').val(),
-                            searchSelection: $('#searchSelection').val()
+                            name:     $('#name').val(),
+                            uri:      $('#uri').val(),
+                            searchSelection: $('#searchSelection').val(),
+                            maxItems: $('#maxItems').val()
                         });
                     }
                 }
             }
         });
+
+        Integrated.Menu.updateLinkType();
     });
 
     $('.integrated-website-menu').on('click', '[data-action="integrated-website-menu-item-edit"]', function(e) {
@@ -212,9 +230,12 @@
         var template = Handlebars.compile($('#integrated_website_template_modal_menu_edit').html());
 
         var html = $(template({
-            name: item.getValue('name'),
-            uri:  item.getValue('uri'),
-            searchSelection: item.getValue('searchSelection')
+            name:     item.getValue('name'),
+            uri:      item.getValue('uri'),
+            typeLinkUri: (typeof(item.getValue('typeLink')) == 'undefined' || item.getValue('typeLink') == 0) ? true : false,
+            typeLinkSearchSelection: (item.getValue('typeLink') == 1) ? true : false,
+            searchSelection: item.getValue('searchSelection'),
+            maxItems: item.getValue('maxItems')
         }));
 
         bootbox.dialog({
@@ -234,12 +255,16 @@
                         item.update({
                             name: $('#name').val(),
                             uri:  $('#uri').val(),
-                            searchSelection: $('#searchSelection').val()
+                            typeLink: $('#typeLink').val(),
+                            searchSelection: $('#searchSelection').val(),
+                            maxItems: $('#maxItems').val()
                         });
                     }
                 }
             }
         });
+
+        Integrated.Menu.updateLinkType();
     });
 
     $.fn.closestChildren = function(selector) {

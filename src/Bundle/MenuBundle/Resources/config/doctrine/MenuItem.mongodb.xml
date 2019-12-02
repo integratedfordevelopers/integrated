@@ -7,6 +7,7 @@
         <field field-name="id" id="true" strategy="UUID" />
         <field field-name="name" type="string" />
         <field field-name="uri" type="string" />
+        <field field-name="maxItems" type="int" />
 
         <reference-one
             field="searchSelection"

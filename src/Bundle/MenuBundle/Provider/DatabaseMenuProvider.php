@@ -127,7 +127,7 @@ class DatabaseMenuProvider implements MenuProviderInterface
 
         $children = [];
         foreach ($menu->getChildren() as $child) {
-            if ($child instanceof MenuItem && $child->getSearchSelection() !== null) {
+            if ($child instanceof MenuItem && $child->getTypeLink() == MenuItem::TYPE_LINK_SEARCH_SELECTION && $child->getSearchSelection() !== null) {
                 $result = $this->solariumProvider->execute($child->getSearchSelection(), new Request([], [], ['_channel' => $this->channelContext->getChannel()->getId()]));
                 foreach ($result as $row) {
                     $children[] = $factory->createItem($row['title'], ['uri' => $this->urlExtractor->getUrl($row, $this->channelContext->getChannel()->getId())]);

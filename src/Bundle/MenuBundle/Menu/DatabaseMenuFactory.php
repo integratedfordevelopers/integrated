@@ -119,10 +119,18 @@ class DatabaseMenuFactory implements FactoryInterface
                     $child->setUri($value['uri']);
                 }
 
+                if (isset($value['typeLink'])) {
+                    $child->setTypeLink($value['typeLink']);
+                }
+
                 if (isset($value['searchSelection'])) {
                     if ($searchSelection = $this->documentManager->getRepository(SearchSelection::class)->find($value['searchSelection'])) {
                         $child->setSearchSelection($searchSelection);
                     }
+                }
+
+                if (isset($value['maxItems'])) {
+                    $child->setMaxItems($value['maxItems']);
                 }
 
                 if (isset($value['children'])) {
