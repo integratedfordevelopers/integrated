@@ -1,4 +1,5 @@
 <?php
+
 namespace Integrated\Bundle\ContentBundle\Twig\Extension;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
@@ -42,6 +43,7 @@ class SearchSelectionsExtension extends AbstractExtension
 
     /**
      * @return array|mixed
+     *
      * @throws \Doctrine\ODM\MongoDB\MongoDBException
      */
     public function getSearchSelections()
