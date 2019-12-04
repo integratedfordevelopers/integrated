@@ -97,6 +97,7 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
             [
                 'pageParameterName' => $pageParam,
                 'maxItems' => $maxItems,
+                'sortFieldParameterName' => null,
             ]
         );
 
