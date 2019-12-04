@@ -88,7 +88,7 @@ class MenuItem extends KnpMenuItem
     public function getTypeLink(): int
     {
         if ($this->typeLink === null) {
-            return MenuItem::TYPE_LINK_URI;
+            return self::TYPE_LINK_URI;
         }
 
         return $this->typeLink;
@@ -248,6 +248,10 @@ class MenuItem extends KnpMenuItem
 
         if ($this->getId()) {
             $array['id'] = $this->getId();
+        }
+
+        if ($this->getTypeLink()) {
+            $array['typeLink'] = $this->getTypeLink();
         }
 
         if ($this->getName()) {

@@ -5,6 +5,7 @@
     <embedded-document name="Integrated\Bundle\MenuBundle\Document\MenuItem" collection="menu">
 
         <field field-name="id" id="true" strategy="UUID" />
+        <field field-name="typeLink" type="int" />
         <field field-name="name" type="string" />
         <field field-name="uri" type="string" />
         <field field-name="maxItems" type="int" />

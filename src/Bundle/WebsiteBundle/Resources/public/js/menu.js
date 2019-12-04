@@ -209,6 +209,7 @@
                     label: 'Save',
                     callback: function() {
                         item.update({
+                            typeLink: $('input[name=typeLink]:checked').val(),
                             name:     $('#name').val(),
                             uri:      $('#uri').val(),
                             searchSelection: $('#searchSelection').val(),
@@ -253,9 +254,9 @@
                     label: 'Save',
                     callback: function() {
                         item.update({
+                            typeLink: $('input[name=typeLink]:checked').val(),
                             name: $('#name').val(),
                             uri:  $('#uri').val(),
-                            typeLink: $('#typeLink').val(),
                             searchSelection: $('#searchSelection').val(),
                             maxItems: $('#maxItems').val()
                         });
