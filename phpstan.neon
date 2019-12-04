@@ -8,6 +8,7 @@ parameters:
       message: '#does not call parent constructor#'
       path: */ContainerAware*
     - '#Unsafe usage of new static#'
+    - '#Cannot unset offset mixed on array#'
   reportUnmatchedIgnoredErrors: false
   level: 1
   paths:
