@@ -126,7 +126,9 @@ class DatabaseMenuFactory implements FactoryInterface
                 if (isset($value['searchSelection'])) {
                     if ($searchSelection = $this->documentManager->getRepository(SearchSelection::class)->find($value['searchSelection'])) {
                         $child->setSearchSelection($searchSelection);
-                        $child->setName('Search selection '.$searchSelection->getTitle());
+                        if ($child->getTypeLink() == $child::TYPE_LINK_SEARCH_SELECTION) {
+                            $child->setName('Search selection '.$searchSelection->getTitle());
+                        }
                     }
                 }
 
