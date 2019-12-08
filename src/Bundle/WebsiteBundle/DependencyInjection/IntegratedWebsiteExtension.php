@@ -38,6 +38,7 @@ class IntegratedWebsiteExtension extends Extension implements PrependExtensionIn
         $loader->load('connector.xml');
         $loader->load('controllers.xml');
         $loader->load('twig.xml');
+        $loader->load('security.xml');
         $loader->load('solr.xml');
     }
 
