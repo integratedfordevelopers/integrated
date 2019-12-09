@@ -51,6 +51,7 @@
             <argument type="service" id="templating" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
             <argument type="service" id="security.authentication_utils" />
+            <argument type="service" id="integrated_content.channel.context" />
         </service>
 
         <service id="Integrated\Bundle\WebsiteBundle\Controller\SessionController">

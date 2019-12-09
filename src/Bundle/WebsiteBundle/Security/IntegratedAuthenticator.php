@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -76,7 +77,7 @@ class IntegratedAuthenticator extends AbstractFormLoginAuthenticator
      */
     public function supports(Request $request)
     {
-        return 'app_login' === $request->attributes->get('_route')
+        return 'integrated_website_login' === $request->attributes->get('_route')
             && $request->isMethod('POST')
             && ($this->getScope() !== null);
     }
@@ -154,8 +155,9 @@ class IntegratedAuthenticator extends AbstractFormLoginAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
-        throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+        $session = new Session();
+        $returnUrl = $session->get('returnUrl', '/');
+        return new RedirectResponse($returnUrl);
     }
 
     /**
@@ -163,7 +165,7 @@ class IntegratedAuthenticator extends AbstractFormLoginAuthenticator
      */
     protected function getLoginUrl()
     {
-        return $this->urlGenerator->generate('app_login');
+        return $this->urlGenerator->generate('integrated_website_login');
     }
 
     /**

@@ -8,6 +8,9 @@
         <default key="_controller">IntegratedWebsiteBundle:Security:login</default>
     </route>
 
+    <route id="integrated_website_login_check" path="/login-check">
+    </route>
+
     <route id="integrated_website_logout" path="/logout">
         <default key="_controller">IntegratedWebsiteBundle:Security:logout</default>
     </route>
