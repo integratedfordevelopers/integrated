@@ -103,5 +103,4 @@ class UserManager
 
         return $this::STATUS_USERNAME_EXISTS;
     }
-
 }
