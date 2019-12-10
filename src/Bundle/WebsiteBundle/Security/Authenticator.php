@@ -23,7 +23,7 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-class IntegratedAuthenticator extends AbstractFormLoginAuthenticator
+class Authenticator extends AbstractFormLoginAuthenticator
 {
     use TargetPathTrait;
 
@@ -53,7 +53,7 @@ class IntegratedAuthenticator extends AbstractFormLoginAuthenticator
     private $channelContext;
 
     /**
-     * IntegratedAuthenticator constructor.
+     * Authenticator constructor.
      *
      * @param EntityManagerInterface       $entityManager
      * @param UrlGeneratorInterface        $urlGenerator
@@ -127,6 +127,10 @@ class IntegratedAuthenticator extends AbstractFormLoginAuthenticator
             throw new CustomUserMessageAuthenticationException('Username could not be found');
         }
 
+        if (!$user->isEnabled()) {
+            throw new CustomUserMessageAuthenticationException('You are currently not allowed to login');
+        }
+
         return $user;
     }
 
@@ -147,6 +151,7 @@ class IntegratedAuthenticator extends AbstractFormLoginAuthenticator
      * @param string         $providerKey
      *
      * @return RedirectResponse
+     *
      * @throws \Exception
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)

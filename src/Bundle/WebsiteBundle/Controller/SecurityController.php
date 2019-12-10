@@ -2,13 +2,12 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Controller;
 
-use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ThemeBundle\Exception\CircularFallbackException;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
-use Integrated\Bundle\WebsiteBundle\Security\IntegratedAuthenticator;
-use Integrated\Common\Content\Channel\ChannelContextInterface;
+use Integrated\Bundle\WebsiteBundle\Security\UserManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\TwigBundle\TwigEngine;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -32,30 +31,27 @@ class SecurityController extends Controller
     private $authenticationUtils;
 
     /**
-     * @var IntegratedAuthenticator
+     * @var UserManager
      */
-    private $authenticator;
+    private $userManager;
 
     /**
-     * @var ChannelContextInterface
+     * @param TwigEngine          $templating
+     * @param ThemeManager        $themeManager
+     * @param AuthenticationUtils $authenticationUtils
+     * @param UserManager         $userManager
      */
-    private $channelContext;
-
-    /**
-     * @param TwigEngine              $templating
-     * @param ThemeManager            $themeManager
-     * @param AuthenticationUtils     $authenticationUtils
-     * @param ChannelContextInterface $channelContext
-     */
-    public function __construct(TwigEngine $templating, ThemeManager $themeManager, AuthenticationUtils $authenticationUtils, ChannelContextInterface $channelContext)
+    public function __construct(TwigEngine $templating, ThemeManager $themeManager, AuthenticationUtils $authenticationUtils, UserManager $userManager)
     {
         $this->templating = $templating;
         $this->themeManager = $themeManager;
         $this->authenticationUtils = $authenticationUtils;
-        $this->channelContext = $channelContext;
+        $this->userManager = $userManager;
     }
 
     /**
+     * @param Request $request
+     *
      * @return Response
      *
      * @throws CircularFallbackException
@@ -73,25 +69,24 @@ class SecurityController extends Controller
             return $this->redirect($returnUrl);
         }
 
-        $loginEnabled = false;
-        if ($channel = $this->channelContext->getChannel()) {
-            if ($channel instanceof Channel && $channel->getScope() !== null) {
-                $loginEnabled = true;
-            }
-        }
-
-        // get the login error if there is one
-        $error = $this->authenticationUtils->getLastAuthenticationError();
-
-        // last username entered by the user
-        $lastUsername = $this->authenticationUtils->getLastUsername();
-
         $context = [
-            'login_enabled' => $loginEnabled,
-            'last_username' => $lastUsername,
-            'error' => $error,
+            'login_enabled' => $this->userManager->isEnabled(),
+            'last_username' => $this->authenticationUtils->getLastUsername(),
+            'error' => $this->authenticationUtils->getLastAuthenticationError(),
         ];
         return $this->render($this->themeManager->locateTemplate('security/login.html.twig'), $context);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function verifyUsernameAction(Request $request): Response
+    {
+        $status = $this->userManager->getUsernameStatus($request->request->get('username'));
+
+        return new JsonResponse(['status' => $status]);
     }
 
     public function logout()

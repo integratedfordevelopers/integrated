@@ -6,12 +6,19 @@
 
     <services>
 
-        <service id="Integrated\Bundle\WebsiteBundle\Security\IntegratedAuthenticator">
+        <service id="Integrated\Bundle\WebsiteBundle\Security\Authenticator">
             <argument id="doctrine.orm.entity_manager" type="service"/>
             <argument id="router.default" type="service"/>
             <argument id="security.csrf.token_manager" type="service"/>
             <argument id="security.user_password_encoder.generic" type="service"/>
             <argument id="integrated_content.channel.context" type="service"/>
+        </service>
+
+        <service id="Integrated\Bundle\WebsiteBundle\Security\UserManager">
+            <argument id="doctrine.orm.entity_manager" type="service"/>
+            <argument id="security.user_password_encoder.generic" type="service"/>
+            <argument id="integrated_content.channel.context" type="service"/>
+            <argument id="validator" type="service"/>
         </service>
 
     </services>

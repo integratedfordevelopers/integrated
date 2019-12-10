@@ -11,6 +11,11 @@
     <route id="integrated_website_login_check" path="/login-check">
     </route>
 
+    <route id="integrated_website_login_verify" path="/login-verify">
+        <default key="_controller">IntegratedWebsiteBundle:Security:verifyUsername</default>
+        <option key="expose">true</option>
+    </route>
+
     <route id="integrated_website_logout" path="/logout">
         <default key="_controller">IntegratedWebsiteBundle:Security:logout</default>
     </route>

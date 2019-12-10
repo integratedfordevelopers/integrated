@@ -19,22 +19,57 @@
                 You are logged in as {{ app.user.username }}, <a href="{{ path('integrated_website_logout') }}">Logout</a>
             </div>
         {% else %}
+            <div class="alert alert-danger" id="login-error" style="display: none;"></div>
+
             <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-            <label for="inputUsername">E-mail address</label>
-            <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" onblur="updateLogin();" required autofocus />
+            <label for="username">E-mail address</label>
+            <input type="text" value="{{ last_username }}" name="username" id="username" class="form-control" onblur="updateLogin();" required autofocus />
 
             <div id="panel-password" style="display: none;">
-                <label for="inputPassword">Password</label>
-                <input type="password" name="password" id="inputPassword" class="form-control" required />
+                <label for="password" id="password-label">Password</label>
+                <input type="password" name="password" id="password" class="form-control" required />
             </div>
 
-            <div class="checkbox mb-3">
+            <div id="panel-remember-me" class="checkbox mb-3" style="display: none;">
                 <label>
                     <input type="checkbox" name="_remember_me" /> Remember me
                 </label>
             </div>
 
-            <button class="btn btn-lg btn-primary" type="submit">Next</button>
+            <button class="btn btn-lg btn-primary" id="login-submit" type="submit" onclick="updateLogin();return false;">Next</button>
     {% endif %}
     </form>
+
+    <script>
+    var firedRequest = false;
+    function updateLogin() {
+        var username = $('#username').val();
+        if (firedRequest == username) {
+            return;
+        }
+        firedRequest = username;
+        $('#login-error').hide();
+        $('#panel-password').hide();
+        $('#panel-remember-me').hide();
+        $.post(Routing.generate('integrated_website_login_verify'), { 'username': username }, function( data ) {
+            if (data.status == 1) {
+                $('#password-label').html('Please choose a password');
+                $('#panel-password').show();
+                $('#password').focus();
+                $('#login-submit').prop('onclick', '');
+            }
+            if (data.status == 2) {
+                $('#password-label').html('Please enter your password');
+                $('#panel-password').show();
+                $('#panel-remember-me').show();
+                $('#password').focus();
+                $('#login-submit').prop('onclick', '');
+            }
+            if (data.status == 3) {
+                $('#login-error').html('Please enter a valid e-mail address');
+                $('#login-error').show();
+            }
+        }, "json");
+    }
+    </script>
 {% endblock %}
