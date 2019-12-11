@@ -162,6 +162,7 @@ class Authenticator extends AbstractFormLoginAuthenticator
 
         $session = new Session();
         $returnUrl = $session->get('returnUrl', '/');
+
         return new RedirectResponse($returnUrl);
     }
 

@@ -74,6 +74,7 @@ class SecurityController extends Controller
             'last_username' => $this->authenticationUtils->getLastUsername(),
             'error' => $this->authenticationUtils->getLastAuthenticationError(),
         ];
+
         return $this->render($this->themeManager->locateTemplate('security/login.html.twig'), $context);
     }
 

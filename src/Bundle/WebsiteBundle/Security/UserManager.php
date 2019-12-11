@@ -87,7 +87,7 @@ class UserManager
         }
 
         // use the validator to validate the value
-        if (count($this->validator->validate($username, $emailConstraint)) > 0) {
+        if (\count($this->validator->validate($username, $emailConstraint)) > 0) {
             return $this::STATUS_USERNAME_INVALID;
         }
 
