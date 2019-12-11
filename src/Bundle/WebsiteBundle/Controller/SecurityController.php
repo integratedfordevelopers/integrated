@@ -66,6 +66,7 @@ class SecurityController extends Controller
 
         if ($this->getUser()) {
             $returnUrl = $session->get('returnUrl', '/');
+
             return $this->redirect($returnUrl);
         }
 
