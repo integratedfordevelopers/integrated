@@ -139,7 +139,7 @@ class DatabaseMenuProvider implements MenuProviderInterface
             $result = $this->solariumProvider->execute(
                 $child->getSearchSelection(),
                 new Request([], [], ['_channel' => $this->channelContext->getChannel()->getId()]),
-                ['maxItems' => $child->getMaxItems()]
+                ['maxItems' => $child->getMaxItems(), 'exclude' => false]
             );
             foreach ($result as $row) {
                 $children[] = $factory->createItem($row['title'], ['uri' => $this->urlExtractor->getUrl($row, $this->channelContext->getChannel()->getId())]);
