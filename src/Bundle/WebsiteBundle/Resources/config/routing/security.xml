@@ -16,6 +16,11 @@
         <option key="expose">true</option>
     </route>
 
+    <route id="integrated_website_register" path="/register">
+        <default key="_controller">IntegratedWebsiteBundle:Security:register</default>
+        <option key="expose">true</option>
+    </route>
+
     <route id="integrated_website_logout" path="/logout">
         <default key="_controller">IntegratedWebsiteBundle:Security:logout</default>
     </route>

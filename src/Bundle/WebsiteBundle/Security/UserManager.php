@@ -6,8 +6,12 @@ use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\UserBundle\Model\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -38,19 +42,33 @@ class UserManager
     private $validator;
 
     /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
      * Authenticator constructor.
      *
      * @param EntityManagerInterface       $entityManager
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param ChannelContextInterface      $channelContext
      * @param ValidatorInterface           $validator
+     * @param TokenStorageInterface        $tokenStorage
+     * @param EventDispatcherInterface     $eventDispatcher
      */
-    public function __construct(EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder, ChannelContextInterface $channelContext, ValidatorInterface $validator)
+    public function __construct(EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder, ChannelContextInterface $channelContext, ValidatorInterface $validator, TokenStorageInterface $tokenStorage, EventDispatcherInterface $eventDispatcher)
     {
         $this->entityManager = $entityManager;
         $this->passwordEncoder = $passwordEncoder;
         $this->channelContext = $channelContext;
         $this->validator = $validator;
+        $this->tokenStorage = $tokenStorage;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -102,5 +120,37 @@ class UserManager
         }
 
         return $this::STATUS_USERNAME_EXISTS;
+    }
+
+    /**
+     * @param string $username
+     * @param string $password
+     *
+     * @throws \Exception
+     */
+    public function registerUser(string $username, string $password, $logUserIn = true)
+    {
+        if ($this->getUsernameStatus($username) !== $this::STATUS_USERNAME_NEW) {
+            throw new \Exception('Invalid username for registration');
+        }
+
+        $user = new User();
+        $user->setUsername($username);
+        $user->setEmail($username);
+        $user->setScope($this->channelContext->getChannel()->getScope());
+        $user->setPassword($password);
+        $user->setEnabled(true);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        if ($logUserIn) {
+            $token = new UsernamePasswordToken($user->getUsername(), $user->getPassword(), "default", $user->getRoles());
+
+            $this->tokenStorage->setToken($token);
+
+            $event = new InteractiveLoginEvent(new Request(), $token);
+            $this->eventDispatcher->dispatch('security.interactive_login', $event);
+        }
     }
 }

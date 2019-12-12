@@ -3,12 +3,12 @@
 {% block title %}Log in!{% endblock %}
 
 {% block content %}
-    <form method="post">
+    <form method="post" id="login-form">
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
 
-        {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
+        {% for error in errors %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endfor %}
 
         {% if not login_enabled %}
             <div class="mb-3">
@@ -28,6 +28,11 @@
             <div id="panel-password" style="display: none;">
                 <label for="password" id="password-label">Password</label>
                 <input type="password" name="password" id="password" class="form-control" required />
+            </div>
+
+            <div id="panel-password-verify" style="display: none;">
+                <label for="password-verify" id="password-verify-label">Repeat password</label>
+                <input type="password" name="password-verify" id="password-verify" class="form-control" required />
             </div>
 
             <div id="panel-remember-me" class="checkbox mb-3" style="display: none;">
@@ -50,13 +55,17 @@
         firedRequest = username;
         $('#login-error').hide();
         $('#panel-password').hide();
+        $('#panel-password-verify').hide();
         $('#panel-remember-me').hide();
+        $('#login-form').prop('action', '');
         $.post(Routing.generate('integrated_website_login_verify'), { 'username': username }, function( data ) {
             if (data.status == 1) {
                 $('#password-label').html('Please choose a password');
                 $('#panel-password').show();
+                $('#panel-password-verify').show();
                 $('#password').focus();
                 $('#login-submit').prop('onclick', '');
+                $('#login-form').prop('action', Routing.generate('integrated_website_register'));
             }
             if (data.status == 2) {
                 $('#password-label').html('Please enter your password');

@@ -59,6 +59,7 @@ class SecurityController extends Controller
     public function loginAction(Request $request): Response
     {
         $session = new Session();
+        $errors = [];
 
         if ($returnUrl = $request->get('returnUrl')) {
             $session->set('returnUrl', $returnUrl);
@@ -70,10 +71,14 @@ class SecurityController extends Controller
             return $this->redirect($returnUrl);
         }
 
+        if ($error = $this->authenticationUtils->getLastAuthenticationError()) {
+            $errors[] = $error->getMessage();
+        }
+
         $context = [
             'login_enabled' => $this->userManager->isEnabled(),
             'last_username' => $this->authenticationUtils->getLastUsername(),
-            'error' => $this->authenticationUtils->getLastAuthenticationError(),
+            'errors' => $errors,
         ];
 
         return $this->render($this->themeManager->locateTemplate('security/login.html.twig'), $context);
@@ -89,6 +94,51 @@ class SecurityController extends Controller
         $status = $this->userManager->getUsernameStatus($request->request->get('username'));
 
         return new JsonResponse(['status' => $status]);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     *
+     * @throws CircularFallbackException
+     */
+    public function registerAction(Request $request): Response
+    {
+        $errors = [];
+        $username = $request->request->get('username');
+        $password = $request->request->get('password');
+        $passwordVerify = $request->request->get('password-verify');
+
+        if ($this->userManager->getUsernameStatus($username) !== UserManager::STATUS_USERNAME_NEW) {
+            $errors[] = 'Your e-mail address already has an account';
+        }
+
+        if ($password != $passwordVerify) {
+            $errors[] = 'The two passwords are not the same';
+        }
+
+        if (strlen($password) < 8) {
+            $errors[] = 'Please choose a password of at least 8 characters';
+        }
+
+        if (count($errors) == 0) {
+            $this->userManager->registerUser($username, $password);
+
+            $session = new Session();
+            $returnUrl = $session->get('returnUrl', '/');
+
+            return $this->redirect($returnUrl);
+        }
+
+        $context = [
+            'login_enabled' => $this->userManager->isEnabled(),
+            'last_username' => $this->authenticationUtils->getLastUsername(),
+            'errors' => $errors,
+            'register' => true,
+        ];
+
+        return $this->render($this->themeManager->locateTemplate('security/login.html.twig'), $context);
     }
 
     public function logout()

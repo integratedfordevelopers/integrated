@@ -19,6 +19,8 @@
             <argument id="security.user_password_encoder.generic" type="service"/>
             <argument id="integrated_content.channel.context" type="service"/>
             <argument id="validator" type="service"/>
+            <argument id="security.token_storage" type="service"/>
+            <argument id="event_dispatcher" type="service"/>
         </service>
 
     </services>
