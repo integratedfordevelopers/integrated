@@ -84,6 +84,7 @@ class DatabaseMenuProvider implements MenuProviderInterface
                 }
 
                 if (isset($options['editMode']) && $options['editMode'] === false) {
+                    $this->repository->getDocumentManager()->detach($menu);
                     $this->parseSearchSelections($menu);
                 }
 
