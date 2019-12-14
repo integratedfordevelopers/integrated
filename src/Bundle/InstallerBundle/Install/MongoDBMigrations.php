@@ -2,49 +2,48 @@
 
 namespace Integrated\Bundle\InstallerBundle\Install;
 
-use Doctrine\DBAL\Migrations\Migration;
-use Doctrine\DBAL\Migrations\Configuration\Configuration;
-use Doctrine\DBAL\Migrations\MigrationException;
-use Doctrine\ORM\EntityManager;
+use AntiMattr\MongoDB\Migrations\Configuration\Configuration;
+use AntiMattr\MongoDB\Migrations\Migration;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class MySQLMigrations
+class MongoDBMigrations
 {
-    const DOCTRINE_MIGRATIONS_DIRECTORY = '/../Migrations/MySQL';
-    const DOCTRINE_MIGRATIONS_NAMESPACE = 'Integrated\Bundle\InstallerBundle\Migrations\MySQL';
-    const DOCTRINE_MIGRATIONS_NAME = 'Integrated MySQL Migrations';
+    const DOCTRINE_MIGRATIONS_DIRECTORY = '/../Migrations/MongoDB';
+    const DOCTRINE_MIGRATIONS_NAMESPACE = 'Integrated\Bundle\InstallerBundle\Migrations\MongoDB';
+    const DOCTRINE_MIGRATIONS_NAME = 'Integrated MongoDB Migrations';
     const DOCTRINE_MIGRATIONS_TABLE = 'integrated_migration_versions';
 
     /**
-     * @var EntityManager
+     * @var DocumentManager
      */
-    protected $entityManager;
+    private $documentManager;
 
     /**
      * @var ContainerInterface
      */
-    protected $container;
+    private $container;
 
     /**
      * Migrations constructor.
      *
-     * @param EntityManager      $entityManager
+     * @param DocumentManager    $documentManager
      * @param ContainerInterface $container
      */
-    public function __construct(EntityManager $entityManager, ContainerInterface $container)
+    public function __construct(DocumentManager $documentManager, ContainerInterface $container)
     {
-        $this->entityManager = $entityManager;
+        $this->documentManager = $documentManager;
         $this->container = $container;
     }
 
     /**
-     * @throws MigrationException
+     * Execute migrations.
      */
     public function execute()
     {
         $directory = realpath(__DIR__ . self::DOCTRINE_MIGRATIONS_DIRECTORY);
 
-        $configuration = new Configuration($this->entityManager->getConnection());
+        $configuration = new Configuration($this->documentManager->getConnection());
         $configuration->setMigrationsNamespace(self::DOCTRINE_MIGRATIONS_NAMESPACE);
         $configuration->setMigrationsDirectory($directory);
         $configuration->registerMigrationsFromDirectory($directory);

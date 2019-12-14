@@ -7,7 +7,7 @@
     <services>
 
         <service id="Integrated\Bundle\InstallerBundle\Command\IntegratedInstallCommand">
-            <argument id="integrated_user.doctrine.object_manager" type="service"/>
+            <argument id="doctrine.orm.entity_manager" type="service"/>
             <argument id="doctrine_mongodb.odm.document_manager" type="service"/>
             <argument id="solarium.client" type="service"/>
             <argument id="Integrated\Bundle\InstallerBundle\Install\MySQLMigrations" type="service"/>
@@ -16,7 +16,12 @@
         </service>
 
         <service id="Integrated\Bundle\InstallerBundle\Install\MySQLMigrations">
-            <argument id="integrated_user.doctrine.object_manager" type="service"/>
+            <argument id="doctrine.orm.entity_manager" type="service"/>
+            <argument id="service_container" type="service"/>
+        </service>
+
+        <service id="Integrated\Bundle\InstallerBundle\Install\MongoDBMigrations">
+            <argument id="doctrine_mongodb.odm.document_manager" type="service"/>
             <argument id="service_container" type="service"/>
         </service>
 
