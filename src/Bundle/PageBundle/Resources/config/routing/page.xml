@@ -19,4 +19,8 @@
     <route id="integrated_page_page_delete" path="/{id}/delete" methods="GET|DELETE">
         <default key="_controller">IntegratedPageBundle:Page:delete</default>
     </route>
+
+    <route id="integrated_page_page_copy" path="/copy" methods="GET|POST">
+        <default key="_controller">IntegratedPageBundle:Page:copy</default>
+    </route>
 </routes>

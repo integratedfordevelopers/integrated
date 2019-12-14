@@ -1,0 +1,18 @@
+{% extends integrated_active_theme('base.html.twig') %}
+
+{% block title %}{{ person.firstName }} {{ person.lastName }}{% endblock %}
+
+{% block meta %}
+    {{ parent() }}
+
+    {% include integrated_active_theme('widgets/canonical.html.twig') with {'content': person} only %}
+{% endblock %}
+
+{% block content %}
+    {% include 'IntegratedWebsiteBundle::json-ld.html.twig' with {content: person} %}
+
+    <h1>{{ person.firstName }} {{ person.lastName }}</h1>
+
+    {{ person.description|integrated_content }}
+
+{% endblock %}

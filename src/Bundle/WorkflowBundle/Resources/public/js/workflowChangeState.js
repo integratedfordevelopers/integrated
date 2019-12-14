@@ -4,6 +4,7 @@ $(function() {
     var $assigned = $('.assigned-choice');
 
     var workflowId = $('.workflow-hidden').val();
+    var contentType = $('.content-type-hidden').val();
     var currentStateId = $('.current-state').data('value');
 
     var changeState = function() {
@@ -18,6 +19,7 @@ $(function() {
             url: Routing.generate('integrated_workflow_change_state', {
                 'workflow':workflowId,
                 'state':status,
+                'contentType':contentType,
                 '_format':'json'
             }),
             dataType: 'json',
@@ -28,10 +30,10 @@ $(function() {
                 var $option = $firstOption.clone();
                 $firstOption.siblings().remove();
 
-                $.each(response.users, function(id, name) {
-                    var $tmp = $option.clone().val(id).text(name);
+                $.each(response.users, function(index, user) {
+                    var $tmp = $option.clone().val(user.id).text(user.name);
 
-                    if (id==selected) {
+                    if (user.id==selected) {
                         $tmp.attr('selected','selected');
                     }
 
@@ -61,4 +63,8 @@ $(function() {
     $('input', $nextStatus).change(changeState);
     changeState();
 
+});
+
+$(document).ready(function () {
+    $('#integrated_content_extension_workflow_assigned').select2();
 });

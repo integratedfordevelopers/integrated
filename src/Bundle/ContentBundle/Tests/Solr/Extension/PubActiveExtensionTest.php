@@ -14,6 +14,8 @@ namespace Integrated\Bundle\ContentBundle\Tests\Solr\Extension;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Solr\Extension\PubActiveExtension;
 use Integrated\Common\Content\ContentInterface;
+use Integrated\Common\ContentType\ContentTypeInterface;
+use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\Converter\Container;
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeExtensionInterface;
@@ -28,18 +30,18 @@ class PubActiveExtensionTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {
-        self::assertInstanceOf(TypeExtensionInterface::class, $this->getInstance());
+        self::assertInstanceOf(TypeExtensionInterface::class, $this->getInstance($this->getResolver()));
     }
 
     /**
      * @dataProvider buildProvider
      */
-    public function testBuild(ContentInterface $content, array $expected)
+    public function testBuild(ContentInterface $content, string $contentType, string $contentTypeName, array $expected)
     {
         $container = $this->getContainer();
 
-        $this->getInstance()->build($container, $content);
-        $this->getInstance()->build($container, $content); // should clear previous build
+        $this->getInstance($this->getResolver($contentType, $this->getContentType($contentTypeName)))->build($container, $content);
+        $this->getInstance($this->getResolver($contentType, $this->getContentType($contentTypeName)))->build($container, $content); // should clear previous build
 
         self::assertEquals($expected, $container->toArray());
     }
@@ -48,11 +50,15 @@ class PubActiveExtensionTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                $this->getContent(false),
+                $this->getContent(false, 'article'),
+                'article',
+                'Article',
                 ['pub_active' => [false]],
             ],
             [
-                $this->getContent(true),
+                $this->getContent(true, 'news'),
+                'news',
+                'News',
                 ['pub_active' => [true]],
             ],
         ];
@@ -65,20 +71,20 @@ class PubActiveExtensionTest extends \PHPUnit\Framework\TestCase
         $container->expects($this->never())
             ->method($this->anything());
 
-        $this->getInstance()->build($container, new stdClass());
+        $this->getInstance($this->getResolver())->build($container, new stdClass());
     }
 
     public function testGetName()
     {
-        self::assertEquals('integrated.content', $this->getInstance()->getName());
+        self::assertEquals('integrated.content', $this->getInstance($this->getResolver())->getName());
     }
 
     /**
      * @return PubActiveExtension
      */
-    protected function getInstance()
+    protected function getInstance(ResolverInterface $resolver)
     {
-        return new PubActiveExtension();
+        return new PubActiveExtension($resolver);
     }
 
     /**
@@ -97,12 +103,46 @@ class PubActiveExtensionTest extends \PHPUnit\Framework\TestCase
      *
      * @return Content|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getContent(bool $published)
+    protected function getContent(bool $published, string $contentType)
     {
         $mock = $this->createMock(Content::class);
+        $mock->expects($this->any())
+            ->method('getContentType')
+            ->willReturn($contentType);
         $mock->expects($this->atLeastOnce())
             ->method('isPublished')
             ->willReturn($published);
+
+        return $mock;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return ContentTypeInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getContentType(string $name)
+    {
+        $mock = $this->createMock(ContentTypeInterface::class);
+
+        return $mock;
+    }
+
+    /**
+     * @param string|null               $type
+     * @param ContentTypeInterface|null $contentType
+     *
+     * @return ResolverInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getResolver(string $type = null, ContentTypeInterface $contentType = null)
+    {
+        $mock = $this->createMock(ResolverInterface::class);
+        if (null !== $type) {
+            $mock->expects($this->any())
+                ->method('getType')
+                ->with($type)
+                ->willReturn($contentType);
+        }
 
         return $mock;
     }

@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\PageBundle\Controller;
 
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
+use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as BaseController;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -20,6 +21,21 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class Controller extends BaseController
 {
+    /**
+     * @var ChannelContextInterface
+     */
+    private $channelContext;
+
+    /**
+     * Controller constructor.
+     *
+     * @param ChannelContextInterface $channelContext
+     */
+    public function __construct(ChannelContextInterface $channelContext)
+    {
+        $this->channelContext = $channelContext;
+    }
+
     /**
      * @return array
      */
@@ -53,7 +69,15 @@ class Controller extends BaseController
             throw new \RuntimeException('Unable to get the request');
         }
 
-        $channel = $this->getChannelManager()->find($request->query->get('channel'));
+        $channel = $request->query->get(
+            'channel',
+            $request->cookies->get(
+                'channel',
+                $this->channelContext->getChannel() ? $this->channelContext->getChannel()->getId() : null
+            )
+        );
+
+        $channel = $this->getChannelManager()->find($channel);
 
         if (!$channel instanceof Channel) {
             $channels = $this->getChannels();

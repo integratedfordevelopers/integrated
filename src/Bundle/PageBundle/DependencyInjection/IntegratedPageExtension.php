@@ -28,6 +28,8 @@ class IntegratedPageExtension extends Extension
     {
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
+        $loader->load('breadcrumb.xml');
+        $loader->load('controllers.xml');
         $loader->load('services.xml');
         $loader->load('form.xml');
         $loader->load('event_listeners.xml');

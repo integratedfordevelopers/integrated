@@ -114,7 +114,7 @@ class IndexerRunCommand extends Command
                 'processes',
                 InputArgument::OPTIONAL,
                 'Creates a number of proccess that run the queue',
-                0
+                '0'
             )
             ->addOption(
                 'blocking',

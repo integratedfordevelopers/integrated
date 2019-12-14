@@ -126,6 +126,15 @@ class ArticleTest extends ContentTest
     }
 
     /**
+     * Test get- and setSourceUrl function.
+     */
+    public function testGetAndSetSourceUrlFunction()
+    {
+        $sourceUrl = 'sourceUrl';
+        $this->assertEquals($sourceUrl, $this->article->setSourceUrl($sourceUrl)->getSourceUrl());
+    }
+
+    /**
      * Test get- and setLocale function.
      */
     public function testGetAndSetLocaleFunction()

@@ -5,23 +5,35 @@
             <a href="{{ path('integrated_content_content_index') }}" class="navbar-brand">Integrated</a>
         </div>
 
+        <div class="pull-left" class="integrated-website-toolbar-message">
+            {{ message }}
+        </div>
+
         <div class="pull-right">
             {% set params = app.request.attributes.get('_route_params')|merge(app.request.query.all) %}
 
-            {% if app.request.query.get('integrated_website_edit') %}
+            {% if app.request.query.get('integrated_website_edit') and layoutEditable %}
                 <a href="javascript:;" class="btn btn-default navbar-btn" data-action="integrated-website-page-save"
                    {% if app.request.attributes.get('page').id|default %}data-id="{{ app.request.attributes.get('page').id }}" {% endif %}
                    data-target="{{ path(app.request.attributes.get('_route'), params|merge({'integrated_website_edit': 0})) }}">
-                    Save
+                    {% trans %}Save page{% endtrans %}
                 </a>
 
                 <a href="{{ path(app.request.attributes.get('_route'), params|merge({'integrated_website_edit': 0})) }}" class="btn btn-default navbar-btn">
-                    Cancel
+                    {% trans %}Cancel{% endtrans %}
                 </a>
             {% else %}
+                {% if content is defined and content is not null %}
+                <a href="{{ path('integrated_content_content_edit', {'id': content.id}) }}" class="btn btn-default navbar-btn">
+                    {% trans %}Edit{% endtrans %}
+                </a> &nbsp;
+                {% endif %}
+
+                {% if layoutEditable %}
                 <a href="{{  path(app.request.attributes.get('_route'), params|merge({'integrated_website_edit': 1})) }}" class="btn btn-default navbar-btn">
-                    Edit
+                    {% trans %}Edit page layout{% endtrans %}
                 </a>
+                {% endif %}
             {% endif %}
         </div>
     </div>

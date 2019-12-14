@@ -96,12 +96,13 @@ class ContentTypeVoter implements VoterInterface
 
         if ($workflowId = $contentType->getOption('workflow')) {
             /** @var Definition $workflow */
-            $workflow = $this->repository->find($workflowId);
-            $state = $workflow->getDefault();
+            if ($workflow = $this->repository->find($workflowId)) {
+                $state = $workflow->getDefault();
 
-            if (\count($state->getPermissions())) {
-                // Workflow permissions overrules content type permissions
-                $permissionGroups = $state->getPermissions();
+                if (\count($state->getPermissions())) {
+                    // Workflow permissions overrules content type permissions
+                    $permissionGroups = $state->getPermissions();
+                }
             }
         }
 

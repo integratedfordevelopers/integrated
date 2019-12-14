@@ -153,6 +153,7 @@
         <thead>
             <tr>
                 <th>{% trans %}Default{% endtrans %}</th>
+                <th>{% trans %}Restrict{% endtrans %}</th>
                 <th>{% trans %}Enforce{% endtrans %}</th>
             </tr>
         </thead>
@@ -163,6 +164,11 @@
                 <td>
                     {% set element = channel.selected  %}
                     {{ block('content_type_checkbox_widget') }}
+                </td>
+                <td>
+                    <div class="checkbox">
+                        <label>{{ form_widget(channel.restrict) }}</label>
+                    </div>
                 </td>
                 <td>
                     <div class="checkbox">
