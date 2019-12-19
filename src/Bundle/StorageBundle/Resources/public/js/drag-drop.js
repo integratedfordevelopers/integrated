@@ -33,6 +33,7 @@ $(document).ready(function(){
                 .on( 'drop', function( e )
                 {
                     $("input[type='file']", $dropZone).prop("files",  e.originalEvent.dataTransfer.files); // the files that were dropped
+                    $("input[type='file']", $dropZone).trigger('change');
                 });
         }
 

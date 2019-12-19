@@ -52,6 +52,7 @@
         <service id="integrated_storage.cache_app" class="Integrated\Bundle\StorageBundle\Storage\Cache\AppCache">
             <argument>%kernel.cache_dir%</argument>
             <argument type="service" id="integrated_storage.manager" />
+            <argument type="service" id="request_stack" />
         </service>
 
         <service id="integrated_storage.intent_writer" class="Integrated\Bundle\StorageBundle\Doctrine\ODM\Transformer\StorageIntentTransformer" public="true">
