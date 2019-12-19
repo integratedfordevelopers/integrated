@@ -7,7 +7,6 @@
         {% if form.vars.submitted and form.vars.valid %}
             {{ block.textAfterSubmit }}
         {% else %}
-
             {{ block.content|raw }}
 
             {{ form(form, { 'style': 'horizontal', 'label_col': 3, 'widget_col': 9, 'col_size': 'sm' }) }}
