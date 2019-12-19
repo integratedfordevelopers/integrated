@@ -224,11 +224,7 @@
                         url: "{{ path('integrated_content_content_index', { 'contenttypes': contentTypes|keys, '_format': 'json' })|raw }}",
                         dataType: 'json',
                         data: function (term, page) {
-                            if (term.term) {
-                                query = term.term+'*';
-                            } else {
-                                query = '';
-                            }
+                            query = term.term ? term.term+'*' : '';
                             return {
                                 q: query,
                                 page_limit: 10
@@ -249,14 +245,12 @@
                             return {
                                 results: $.map(data.items, function (item) {
                                     title = item.title;
-                                    type = item.type;
-                                    switch (type) {
+                                    let typeToName = {
                                         {% for contentTypeId, contentTypeName in contentTypes %}
-                                        case '{{ contentTypeId }}':
-                                            type = '{{ contentTypeName|escape('js') }}';
-                                            break;
+                                        '{{ contentTypeId }}': '{{ contentTypeName|escape('js') }}'{% if not loop.last %},{% endif %}
                                         {% endfor %}
-                                    }
+                                    };
+                                    type = typeToName[item.type];
                                     if (this.authorValues[title] > 1) {
                                         title = title+' ('+type+')';
                                     }
