@@ -19,7 +19,6 @@ use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Common\Channel\Exporter\Queue\Request;
 use Integrated\Common\Content\ChannelableInterface;
-use Integrated\Common\Content\PublishableInterface;
 use Integrated\Common\Content\PublishTimeInterface;
 use Integrated\Common\Queue\Memory\QueueMessageInterface;
 use Integrated\Common\Queue\Provider\Memory\QueueProvider;
