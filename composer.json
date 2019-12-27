@@ -89,10 +89,12 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-release/0.8": "0.8.x-dev",
-            "dev-release/0.9": "0.9.x-dev",
             "dev-release/0.10": "0.10.x-dev",
-            "dev-release/0.11": "0.11.x-dev"
+            "dev-release/0.11": "0.11.x-dev",
+            "dev-release/0.12": "0.12.x-dev",
+            "dev-release/0.13": "0.13.x-dev",
+            "dev-release/0.14": "0.14.x-dev",
+            "dev-release/0.15": "0.15.x-dev"
         }
     }
 }

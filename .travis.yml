@@ -1,7 +1,14 @@
 install:
 - curl -sS https://getcomposer.org/installer | php
+
+env:
+    matrix:
+        - PREFER_LOWEST="--prefer-lowest"
+        - PREFER_LOWEST=""
+
 before_script:
-- php7.1 composer.phar update -n
+- php7.1 composer.phar update -n $PREFER_LOWEST
+
 script:
 - php7.1 vendor/bin/phpcs
 - php7.1 vendor/bin/php-cs-fixer fix --verbose --show-progress=none --dry-run
