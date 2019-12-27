@@ -33,6 +33,7 @@
         "facebook/graph-sdk": "~5.0",
         "friendsofsymfony/jsrouting-bundle": "~2.0",
         "gregwar/image-bundle": "~2.1",
+        "gregwar/image": ">=2.0.25",
         "jms/metadata": "~1.6",
         "knplabs/knp-gaufrette-bundle": "~0.5",
         "knplabs/knp-menu-bundle": "~2.2",
@@ -43,6 +44,7 @@
         "solarium/solarium": "~3.8",
         "swiftmailer/swiftmailer": "~6.1",
         "twbs/bootstrap": "~3.3",
+        "twig/twig": ">=2.12",
         "vihuvac/recaptcha-bundle": "~2.1"
     },
     "replace": {
