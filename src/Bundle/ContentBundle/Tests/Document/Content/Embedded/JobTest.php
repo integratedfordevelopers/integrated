@@ -26,7 +26,7 @@ class JobTest extends \PHPUnit\Framework\TestCase
     /**
      * Setup the test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->job = new Job();
     }

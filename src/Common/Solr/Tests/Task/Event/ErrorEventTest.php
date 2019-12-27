@@ -30,7 +30,7 @@ class ErrorEventTest extends WorkerEventTest
      */
     protected $message;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

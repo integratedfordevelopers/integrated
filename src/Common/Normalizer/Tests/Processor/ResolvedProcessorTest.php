@@ -35,7 +35,7 @@ class ResolvedProcessorTest extends \PHPUnit\Framework\TestCase
      */
     protected $processors = [];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->factory = $this->createMock(ContainerFactoryInterface::class);
     }

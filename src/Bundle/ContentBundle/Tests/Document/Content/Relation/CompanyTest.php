@@ -27,7 +27,7 @@ class CompanyTest extends RelationTest
     /**
      * Setup the test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->company = new Company();
     }

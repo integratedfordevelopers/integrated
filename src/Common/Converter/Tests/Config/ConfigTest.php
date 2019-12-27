@@ -25,7 +25,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
      */
     protected $types = [];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->types = [
             $this->createMock('Integrated\\Common\\Converter\\Config\\TypeConfigInterface'),

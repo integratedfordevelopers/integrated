@@ -25,7 +25,7 @@ class ProcessorRegistryTest extends \PHPUnit\Framework\TestCase
      */
     protected $processors = [];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->processors['class1'][] = $this->createMock(ProcessorInterface::class);
         $this->processors['class1'][] = $this->createMock(ProcessorInterface::class);

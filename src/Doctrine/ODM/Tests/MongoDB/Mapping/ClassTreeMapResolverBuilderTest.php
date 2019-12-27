@@ -25,7 +25,7 @@ class ClassTreeMapResolverBuilderTest extends \PHPUnit\Framework\TestCase
      */
     private $locator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->locator = $this->createMock('Integrated\\Doctrine\\ODM\\MongoDB\\Mapping\\Locator\\ClassLocatorInterface');
     }

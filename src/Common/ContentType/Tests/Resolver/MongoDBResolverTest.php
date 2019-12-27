@@ -25,7 +25,7 @@ class MongoDBResolverTest extends \PHPUnit\Framework\TestCase
      */
     private $repository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $class = $this->getMockClass('Integrated\\Common\\ContentType\\ContentTypeInterface');
 

@@ -27,7 +27,7 @@ class PriorityResolverTest extends \PHPUnit\Framework\TestCase
      */
     private $resolvers = [];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->resolvers[] = $this->getResolver();
         $this->resolvers[] = $this->getResolver();

@@ -26,7 +26,7 @@ class RegistryBuilderTest extends \PHPUnit\Framework\TestCase
      */
     private $factory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->factory = $this->createMock('Integrated\\Common\\Converter\\Type\\ResolvedTypeFactoryInterface');
     }

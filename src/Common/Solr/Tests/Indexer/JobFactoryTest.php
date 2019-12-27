@@ -31,7 +31,7 @@ class JobFactoryTest extends \PHPUnit\Framework\TestCase
      */
     private $format = 'json';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->serializer = $this->createMock(SerializerInterface::class);
     }

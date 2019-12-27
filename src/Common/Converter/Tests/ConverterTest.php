@@ -39,7 +39,7 @@ class ConverterTest extends \PHPUnit\Framework\TestCase
      */
     private $factory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->registry = $this->createMock('Integrated\\Common\\Converter\\Type\\RegistryInterface');
         $this->resolver = $this->createMock('Integrated\\Common\\Converter\\Config\\ConfigResolverInterface');
