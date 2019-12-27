@@ -15,8 +15,6 @@
             "homepage": "https://www.e-active.nl"
         }
     ],
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "require": {
         "php": ">=7.1",
         "ext-intl": "*",
