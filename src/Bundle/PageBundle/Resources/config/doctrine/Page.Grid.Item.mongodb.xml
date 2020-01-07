@@ -4,7 +4,7 @@
 
     <embedded-document name="Integrated\Bundle\PageBundle\Document\Page\Grid\Item">
 
-        <field fieldName="order" type="int" />
+        <field field-name="order" type="int" />
 
         <embed-one field="row" target-document="Integrated\Bundle\PageBundle\Document\Page\Grid\Row" />
 

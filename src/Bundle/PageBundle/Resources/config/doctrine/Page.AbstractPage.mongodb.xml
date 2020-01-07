@@ -4,11 +4,11 @@
 
     <mapped-superclass name="Integrated\Bundle\PageBundle\Document\Page\AbstractPage" collection="page" inheritance-type="SINGLE_COLLECTION">
 
-        <field fieldName="id" id="true" strategy="UUID" />
-        <field fieldName="path" type="string" />
-        <field fieldName="layout" type="string" />
-        <field fieldName="createdAt" type="date" />
-        <field fieldName="updatedAt" type="date" />
+        <field field-name="id" id="true" strategy="UUID" />
+        <field field-name="path" type="string" />
+        <field field-name="layout" type="string" />
+        <field field-name="createdAt" type="date" />
+        <field field-name="updatedAt" type="date" />
 
         <embed-many field="grids" target-document="Integrated\Bundle\PageBundle\Document\Page\Grid\Grid" />
 
