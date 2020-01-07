@@ -5,15 +5,15 @@
 
     <document name="Integrated\Bundle\ContentBundle\Document\Content\Product">
 
-        <field fieldName="title" type="string" />
-        <field fieldName="reference" type="string" />
-        <field fieldName="variant" type="string" />
-        <field fieldName="locale" type="string" />
-        <field fieldName="price" type="float" />
-        <field fieldName="stockQuantity" type="integer" />
-        <field fieldName="orderable" type="boolean" />
-        <field fieldName="description" type="string" />
-        <field fieldName="content" type="string" />
+        <field field-name="title" type="string" />
+        <field field-name="reference" type="string" />
+        <field field-name="variant" type="string" />
+        <field field-name="locale" type="string" />
+        <field field-name="price" type="float" />
+        <field field-name="stockQuantity" type="integer" />
+        <field field-name="orderable" type="boolean" />
+        <field field-name="description" type="string" />
+        <field field-name="content" type="string" />
 
     </document>
 

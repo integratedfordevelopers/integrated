@@ -5,9 +5,9 @@
 
     <embedded-document name="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage">
 
-        <field fieldName="identifier" type="string" />
-        <field fieldName="pathname" type="string" />
-        <field fieldName="filesystems" type="collection" />
+        <field field-name="identifier" type="string" />
+        <field field-name="pathname" type="string" />
+        <field field-name="filesystems" type="collection" />
 
         <embed-one
             field="metadata"

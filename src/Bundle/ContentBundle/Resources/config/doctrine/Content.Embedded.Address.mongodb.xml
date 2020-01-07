@@ -5,14 +5,14 @@
 
     <embedded-document name="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address">
 
-        <field fieldName="type" type="string" />
-        <field fieldName="name" type="string" />
-        <field fieldName="address1" type="string" />
-        <field fieldName="address2" type="string" />
-        <field fieldName="zipcode" type="string" />
-        <field fieldName="city" type="string" />
-        <field fieldName="state" type="string" />
-        <field fieldName="country" type="string" />
+        <field field-name="type" type="string" />
+        <field field-name="name" type="string" />
+        <field field-name="address1" type="string" />
+        <field field-name="address2" type="string" />
+        <field field-name="zipcode" type="string" />
+        <field field-name="city" type="string" />
+        <field field-name="state" type="string" />
+        <field field-name="country" type="string" />
 
         <embed-one
             field="location"

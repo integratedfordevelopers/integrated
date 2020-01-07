@@ -5,8 +5,8 @@
 
     <embedded-document name="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Phonenumber">
 
-        <field fieldName="type" type="string" />
-        <field fieldName="number" type="string" />
+        <field field-name="type" type="string" />
+        <field field-name="number" type="string" />
 
     </embedded-document>
 
