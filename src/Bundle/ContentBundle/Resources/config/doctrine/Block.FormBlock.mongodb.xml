@@ -5,6 +5,8 @@
 
     <document name="Integrated\Bundle\ContentBundle\Document\Block\FormBlock">
 
+        <field fieldName="publishedTitle" type="string" />
+        <field fieldName="content" type="string" />
         <field fieldName="returnUrl" type="string" />
         <field fieldName="textAfterSubmit" type="string" />
         <field fieldName="emailAddresses" type="collection" />

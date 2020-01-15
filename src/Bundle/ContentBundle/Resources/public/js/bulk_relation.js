@@ -10,7 +10,7 @@ function implementSelect2() {
                 data: function (param) {
                     return {
                         relation: $(this).data('id'),
-                        limit: 5,
+                        limit:  100,
                         sort: 'title',
                         q: typeof param.term !== 'undefined' ? param.term + '*' : ''
                     };
