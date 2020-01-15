@@ -123,12 +123,10 @@ class DatabaseMenuFactory implements FactoryInterface
                     $child->setTypeLink($value['typeLink']);
                 }
 
-                if (isset($value['searchSelection'])) {
-                    if ($searchSelection = $this->documentManager->getRepository(SearchSelection::class)->find($value['searchSelection'])) {
-                        $child->setSearchSelection($searchSelection);
-                        if ($child->getTypeLink() == $child::TYPE_LINK_SEARCH_SELECTION) {
-                            $child->setName('Search selection '.$searchSelection->getTitle());
-                        }
+                if (isset($value['searchSelection']) && $searchSelection = $this->documentManager->getRepository(SearchSelection::class)->find($value['searchSelection'])) {
+                    $child->setSearchSelection($searchSelection);
+                    if ($child->getTypeLink() == $child::TYPE_LINK_SEARCH_SELECTION) {
+                        $child->setName('Search selection '.$searchSelection->getTitle());
                     }
                 }
 

@@ -3,35 +3,35 @@
         <div class="col-md-12">
             <form class="form-horizontal">
                 {% verbatim %}
-                <div class="form-group">
-                    <label class="col-md-4 control-label">Link type</label>
-                    <div class="col-md-8">
-                        <div>
-                            <div class="radio">
-                                <label for="typeLinkUri" class="required">
-                                    <input type="radio" id="typeLinkUri" name="typeLink" required="required" value="0"{{#if typeLinkUri }} checked="checked"{{/if}} onchange="Integrated.Menu.updateLinkType();">URL
-                                </label>
-                            </div>
-                            <div class="radio">
-                                <label for="typeLinkSearchSelection" class="required">
-                                    <input type="radio" id="typeLinkSearchSelection" name="typeLink" required="required" value="1"{{#if typeLinkSearchSelection }} checked="checked"{{/if}} onchange="Integrated.Menu.updateLinkType();">Search selection
-                                </label>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Link type</label>
+                        <div class="col-md-8">
+                            <div>
+                                <div class="radio">
+                                    <label for="typeLinkUri" class="required">
+                                        <input type="radio" id="typeLinkUri" name="typeLink" required="required" value="0"{{#if typeLinkUri }} checked="checked"{{/if}} onchange="Integrated.Menu.updateLinkType();">URL
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label for="typeLinkSearchSelection" class="required">
+                                        <input type="radio" id="typeLinkSearchSelection" name="typeLink" required="required" value="1"{{#if typeLinkSearchSelection }} checked="checked"{{/if}} onchange="Integrated.Menu.updateLinkType();">Search selection
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-group" id="integrated-row-name">
-                    <label class="col-md-4 control-label" for="name">Name</label>
-                    <div class="col-md-8">
-                        <input id="name" name="name" type="text" value="{{ name }}" class="form-control" />
+                    <div class="form-group" id="integrated-row-name">
+                        <label class="col-md-4 control-label" for="name">Name</label>
+                        <div class="col-md-8">
+                            <input id="name" name="name" type="text" value="{{ name }}" class="form-control" />
+                        </div>
                     </div>
-                </div>
-                <div class="form-group" id="integrated-row-uri">
-                    <label class="col-md-4 control-label" for="uri">URL</label>
-                    <div class="col-md-8">
-                        <input id="uri" name="uri" type="text" value="{{ uri }}" class="form-control" />
+                    <div class="form-group" id="integrated-row-uri">
+                        <label class="col-md-4 control-label" for="uri">URL</label>
+                        <div class="col-md-8">
+                            <input id="uri" name="uri" type="text" value="{{ uri }}" class="form-control" />
+                        </div>
                     </div>
-                </div>
                 {% endverbatim %}
                 <div class="form-group" id="integrated-row-searchSelection">
                     <label class="col-md-4 control-label" for="uri">Search selection</label>
@@ -52,12 +52,12 @@
                     </div>
                 </div>
                 {% verbatim %}
-                <div class="form-group" id="integrated-row-maxItems">
-                    <label class="col-md-4 control-label" for="uri">Number of items</label>
-                    <div class="col-md-8">
-                        <input id="maxItems" name="maxItems" type="text" value="{{ maxItems }}" class="form-control" />
+                    <div class="form-group" id="integrated-row-maxItems">
+                        <label class="col-md-4 control-label" for="uri">Number of items</label>
+                        <div class="col-md-8">
+                            <input id="maxItems" name="maxItems" type="text" value="{{ maxItems }}" class="form-control" />
+                        </div>
                     </div>
-                </div>
                 {% endverbatim %}
             </form>
         </div>

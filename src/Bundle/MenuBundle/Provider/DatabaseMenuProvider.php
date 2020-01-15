@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\MenuBundle\Provider;
 
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Integrated\Bundle\ContentBundle\Provider\SolariumProvider;
 use Integrated\Bundle\MenuBundle\Document\MenuItem;
 use Integrated\Bundle\PageBundle\Services\SolrUrlExtractor;
@@ -48,7 +48,7 @@ class DatabaseMenuProvider implements MenuProviderInterface
     private $solariumProvider;
 
     /**
-     * @var solrUrlExtractor
+     * @var SolrUrlExtractor
      */
     private $urlExtractor;
 
@@ -58,7 +58,7 @@ class DatabaseMenuProvider implements MenuProviderInterface
      * @param SolariumProvider        $solariumProvider
      * @param solrUrlExtractor        $urlExtractor
      */
-    public function __construct(ChannelContextInterface $channelContext, DocumentRepository $repository, SolariumProvider $solariumProvider, solrUrlExtractor $urlExtractor)
+    public function __construct(ChannelContextInterface $channelContext, DocumentRepository $repository, SolariumProvider $solariumProvider, SolrUrlExtractor $urlExtractor)
     {
         $this->channelContext = $channelContext;
         $this->repository = $repository;
