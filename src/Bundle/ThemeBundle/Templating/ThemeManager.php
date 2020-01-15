@@ -184,12 +184,11 @@ class ThemeManager
             }
         }
 
-        if (basename($template) != 'default.html.twig') {
-            //try default.html.twig for all themes as a second fallback
-            $template = \dirname($template).'/default.html.twig';
+        if (basename($template) !== 'default.html.twig') {
+            $secondFallbackTemplate = \dirname($template).'/default.html.twig';
             $this->fallbackStack = [];
 
-            return $this->locateTemplate($template);
+            return $this->locateTemplate($secondFallbackTemplate);
         }
 
         $this->fallbackStack = [];

@@ -221,19 +221,41 @@
                 $("#{{ id }}").select2({
                     multiple: true,
                     ajax: {
-                        url: "{{ path('integrated_content_content_index', { 'contenttypes': contentTypes, '_format': 'json' })|raw }}",
+                        url: "{{ path('integrated_content_content_index', { 'contenttypes': contentTypes|keys, '_format': 'json' })|raw }}",
                         dataType: 'json',
                         data: function (term, page) {
+                            query = term.term ? term.term+'*' : '';
                             return {
-                                q: term.term,
+                                q: query,
                                 page_limit: 10
                             };
                         },
                         processResults: function (data) {
+                            $.map(data.items, function (item) {
+                                var value = item.title;
+                                if (this.authorValues === undefined) {
+                                    this.authorValues = {};
+                                }
+                                if (this.authorValues[value] === undefined) {
+                                    this.authorValues[value] = 1;
+                                } else {
+                                    this.authorValues[value] = this.authorValues[value] + 1;
+                                }
+                            });
                             return {
                                 results: $.map(data.items, function (item) {
+                                    title = item.title;
+                                    let typeToName = {
+                                        {% for contentTypeId, contentTypeName in contentTypes %}
+                                        '{{ contentTypeId }}': '{{ contentTypeName|escape('js') }}'{% if not loop.last %},{% endif %}
+                                        {% endfor %}
+                                    };
+                                    type = typeToName[item.type];
+                                    if (this.authorValues[title] > 1) {
+                                        title = title+' ('+type+')';
+                                    }
                                     return {
-                                        text: item.title,
+                                        text: title,
                                         id: item.id
                                     }
                                 })
