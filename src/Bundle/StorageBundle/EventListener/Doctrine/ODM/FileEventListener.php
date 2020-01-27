@@ -18,9 +18,6 @@ use Doctrine\ODM\MongoDB\Event\PreFlushEventArgs;
 use Doctrine\ODM\MongoDB\Events;
 use Integrated\Bundle\StorageBundle\Doctrine\ODM\Transformer\StorageIntentTransformer;
 use Integrated\Bundle\StorageBundle\Storage\Accessor\DoctrineDocument;
-use Integrated\Bundle\StorageBundle\Storage\Command\DeleteCommand;
-use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
-use Integrated\Common\Content\Document\Storage\FileInterface;
 use Integrated\Common\Storage\ManagerInterface;
 
 /**
