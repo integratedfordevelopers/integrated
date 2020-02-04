@@ -35,6 +35,7 @@ class FormBlockEvent extends Event
 
     /**
      * @param ContentInterface $content
+     * @param null             $block
      */
     public function __construct($content, $block = null)
     {
