@@ -8,7 +8,7 @@
         repository-class="Integrated\Bundle\ContentBundle\Document\Channel\ChannelRepository"
         collection="channel">
 
-        <field field-name="id" id="true" strategy="NONE" />
+        <id field-name="id" strategy="NONE" />
         <field field-name="name" type="string" index="true" />
         <field field-name="color" type="string" />
         <field field-name="domains" type="collection" />
