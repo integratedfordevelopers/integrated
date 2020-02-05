@@ -17,8 +17,8 @@
         <discriminator-field name="class" />
 
         <discriminator-map>
-            <discriminator-mapping value="Page" class="Page" />
-            <discriminator-mapping value="ContentTypePage" class="ContentTypePage" />
+            <discriminator-mapping value="Page" class="Integrated\Bundle\PageBundle\Document\Page\Page" />
+            <discriminator-mapping value="ContentTypePage" class="Integrated\Bundle\PageBundle\Document\Page\ContentTypePage" />
         </discriminator-map>
 
         <default-discriminator-value value="Page" />

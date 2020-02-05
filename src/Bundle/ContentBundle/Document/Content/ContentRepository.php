@@ -13,7 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Common\Content\ContentInterface;
 use Solarium\QueryType\Select\Result\DocumentInterface;

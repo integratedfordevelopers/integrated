@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\MenuBundle\Provider;
 
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Knp\Menu\ItemInterface;

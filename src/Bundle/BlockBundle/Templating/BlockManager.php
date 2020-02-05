@@ -13,7 +13,7 @@ namespace Integrated\Bundle\BlockBundle\Templating;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\DocumentNotFoundException;
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Integrated\Bundle\BlockBundle\Block\BlockHandler;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
