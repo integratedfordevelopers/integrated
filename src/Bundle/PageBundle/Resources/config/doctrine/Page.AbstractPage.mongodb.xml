@@ -4,7 +4,7 @@
 
     <mapped-superclass name="Integrated\Bundle\PageBundle\Document\Page\AbstractPage" collection="page" inheritance-type="SINGLE_COLLECTION">
 
-        <field field-name="id" id="true" strategy="UUID" />
+        <id field-name="id" strategy="UUID" />
         <field field-name="path" type="string" />
         <field field-name="layout" type="string" />
         <field field-name="createdAt" type="date" />
