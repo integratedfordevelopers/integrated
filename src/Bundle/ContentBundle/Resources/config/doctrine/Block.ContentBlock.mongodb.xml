@@ -5,11 +5,11 @@
 
     <document name="Integrated\Bundle\ContentBundle\Document\Block\ContentBlock">
 
-        <field fieldName="itemsPerPage" type="int" />
-        <field fieldName="maxItems" type="int" />
-        <field fieldName="readMoreUrl" type="string" />
-        <field fieldName="facetFields" type="collection" />
-        <field fieldName="title" type="string" />
+        <field field-name="itemsPerPage" type="int" />
+        <field field-name="maxItems" type="int" />
+        <field field-name="readMoreUrl" type="string" />
+        <field field-name="facetFields" type="collection" />
+        <field field-name="title" type="string" />
 
         <field name="publishedTitle" type="string" />
         <field name="useTitle" type="boolean" />

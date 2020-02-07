@@ -5,10 +5,10 @@
 
     <document name="Integrated\Bundle\ContentBundle\Document\Content\Comment">
 
-        <field fieldName="title" type="string" />
-        <field fieldName="name" type="string" />
-        <field fieldName="email" type="string" />
-        <field fieldName="comment" type="string" />
+        <field field-name="title" type="string" />
+        <field field-name="name" type="string" />
+        <field field-name="email" type="string" />
+        <field field-name="comment" type="string" />
 
     </document>
 

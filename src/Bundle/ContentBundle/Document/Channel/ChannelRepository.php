@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Channel;
 
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>

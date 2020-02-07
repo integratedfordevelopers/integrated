@@ -4,8 +4,8 @@
 
     <document name="Integrated\Bundle\PageBundle\Document\Page\ContentTypePage">
 
-        <field fieldName="controllerService" type="string" />
-        <field fieldName="controllerAction" type="string" />
+        <field field-name="controllerService" type="string" />
+        <field field-name="controllerAction" type="string" />
 
         <reference-one field="contentType" target-document="Integrated\Bundle\ContentBundle\Document\ContentType\ContentType" />
     </document>

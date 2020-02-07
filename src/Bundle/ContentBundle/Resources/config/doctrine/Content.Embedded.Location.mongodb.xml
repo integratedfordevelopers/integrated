@@ -5,8 +5,8 @@
 
     <embedded-document name="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Location">
 
-        <field fieldName="latitude" type="float" />
-        <field fieldName="longitude" type="float" />
+        <field field-name="latitude" type="float" />
+        <field field-name="longitude" type="float" />
 
     </embedded-document>
 

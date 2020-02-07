@@ -8,13 +8,13 @@
         collection="search_selection"
         repository-class="Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelectionRepository">
 
-        <field fieldName="id" id="true" strategy="NONE" />
-        <field fieldName="title" type="string" index="true" />
-        <field fieldName="filters" type="hash" />
-        <field fieldName="internalParams" type="hash" />
-        <field fieldName="locked" type="boolean" />
-        <field fieldName="public" type="boolean" />
-        <field fieldName="userId" type="int" />
+        <field field-name="id" id="true" strategy="NONE" />
+        <field field-name="title" type="string" index="true" />
+        <field field-name="filters" type="hash" />
+        <field field-name="internalParams" type="hash" />
+        <field field-name="locked" type="boolean" />
+        <field field-name="public" type="boolean" />
+        <field field-name="userId" type="int" />
 
     </document>
 
