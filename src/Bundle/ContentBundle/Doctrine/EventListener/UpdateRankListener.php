@@ -92,7 +92,7 @@ class UpdateRankListener implements EventSubscriber
     }
 
     /**
-     * Calculate a new rank by calculating the middle between the min and max string
+     * Calculate a new rank by calculating the middle between the min and max string.
      *
      * @param string $min
      * @param string $max
@@ -130,7 +130,7 @@ class UpdateRankListener implements EventSubscriber
     }
 
     /**
-     * Get a numeric representation of an a-zA-Z character, starting with A
+     * Get a numeric representation of an a-zA-Z character, starting with A.
      *
      * @param string $char
      *
@@ -149,7 +149,7 @@ class UpdateRankListener implements EventSubscriber
     }
 
     /**
-     * Convert a numeric representation of an a-zA-Z character (starting with A) back to the character
+     * Convert a numeric representation of an a-zA-Z character (starting with A) back to the character.
      *
      * @param int $number
      *
