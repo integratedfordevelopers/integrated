@@ -18,6 +18,14 @@ use Integrated\Common\Content\RankableInterface;
 
 class UpdateRankListener implements EventSubscriber
 {
+    const RANK_FIRST_TAG = '-first-';
+    const RANK_MIN_CHAR = 'A';
+    const RANK_MEDIUM_CHAR = 'a';
+    const RANK_MAX_CHAR = 'z';
+    const ASCII_TABLE_POS_LOWER_A = 97;
+    const ASCII_TABLE_POS_UPPER_A = 65;
+    const ALPHABET_LENGTH = 26;
+
     /**
      * {@inheritdoc}
      */
@@ -49,23 +57,15 @@ class UpdateRankListener implements EventSubscriber
                     continue;
                 }
 
-                if ($document->getRank() == '-first-') {
-                    $min = 'A';
-                    $max = $dm->createQueryBuilder(Content::class)
-                        ->field('rank')->notEqual(null)
-                        ->sort('rank', 1)
-                        ->select('rank')
-                        ->limit(1)
-                        ->hydrate(false)
-                        ->getQuery()
-                        ->getSingleResult();
-                    if ($max === null) {
-                        $max = 'z';
-                    } else {
-                        $max = $max['rank'];
-                    }
+                $queryBuilder = $dm->createQueryBuilder(Content::class)
+                    ->field('rank')->notEqual(null)
+                    ->sort('rank', 1)
+                    ->select('rank')
+                    ->limit(1)
+                    ->hydrate(false);
 
-                    $document->setRank($this->calculateRank($min, $max));
+                if ($document->getRank() == self::RANK_FIRST_TAG) {
+                    $min = self::RANK_MIN_CHAR;
                 } else {
                     if (preg_match('/[^a-zA-Z]/', $document->getRank())) {
                         throw new \Exception('Rank can only contain [a-zA-Z]: '.$document->getRank());
@@ -77,23 +77,13 @@ class UpdateRankListener implements EventSubscriber
                     }
 
                     $min = $document->getRank();
-                    $max = $dm->createQueryBuilder(Content::class)
-                        ->field('rank')->notEqual(null)
-                        ->field('rank')->gt($document->getRank())
-                        ->sort('rank', 1)
-                        ->select('rank')
-                        ->limit(1)
-                        ->hydrate(false)
-                        ->getQuery()
-                        ->getSingleResult();
-                    if ($max == null) {
-                        $max = 'z';
-                    } else {
-                        $max = $max['rank'];
-                    }
-
-                    $document->setRank($this->calculateRank($min, $max));
+                    $queryBuilder->field('rank')->gt($document->getRank());
                 }
+
+                $max = $queryBuilder->getQuery()->getSingleResult();
+                $max = $max['rank'] ?? self::RANK_MAX_CHAR;
+
+                $document->setRank($this->calculateRank($min, $max));
 
                 $class = $dm->getClassMetadata(\get_class($document));
                 $uow->recomputeSingleDocumentChangeSet($class, $document);
@@ -102,6 +92,8 @@ class UpdateRankListener implements EventSubscriber
     }
 
     /**
+     * Calculate a new rank by calculating the middle between the min and max string
+     *
      * @param string $min
      * @param string $max
      *
@@ -110,11 +102,11 @@ class UpdateRankListener implements EventSubscriber
     private function calculateRank(string $min, string $max)
     {
         while (\strlen($min) < \strlen($max)) {
-            $min = $min.'A';
+            $min = $min.self::RANK_MIN_CHAR;
         }
 
         while (\strlen($max) < \strlen($min)) {
-            $max = $max.'z';
+            $max = $max.self::RANK_MAX_CHAR;
         }
 
         $result = '';
@@ -131,13 +123,15 @@ class UpdateRankListener implements EventSubscriber
         }
 
         if ($result == $min) {
-            $result .= 'a';
+            $result .= self::RANK_MEDIUM_CHAR;
         }
 
         return $result;
     }
 
     /**
+     * Get a numeric representation of an a-zA-Z character, starting with A
+     *
      * @param string $char
      *
      * @return int
@@ -145,26 +139,28 @@ class UpdateRankListener implements EventSubscriber
     private function charToNum(string $char)
     {
         $number = \ord($char);
-        if ($number >= 97) {
-            $number = $number - 71;
+        if ($number >= self::ASCII_TABLE_POS_LOWER_A) {
+            $number = $number - (self::ASCII_TABLE_POS_LOWER_A - self::ALPHABET_LENGTH);
         } else {
-            $number = $number - 65;
+            $number = $number - self::ASCII_TABLE_POS_UPPER_A;
         }
 
         return $number;
     }
 
     /**
+     * Convert a numeric representation of an a-zA-Z character (starting with A) back to the character
+     *
      * @param int $number
      *
      * @return string
      */
     private function numToChar(int $number)
     {
-        if ($number < 26) {
-            $number = $number + 65;
+        if ($number < self::ALPHABET_LENGTH) {
+            $number = $number + self::ASCII_TABLE_POS_UPPER_A;
         } else {
-            $number = $number + 71;
+            $number = $number + (self::ASCII_TABLE_POS_LOWER_A - self::ALPHABET_LENGTH);
         }
 
         return \chr($number);
