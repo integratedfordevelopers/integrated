@@ -9,7 +9,7 @@
         repository-class="Integrated\Bundle\BlockBundle\Document\Block\BlockRepository"
         inheritance-type="SINGLE_COLLECTION"
     >
-        <field name="id" id="true" strategy="NONE" />
+        <id field-name="id" strategy="NONE" />
         <field name="title" type="string" />
         <field name="layout" type="string" />
         <field name="createdAt" type="date" />

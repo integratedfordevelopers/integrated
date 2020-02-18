@@ -31,7 +31,6 @@
                     </thead>
 
                     <tbody>
-
                     {% for user in users %}
 
                         <tr>
@@ -43,7 +42,9 @@
                             </td>
                             <td>
                                 <a href="{{ path('integrated_user_user_edit', {'id': user.id}) }}" title="{% trans %}Edit{% endtrans %}"><span class="glyphicon glyphicon-edit"></span></a>
-                                <a href="{{ path('integrated_user_user_delete', {'id': user.id}) }}" title="{% trans %}Delete{% endtrans %}"><span class="glyphicon glyphicon-remove-circle"></span></a>
+                                {% if app.user.id != user.id %}
+                                    <a href="{{ path('integrated_user_user_delete', {'id': user.id}) }}" title="{% trans %}Delete{% endtrans %}"><span class="glyphicon glyphicon-remove-circle"></span></a>
+                                {% endif %}
                             </td>
                         </tr>
 

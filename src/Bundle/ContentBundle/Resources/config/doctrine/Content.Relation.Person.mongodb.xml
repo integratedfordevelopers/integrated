@@ -5,11 +5,11 @@
 
     <document name="Integrated\Bundle\ContentBundle\Document\Content\Relation\Person">
 
-        <field fieldName="gender" type="string" />
-        <field fieldName="prefix" type="string" />
-        <field fieldName="nickname" type="string" />
-        <field fieldName="firstName" type="string" />
-        <field fieldName="lastName" type="string" />
+        <field field-name="gender" type="string" />
+        <field field-name="prefix" type="string" />
+        <field field-name="nickname" type="string" />
+        <field field-name="firstName" type="string" />
+        <field field-name="lastName" type="string" />
 
         <embed-one
             field="picture"

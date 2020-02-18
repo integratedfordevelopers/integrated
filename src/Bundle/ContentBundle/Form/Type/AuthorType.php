@@ -64,7 +64,7 @@ class AuthorType extends AbstractType
 
         foreach ($this->contentTypeManager->filterInstanceOf(Person::class) as $contentType) {
             if ($contentType instanceof ContentType) {
-                $contentTypes[] = $contentType->getId();
+                $contentTypes[$contentType->getId()] = $contentType->getName();
             }
         }
 

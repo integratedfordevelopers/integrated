@@ -5,8 +5,8 @@
 
     <embedded-document name="Integrated\Bundle\ContentBundle\Document\Permission\Embedded\Permission">
 
-        <field fieldName="group" type="int" />
-        <field fieldName="mask" type="int" />
+        <field field-name="group" type="int" />
+        <field field-name="mask" type="int" />
 
     </embedded-document>
 

@@ -4,7 +4,7 @@
                     http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
 
     <document name="Integrated\Bundle\ContentBundle\Document\Block\SearchBlock">
-        <field fieldName="url" type="string" />
+        <field field-name="url" type="string" />
         <reference-one
                 field="block"
                 target-document="Integrated\Bundle\ContentBundle\Document\Block\ContentBlock" />

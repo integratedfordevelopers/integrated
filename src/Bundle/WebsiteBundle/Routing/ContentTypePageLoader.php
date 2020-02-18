@@ -87,7 +87,7 @@ class ContentTypePageLoader extends Loader
     }
 
     /**
-     * @return \Doctrine\ODM\MongoDB\DocumentRepository
+     * @return \Doctrine\ODM\MongoDB\Repository\DocumentRepository
      */
     protected function getContentTypeRepo()
     {

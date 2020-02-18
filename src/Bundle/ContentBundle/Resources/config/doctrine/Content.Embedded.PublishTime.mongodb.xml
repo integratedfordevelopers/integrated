@@ -5,8 +5,8 @@
 
     <embedded-document name="Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime">
 
-        <field fieldName="startDate" type="date" />
-        <field fieldName="endDate" type="date" />
+        <field field-name="startDate" type="date" />
+        <field field-name="endDate" type="date" />
 
     </embedded-document>
 
