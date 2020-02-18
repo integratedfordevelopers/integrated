@@ -20,7 +20,7 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 class ContentRankTransformer implements DataTransformerInterface
 {
     /**
-     * @var \Doctrine\ODM\MongoDB\DocumentRepository
+     * @var DocumentRepository
      */
     protected $repo;
 
@@ -59,17 +59,8 @@ class ContentRankTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
-        if (null === $value) {
-            return null;
-        } elseif (\is_string($value)) {
+        if (null === $value || \is_string($value)) {
             return $value;
-            $result = $this->repo->findOneBy(['rank' => $value]);
-
-            if ($result instanceof RankableInterface) {
-                return $result;
-            }
-
-            throw new TransformationFailedException(sprintf('Document with rank "%s" not found', $value));
         }
 
         throw new TransformationFailedException(sprintf('Expected string, "%s" given', \gettype($value)));

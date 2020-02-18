@@ -18,10 +18,6 @@ use Integrated\Common\Content\RankableInterface;
 
 class UpdateRankListener implements EventSubscriber
 {
-    public function __construct()
-    {
-    }
-
     /**
      * {@inheritdoc}
      */
