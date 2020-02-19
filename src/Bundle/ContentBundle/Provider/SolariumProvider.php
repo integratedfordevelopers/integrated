@@ -82,13 +82,8 @@ class SolariumProvider
             $page = 1;
         }
 
-        if ($subject instanceof ContentBlock) {
-            $itemsPerPage = $subject->getItemsPerPage();
-            $maxItems = $subject->getMaxItems();
-        } else {
-            $itemsPerPage = 1000;
-            $maxItems = $options['maxItems'] ?? 1000;
-        }
+        $itemsPerPage = $subject instanceof ContentBlock ? $subject->getItemsPerPage() : 1000;
+        $maxItems = $subject instanceof ContentBlock ? $subject->getMaxItems() : $options['maxItems'] ?? 1000;
 
         $pagination = $this->paginator->paginate(
             [
@@ -156,11 +151,8 @@ class SolariumProvider
         }
 
         try {
-            if ($subject instanceof SearchSelection) {
-                $selection = $subject;
-            } else {
-                $selection = $subject->getSearchSelection();
-            }
+            $selection = $subject instanceof SearchSelection ? $subject : $subject->getSearchSelection();
+
             if ($selection) {
                 $this->addFacetFilters($query, $subject, (array) $selection->getFilters(), array_merge($options, ['search_selection' => true]));
 
@@ -204,10 +196,7 @@ class SolariumProvider
         $count = 0;
 
         $suffix = isset($options['search_selection']) && true === $options['search_selection'] ? '_search_selection' : null;
-        $facetFields = [];
-        if ($subject instanceof ContentBlock) {
-            $facetFields = $subject->getFacetFields();
-        }
+        $facetFields = $subject instanceof ContentBlock ? $subject->getFacetFields() : [];
 
         $contentTypes = isset($request['contenttypes']) ? $request['contenttypes'] : [];
 
