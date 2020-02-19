@@ -25,7 +25,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class DatabaseMenuProvider implements MenuProviderInterface
+class IntegratedMenuProvider implements MenuProviderInterface
 {
     /**
      * @var ChannelContextInterface

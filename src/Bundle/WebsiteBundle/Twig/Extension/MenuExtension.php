@@ -16,7 +16,7 @@ use Integrated\Bundle\MenuBundle\Document\Menu;
 use Integrated\Bundle\MenuBundle\Document\MenuItem;
 use Integrated\Bundle\MenuBundle\Matcher\RecursiveActiveMatcher;
 use Integrated\Bundle\MenuBundle\Menu\DatabaseMenuFactory;
-use Integrated\Bundle\MenuBundle\Provider\DatabaseMenuProvider;
+use Integrated\Bundle\MenuBundle\Provider\IntegratedMenuProvider;
 use Knp\Menu\Twig\Helper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -28,7 +28,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class MenuExtension extends \Twig_Extension
 {
     /**
-     * @var DatabaseMenuProvider
+     * @var IntegratedMenuProvider
      */
     protected $provider;
 
@@ -68,7 +68,7 @@ class MenuExtension extends \Twig_Extension
     protected $request;
 
     /**
-     * @param DatabaseMenuProvider   $provider
+     * @param IntegratedMenuProvider $provider
      * @param DatabaseMenuFactory    $factory
      * @param Helper                 $helper
      * @param RecursiveActiveMatcher $matcher
@@ -76,7 +76,7 @@ class MenuExtension extends \Twig_Extension
      * @param string                 $template
      */
     public function __construct(
-        DatabaseMenuProvider $provider,
+        IntegratedMenuProvider $provider,
         DatabaseMenuFactory $factory,
         Helper $helper,
         RecursiveActiveMatcher $matcher,
