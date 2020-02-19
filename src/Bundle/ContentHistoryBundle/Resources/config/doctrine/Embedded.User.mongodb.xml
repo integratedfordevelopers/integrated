@@ -5,8 +5,8 @@
 
     <embedded-document name="Integrated\Bundle\ContentHistoryBundle\Document\Embedded\User">
 
-        <field fieldName="id" type="int" index="true" />
-        <field fieldName="name" type="string" />
+        <field field-name="id" type="int" index="true" />
+        <field field-name="name" type="string" />
 
     </embedded-document>
 

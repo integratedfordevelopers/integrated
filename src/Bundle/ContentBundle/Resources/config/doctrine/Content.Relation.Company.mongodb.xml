@@ -5,8 +5,8 @@
 
     <document name="Integrated\Bundle\ContentBundle\Document\Content\Relation\Company">
 
-        <field fieldName="name" type="string" />
-        <field fieldName="website" type="string" />
+        <field field-name="name" type="string" />
+        <field field-name="website" type="string" />
 
         <embed-one
             field="logo"

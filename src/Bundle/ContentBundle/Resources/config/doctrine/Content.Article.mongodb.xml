@@ -5,14 +5,14 @@
 
     <document name="Integrated\Bundle\ContentBundle\Document\Content\Article">
 
-        <field fieldName="title" type="string" />
-        <field fieldName="subtitle" type="string" />
-        <field fieldName="source" type="string" />
-        <field fieldName="sourceUrl" type="string" />
-        <field fieldName="locale" type="string" />
-        <field fieldName="intro" type="string" />
-        <field fieldName="description" type="string" />
-        <field fieldName="content" type="string" />
+        <field field-name="title" type="string" />
+        <field field-name="subtitle" type="string" />
+        <field field-name="source" type="string" />
+        <field field-name="sourceUrl" type="string" />
+        <field field-name="locale" type="string" />
+        <field field-name="intro" type="string" />
+        <field field-name="description" type="string" />
+        <field field-name="content" type="string" />
 
         <embed-one
                 field="address"
