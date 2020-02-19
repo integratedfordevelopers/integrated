@@ -4,6 +4,7 @@ namespace Integrated\Bundle\ContentBundle\Twig\Extension;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
+use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelectionRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Twig\Extension\AbstractExtension;
@@ -12,7 +13,7 @@ use Twig\TwigFunction;
 class SearchSelectionsExtension extends AbstractExtension
 {
     /**
-     * @var \Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelectionRepository
+     * @var SearchSelectionRepository
      */
     private $repository;
 
@@ -60,14 +61,16 @@ class SearchSelectionsExtension extends AbstractExtension
      */
     private function getUser()
     {
-        if ($token = $this->tokenStorage->getToken()) {
-            $user = $token->getUser();
-
-            if ($user instanceof UserInterface) {
-                return $user;
-            }
+        if (!$token = $this->tokenStorage->getToken()) {
+            return null;
         }
 
-        return null;
+        $user = $token->getUser();
+
+        if (!$user instanceof UserInterface) {
+            return null;
+        }
+
+        return $user;
     }
 }
