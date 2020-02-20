@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\MenuBundle\Document;
 
 use Doctrine\Common\Collections\Collection;
+use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
 use Integrated\Bundle\MenuBundle\Menu\DatabaseMenuFactory;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
@@ -23,9 +24,34 @@ use Knp\Menu\MenuItem as KnpMenuItem;
 class MenuItem extends KnpMenuItem
 {
     /**
+     * Use an URI als link.
+     */
+    const TYPE_LINK_URI = 0;
+
+    /**
+     * Use a search selection for the links.
+     */
+    const TYPE_LINK_SEARCH_SELECTION = 1;
+
+    /**
      * @var string
      */
     protected $id;
+
+    /**
+     * @var int
+     */
+    protected $typeLink;
+
+    /**
+     * @var SearchSelection
+     */
+    protected $searchSelection;
+
+    /**
+     * @var int
+     */
+    protected $maxItems;
 
     /**
      * @param string              $name
@@ -52,6 +78,70 @@ class MenuItem extends KnpMenuItem
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTypeLink(): int
+    {
+        if ($this->typeLink === null) {
+            return self::TYPE_LINK_URI;
+        }
+
+        return $this->typeLink;
+    }
+
+    /**
+     * @param int $typeLink
+     *
+     * @return MenuItem
+     */
+    public function setTypeLink(int $typeLink): self
+    {
+        $this->typeLink = $typeLink;
+
+        return $this;
+    }
+
+    /**
+     * @return SearchSelection|null
+     */
+    public function getSearchSelection()
+    {
+        return $this->searchSelection;
+    }
+
+    /**
+     * @param SearchSelection|null $searchSelection
+     *
+     * @return $this
+     */
+    public function setSearchSelection(?SearchSelection $searchSelection = null): self
+    {
+        $this->searchSelection = $searchSelection;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getMaxItems()
+    {
+        return $this->maxItems;
+    }
+
+    /**
+     * @param int|null $maxItems
+     *
+     * @return $this
+     */
+    public function setMaxItems($maxItems): self
+    {
+        $this->maxItems = $maxItems;
 
         return $this;
     }
@@ -160,12 +250,24 @@ class MenuItem extends KnpMenuItem
             $array['id'] = $this->getId();
         }
 
+        if ($this->getTypeLink()) {
+            $array['typeLink'] = $this->getTypeLink();
+        }
+
         if ($this->getName()) {
             $array['name'] = $this->getName();
         }
 
         if ($this->getUri()) {
             $array['uri'] = $this->getUri();
+        }
+
+        if ($this->getSearchSelection()) {
+            $array['searchSelection'] = $this->getSearchSelection()->getId();
+        }
+
+        if ($this->getMaxItems()) {
+            $array['maxItems'] = $this->getMaxItems();
         }
 
         if (true === $nested) {

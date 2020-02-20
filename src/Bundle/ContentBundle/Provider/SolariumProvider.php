@@ -13,19 +13,19 @@ namespace Integrated\Bundle\ContentBundle\Provider;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\DocumentNotFoundException;
+use Exception;
 use Integrated\Bundle\ContentBundle\Document\Block\ContentBlock;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
+use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
 use Knp\Component\Pager\Paginator;
 use Solarium\Client;
 use Solarium\QueryType\Select\Query\Query;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @todo provider system (INTEGRATED-431)
- *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class SolariumProvider // @todo interface (INTEGRATED-431)
+class SolariumProvider
 {
     /**
      * @var Client
@@ -60,15 +60,21 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
     }
 
     /**
-     * @param ContentBlock $block
-     * @param Request      $request
-     * @param array        $options
+     * @param ContentBlock|SearchSelection $subject
+     * @param Request                      $request
+     * @param array                        $options
      *
      * @return \Knp\Component\Pager\Pagination\PaginationInterface
+     *
+     * @throws Exception
      */
-    public function execute(ContentBlock $block, Request $request, array $options = [])
+    public function execute($subject, Request $request, array $options = [])
     {
-        $pageParam = (null !== $block->getId() ? $block->getId().'-' : '').'page';
+        if (!$subject instanceof ContentBlock && !$subject instanceof SearchSelection) {
+            throw new Exception('subject is not supported. Only ContentBlock and SearchSelection are supported');
+        }
+
+        $pageParam = (null !== $subject->getId() ? $subject->getId().'-' : '').'page';
         $page = (int) $request->query->get($pageParam);
         $exclude = isset($options['exclude']) ? (bool) $options['exclude'] : true;
 
@@ -76,19 +82,20 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
             $page = 1;
         }
 
-        // @todo add option resolver (INTEGRATED-431)
-        // @todo max page (INTEGRATED-431)
+        $itemsPerPage = $subject instanceof ContentBlock ? $subject->getItemsPerPage() : 1000;
+        $maxItems = $subject instanceof ContentBlock ? $subject->getMaxItems() : $options['maxItems'] ?? 1000;
 
         $pagination = $this->paginator->paginate(
             [
                 $this->client,
-                $this->getQuery($block, $request, $options),
+                $this->getQuery($subject, $request, $options),
             ],
             $page,
-            $block->getItemsPerPage(),
+            $itemsPerPage,
             [
                 'pageParameterName' => $pageParam,
-                'maxItems' => $block->getMaxItems(),
+                'maxItems' => $maxItems,
+                'sortFieldParameterName' => null,
             ]
         );
 
@@ -103,13 +110,13 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
     }
 
     /**
-     * @param ContentBlock $block
-     * @param Request      $request
-     * @param array        $options
+     * @param ContentBlock|SearchSelection $subject
+     * @param Request                      $request
+     * @param array                        $options
      *
      * @return Query
      */
-    protected function getQuery(ContentBlock $block, Request $request, array $options = [])
+    protected function getQuery($subject, Request $request, array $options = [])
     {
         // @todo: provide facet filters from service
         // @todo cleanup (INTEGRATED-431)
@@ -123,7 +130,7 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
             ->createFilterQuery('pub')
             ->setQuery('pub_active: 1 AND pub_time:[* TO NOW] AND pub_end:[NOW TO *] AND facet_channels: ("%1%")', [$channel]);
 
-        if ($search = $request->query->get($block->getId().'-search')) {
+        if ($search = $request->query->get($subject->getId().'-search')) {
             $edismax = $query->getEDisMax();
             $edismax->setQueryFields('title^200 content subtitle intro');
             $edismax->setMinimumMatch('75%');
@@ -144,8 +151,10 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
         }
 
         try {
-            if ($selection = $block->getSearchSelection()) {
-                $this->addFacetFilters($query, $block, (array) $selection->getFilters(), array_merge($options, ['search_selection' => true]));
+            $selection = $subject instanceof SearchSelection ? $subject : $subject->getSearchSelection();
+
+            if ($selection) {
+                $this->addFacetFilters($query, $subject, (array) $selection->getFilters(), array_merge($options, ['search_selection' => true]));
 
                 if (\is_array($selection->getInternalParams())) {
                     foreach ($selection->getInternalParams() as $key => $value) {
@@ -157,7 +166,7 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
             // search selection is removed
         }
 
-        $count = $this->addFacetFilters($query, $block, (array) $request->query->all(), $options);
+        $count = $this->addFacetFilters($query, $subject, (array) $request->query->all(), $options);
 
         if (\count($this->registry) && isset($options['exclude']) && true === $options['exclude']) {
             $helper = $query->getHelper();
@@ -175,19 +184,19 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
     }
 
     /**
-     * @param Query        $query
-     * @param ContentBlock $block
-     * @param array        $request
-     * @param array        $options
+     * @param Query                        $query
+     * @param ContentBlock|SearchSelection $subject
+     * @param array                        $request
+     * @param array                        $options
      *
      * @return int
      */
-    protected function addFacetFilters(Query $query, ContentBlock $block, array $request = [], array $options = [])
+    protected function addFacetFilters(Query $query, $subject, array $request = [], array $options = [])
     {
         $count = 0;
 
         $suffix = isset($options['search_selection']) && true === $options['search_selection'] ? '_search_selection' : null;
-        $facetFields = $block->getFacetFields();
+        $facetFields = $subject instanceof ContentBlock ? $subject->getFacetFields() : [];
 
         $contentTypes = isset($request['contenttypes']) ? $request['contenttypes'] : [];
 
