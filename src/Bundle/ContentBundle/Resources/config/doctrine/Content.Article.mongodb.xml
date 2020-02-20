@@ -13,6 +13,7 @@
         <field field-name="intro" type="string" />
         <field field-name="description" type="string" />
         <field field-name="content" type="string" />
+        <field field-name="rank" type="string" index="true" />
 
         <embed-one
                 field="address"

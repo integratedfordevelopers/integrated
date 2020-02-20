@@ -63,7 +63,18 @@
 
             <tag name="form.type" />
         </service>
-        
+
+        <service id="Integrated\Bundle\FormTypeBundle\Form\Type\ContentRankType">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="string">IntegratedContentBundle:Content\Content</argument>
+            <argument type="string">integrated_content_content_index</argument>
+            <argument type="collection">
+                <argument key="_format">json</argument>
+            </argument>
+
+            <tag name="form.type" />
+        </service>
+
         <service id="integrated_form_type.form_type_relation_choice.relations_type" class="Integrated\Bundle\FormTypeBundle\Form\Type\RelationChoice\RelationsType">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <tag name="form.type" />

@@ -46,6 +46,8 @@
                 <string key="address_state">addresses.first.state</string>
                 <string key="address_country">addresses.first.country</string>
 
+                <string key="rank">rank</string>
+
             </options>
         </type>
 

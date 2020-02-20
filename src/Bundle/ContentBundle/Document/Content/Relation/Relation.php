@@ -16,6 +16,8 @@ use Doctrine\Common\Collections\Collection;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Phonenumber;
+use Integrated\Common\Content\RankableInterface;
+use Integrated\Common\Content\RankTrait;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
 /**
@@ -23,8 +25,10 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-abstract class Relation extends Content
+abstract class Relation extends Content implements RankableInterface
 {
+    use RankTrait;
+
     /**
      * @var string
      * @Type\Field

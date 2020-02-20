@@ -8,6 +8,7 @@
         <field name="accountnumber" type="string" />
         <field name="description" type="string" />
         <field name="email" type="string" />
+        <field fieldName="rank" type="string" index="true" />
 
         <embed-many
             field="phonenumbers"
