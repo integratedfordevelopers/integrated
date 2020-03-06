@@ -137,17 +137,9 @@ class SolariumProvider
 
             $query->setQuery($search);
 
-            $sort_default = 'rel';
-            $sort_options = $this->getSortOptions();
-
-            $sort = $request->query->get('sort', $sort_default);
-            $sort = trim(strtolower($sort));
-            $sort = \array_key_exists($sort, $sort_options) ? $sort : $sort_default;
-
-            $query->addSort($sort_options[$sort]['field'], $sort_options[$sort]['order']);
-
             // It would be strange to exclude items when a search text is entered
             $options['exclude'] = false;
+            $options['sort_default'] = 'rel';
         }
 
         try {
@@ -269,7 +261,7 @@ class SolariumProvider
 
         if (null !== $suffix || null !== $sort) {
             // always add default sorting with search selections
-            $sortDefault = 'changed';
+            $sortDefault = $options['sort_default'] ?? 'changed';
             $sortOptions = $this->getSortOptions();
 
             $order = isset($request['order']) ? $request['order'] : null;
