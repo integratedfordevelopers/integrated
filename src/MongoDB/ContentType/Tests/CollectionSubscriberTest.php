@@ -24,7 +24,7 @@ class CollectionSubscriberTest extends \PHPUnit\Framework\TestCase
      */
     private $subscriber;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->subscriber = new CollectionSubscriber('stdClass', 'collection');
     }

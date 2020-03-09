@@ -13,3 +13,6 @@ parameters:
   level: 1
   paths:
     - src/
+  excludes_analyse:
+    - src/Bundle/ContentBundle/Tests/Form/Type/CustomFieldsTypeTest.php #https://github.com/phpstan/phpstan/issues/2732
+    - src/Bundle/ContentBundle/Tests/Form/Type/RelationTypeTest.php #https://github.com/phpstan/phpstan/issues/2732

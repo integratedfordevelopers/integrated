@@ -35,7 +35,7 @@ class ViewEventTest extends FormEventTest
      */
     protected $options = ['value 1', 'value 2', 'key' => 'value'];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

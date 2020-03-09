@@ -31,7 +31,7 @@ class RequestAwareChannelContextTest extends \PHPUnit\Framework\TestCase
      */
     private $stack;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->manager = $this->createMock('Integrated\\Common\\Content\\Channel\\ChannelManagerInterface');
         $this->stack = $this->createMock('Symfony\\Component\\HttpFoundation\\RequestStack');

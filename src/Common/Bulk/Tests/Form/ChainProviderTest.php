@@ -31,7 +31,7 @@ class ChainProviderTest extends \PHPUnit\Framework\TestCase
      */
     private $provider2;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->provider1 = $this->createMock(ConfigProviderInterface::class);
         $this->provider2 = $this->createMock(ConfigProviderInterface::class);

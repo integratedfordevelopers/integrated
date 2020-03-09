@@ -26,7 +26,7 @@ class CustomTransformerTest extends \PHPUnit\Framework\TestCase
     /**
      * Setup the test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->customTransformer = new CustomTransformer();
     }

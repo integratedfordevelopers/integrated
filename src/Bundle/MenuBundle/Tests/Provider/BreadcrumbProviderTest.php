@@ -40,7 +40,7 @@ class BreadcrumbProviderTest extends TestCase
     /**
      * Setup the test.
      */
-    protected function setup()
+    protected function setUp(): void
     {
         $this->menuFactory = $this->createMock(FactoryInterface::class);
         $this->breadcrumbResolver = $this->createMock(BreadcrumbResolver::class);

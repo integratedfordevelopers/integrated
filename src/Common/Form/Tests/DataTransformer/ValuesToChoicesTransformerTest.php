@@ -24,7 +24,7 @@ class ValuesToChoicesTransformerTest extends \PHPUnit\Framework\TestCase
      */
     private $choiceList;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->choiceList = $this->createMock('Symfony\\Component\\Form\\ChoiceList\\ChoiceListInterface');
     }

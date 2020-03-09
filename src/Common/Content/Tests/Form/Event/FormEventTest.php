@@ -30,7 +30,7 @@ class FormEventTest extends \PHPUnit\Framework\TestCase
      */
     protected $metadata;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->type = $this->createMock('Integrated\\Common\\ContentType\\ContentTypeInterface');
         $this->metadata = $this->createMock('Integrated\\Common\\Form\\Mapping\\MetadataInterface');

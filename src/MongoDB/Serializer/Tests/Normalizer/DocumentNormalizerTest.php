@@ -29,7 +29,7 @@ class DocumentNormalizerTest extends \PHPUnit\Framework\TestCase
      */
     private $normalizer;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->manger = $this->getMockBuilder('Doctrine\ODM\MongoDB\DocumentManager')->disableOriginalConstructor()->getMock();
         $this->normalizer = new DocumentNormalizer($this->manger);

@@ -40,7 +40,7 @@ class RouterTest extends \PHPUnit\Framework\TestCase
      */
     protected $context;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->router = $this->createMock(RouterInterface::class);
         $this->generator = $this->createMock(UrlGeneratorInterface::class);

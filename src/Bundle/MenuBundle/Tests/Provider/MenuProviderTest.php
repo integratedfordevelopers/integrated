@@ -40,7 +40,7 @@ class MenuProviderTest extends \PHPUnit\Framework\TestCase
     /**
      * Setup the test.
      */
-    protected function setup()
+    protected function setUp(): void
     {
         $this->factory = $this->createMock('Knp\Menu\FactoryInterface');
         $this->eventDispatcher = $this->createMock('\Symfony\Component\EventDispatcher\EventDispatcherInterface');

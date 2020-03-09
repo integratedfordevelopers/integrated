@@ -26,7 +26,7 @@ class CustomFieldTest extends \PHPUnit\Framework\TestCase
     /**
      * Setup the test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->field = new CustomField();
     }
@@ -36,6 +36,6 @@ class CustomFieldTest extends \PHPUnit\Framework\TestCase
      */
     public function testInstanceOf()
     {
-        return $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field', $this->field);
+        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field', $this->field);
     }
 }
