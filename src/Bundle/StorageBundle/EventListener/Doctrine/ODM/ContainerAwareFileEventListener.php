@@ -59,8 +59,6 @@ class ContainerAwareFileEventListener extends FileEventListener
     public function preRemove(LifecycleEventArgs $args)
     {
         $this->initializer && $this->initializer->__invoke();
-
-        parent::preRemove($args);
     }
 
     /**
@@ -79,7 +77,5 @@ class ContainerAwareFileEventListener extends FileEventListener
     public function onFlush(OnFlushEventArgs $args)
     {
         $this->initializer && $this->initializer->__invoke();
-
-        parent::onFlush($args);
     }
 }
