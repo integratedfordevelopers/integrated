@@ -13,8 +13,9 @@ namespace Integrated\Bundle\ContentBundle\Solr\Query;
 
 use Integrated\Bundle\ContentBundle\Solr\Normalizer;
 use Integrated\Bundle\WorkflowBundle\EventListener\WorkflowMarkerInterface;
+use Solarium\Component\Facet\Field;
+use Solarium\Component\QueryInterface;
 use Solarium\Exception\InvalidArgumentException;
-use Solarium\QueryType\Select\Query\Component\Facet\Field;
 use Solarium\QueryType\Select\Query\Query;
 
 /**
@@ -57,7 +58,7 @@ class SuggestionQuery extends Query implements WorkflowMarkerInterface
     /**
      * {@inheritdoc}
      */
-    public function setQuery($query, $bind = null)
+    public function setQuery(string $query, array $bind = null): QueryInterface
     {
         $this->query = $this->normalize($query);
 
@@ -92,7 +93,7 @@ class SuggestionQuery extends Query implements WorkflowMarkerInterface
     /**
      * {@inheritdoc}
      */
-    public function getQuery($original = false)
+    public function getQuery($original = false): ?string
     {
         if ($original) {
             return $this->query;

@@ -15,7 +15,7 @@ use Integrated\Bundle\ContentBundle\Solr\Query\SuggestionQuery;
 use Integrated\Bundle\ContentBundle\Solr\Serializer\SuggestionNormalizer;
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\ContentType\ResolverInterface;
-use Solarium\QueryType\Select\Query\Component\FacetSet;
+use Solarium\Component\FacetSet;
 use Solarium\QueryType\Select\Result\Document;
 use Solarium\QueryType\Select\Result\Result;
 use stdClass;

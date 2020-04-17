@@ -21,7 +21,7 @@ use Solarium\QueryType\Update\Query\Command\Commit;
 use Solarium\QueryType\Update\Query\Command\Delete;
 use Solarium\QueryType\Update\Query\Command\Optimize;
 use Solarium\QueryType\Update\Query\Command\Rollback;
-use Solarium\QueryType\Update\Query\Document\Document;
+use Solarium\QueryType\Update\Query\Document;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -111,7 +111,7 @@ class CommandFactoryTest extends \PHPUnit\Framework\TestCase
             ],
             'options' => [
                 ['overwrite' => true, 'commitwithin' => true],
-                ['overwrite' => true, 'commitwithin' => true],
+                ['overwrite' => true, 'commitwithin' => 1],
             ],
             'only overwrite' => [
                 ['overwrite' => true],
@@ -119,11 +119,11 @@ class CommandFactoryTest extends \PHPUnit\Framework\TestCase
             ],
             'only commitwithin' => [
                 ['commitwithin' => true],
-                ['commitwithin' => true],
+                ['commitwithin' => 1],
             ],
             'none bool' => [
                 ['overwrite' => 1, 'commitwithin' => 0],
-                ['overwrite' => true, 'commitwithin' => false],
+                ['overwrite' => true, 'commitwithin' => 0],
             ],
             'invalid' => [
                 ['invalid-option' => 'invalid-value'],
@@ -289,11 +289,11 @@ class CommandFactoryTest extends \PHPUnit\Framework\TestCase
             ],
             'options' => [
                 ['maxsegments' => true, 'waitsearcher' => true, 'softcommit' => true],
-                ['maxsegments' => true, 'waitsearcher' => true, 'softcommit' => true],
+                ['maxsegments' => 1, 'waitsearcher' => true, 'softcommit' => true],
             ],
             'only maxsegments' => [
                 ['maxsegments' => true],
-                ['maxsegments' => true],
+                ['maxsegments' => 1],
             ],
             'only waitsearcher' => [
                 ['waitsearcher' => true],
@@ -305,7 +305,7 @@ class CommandFactoryTest extends \PHPUnit\Framework\TestCase
             ],
             'none bool' => [
                 ['maxsegments' => 1, 'waitsearcher' => 0, 'softcommit' => 0],
-                ['maxsegments' => true, 'waitsearcher' => false, 'softcommit' => false],
+                ['maxsegments' => 1, 'waitsearcher' => false, 'softcommit' => false],
             ],
             'invalid' => [
                 ['invalid-option' => 'invalid-value'],
