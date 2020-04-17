@@ -47,6 +47,14 @@ class ImageMagickAdapter implements AdapterInterface
     {
         $file = $this->cache->path($image);
 
+        // Make a reasonable path based on the cache path but in a conversion folder
+        $cache = new \SplFileInfo(sprintf('%s/%s.%s', $file->getPath(), $file->getFilename(), $outputFormat));
+
+        // Check if've got a
+        if ($cache->isFile()) {
+            return $cache;
+        }
+
         // Check if've got a video
         if (preg_match('/^video\/(.*)$/', $image->getMetadata()->getMimeType())) {
             // Open the file on the tenth frame, this saves a us a hell of a lot memory
@@ -79,13 +87,6 @@ class ImageMagickAdapter implements AdapterInterface
             $imagick = new \Imagick($file->getPathname());
         }
 
-        // Make a reasonable path based on the cache path but in a conversion folder
-        $cache = new \SplFileInfo(sprintf('%s/%s.%s', $file->getPath(), $file->getFilename(), $outputFormat));
-
-        // Check if've got a
-        if ($cache->isFile()) {
-            return $cache;
-        }
         // Attempt conversion
         $imagick->setImageFormat($outputFormat);
         $imagick->writeImage($cache->getPathname());
@@ -98,6 +99,7 @@ class ImageMagickAdapter implements AdapterInterface
             // Return the freshly converted file
             return $cache;
         }
+
         // The last resort, this is the last outcome of any the above statements
         throw RunTimeFormatException::conversionFileCreateFail(self::NAME, $image->getPathname(), $outputFormat);
     }
