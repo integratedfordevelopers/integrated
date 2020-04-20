@@ -13,7 +13,6 @@ namespace Integrated\Bundle\SolrBundle\Command;
 
 use DateTime;
 use DateTimeZone;
-use Doctrine\ODM\MongoDB\Cursor;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Common\ContentType\ResolverInterface;
@@ -121,7 +120,7 @@ The <info>%command.name%</info> command starts a index of the site.
         $types = [];
 
         foreach ($this->getResolver()->getTypes() as $type) {
-            $types[$type->getType()] = $type->getType();
+            $types[$type->getId()] = $type->getId();
         }
 
         $invalid = [];
@@ -233,10 +232,10 @@ The <info>%command.name%</info> command starts a index of the site.
     /**
      * Add all the documents in the cursor to the solr queue.
      *
-     * @param Cursor      $cursor
+     * @param object      $cursor
      * @param ProgressBar $progress
      */
-    protected function doIndex(Cursor $cursor, ProgressBar $progress)
+    protected function doIndex(object $cursor, ProgressBar $progress)
     {
         $queue = $this->getQueue();
 
