@@ -11,6 +11,9 @@
             <argument type="service" id="Integrated\Bundle\ThemeBundle\Scraper\ScraperPageLoader" />
         </service>
 
+        <service id="Integrated\Bundle\ThemeBundle\Templating\ThemeManager" alias="integrated_theme.templating.theme_manager">
+        </service>
+
         <service id="integrated_theme.form.type.theme_choice" class="Integrated\Bundle\ThemeBundle\Form\Type\ThemeChoiceType">
             <argument type="service" id="integrated_theme.templating.theme_manager" />
             <tag name="form.type" />
