@@ -18,6 +18,9 @@
             <argument type="service" id="logger" on-invalid="ignore"/>
         </service>
 
+        <service id="Integrated\Bundle\StorageBundle\Storage\Manager" alias="integrated_storage.manager">
+        </service>
+
         <service id="integrated_storage.resolver" class="Integrated\Bundle\StorageBundle\Storage\Resolver">
             <!--
                 The first two arguments of this service are injected in the bundle extension (see DependencyInjection)
