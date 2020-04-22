@@ -14,7 +14,7 @@
         </service>
 
         <service id="integrated_content.resolver.mongodb.repository" class="Doctrine\ODM\MongoDB\Repository\DocumentRepository" public="false">
-            <factory service="doctrine.odm.mongodb.document_manager" method="getRepository" />
+            <factory service="doctrine_mongodb.odm.document_manager" method="getRepository" />
             <argument type="string">Integrated\Bundle\ContentBundle\Document\ContentType\ContentType</argument>
         </service>
 

@@ -12,11 +12,11 @@
     </parameters>
     <services>
         <service id="integrated_content.services.search.content.referenced" class="%integrated_content.services.search.content.referenced.class%" public="true">
-            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
         </service>
 
         <service id="Integrated\Bundle\ContentBundle\Services\ContentTypeInformation">
-            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
         </service>
 
         <!-- Overwrite the default form.type_extension.form.request_handler service with our own -->

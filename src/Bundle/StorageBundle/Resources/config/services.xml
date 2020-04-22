@@ -43,7 +43,7 @@
         <service id="integrated_storage.metadata" class="Integrated\Bundle\StorageBundle\Storage\Mapping\MetadataFactory">
             <factory class="Integrated\Bundle\StorageBundle\Storage\Mapping\MetadataFactory" method="create" />
 
-            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <argument type="string">%integrated_storage.metadata_target%</argument>
         </service>
 
