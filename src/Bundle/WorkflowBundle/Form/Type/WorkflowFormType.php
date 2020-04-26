@@ -20,7 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -33,7 +33,7 @@ class WorkflowFormType extends AbstractType
     private $userManager;
 
     /**
-     * @var TokenStorage
+     * @var TokenStorageInterface
      */
     private $tokenStorage;
 
@@ -41,9 +41,9 @@ class WorkflowFormType extends AbstractType
      * WorkflowFormType constructor.
      *
      * @param UserManager  $userManager
-     * @param TokenStorage $tokenStorage
+     * @param TokenStorageInterface $tokenStorage
      */
-    public function __construct(UserManager $userManager, TokenStorage $tokenStorage)
+    public function __construct(UserManager $userManager, TokenStorageInterface $tokenStorage)
     {
         $this->userManager = $userManager;
         $this->tokenStorage = $tokenStorage;
