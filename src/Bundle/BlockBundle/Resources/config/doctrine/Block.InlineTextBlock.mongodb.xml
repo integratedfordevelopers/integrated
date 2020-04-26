@@ -5,7 +5,7 @@
 
     <document name="Integrated\Bundle\BlockBundle\Document\Block\InlineTextBlock">
 
-        <field name="id" id="true" strategy="UUID" />
+        <id field-name="id" strategy="UUID" />
         <field name="content" type="string" />
 
         <reference-one field="page" target-document="Integrated\Bundle\PageBundle\Document\Page\AbstractPage" />
