@@ -14,11 +14,12 @@ namespace Integrated\Bundle\UserBundle\Model;
 use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
 use Serializable;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface UserInterface extends AdvancedUserInterface, GroupableInterface, TwoFactorInterface, Serializable
+interface UserInterface extends AdvancedUserInterface, GroupableInterface, TwoFactorInterface, Serializable, EquatableInterface
 {
     /**
      * @return string
