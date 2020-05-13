@@ -26,7 +26,7 @@ class RepositoryResolverTest extends \PHPUnit\Framework\TestCase
      */
     private $repository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->repository = $this->createMock('Integrated\\Common\\Channel\\Connector\\Config\\ConfigRepositoryInterface');
     }

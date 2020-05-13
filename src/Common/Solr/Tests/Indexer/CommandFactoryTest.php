@@ -39,7 +39,7 @@ class CommandFactoryTest extends \PHPUnit\Framework\TestCase
      */
     private $serializer;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->converter = $this->createMock(ConverterInterface::class);
         $this->serializer = $this->createMock(SerializerInterface::class);

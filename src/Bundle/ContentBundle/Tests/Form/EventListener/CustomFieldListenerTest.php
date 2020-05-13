@@ -32,7 +32,7 @@ class CustomFieldListenerTest extends \PHPUnit\Framework\TestCase
     /**
      * Setup the test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->listener = new CustomFieldListener();
     }

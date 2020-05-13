@@ -46,7 +46,7 @@ class QueueExporterTest extends \PHPUnit\Framework\TestCase
      */
     private $exporter;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->queue = $this->createMock('Integrated\\Common\\Queue\\QueueInterface');
         $this->serializer = $this->createMock('Integrated\\Common\\Channel\\Exporter\\Queue\\RequestSerializerInterface');

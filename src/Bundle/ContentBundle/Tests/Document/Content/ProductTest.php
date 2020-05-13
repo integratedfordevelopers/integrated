@@ -23,7 +23,7 @@ class ProductTest extends ContentTest
     /**
      * Setup the test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->product = new Product();
     }

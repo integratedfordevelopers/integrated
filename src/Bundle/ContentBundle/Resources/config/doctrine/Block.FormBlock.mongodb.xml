@@ -5,10 +5,12 @@
 
     <document name="Integrated\Bundle\ContentBundle\Document\Block\FormBlock">
 
-        <field fieldName="returnUrl" type="string" />
-        <field fieldName="textAfterSubmit" type="string" />
-        <field fieldName="emailAddresses" type="collection" />
-        <field fieldName="recaptcha" type="boolean" />
+        <field field-name="publishedTitle" type="string" />
+        <field field-name="content" type="string" />
+        <field field-name="returnUrl" type="string" />
+        <field field-name="textAfterSubmit" type="string" />
+        <field field-name="emailAddresses" type="collection" />
+        <field field-name="recaptcha" type="boolean" />
 
         <reference-one
                 field="contentType"

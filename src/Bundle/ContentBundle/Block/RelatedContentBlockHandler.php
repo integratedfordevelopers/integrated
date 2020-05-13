@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Block;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\MongoDB\Query\Builder;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\BlockBundle\Block\BlockHandler;
 use Integrated\Bundle\ContentBundle\Document\Block\RelatedContentBlock;
@@ -89,6 +90,8 @@ class RelatedContentBlockHandler extends BlockHandler
      * @param Request             $request
      *
      * @return \Knp\Component\Pager\Pagination\PaginationInterface|null
+     *
+     * @throws \Exception
      */
     public function getPagination(RelatedContentBlock $block, Request $request)
     {
@@ -127,6 +130,10 @@ class RelatedContentBlockHandler extends BlockHandler
 
         $request = $this->requestStack->getCurrentRequest();
 
+        if ($request === null || !$request->attributes->has('_channel')) {
+            throw new \Exception('Channel not set');
+        }
+
         switch ($block->getTypeBlock()) {
             case RelatedContentBlock::SHOW_LINKED_BY:
                 $query = $this->getLinkedByQuery($document, $block);
@@ -150,15 +157,13 @@ class RelatedContentBlockHandler extends BlockHandler
             $query->field('contentType')->in($block->getContentTypes());
         }
 
-        if ($block->getSortBy()) {
+        $query->field('channels.$id')->equals($request->attributes->get('_channel'));
+
+        if ($block->getSortBy() == 'linked' && $block->getTypeBlock() == RelatedContentBlock::SHOW_LINKED_BY) {
+            return $this->getSortedLinkedByItems($query, $document, $block);
+        } elseif ($block->getSortBy()) {
             $query->sort($block->getSortBy(), $block->getSortDirection());
         }
-
-        if ($request === null || !$request->attributes->has('_channel')) {
-            throw new \Exception('Channel not set');
-        }
-
-        $query->field('channels.$id')->equals($request->attributes->get('_channel'));
 
         return $query;
     }
@@ -180,5 +185,32 @@ class RelatedContentBlockHandler extends BlockHandler
         return $this->dm->getRepository(Content::class)
             ->createQueryBuilder()
             ->field('_id')->in($ids);
+    }
+
+    /**
+     * @param Builder             $query
+     * @param Content             $document
+     * @param RelatedContentBlock $block
+     *
+     * @return ArrayCollection
+     */
+    protected function getSortedLinkedByItems(Builder $query, Content $document, RelatedContentBlock $block)
+    {
+        $items = new ArrayCollection();
+        $allowedItems = [];
+
+        foreach ($query->getQuery()->execute() as $item) {
+            $allowedItems[] = $item->getId();
+        }
+
+        foreach ($document->getReferencesByRelationId($block->getRelation()->getId()) as $content) {
+            if (!\in_array($content->getId(), $allowedItems)) {
+                continue;
+            }
+
+            $items[] = $content;
+        }
+
+        return $items;
     }
 }

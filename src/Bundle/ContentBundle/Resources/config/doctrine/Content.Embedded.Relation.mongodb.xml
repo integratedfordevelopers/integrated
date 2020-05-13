@@ -5,8 +5,8 @@
 
     <embedded-document name="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation">
 
-        <field fieldName="relationId" type="string" index="true" />
-        <field fieldName="relationType" type="string" index="true" />
+        <field field-name="relationId" type="string" index="true" />
+        <field field-name="relationType" type="string" index="true" />
 
         <reference-many
             field="references"

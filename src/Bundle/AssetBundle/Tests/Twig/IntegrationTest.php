@@ -14,11 +14,13 @@ namespace Integrated\Bundle\AssetBundle\Tests\Twig;
 use Integrated\Bundle\AssetBundle\Manager\AssetManager;
 use Integrated\Bundle\AssetBundle\Twig\Extension\JavascriptExtension;
 use Integrated\Bundle\AssetBundle\Twig\Extension\StylesheetExtension;
+use Twig\Test\IntegrationTestCase;
+use Twig\TwigFunction;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class IntegrationTest extends \Twig_Test_IntegrationTestCase
+class IntegrationTest extends IntegrationTestCase
 {
     /**
      * {@inheritdoc}
@@ -37,7 +39,7 @@ class IntegrationTest extends \Twig_Test_IntegrationTestCase
     protected function getTwigFunctions()
     {
         return [
-            new \Twig_SimpleFunction('asset', function ($path) {
+            new TwigFunction('asset', function ($path) {
                 return '/'.$path;
             }, ['is_safe' => ['html']]),
         ];

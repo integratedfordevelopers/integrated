@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\BlockBundle\Form\DataTransformer;
 
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Integrated\Common\Block\BlockInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 

@@ -35,7 +35,7 @@ class PriorityResolverBuilderTest extends \PHPUnit\Framework\TestCase
         $builder->addResolver($resolvers[1]);
         $builder->addResolver($resolvers[2]);
 
-        self::assertAttributeSame($resolvers, 'resolvers', $builder->getResolver());
+        self::assertSame($resolvers, $builder->getResolver()->getResolvers());
     }
 
     public function testAddResolverWithDifferentPriorities()
@@ -53,7 +53,7 @@ class PriorityResolverBuilderTest extends \PHPUnit\Framework\TestCase
         $builder->addResolver($resolvers[2], -1);
         $builder->addResolver($resolvers[0], 20);
 
-        self::assertAttributeSame($resolvers, 'resolvers', $builder->getResolver());
+        self::assertSame($resolvers, $builder->getResolver()->getResolvers());
     }
 
     public function testAddResolvers()
@@ -69,7 +69,7 @@ class PriorityResolverBuilderTest extends \PHPUnit\Framework\TestCase
         $builder->addResolvers(array_reverse($resolvers));
         $builder->addResolvers($resolvers);
 
-        self::assertAttributeSame($resolvers, 'resolvers', $builder->getResolver());
+        self::assertSame($resolvers, $builder->getResolver()->getResolvers());
     }
 
     public function testAddResolversWithDifferentPriorities()
@@ -89,7 +89,7 @@ class PriorityResolverBuilderTest extends \PHPUnit\Framework\TestCase
         $builder->addResolvers([$resolvers[2]], -1);
         $builder->addResolvers([$resolvers[0]], 20);
 
-        self::assertAttributeSame($resolvers, 'resolvers', $builder->getResolver());
+        self::assertSame($resolvers, $builder->getResolver()->getResolvers());
     }
 
     protected function getInstance()

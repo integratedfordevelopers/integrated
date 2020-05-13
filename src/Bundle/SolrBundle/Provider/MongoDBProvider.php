@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\SolrBundle\Provider;
 
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Integrated\Common\Solr\Task\Provider\ContentProviderInterface;
 use Integrated\Common\Solr\Task\Provider\ContentTypeProviderInterface;
 

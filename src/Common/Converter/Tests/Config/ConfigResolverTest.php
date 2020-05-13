@@ -27,7 +27,7 @@ class ConfigResolverTest extends \PHPUnit\Framework\TestCase
      */
     protected $provider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->provider = $this->createMock('Integrated\\Common\\Converter\\Config\\TypeProviderInterface');
     }

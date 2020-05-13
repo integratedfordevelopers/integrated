@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\SearchSelection;
 
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 
 /**
  * Repository for SearchSelection.

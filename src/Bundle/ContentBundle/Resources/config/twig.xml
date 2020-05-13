@@ -32,6 +32,11 @@
             <tag name="twig.extension" />
         </service>
 
+        <service id="Integrated\Bundle\ContentBundle\Twig\Extension\DocumentExtension">
+            <argument id="doctrine_mongodb.odm.document_manager" type="service"/>
+            <tag name="twig.extension"/>
+        </service>
+
         <service id="integrated_content.twig.integrated_content_extension" class="%integrated_content.twig.integrated_content_extension.class%">
             <argument type="service" id="event_dispatcher" />
             <tag name="twig.extension" />
@@ -39,6 +44,13 @@
 
         <service id="integrated_content.twig.json_ld_extension" class="Integrated\Bundle\ContentBundle\Twig\Extension\JsonLDExtension">
             <argument type="service" id="serializer" />
+
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="integrated_content.twig.search_selection_extension" class="Integrated\Bundle\ContentBundle\Twig\Extension\SearchSelectionsExtension">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="security.token_storage" />
 
             <tag name="twig.extension" />
         </service>

@@ -40,7 +40,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit\Framework\TestCase
     /**
      * Setup the test.
      */
-    protected function setup()
+    protected function setUp(): void
     {
         $this->factory = $this->createMock(FactoryInterface::class);
         $this->contentTypeManager = $this->getMockBuilder(ContentTypeManager::class)->disableOriginalConstructor()->getMock();

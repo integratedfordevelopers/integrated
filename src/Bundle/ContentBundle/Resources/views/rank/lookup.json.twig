@@ -1,0 +1,9 @@
+{% spaceless %}
+{% set items = [] %}
+{% for key, value in result %}
+    {% set item = {'id': key,'title': value, 'content': null, 'image': null} %}
+    {% set items = items|merge([item]) %}
+{% endfor %}
+{% set data = {'items': items} %}
+{% endspaceless %}
+{{ data|json_encode(constant('JSON_PRETTY_PRINT'))|raw }}

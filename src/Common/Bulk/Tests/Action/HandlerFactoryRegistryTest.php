@@ -24,7 +24,7 @@ class HandlerFactoryRegistryTest extends \PHPUnit\Framework\TestCase
      */
     protected $factories = [];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->factories['class1'] = $this->createMock(HandlerFactoryInterface::class);
         $this->factories['class2'] = $this->createMock(HandlerFactoryInterface::class);

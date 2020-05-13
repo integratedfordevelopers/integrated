@@ -29,7 +29,7 @@ class QueueTest extends \PHPUnit\Framework\TestCase
      */
     protected $provider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->provider = $this->createMock('Integrated\Common\Queue\Provider\QueueProviderInterface');
         $this->queue = new Queue($this->provider, 'channel');

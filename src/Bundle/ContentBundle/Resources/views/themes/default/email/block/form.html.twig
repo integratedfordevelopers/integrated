@@ -1,0 +1,46 @@
+<html>
+<body bgcolor="#f0f0f0">
+<p>&nbsp;</p>
+<table width="100%" align="center">
+    <tr>
+        <td valign="top" align="center">
+            <table width="600" cellspacing="0" cellpadding="0" border="0" align="center" bgcolor="#ffffff">
+                <tr>
+                    <td align="center">
+                        <p>&nbsp;</p>
+                        {% if _channel.logo is not empty %}
+                            <center><img src="{{ app.request.getSchemeAndHttpHost() }}{{ image(_channel.logo).cropResize(200, 90) }}"></center>
+                        {% endif %}
+                        <p>&nbsp;</p>
+                        <table width="490" cellspacing="0" cellpadding="0" border="0" align="center">
+                            <tr>
+                                <td valign="top" align="left">
+                                    <table width="100%">
+                                        {% for key, row in data %}
+                                            {% if row is iterable %}
+                                                {% for key2, value in row %}
+                                                    <tr>
+                                                        <td><strong>{{ key2|capitalize }}:</strong></td>
+                                                        <td>{{ value }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            {% else %}
+                                                <tr>
+                                                    <td><strong>{{ key|capitalize }}:</strong></td>
+                                                    <td>{{ row }}</td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                        <p>&nbsp;</p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
