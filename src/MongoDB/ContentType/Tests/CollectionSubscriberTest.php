@@ -24,7 +24,7 @@ class CollectionSubscriberTest extends \PHPUnit\Framework\TestCase
      */
     private $subscriber;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->subscriber = new CollectionSubscriber('stdClass', 'collection');
     }
@@ -63,7 +63,7 @@ class CollectionSubscriberTest extends \PHPUnit\Framework\TestCase
         $event = $this->getMockBuilder('Doctrine\ODM\MongoDB\Event\LoadClassMetadataEventArgs')->disableOriginalConstructor()->getMock();
         $event->expects($this->atLeastOnce())
             ->method('getClassMetadata')
-            ->will($this->returnValue($meta));
+            ->willReturn($meta);
 
         $this->subscriber->loadClassMetadata($event);
     }
@@ -79,7 +79,7 @@ class CollectionSubscriberTest extends \PHPUnit\Framework\TestCase
         $event = $this->getMockBuilder('Doctrine\ODM\MongoDB\Event\LoadClassMetadataEventArgs')->disableOriginalConstructor()->getMock();
         $event->expects($this->atLeastOnce())
             ->method('getClassMetadata')
-            ->will($this->returnValue($meta));
+            ->willReturn($meta);
 
         $this->subscriber->loadClassMetadata($event);
     }
@@ -97,7 +97,7 @@ class CollectionSubscriberTest extends \PHPUnit\Framework\TestCase
         $event = $this->getMockBuilder('Doctrine\ODM\MongoDB\Event\LoadClassMetadataEventArgs')->disableOriginalConstructor()->getMock();
         $event->expects($this->atLeastOnce())
             ->method('getClassMetadata')
-            ->will($this->returnValue($meta));
+            ->willReturn($meta);
 
         $this->subscriber->loadClassMetadata($event);
     }

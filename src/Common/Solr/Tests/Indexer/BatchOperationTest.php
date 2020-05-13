@@ -30,7 +30,7 @@ class BatchOperationTest extends \PHPUnit\Framework\TestCase
      */
     protected $command;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->message = $this->createMock(QueueMessageInterface::class);
         $this->command = $this->createMock(AbstractCommand::class);

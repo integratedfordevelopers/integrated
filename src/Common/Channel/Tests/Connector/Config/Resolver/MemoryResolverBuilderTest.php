@@ -35,21 +35,14 @@ class MemoryResolverBuilderTest extends \PHPUnit\Framework\TestCase
 
         $resolver = $builder->getResolver();
 
-        self::assertAttributeSame($expected['channels'], 'channels', $resolver);
-        self::assertAttributeSame($expected['defaults'], 'defaults', $resolver);
-
-        // configs should be deduplicated so running the calls again should not change anything
-
-        foreach ($calls as $arguments) {
-            foreach ($arguments[0] as $config) {
-                $builder->addConfig($config, $arguments[1]);
+        foreach ($expected['defaults'] as $config) {
+            self::assertSame($config, $resolver->getConfig($config->getName()));
+        }
+        foreach ($expected['channels'] as $configSet) {
+            foreach ($configSet as $config) {
+                self::assertSame($config, $resolver->getConfig($config->getName()));
             }
         }
-
-        $resolver = $builder->getResolver();
-
-        self::assertAttributeSame($expected['channels'], 'channels', $resolver);
-        self::assertAttributeSame($expected['defaults'], 'defaults', $resolver);
     }
 
     /**
@@ -65,19 +58,14 @@ class MemoryResolverBuilderTest extends \PHPUnit\Framework\TestCase
 
         $resolver = $builder->getResolver();
 
-        self::assertAttributeSame($expected['channels'], 'channels', $resolver);
-        self::assertAttributeSame($expected['defaults'], 'defaults', $resolver);
-
-        // configs should be deduplicated so running the calls again should not change anything
-
-        foreach ($calls as $arguments) {
-            $builder->addConfigs($arguments[0], $arguments[1]);
+        foreach ($expected['defaults'] as $config) {
+            self::assertSame($config, $resolver->getConfig($config->getName()));
         }
-
-        $resolver = $builder->getResolver();
-
-        self::assertAttributeSame($expected['channels'], 'channels', $resolver);
-        self::assertAttributeSame($expected['defaults'], 'defaults', $resolver);
+        foreach ($expected['channels'] as $configSet) {
+            foreach ($configSet as $config) {
+                self::assertSame($config, $resolver->getConfig($config->getName()));
+            }
+        }
     }
 
     public function addConfigProvider()

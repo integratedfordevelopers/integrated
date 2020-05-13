@@ -29,15 +29,13 @@ class ContainerAwareFileEventListener extends FileEventListener
     /**
      * @param ContainerInterface $container
      * @param string             $manager
-     * @param string             $filesystemRemove
      * @param string             $intentTransformer
      */
-    public function __construct(ContainerInterface $container, $manager, $filesystemRemove, $intentTransformer)
+    public function __construct(ContainerInterface $container, $manager, $intentTransformer)
     {
-        $this->initializer = function () use ($container, $manager, $filesystemRemove, $intentTransformer) {
+        $this->initializer = function () use ($container, $manager, $intentTransformer) {
             parent::__construct(
                 $container->get($manager),
-                $container->get($filesystemRemove),
                 $container->get($intentTransformer)
             );
 
@@ -61,8 +59,6 @@ class ContainerAwareFileEventListener extends FileEventListener
     public function preRemove(LifecycleEventArgs $args)
     {
         $this->initializer && $this->initializer->__invoke();
-
-        parent::preRemove($args);
     }
 
     /**
@@ -81,7 +77,5 @@ class ContainerAwareFileEventListener extends FileEventListener
     public function onFlush(OnFlushEventArgs $args)
     {
         $this->initializer && $this->initializer->__invoke();
-
-        parent::onFlush($args);
     }
 }

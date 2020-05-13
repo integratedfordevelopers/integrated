@@ -13,9 +13,12 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Content\Document\Storage\FileInterface;
+use Integrated\Common\Content\RankableInterface;
+use Integrated\Common\Content\RankTrait;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
 /**
@@ -25,8 +28,10 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
  *
  * @Type\Document("Article")
  */
-class Article extends Content
+class Article extends Content implements RankableInterface
 {
+    use RankTrait;
+
     /**
      * @var string
      * @Type\Field
@@ -57,6 +62,12 @@ class Article extends Content
      * @Type\Field
      */
     protected $source;
+
+    /**
+     * @var string
+     * @Type\Field(type="Symfony\Component\Form\Extension\Core\Type\UrlType", options={"label" = "Source URL"})
+     */
+    protected $sourceUrl;
 
     /**
      * @var string
@@ -95,6 +106,7 @@ class Article extends Content
         parent::__construct();
 
         $this->authors = new ArrayCollection();
+        $this->address = new Address();
     }
 
     /**
@@ -239,6 +251,30 @@ class Article extends Content
     public function setSource($source)
     {
         $this->source = $source;
+
+        return $this;
+    }
+
+    /**
+     * Get the source URL of the document.
+     *
+     * @return string
+     */
+    public function getSourceUrl()
+    {
+        return $this->sourceUrl;
+    }
+
+    /**
+     * Set the source of the document.
+     *
+     * @param string $sourceUrl
+     *
+     * @return $this
+     */
+    public function setSourceUrl($sourceUrl)
+    {
+        $this->sourceUrl = $sourceUrl;
 
         return $this;
     }

@@ -5,13 +5,13 @@
 
     <document name="Integrated\Bundle\ContentBundle\Document\Block\RelatedContentBlock">
 
-        <field fieldName="publishedTitle" type="string" />
-        <field fieldName="typeBlock" type="int" />
-        <field fieldName="sortBy" type="string" />
-        <field fieldName="sortDirection" type="string" />
-        <field fieldName="itemsPerPage" type="int" />
-        <field fieldName="maxItems" type="int" />
-        <field fieldName="contentTypes" type="collection" />
+        <field field-name="publishedTitle" type="string" />
+        <field field-name="typeBlock" type="int" />
+        <field field-name="sortBy" type="string" />
+        <field field-name="sortDirection" type="string" />
+        <field field-name="itemsPerPage" type="int" />
+        <field field-name="maxItems" type="int" />
+        <field field-name="contentTypes" type="collection" />
 
         <reference-one
             field="relation"

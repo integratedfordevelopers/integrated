@@ -40,7 +40,7 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
      */
     private $urlResolver;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->twitter = $this->createMock(TwitterOAuth::class);
         $this->config = $this->createMock(ConfigInterface::class);

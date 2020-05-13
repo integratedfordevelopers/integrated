@@ -4,11 +4,11 @@
 
     <mapped-superclass name="Integrated\Bundle\PageBundle\Document\Page\AbstractPage" collection="page" inheritance-type="SINGLE_COLLECTION">
 
-        <field fieldName="id" id="true" strategy="UUID" />
-        <field fieldName="path" type="string" />
-        <field fieldName="layout" type="string" />
-        <field fieldName="createdAt" type="date" />
-        <field fieldName="updatedAt" type="date" />
+        <id field-name="id" strategy="UUID" />
+        <field field-name="path" type="string" />
+        <field field-name="layout" type="string" />
+        <field field-name="createdAt" type="date" />
+        <field field-name="updatedAt" type="date" />
 
         <embed-many field="grids" target-document="Integrated\Bundle\PageBundle\Document\Page\Grid\Grid" />
 
@@ -17,8 +17,8 @@
         <discriminator-field name="class" />
 
         <discriminator-map>
-            <discriminator-mapping value="Page" class="Page" />
-            <discriminator-mapping value="ContentTypePage" class="ContentTypePage" />
+            <discriminator-mapping value="Page" class="Integrated\Bundle\PageBundle\Document\Page\Page" />
+            <discriminator-mapping value="ContentTypePage" class="Integrated\Bundle\PageBundle\Document\Page\ContentTypePage" />
         </discriminator-map>
 
         <default-discriminator-value value="Page" />

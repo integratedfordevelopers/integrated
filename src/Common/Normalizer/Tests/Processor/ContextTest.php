@@ -36,7 +36,7 @@ class ContextTest extends \PHPUnit\Framework\TestCase
      */
     private $nesting = null;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->resolver = $this->createMock(ResolverInterface::class);
     }

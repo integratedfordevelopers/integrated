@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\MenuBundle\Menu;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
 use Knp\Menu\Factory\CoreExtension;
 use Knp\Menu\Factory\ExtensionInterface;
 use Knp\Menu\FactoryInterface;
@@ -42,13 +44,20 @@ class DatabaseMenuFactory implements FactoryInterface
     private $sorted;
 
     /**
-     * @param string $menuClass
-     * @param string $menuItemClass
+     * @var DocumentManager
      */
-    public function __construct($menuClass, $menuItemClass)
+    private $documentManager;
+
+    /**
+     * @param string          $menuClass
+     * @param string          $menuItemClass
+     * @param DocumentManager $documentManager
+     */
+    public function __construct($menuClass, $menuItemClass, DocumentManager $documentManager)
     {
         $this->menuClass = $menuClass;
         $this->menuItemClass = $menuItemClass;
+        $this->documentManager = $documentManager;
         $this->addExtension(new CoreExtension(), -10);
     }
 
@@ -84,10 +93,6 @@ class DatabaseMenuFactory implements FactoryInterface
         if (isset($array['name'])) {
             $menu = $this->createItem($array['name']);
 
-            if (isset($value['id'])) {
-                $menu->setId($value['id']);
-            }
-
             if (isset($array['children'])) {
                 $menu->setChildren($this->parseChildren((array) $array['children']));
             }
@@ -112,6 +117,21 @@ class DatabaseMenuFactory implements FactoryInterface
 
                 if (isset($value['uri'])) {
                     $child->setUri($value['uri']);
+                }
+
+                if (isset($value['typeLink'])) {
+                    $child->setTypeLink($value['typeLink']);
+                }
+
+                if (isset($value['searchSelection']) && $searchSelection = $this->documentManager->getRepository(SearchSelection::class)->find($value['searchSelection'])) {
+                    $child->setSearchSelection($searchSelection);
+                    if ($child->getTypeLink() == $child::TYPE_LINK_SEARCH_SELECTION) {
+                        $child->setName('Search selection '.$searchSelection->getTitle());
+                    }
+                }
+
+                if (isset($value['maxItems'])) {
+                    $child->setMaxItems($value['maxItems']);
                 }
 
                 if (isset($value['children'])) {

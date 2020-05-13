@@ -42,7 +42,7 @@ class WorkerTest extends \PHPUnit\Framework\TestCase
      */
     private $dispatcher;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->registry = $this->getMockBuilder(Registry::class)->disableOriginalConstructor()->getMock();
         $this->queue = $this->createMock(QueueInterface::class);

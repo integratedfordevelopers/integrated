@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\ContentType\Tests\Form\Registry;
+namespace Integrated\Common\ContentType\Tests\Form\Custom\Type;
 
 use Integrated\Common\ContentType\Form\Custom\Type\Registry;
 
@@ -26,7 +26,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     /**
      * Setup the test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->registry = new Registry();
     }

@@ -26,7 +26,7 @@ class ContentTypeTest extends \PHPUnit\Framework\TestCase
     /**
      * Setup the test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->contentType = new ContentType();
     }
@@ -114,7 +114,7 @@ class ContentTypeTest extends \PHPUnit\Framework\TestCase
         $field = $this->createMock('Integrated\Common\ContentType\ContentTypeFieldInterface');
         $field->expects($this->exactly(2))
             ->method('getName')
-            ->will($this->returnValue('henk'));
+            ->willReturn('henk');
 
         $this->contentType->setFields([$field]);
 
@@ -132,7 +132,7 @@ class ContentTypeTest extends \PHPUnit\Framework\TestCase
         $field = $this->createMock('Integrated\Common\ContentType\ContentTypeFieldInterface');
         $field->expects($this->exactly(2))
             ->method('getName')
-            ->will($this->returnValue('henk'));
+            ->willReturn('henk');
 
         $this->contentType->setFields([$field]);
 

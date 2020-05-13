@@ -5,9 +5,9 @@
 
     <embedded-document name="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Connector">
 
-        <field fieldName="configId" type="int" />
-        <field fieldName="configAdapter" type="string" />
-        <field fieldName="externalId" type="string" />
+        <field field-name="configId" type="int" />
+        <field field-name="configAdapter" type="string" />
+        <field field-name="externalId" type="string" />
 
     </embedded-document>
 

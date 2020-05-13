@@ -30,7 +30,7 @@ class MongoDBContenTypeListenerTest extends \PHPUnit\Framework\TestCase
      */
     private $queue;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->queue = $this->createMock(QueueInterface::class);
     }

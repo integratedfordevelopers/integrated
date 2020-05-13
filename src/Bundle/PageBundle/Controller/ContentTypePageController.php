@@ -11,8 +11,10 @@
 
 namespace Integrated\Bundle\PageBundle\Controller;
 
+use Doctrine\ODM\MongoDB\Query\Builder;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Bundle\PageBundle\Form\Type\ContentTypePageType;
+use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -24,6 +26,16 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ContentTypePageController extends Controller
 {
+    /**
+     * PageController constructor.
+     *
+     * @param ChannelContextInterface $channelContext
+     */
+    public function __construct(ChannelContextInterface $channelContext)
+    {
+        parent::__construct($channelContext);
+    }
+
     /**
      * @param Request $request
      *
@@ -38,12 +50,15 @@ class ContentTypePageController extends Controller
         $channel = $this->getSelectedChannel();
 
         $builder = $this->getDocumentManager()->createQueryBuilder(ContentTypePage::class)
-            ->field('channel.$id')->equals($channel->getId());
+            ->field('channel.$id')->equals($channel->getId())
+            ->sort('contentType');
+
+        $this->displayPathErrors($builder);
 
         $pagination = $this->getPaginator()->paginate(
             $builder,
             $request->query->get('page', 1),
-            20
+            25
         );
 
         return $this->render('IntegratedPageBundle:content_type_page:index.html.twig', [
@@ -69,7 +84,7 @@ class ContentTypePageController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $channel = $this->getSelectedChannel();
+            $channel = $page->getChannel();
 
             $this->getDocumentManager()->flush();
 
@@ -108,5 +123,23 @@ class ContentTypePageController extends Controller
         $form->add('submit', SubmitType::class, ['label' => 'Save']);
 
         return $form;
+    }
+
+    /**
+     * @param Builder $builder
+     *
+     * @throws \Doctrine\ODM\MongoDB\MongoDBException
+     */
+    protected function displayPathErrors(Builder $builder)
+    {
+        $paths = [];
+        foreach ($builder->getQuery()->execute() as $item) {
+            $settings = $item->getControllerService().$item->getLayout();
+            if (isset($paths[$item->getPath()]) && $paths[$item->getPath()] != $settings) {
+                $this->get('braincrafted_bootstrap.flash')->error('Path '.$item->getPath().' is used multiple times with diffent settings. Only one will be used');
+                continue;
+            }
+            $paths[$item->getPath()] = $settings;
+        }
     }
 }

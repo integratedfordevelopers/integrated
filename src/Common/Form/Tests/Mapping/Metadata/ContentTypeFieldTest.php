@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Form\Tests\Mapping\Driver;
+namespace Integrated\Common\Form\Tests\Mapping\Metadata;
 
 use Integrated\Common\Form\Mapping\Metadata\Field;
 
@@ -28,7 +28,7 @@ class ContentTypeFieldTest extends \PHPUnit\Framework\TestCase
     /**
      * Setup the test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->contentTypeField = new Field(self::NAME);
     }

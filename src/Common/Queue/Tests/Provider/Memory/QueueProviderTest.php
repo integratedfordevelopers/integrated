@@ -24,7 +24,7 @@ class QueueProviderTest extends \PHPUnit\Framework\TestCase
      */
     protected $provider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->provider = new QueueProvider();
     }
@@ -50,7 +50,7 @@ class QueueProviderTest extends \PHPUnit\Framework\TestCase
 
         $result = $this->provider->pull('channel');
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertCount(1, $result);
         $this->assertContainsOnlyInstancesOf('Integrated\Common\Queue\Provider\Memory\QueueMessage', $result);
         $this->assertEquals(1, $this->provider->count('channel'));
@@ -116,7 +116,7 @@ class QueueProviderTest extends \PHPUnit\Framework\TestCase
     {
         $result = $this->provider->pull('channel');
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertCount(0, $result);
     }
 

@@ -55,10 +55,15 @@ class MetadataTest extends \PHPUnit\Framework\TestCase
         // MimeType must be added to the headers for cloud (amazon atleast) storage
         $this->assertContains($mimeType, $result['headers']);
         $this->assertArrayHasKey('Content-Type', $result['headers']);
+
         // It should be merged with the default
-        $this->assertArraySubset($headers->toArray(), $result['headers'], true);
+        foreach ($headers->toArray() as $key => $value) {
+            $this->assertSame($value, $result['headers'][$key]);
+        }
 
         // These must be somewhere in the result
-        $this->assertArraySubset($extra->toArray(), $result, true);
+        foreach ($extra->toArray() as $key => $value) {
+            $this->assertSame($value, $result[$key]);
+        }
     }
 }

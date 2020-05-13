@@ -24,7 +24,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
      */
     private $options;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->options = $this->createMock('Integrated\\Common\\Channel\\Connector\\Config\\OptionsInterface');
     }

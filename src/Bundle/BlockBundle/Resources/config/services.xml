@@ -21,9 +21,13 @@
     <services>
 
         <service id="integrated_block.twig.block_extension" class="%integrated_block.twig.block_extension.class%">
-            <argument type="service" id="service_container" />
+            <argument type="service" id="integrated_block.templating.block_manager"/>
+            <argument type="service" id="integrated_theme.templating.theme_manager"/>
             <argument type="service" id="integrated_block.provider.block_usage" />
             <argument type="service" id="integrated_block.metadata.factory" />
+            <argument type="service" id="integrated_content.channel.context"/>
+            <argument type="service" id="logger"/>
+            <argument>%kernel.environment%</argument>
             <tag name="twig.extension" />
         </service>
 

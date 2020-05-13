@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\BlockBundle\Document\Block;
 
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 
 /**

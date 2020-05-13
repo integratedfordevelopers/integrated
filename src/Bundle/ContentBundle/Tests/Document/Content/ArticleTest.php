@@ -29,7 +29,7 @@ class ArticleTest extends ContentTest
     /**
      * Setup the test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->article = new Article();
     }
@@ -123,6 +123,15 @@ class ArticleTest extends ContentTest
     {
         $source = 'source';
         $this->assertEquals($source, $this->article->setSource($source)->getSource());
+    }
+
+    /**
+     * Test get- and setSourceUrl function.
+     */
+    public function testGetAndSetSourceUrlFunction()
+    {
+        $sourceUrl = 'sourceUrl';
+        $this->assertEquals($sourceUrl, $this->article->setSourceUrl($sourceUrl)->getSourceUrl());
     }
 
     /**

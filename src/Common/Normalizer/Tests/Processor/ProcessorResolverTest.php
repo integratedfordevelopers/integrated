@@ -36,7 +36,7 @@ class ProcessorResolverTest extends \PHPUnit\Framework\TestCase
      */
     private $factory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->registry = $this->createMock(RegistryInterface::class);
         $this->factory = $this->createMock(ResolvedProcessorFactoryInterface::class);

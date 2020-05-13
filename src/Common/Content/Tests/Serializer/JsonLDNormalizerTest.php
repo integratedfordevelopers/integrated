@@ -27,7 +27,7 @@ class JsonLDNormalizerTest extends \PHPUnit\Framework\TestCase
      */
     private $normalizer;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->normalizer = $this->createMock(NormalizerInterface::class);
     }

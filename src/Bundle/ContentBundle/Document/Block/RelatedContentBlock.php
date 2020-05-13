@@ -83,7 +83,9 @@ class RelatedContentBlock extends Block
      *     type="Symfony\Component\Form\Extension\Core\Type\ChoiceType",
      *     options={
      *         "choices"={
-     *             "Publication date"="publishTime.startDate"
+     *             "Publication date"="publishTime.startDate",
+     *             "Title"="title",
+     *             "Linked order"="linked"
      *          },
      *     }
      * )
@@ -135,7 +137,12 @@ class RelatedContentBlock extends Block
 
     /**
      * @var array
-     * @Type\Field(type="Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChoice")
+     * @Type\Field(
+     *     type="Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChoice",
+     *     options={
+     *         "required"=false
+     *     }
+     * )
      */
     protected $contentTypes;
 

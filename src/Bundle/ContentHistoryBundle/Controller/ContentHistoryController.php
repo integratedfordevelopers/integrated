@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\ContentHistoryBundle\Controller;
 
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentHistoryBundle\Document\ContentHistory;
 use Knp\Component\Pager\Paginator;

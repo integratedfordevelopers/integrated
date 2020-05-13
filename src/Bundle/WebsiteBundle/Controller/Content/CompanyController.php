@@ -11,10 +11,10 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Controller\Content;
 
-use Integrated\Bundle\BlockBundle\Templating\BlockManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Company;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
+use Integrated\Bundle\WebsiteBundle\Service\ContentService;
 use Symfony\Bundle\TwigBundle\TwigEngine;
 
 /**
@@ -22,6 +22,11 @@ use Symfony\Bundle\TwigBundle\TwigEngine;
  */
 class CompanyController
 {
+    /**
+     * @var ContentService
+     */
+    private $contentService;
+
     /**
      * @var TwigEngine
      */
@@ -33,20 +38,15 @@ class CompanyController
     protected $themeManager;
 
     /**
-     * @var BlockManager
+     * @param ContentService $contentService
+     * @param TwigEngine     $templating
+     * @param ThemeManager   $themeManager
      */
-    protected $blockManager;
-
-    /**
-     * @param TwigEngine   $templating
-     * @param ThemeManager $themeManager
-     * @param BlockManager $blockManager
-     */
-    public function __construct(TwigEngine $templating, ThemeManager $themeManager, BlockManager $blockManager)
+    public function __construct(ContentService $contentService, TwigEngine $templating, ThemeManager $themeManager)
     {
+        $this->contentService = $contentService;
         $this->templating = $templating;
         $this->themeManager = $themeManager;
-        $this->blockManager = $blockManager;
     }
 
     /**
@@ -57,7 +57,7 @@ class CompanyController
      */
     public function showAction(ContentTypePage $page, Company $company)
     {
-        $this->blockManager->setDocument($company);
+        $this->contentService->prepare($company);
 
         return $this->templating->renderResponse(
             $this->themeManager->locateTemplate('content/company/show/'.$page->getLayout()),

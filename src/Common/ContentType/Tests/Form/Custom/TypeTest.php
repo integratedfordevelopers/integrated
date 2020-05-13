@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\ContentType\Tests\Form;
+namespace Integrated\Common\ContentType\Tests\Form\Custom;
 
 use Integrated\Common\ContentType\Form\Custom\Type;
 
@@ -26,7 +26,7 @@ class TypeTest extends \PHPUnit\Framework\TestCase
     /**
      * Setup the test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->type = new Type();
     }

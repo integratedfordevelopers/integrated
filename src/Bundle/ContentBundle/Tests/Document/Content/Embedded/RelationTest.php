@@ -27,7 +27,7 @@ class RelationTest extends \PHPUnit\Framework\TestCase
     /**
      * Setup the test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->relation = new Relation();
     }

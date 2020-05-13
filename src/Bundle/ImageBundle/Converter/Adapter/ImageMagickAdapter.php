@@ -47,16 +47,6 @@ class ImageMagickAdapter implements AdapterInterface
     {
         $file = $this->cache->path($image);
 
-        // Check if've got a video
-        if (preg_match('/^video\/(.*)$/', $image->getMetadata()->getMimeType())) {
-            // Open the file on the tenth frame, this saves a us a hell of a lot memory
-            // When no frame is specified Imagick will write every frame on /tmp
-            $imagick = new \Imagick(sprintf('%s[10]', $file->getPathname()));
-        } else {
-            // Open a we should do with anything that is not video
-            $imagick = new \Imagick($file->getPathname());
-        }
-
         // Make a reasonable path based on the cache path but in a conversion folder
         $cache = new \SplFileInfo(sprintf('%s/%s.%s', $file->getPath(), $file->getFilename(), $outputFormat));
 
@@ -64,6 +54,39 @@ class ImageMagickAdapter implements AdapterInterface
         if ($cache->isFile()) {
             return $cache;
         }
+
+        // Check if've got a video
+        if (preg_match('/^video\/(.*)$/', $image->getMetadata()->getMimeType())) {
+            // Open the file on the tenth frame, this saves a us a hell of a lot memory
+            // When no frame is specified Imagick will write every frame on /tmp
+            $imagick = new \Imagick(sprintf('%s[10]', $file->getPathname()));
+
+            $overlay = new \Imagick(__DIR__.'/../../Resources/images/play-overlay.png');
+
+            $imageWidth = $imagick->getImageWidth();
+            $imageHeight = $imagick->getImageHeight();
+            $overlayWidth = $overlay->getImageWidth();
+            $overlayHeight = $overlay->getImageHeight();
+
+            if ($imageHeight < $overlayHeight || $imageWidth < $overlayWidth) {
+                // resize the watermark
+                $overlay->scaleImage($imageWidth, $imageHeight);
+
+                // get new size
+                $overlayWidth = $overlay->getImageWidth();
+                $overlayHeight = $overlay->getImageHeight();
+            }
+
+            // calculate the position
+            $x = ($imageWidth - $overlayWidth) / 2;
+            $y = ($imageHeight - $overlayHeight) / 2;
+
+            $imagick->compositeImage($overlay, \Imagick::COMPOSITE_OVER, $x, $y);
+        } else {
+            // Open a we should do with anything that is not video
+            $imagick = new \Imagick($file->getPathname());
+        }
+
         // Attempt conversion
         $imagick->setImageFormat($outputFormat);
         $imagick->writeImage($cache->getPathname());
@@ -76,6 +99,7 @@ class ImageMagickAdapter implements AdapterInterface
             // Return the freshly converted file
             return $cache;
         }
+
         // The last resort, this is the last outcome of any the above statements
         throw RunTimeFormatException::conversionFileCreateFail(self::NAME, $image->getPathname(), $outputFormat);
     }

@@ -25,7 +25,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
      */
     private $matcher;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->matcher = $this->createMock(ActionMatcherInterface::class);
     }

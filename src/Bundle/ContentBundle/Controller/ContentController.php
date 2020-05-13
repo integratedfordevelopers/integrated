@@ -284,6 +284,7 @@ class ContentController extends Controller
             'created' => ['name' => 'created', 'field' => 'pub_created', 'label' => 'date created', 'order' => 'desc'],
             'time' => ['name' => 'time', 'field' => 'pub_time', 'label' => 'publication date', 'order' => 'desc'],
             'title' => ['name' => 'title', 'field' => 'title_sort', 'label' => 'title', 'order' => 'asc'],
+            'rank' => ['name' => 'rank', 'field' => 'rank', 'label' => 'rank', 'order' => 'asc'],
             'random' => ['name' => 'random', 'field' => 'random_'.mt_rand(), 'label' => 'random', 'order' => 'desc'],
         ];
         $order_options = [
@@ -491,14 +492,19 @@ class ContentController extends Controller
 
             if ($locking['new']) {
                 if ($request->isMethod('get')) {
-                    return $this->redirect($this->generateUrl('integrated_content_content_edit', ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]));
+                    $parameters = array_merge($request->query->all(), [
+                        'id' => $content->getId(),
+                        'lock' => $locking['lock']->getId(),
+                    ]);
+
+                    return $this->redirect($this->generateUrl('integrated_content_content_edit', $parameters));
                 }
 
                 $locking['locked'] = false;
             }
         }
 
-        $form = $this->createEditForm($contentType, $content, $locking);
+        $form = $this->createEditForm($contentType, $content, $locking, $request);
 
         if ($request->isMethod('put')) {
             $form->handleRequest($request);
@@ -1021,8 +1027,14 @@ class ContentController extends Controller
      */
     protected function createNewForm(ContentTypeInterface $contentType, ContentInterface $content, Request $request)
     {
+        $parameters = array_merge($request->query->all(), [
+            'type' => $request->get('type'),
+            '_format' => $request->getRequestFormat(),
+            'relation' => $request->get('relation'),
+        ]);
+
         $form = $this->createForm(ContentFormType::class, $content, [
-            'action' => $this->generateUrl('integrated_content_content_new', ['type' => $request->get('type'), '_format' => $request->getRequestFormat(), 'relation' => $request->get('relation')]),
+            'action' => $this->generateUrl('integrated_content_content_new', $parameters),
             'method' => 'POST',
             'attr' => [
                 'class' => 'content-form',
@@ -1038,15 +1050,22 @@ class ContentController extends Controller
      * @param ContentTypeInterface $contentType
      * @param ContentInterface     $content
      * @param array                $locking
+     * @param Request|null         $request
      *
      * @return FormInterface
      */
-    protected function createEditForm(ContentTypeInterface $contentType, ContentInterface $content, array $locking)
+    protected function createEditForm(ContentTypeInterface $contentType, ContentInterface $content, array $locking, Request $request = null)
     {
+        $parameters = ($locking['lock'] ? ['id' => $content->getId(), 'lock' => $locking['lock']->getId()] : ['id' => $content->getId()]);
+
+        if ($request instanceof Request) {
+            $parameters = array_merge($request->query->all(), $parameters);
+        }
+
         $options = [
             'action' => $this->generateUrl(
                 'integrated_content_content_edit',
-                $locking['lock'] ? ['id' => $content->getId(), 'lock' => $locking['lock']->getId()] : ['id' => $content->getId()]
+                $parameters
             ),
             'method' => 'PUT',
             'attr' => [

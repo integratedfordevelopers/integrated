@@ -38,7 +38,7 @@ class QueueSubscriberTest extends \PHPUnit\Framework\TestCase
      */
     private $subscriber;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->queue = $this->createMock('Integrated\\Common\\Queue\\QueueInterface');
         $this->serializer = $this->createMock('Symfony\\Component\\Serializer\\SerializerInterface');
