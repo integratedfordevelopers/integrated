@@ -25,7 +25,7 @@ class ConfigIteratorTest extends \PHPUnit\Framework\TestCase
      */
     private $config;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->config = $this->createMock('Integrated\\Common\\Converter\\Config\\ConfigInterface');
     }

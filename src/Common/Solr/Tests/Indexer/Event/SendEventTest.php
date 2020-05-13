@@ -24,7 +24,7 @@ class SendEventTest extends AbstractEventTest
      */
     protected $query;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

@@ -78,7 +78,7 @@ class UrlResolver
     {
         return preg_replace_callback(
             '/(#)([\s\S]+?)(#)/',
-            function ($matches) use ($page) {
+            function ($matches) {
                 return sprintf('{%s}', $matches[2]);
             },
             $page->getPath()
@@ -170,9 +170,9 @@ class UrlResolver
     {
         $relationIds = [];
 
-        if (preg_match_all('/(#)([\s\S]+?)(#)/', $page->getPath(), $matches)) {
-            foreach ($matches as $match) {
-                $relationIds[] = $match[0];
+        if (preg_match_all('/#([\w]+?)#/', $page->getPath(), $matches)) {
+            foreach ($matches[1] as $match) {
+                $relationIds[] = $match;
             }
         }
 

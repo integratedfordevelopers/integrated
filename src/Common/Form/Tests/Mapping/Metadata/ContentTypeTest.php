@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Form\Tests\Mapping\Driver;
+namespace Integrated\Common\Form\Tests\Mapping\Metadata;
 
 use Integrated\Common\Form\Mapping\Metadata\Document;
 use Integrated\Common\Form\Mapping\Metadata\Field;
@@ -29,7 +29,7 @@ class ContentTypeTest extends \PHPUnit\Framework\TestCase
     /**
      * Setup the test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->contentType = new Document(self::CONTENT_TYPE_CLASS);
     }
@@ -82,7 +82,7 @@ class ContentTypeTest extends \PHPUnit\Framework\TestCase
         $field2
             ->expects($this->once())
             ->method('getName')
-            ->will($this->returnValue('field2'))
+            ->willReturn('field2')
         ;
 
         // Add field

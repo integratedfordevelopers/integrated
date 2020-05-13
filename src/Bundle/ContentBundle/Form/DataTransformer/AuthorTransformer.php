@@ -22,6 +22,16 @@ use Symfony\Component\Form\DataTransformerInterface;
  */
 class AuthorTransformer implements DataTransformerInterface
 {
+    /**
+     * @var ManagerRegistry
+     */
+    private $mr;
+
+    /**
+     * AuthorTransformer constructor.
+     *
+     * @param ManagerRegistry $mr
+     */
     public function __construct(ManagerRegistry $mr)
     {
         $this->mr = $mr;
@@ -38,14 +48,28 @@ class AuthorTransformer implements DataTransformerInterface
 
         $collection = [];
 
+        $authorNameCount = [];
+        foreach ($arrayCollection as $author) {
+            if (!($author instanceof Author) || !$author->getPerson()) {
+                continue;
+            }
+            $authorNameCount[] = (string) $author->getPerson();
+        }
+        $authorNameCount = array_count_values($authorNameCount);
+
         foreach ($arrayCollection as $author) {
             if (!($author instanceof Author) || !$author->getPerson()) {
                 continue;
             }
 
+            $name = (string) $author->getPerson();
+            if ($authorNameCount[$name] > 1) {
+                $name .= ' ('.$author->getPerson()->getContentType().')';
+            }
+
             $collection[] = [
                 'id' => $author->getPerson()->getId(),
-                'text' => (string) $author->getPerson(),
+                'text' => $name,
                 'type' => $author->getType(),
             ];
         }

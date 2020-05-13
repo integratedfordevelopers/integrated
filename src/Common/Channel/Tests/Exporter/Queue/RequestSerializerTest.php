@@ -39,7 +39,7 @@ class RequestSerializerTest extends \PHPUnit\Framework\TestCase
      */
     protected $manager;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->serializer = $this->createMock('Symfony\\Component\\Serializer\\SerializerInterface');
         $this->manager = $this->createMock('Integrated\\Common\\Channel\\ChannelManagerInterface');

@@ -39,7 +39,7 @@ class ContentTypeQueueTaskHandlerTest extends \PHPUnit\Framework\TestCase
      */
     protected $factory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->provider = $this->createMock(ContentTypeProviderInterface::class);
         $this->queue = $this->createMock(QueueInterface::class);

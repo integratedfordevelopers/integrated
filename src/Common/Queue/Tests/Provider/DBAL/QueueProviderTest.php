@@ -32,13 +32,13 @@ class QueueProviderTest extends \PHPUnit\Framework\TestCase
      */
     protected $connection;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $options = [
             'queue_table_name' => 'queue',
         ];
 
-        $this->connection = $this->createMock('Doctrine\DBAL\Connection', [], [], '', false);
+        $this->connection = $this->createMock('Doctrine\DBAL\Connection');
         $this->provider = new QueueProvider($this->connection, $options);
     }
 

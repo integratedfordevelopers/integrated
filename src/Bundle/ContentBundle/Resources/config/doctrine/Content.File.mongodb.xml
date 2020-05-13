@@ -5,8 +5,9 @@
 
     <document name="Integrated\Bundle\ContentBundle\Document\Content\File">
 
-        <field fieldName="title" type="string" />
-        <field fieldName="description" type="string" />
+        <field field-name="title" type="string" />
+        <field field-name="description" type="string" />
+        <field field-name="credits" type="string" />
 
         <embed-one field="file" target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage" />
 

@@ -45,7 +45,7 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
      */
     private $urlResolver;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->facebook = $this->createMock(Facebook::class);
         $this->config = $this->createMock(ConfigInterface::class);
@@ -181,11 +181,11 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
 
         $graphNode = $this->createMock(GraphNode::class);
         $graphNode->method('offsetGet')
-            ->will($this->returnCallback(
+            ->willReturnCallback(
                 function ($key) use ($graphNodeArray) {
                     return $graphNodeArray[$key];
                 }
-            ));
+            );
 
         $facebookResponse = $this->getFacebookResponse();
         $facebookResponse->method('getGraphNode')

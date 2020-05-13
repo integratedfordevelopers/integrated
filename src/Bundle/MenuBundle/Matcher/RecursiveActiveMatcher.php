@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\MenuBundle\Matcher;
 
-use Integrated\Bundle\MenuBundle\Document\MenuItem;
+use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Matcher;
 use Knp\Menu\Matcher\Voter\UriVoter;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -50,9 +50,9 @@ class RecursiveActiveMatcher
     }
 
     /**
-     * @param MenuItem $menuItem
+     * @param ItemInterface $menuItem
      */
-    public function setActive(MenuItem $menuItem)
+    public function setActive(ItemInterface $menuItem)
     {
         foreach ($menuItem->getChildren() as $item) {
             // Run recursive, find any children playing this game

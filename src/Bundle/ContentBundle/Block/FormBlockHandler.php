@@ -25,6 +25,7 @@ use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Integrated\Common\Content\Form\ContentFormType;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -112,7 +113,7 @@ class FormBlockHandler extends BlockHandler
 
         $content = $contentType->create();
 
-        $this->eventDispatcher->dispatch(FormBlockEvent::PRE_LOAD, new FormBlockEvent($content));
+        $this->eventDispatcher->dispatch(FormBlockEvent::PRE_LOAD, new FormBlockEvent($content, $block));
 
         $form = $this->createForm($content, ['method' => 'post', 'content_type' => $contentType], $block);
 
@@ -126,12 +127,12 @@ class FormBlockHandler extends BlockHandler
                     $content->addChannel($channel);
                 }
 
-                $this->eventDispatcher->dispatch(FormBlockEvent::PRE_FLUSH, new FormBlockEvent($content));
+                $this->eventDispatcher->dispatch(FormBlockEvent::PRE_FLUSH, new FormBlockEvent($content, $block));
 
                 $this->documentManager->persist($content);
                 $this->documentManager->flush();
 
-                $this->eventDispatcher->dispatch(FormBlockEvent::POST_FLUSH, new FormBlockEvent($content));
+                $this->eventDispatcher->dispatch(FormBlockEvent::POST_FLUSH, new FormBlockEvent($content, $block));
 
                 $data = $request->request->get($form->getName());
 
@@ -139,7 +140,7 @@ class FormBlockHandler extends BlockHandler
                 unset($data['actions']);
                 unset($data['_token']);
 
-                $this->formMailer->send($data, $block->getEmailAddresses());
+                $this->formMailer->send($data, $block->getEmailAddresses(), $block->getTitle());
 
                 if ($block->getReturnUrl()) {
                     return new RedirectResponse($block->getReturnUrl());
@@ -173,6 +174,21 @@ class FormBlockHandler extends BlockHandler
         $form->remove('relations');
         $form->remove('extension_workflow');
         $form->remove('source');
+        $form->remove('sourceUrl');
+
+        if ($form->has('address')) {
+            $form->get('address')->remove('type');
+        }
+
+        if ($form->has('content')) {
+            $form->remove('content');
+            $form->remove('description');
+
+            $form->add('content', TextareaType::class, [
+                'mapped' => true,
+                'label' => 'Description',
+            ]);
+        }
 
         if (null !== $block && $block->isRecaptcha()) {
             $form->add('recaptcha', VihuvacRecaptchaType::class, [

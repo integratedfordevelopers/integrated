@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Document\Block;
 
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
+use Integrated\Bundle\BlockBundle\Document\Block\PublishTitleTrait;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Common\Form\Mapping\Annotations as Type;
@@ -26,6 +27,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class FormBlock extends Block
 {
+    use PublishTitleTrait;
+
     /**
      * @var ContentType
      * @Type\Field(
@@ -38,6 +41,12 @@ class FormBlock extends Block
      * )
      */
     protected $contentType;
+
+    /**
+     * @var string
+     * @Type\Field(type="Integrated\Bundle\FormTypeBundle\Form\Type\EditorType",options={"mode"="web"})
+     */
+    protected $content;
 
     /**
      * @var string
@@ -121,6 +130,26 @@ class FormBlock extends Block
     public function setContentType(ContentType $contentType)
     {
         $this->contentType = $contentType;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * @param string $content
+     *
+     * @return $this
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
 
         return $this;
     }

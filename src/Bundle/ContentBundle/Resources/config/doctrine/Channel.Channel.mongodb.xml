@@ -8,16 +8,16 @@
         repository-class="Integrated\Bundle\ContentBundle\Document\Channel\ChannelRepository"
         collection="channel">
 
-        <field fieldName="id" id="true" strategy="NONE" />
-        <field fieldName="name" type="string" index="true" />
-        <field fieldName="color" type="string" />
-        <field fieldName="domains" type="collection" />
-        <field fieldName="primaryDomain" type="string" />
-        <field fieldName="primaryDomainRedirect" type="boolean" />
-        <field fieldName="options" type="hash" />
-        <field fieldName="createdAt" type="date" />
+        <id field-name="id" strategy="NONE" />
+        <field field-name="name" type="string" index="true" />
+        <field field-name="color" type="string" />
+        <field field-name="domains" type="collection" />
+        <field field-name="primaryDomain" type="string" />
+        <field field-name="primaryDomainRedirect" type="boolean" />
+        <field field-name="options" type="hash" />
+        <field field-name="createdAt" type="date" />
 
-        <field fieldName="scope" type="string" />
+        <field field-name="scope" type="string" />
 
         <embed-one
                 field="logo"

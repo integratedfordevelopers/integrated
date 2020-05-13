@@ -40,6 +40,6 @@ class QueuedCommandBus implements QueuedCommandBusInterface
      */
     public function execute()
     {
-        throw new NotImplementedException('Execute of the bus has not been implemented.', 500);
+        throw new NotImplementedException('Execute of the bus has not been implemented.');
     }
 }

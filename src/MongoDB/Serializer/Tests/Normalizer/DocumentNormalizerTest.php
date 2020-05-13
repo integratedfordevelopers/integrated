@@ -29,7 +29,7 @@ class DocumentNormalizerTest extends \PHPUnit\Framework\TestCase
      */
     private $normalizer;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->manger = $this->getMockBuilder('Doctrine\ODM\MongoDB\DocumentManager')->disableOriginalConstructor()->getMock();
         $this->normalizer = new DocumentNormalizer($this->manger);
@@ -56,9 +56,9 @@ class DocumentNormalizerTest extends \PHPUnit\Framework\TestCase
         $object = new \stdClass();
 
         $repository = $this->createMock('Doctrine\Common\Persistence\ObjectRepository');
-        $repository->expects($this->once())->method('find')->with($this->identicalTo(['id' => 'data']))->will($this->returnValue($object));
+        $repository->expects($this->once())->method('find')->with($this->identicalTo(['id' => 'data']))->willReturn($object);
 
-        $this->manger->expects($this->once())->method('getRepository')->with($this->identicalTo('class'))->will($this->returnValue($repository));
+        $this->manger->expects($this->once())->method('getRepository')->with($this->identicalTo('class'))->willReturn($repository);
 
         $this->assertSame($object, $this->normalizer->denormalize(['id' => 'data'], 'class'));
     }
@@ -66,9 +66,9 @@ class DocumentNormalizerTest extends \PHPUnit\Framework\TestCase
     public function testDenormalizeNotFound()
     {
         $repository = $this->createMock('Doctrine\Common\Persistence\ObjectRepository');
-        $repository->expects($this->once())->method('find')->with($this->identicalTo(['id' => 'data']))->will($this->returnValue(null));
+        $repository->expects($this->once())->method('find')->with($this->identicalTo(['id' => 'data']))->willReturn(null);
 
-        $this->manger->expects($this->once())->method('getRepository')->with($this->identicalTo('class'))->will($this->returnValue($repository));
+        $this->manger->expects($this->once())->method('getRepository')->with($this->identicalTo('class'))->willReturn($repository);
 
         $this->assertNull($this->normalizer->denormalize(['id' => 'data'], 'class'));
     }
@@ -78,7 +78,7 @@ class DocumentNormalizerTest extends \PHPUnit\Framework\TestCase
         $repository = $this->createMock('Doctrine\Common\Persistence\ObjectRepository');
         $repository->expects($this->once())->method('find')->with($this->identicalTo(['id' => 'data']))->will($this->throwException(new \Exception()));
 
-        $this->manger->expects($this->once())->method('getRepository')->with($this->identicalTo('class'))->will($this->returnValue($repository));
+        $this->manger->expects($this->once())->method('getRepository')->with($this->identicalTo('class'))->willReturn($repository);
 
         $this->assertNull($this->normalizer->denormalize(['id' => 'data'], 'class'));
     }

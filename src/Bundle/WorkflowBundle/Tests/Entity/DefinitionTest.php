@@ -26,7 +26,7 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
     /**
      * Set up the test.
      */
-    public function setup()
+    public function setup(): void
     {
         $this->state = $this->createMock('Integrated\Bundle\WorkflowBundle\Entity\Definition\State');
     }

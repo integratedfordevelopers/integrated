@@ -35,7 +35,7 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @var \Doctrine\ODM\MongoDB\DocumentRepository
+     * @var \Doctrine\ODM\MongoDB\Repository\DocumentRepository
      */
     protected $repo;
 

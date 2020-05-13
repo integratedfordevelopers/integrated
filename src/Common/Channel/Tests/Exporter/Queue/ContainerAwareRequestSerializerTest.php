@@ -24,7 +24,7 @@ class ContainerAwareRequestSerializerTest extends RequestSerializerTest
      */
     private $container;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

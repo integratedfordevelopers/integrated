@@ -4,10 +4,10 @@
 
     <document name="Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction" collection="bulkaction" repository-class="Integrated\Bundle\ContentBundle\Document\Bulk\BulkActionRepository">
 
-        <field fieldName="id" id="true" strategy="UUID"/>
-        <field fieldName="filters" type="string"/>
-        <field fieldName="createdAt" type="date"/>
-        <field fieldName="executedAt" type="date"/>
+        <field field-name="id" id="true" strategy="UUID"/>
+        <field field-name="filters" type="string"/>
+        <field field-name="createdAt" type="date"/>
+        <field field-name="executedAt" type="date"/>
 
         <embed-many field="actions" strategy="set"/>
 

@@ -1,0 +1,18 @@
+{% if content is defined %}
+    {% set channel = content.primaryChannel %}
+    {% set domain = '' %}
+
+    {% if channel %}
+        {% set domain = channel.primaryDomain %}
+
+        {% if not domain %}
+            {% set domain = channel.domains|first %}
+        {% endif %}
+    {% endif %}
+
+    {% if content.sourceUrl is defined and content.sourceUrl is not empty %}
+        <link rel="canonical" href="{{ content.sourceUrl }}" />
+    {% elseif domain %}
+        <link rel="canonical" href="https://{{ domain }}{{ integrated_url(content, channel.id) }}" />
+    {% endif %}
+{% endif %}

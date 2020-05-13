@@ -114,6 +114,12 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     protected $customFields;
 
     /**
+     * @var string
+     * @Type\Field(options={"label" = "Copyright restrictions"})
+     */
+    protected $copyrightRestrictions;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -559,6 +565,10 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
             $this->channels->add($channel);
         }
 
+        if (null === $this->primaryChannel) {
+            $this->setPrimaryChannel($channel);
+        }
+
         return $this;
     }
 
@@ -593,11 +603,11 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     }
 
     /**
-     * @param Channel|null $primaryChannel
+     * @param ChannelInterface|null $primaryChannel
      *
      * @return $this
      */
-    public function setPrimaryChannel(Channel $primaryChannel = null)
+    public function setPrimaryChannel(ChannelInterface $primaryChannel = null)
     {
         $this->primaryChannel = $primaryChannel;
 
@@ -628,6 +638,26 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
         }
 
         $this->customFields = $customFields;
+
+        return $this;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getCopyrightRestrictions(): ?string
+    {
+        return $this->copyrightRestrictions;
+    }
+
+    /**
+     * @param ?string $copyrightRestrictions
+     *
+     * @return Content
+     */
+    public function setCopyrightRestrictions(?string $copyrightRestrictions): self
+    {
+        $this->copyrightRestrictions = $copyrightRestrictions;
 
         return $this;
     }

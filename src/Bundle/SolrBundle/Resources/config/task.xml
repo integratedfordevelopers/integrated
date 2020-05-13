@@ -18,7 +18,7 @@
             <tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />
         </service>
 
-        <service id="integrated_solr.task.reference_queue_handler.mongodb_provider.repository" class="Doctrine\ODM\MongoDB\DocumentRepository" public="false">
+        <service id="integrated_solr.task.reference_queue_handler.mongodb_provider.repository" class="Doctrine\ODM\MongoDB\Repository\DocumentRepository" public="false">
             <factory service="doctrine_mongodb" method="getRepository" />
 
             <argument type="string">Integrated\Bundle\ContentBundle\Document\Content\Content</argument>

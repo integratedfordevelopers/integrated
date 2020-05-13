@@ -21,6 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Jurre de Jongh <jurre@e-active.nl>
@@ -63,11 +64,21 @@ class AuthorType extends AbstractType
 
         foreach ($this->contentTypeManager->filterInstanceOf(Person::class) as $contentType) {
             if ($contentType instanceof ContentType) {
-                $contentTypes[] = $contentType->getId();
+                $contentTypes[$contentType->getId()] = $contentType->getName();
             }
         }
 
         $view->vars['contentTypes'] = $contentTypes;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'multiple' => true,
+        ]);
     }
 
     /**

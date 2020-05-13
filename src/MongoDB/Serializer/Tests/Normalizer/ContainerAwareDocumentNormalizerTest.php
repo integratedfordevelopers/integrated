@@ -29,7 +29,7 @@ class ContainerAwareDocumentNormalizerTest extends \PHPUnit\Framework\TestCase
      */
     private $normalizer;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $this->normalizer = new ContainerAwareDocumentNormalizer($this->container, 'the-service-id');
@@ -44,7 +44,7 @@ class ContainerAwareDocumentNormalizerTest extends \PHPUnit\Framework\TestCase
     public function testGetDocumentManager()
     {
         $manger = $this->getMockBuilder('Doctrine\ODM\MongoDB\DocumentManager')->disableOriginalConstructor()->getMock();
-        $this->container->expects($this->once())->method('get')->with($this->identicalTo('the-service-id'))->will($this->returnValue($manger));
+        $this->container->expects($this->once())->method('get')->with($this->identicalTo('the-service-id'))->willReturn($manger);
 
         $class = new \ReflectionClass($this->normalizer);
 

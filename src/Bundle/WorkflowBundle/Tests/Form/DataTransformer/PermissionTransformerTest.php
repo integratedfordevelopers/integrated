@@ -28,7 +28,7 @@ class PermissionTransformerTest extends \PHPUnit\Framework\TestCase
      */
     private $repository;
 
-    public function setup()
+    public function setup(): void
     {
         $this->repository = $this->getMockBuilder(ObjectRepository::class)->getMock();
     }

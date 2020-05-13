@@ -31,7 +31,7 @@ class PriorityResolverTest extends \PHPUnit\Framework\TestCase
      */
     protected $resolvers = [];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->types[] = $this->getType('type 1');
         $this->types[] = $this->getType('type 2');

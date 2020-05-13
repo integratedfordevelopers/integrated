@@ -184,6 +184,15 @@ class ThemeManager
             }
         }
 
+        if (basename($template) !== 'default.html.twig') {
+            $secondFallbackTemplate = \dirname($template).'/default.html.twig';
+            $this->fallbackStack = [];
+
+            return $this->locateTemplate($secondFallbackTemplate);
+        }
+
+        $this->fallbackStack = [];
+
         return null;
     }
 

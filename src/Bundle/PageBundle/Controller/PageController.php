@@ -13,9 +13,13 @@ namespace Integrated\Bundle\PageBundle\Controller;
 
 use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
 use Integrated\Bundle\PageBundle\Document\Page\Page;
+use Integrated\Bundle\PageBundle\Form\Type\PageCopyType;
 use Integrated\Bundle\PageBundle\Form\Type\PageType;
+use Integrated\Bundle\PageBundle\Services\PageCopyService;
+use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,6 +29,24 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class PageController extends Controller
 {
+    /**
+     * @var PageCopyService
+     */
+    private $pageCopyService;
+
+    /**
+     * PageController constructor.
+     *
+     * @param ChannelContextInterface $channelContext
+     * @param PageCopyService         $pageCopyService
+     */
+    public function __construct(ChannelContextInterface $channelContext, PageCopyService $pageCopyService)
+    {
+        parent::__construct($channelContext);
+
+        $this->pageCopyService = $pageCopyService;
+    }
+
     /**
      * @param Request $request
      *
@@ -36,22 +58,34 @@ class PageController extends Controller
             throw $this->createAccessDeniedException();
         }
 
-        $channel = $this->getSelectedChannel();
+        try {
+            $channel = $this->getSelectedChannel();
 
-        $builder = $this->getDocumentManager()->createQueryBuilder(Page::class)
-            ->field('channel.$id')->equals($channel->getId());
+            $builder = $this->getDocumentManager()->createQueryBuilder(Page::class)
+                ->field('channel.$id')->equals($channel->getId());
 
-        $pagination = $this->getPaginator()->paginate(
-            $builder,
-            $request->query->get('page', 1),
-            20
-        );
+            $pagination = $this->getPaginator()->paginate(
+                $builder,
+                $request->query->get('page', 1),
+                25
+            );
+        } catch (\RuntimeException $e) {
+            $this->get('braincrafted_bootstrap.flash')->error('Please add a website connector for at least one channel to manage pages');
 
-        return $this->render('IntegratedPageBundle:page:index.html.twig', [
+            return $this->render('IntegratedPageBundle:page:error.html.twig');
+        }
+
+        $response = $this->render('IntegratedPageBundle:page:index.html.twig', [
             'pages' => $pagination,
             'channels' => $this->getChannels(),
             'selectedChannel' => $channel,
         ]);
+
+        if ($request->query->has('channel')) {
+            $response->headers->setCookie(new Cookie('channel', $request->query->get('channel')));
+        }
+
+        return $response;
     }
 
     /**
@@ -161,6 +195,76 @@ class PageController extends Controller
 
         return $this->render('IntegratedPageBundle:page:delete.html.twig', [
             'page' => $page,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     *
+     * @throws \Doctrine\ODM\MongoDB\Mapping\MappingException
+     * @throws \Doctrine\ODM\MongoDB\MongoDBException
+     */
+    public function copyAction(Request $request)
+    {
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
+        try {
+            $channel = $this->getSelectedChannel();
+
+            $builder = $this->getDocumentManager()->createQueryBuilder(Page::class)
+                ->field('channel.$id')->equals($channel->getId());
+
+            $pagination = $this->getPaginator()->paginate(
+                $builder,
+                $request->query->get('page', 1),
+                25
+            );
+        } catch (\RuntimeException $e) {
+            $this->get('braincrafted_bootstrap.flash')->error('Please add a website connector for at least one channel to manage pages');
+
+            return $this->render('IntegratedPageBundle:page:error.html.twig');
+        }
+
+        if ($formData = $request->request->get('page_copy', null)) {
+            $targetChannel = $formData['targetChannel'];
+        } else {
+            $targetChannel = null;
+        }
+
+        $form = $this->createForm(
+            PageCopyType::class,
+            null,
+            [
+                'channel' => $channel->getId(),
+                'targetChannel' => $targetChannel,
+                'action' => $this->generateUrl('integrated_page_page_copy', ['channel' => $channel->getId()]),
+                'method' => 'POST',
+            ]
+        );
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            if ($data['action'] != 'refresh') {
+                $this->pageCopyService->copyPages($channel->getId(), $form->getData());
+
+                $this->get('braincrafted_bootstrap.flash')->success('Pages copied');
+
+                return $this->redirect($this->generateUrl('integrated_page_page_index', ['channel' => $channel->getId()]));
+            }
+        }
+
+        return $this->render('IntegratedPageBundle:page:copy.html.twig', [
+            'pages' => $pagination,
+            'channels' => $this->getChannels(),
+            'selectedChannel' => $channel,
             'form' => $form->createView(),
         ]);
     }

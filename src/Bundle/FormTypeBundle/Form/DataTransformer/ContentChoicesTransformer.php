@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\FormTypeBundle\Form\DataTransformer;
 
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Integrated\Common\Content\ContentInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
@@ -71,7 +71,7 @@ class ContentChoicesTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
-        if (null === $value) {
+        if (null === $value || $value == '') {
             return [];
         } elseif (\is_array($value)) {
             $documents = $ids = [];

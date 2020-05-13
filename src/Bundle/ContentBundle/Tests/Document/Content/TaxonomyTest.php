@@ -26,7 +26,7 @@ class TaxonomyTest extends ContentTest
     /**
      * Setup the test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->taxonomy = new Taxonomy();
     }

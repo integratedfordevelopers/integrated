@@ -9,14 +9,15 @@
         collection="content"
         inheritance-type="SINGLE_COLLECTION">
 
-        <field fieldName="id" id="true" strategy="UUID" />
-        <field fieldName="slug" type="string" unique="true" sparse="true" />
-        <field fieldName="contentType" type="string" index="true" />
-        <field fieldName="createdAt" type="date" />
-        <field fieldName="updatedAt" type="date" />
-        <field fieldName="published" type="boolean" />
-        <field fieldName="disabled" type="boolean" />
-        <field fieldName="customFields" type="hash" />
+        <id field-name="id" strategy="UUID" />
+        <field field-name="slug" type="string" unique="true" sparse="true" />
+        <field field-name="contentType" type="string" index="true" />
+        <field field-name="createdAt" type="date" />
+        <field field-name="updatedAt" type="date" />
+        <field field-name="published" type="boolean" />
+        <field field-name="disabled" type="boolean" />
+        <field field-name="customFields" type="hash" />
+        <field field-name="copyrightRestrictions" type="string" />
 
         <embed-one
             field="publishTime"
@@ -46,7 +47,7 @@
             target-document="Integrated\Bundle\ContentBundle\Document\Channel\Channel" />
 
         <discriminator-field name="class" />
-        
+
         <lifecycle-callbacks>
             <lifecycle-callback type="preUpdate" method="updateUpdatedAtOnPreUpdate"/>
             <lifecycle-callback type="preUpdate" method="updatePublishTimeOnPreUpdate"/>
@@ -62,7 +63,7 @@
                 <key name="class" order="asc"/>
             </index>
         </indexes>
-        
+
 
     </mapped-superclass>
 

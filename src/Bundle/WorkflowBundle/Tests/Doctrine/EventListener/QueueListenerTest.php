@@ -29,7 +29,7 @@ class QueueListenerTest extends \PHPUnit\Framework\TestCase
      */
     protected $queue;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->queue = $this->createMock('Integrated\\Common\\Queue\\QueueInterface');
     }

@@ -11,6 +11,10 @@
 
 namespace Integrated\Bundle\BlockBundle\Document\Block;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
+use Integrated\Common\Block\BlockRequiredItemsInterface;
+use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -21,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Type\Document("Text block")
  */
-class TextBlock extends Block
+class TextBlock extends Block implements BlockRequiredItemsInterface
 {
     use PublishTitleTrait;
 
@@ -43,6 +47,45 @@ class TextBlock extends Block
     protected $content;
 
     /**
+     * @var Relation
+     * @Type\Field(
+     *      type="Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType",
+     *      options={
+     *          "class"="IntegratedContentBundle:Relation\Relation",
+     *          "choice_label"="name",
+     *          "placeholder"="",
+     *          "label"="Require relation",
+     *          "required"=false
+     *      }
+     * )
+     */
+    protected $requiredRelation;
+
+    /**
+     * @var ArrayCollection
+     * @Type\Field(
+     *     type="Integrated\Bundle\FormTypeBundle\Form\Type\ContentChoiceType",
+     *     options={
+     *         "label"="Require relation with",
+     *         "required"=false
+     *     }
+     * )
+     */
+    protected $requiredItems;
+
+    /**
+     * General object init.
+     *
+     * @param null $id
+     */
+    public function __construct($id = null)
+    {
+        parent::__construct($id);
+
+        $this->requiredItems = new ArrayCollection();
+    }
+
+    /**
      * @return string
      */
     public function getContent()
@@ -60,6 +103,38 @@ class TextBlock extends Block
         $this->content = $content;
 
         return $this;
+    }
+
+    /**
+     * @return Relation|null
+     */
+    public function getRequiredRelation()
+    {
+        return $this->requiredRelation;
+    }
+
+    /**
+     * @param Relation|null $requiredRelation
+     */
+    public function setRequiredRelation(?Relation $requiredRelation)
+    {
+        $this->requiredRelation = $requiredRelation;
+    }
+
+    /**
+     * @return ContentInterface[]
+     */
+    public function getRequiredItems()
+    {
+        return $this->requiredItems->toArray();
+    }
+
+    /**
+     * @param ContentInterface[] $requiredItems
+     */
+    public function setRequiredItems(array $requiredItems)
+    {
+        $this->requiredItems = new ArrayCollection($requiredItems);
     }
 
     /**

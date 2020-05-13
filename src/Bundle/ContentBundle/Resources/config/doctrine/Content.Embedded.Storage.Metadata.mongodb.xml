@@ -5,10 +5,12 @@
 
     <embedded-document name="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage\Metadata">
 
-        <field fieldName="extension" type="string" />
-        <field fieldName="mimeType" type="string" />
-        <field fieldName="headers" type="hash" />
-        <field fieldName="metadata" type="hash" />
+        <field field-name="extension" type="string" />
+        <field field-name="mimeType" type="string" />
+        <field field-name="credits" type="string" />
+        <field field-name="description" type="string" />
+        <field field-name="headers" type="hash" />
+        <field field-name="metadata" type="hash" />
 
     </embedded-document>
 

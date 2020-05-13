@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Routing\Queue\Tests;
+namespace Integrated\Common\Routing\Tests;
 
 use Integrated\Common\Routing\Router;
 use stdClass;
@@ -40,7 +40,7 @@ class RouterTest extends \PHPUnit\Framework\TestCase
      */
     protected $context;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->router = $this->createMock(RouterInterface::class);
         $this->generator = $this->createMock(UrlGeneratorInterface::class);

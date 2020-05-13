@@ -14,6 +14,7 @@ namespace Integrated\Bundle\WorkflowBundle\Command;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Exception;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
+use Integrated\Bundle\WorkflowBundle\Service\StateManager;
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\ContentType\ResolverInterface;
 use InvalidArgumentException;
@@ -31,6 +32,23 @@ use Symfony\Component\Lock\Lock;
  */
 class IndexCommand extends ContainerAwareCommand
 {
+    /**
+     * @var StateManager
+     */
+    private $stateManager;
+
+    /**
+     * IndexCommand constructor.
+     *
+     * @param StateManager $stateManager
+     */
+    public function __construct(StateManager $stateManager)
+    {
+        parent::__construct();
+
+        $this->stateManager = $stateManager;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -104,6 +122,7 @@ The <info>%command.name%</info> command starts a index of all the content from t
             $types = [];
 
             foreach ($this->findTypes($workflow) as $row) {
+                $this->stateManager->ensureWorkflowState($row->getType());
                 $types[] = $row->getType();
             }
 

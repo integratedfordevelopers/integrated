@@ -5,7 +5,7 @@
 
     <embedded-document name="Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField">
 
-        <field fieldName="type" type="string" />
+        <field field-name="type" type="string" />
 
     </embedded-document>
 

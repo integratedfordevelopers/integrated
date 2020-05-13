@@ -21,7 +21,7 @@
         </service>
 
         <service id="integrated_website.twig.menu_extension" class="%integrated_website.twig.menu_extension.class%">
-            <argument type="service" id="integrated_menu.provider.database_menu_provider" />
+            <argument type="service" id="integrated_menu.provider.integrated_menu_provider" />
             <argument type="service" id="integrated_menu.menu.database_menu_factory" />
             <argument type="service" id="knp_menu.helper" />
             <argument type="service" id="integrated_menu.matcher.recursive" />
@@ -38,6 +38,15 @@
         </service>
 
         <service id="integrated_website.twig.period_extension" class="%integrated_website.twig.period_extension.class%">
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="Integrated\Bundle\WebsiteBundle\Twig\Extension\BreadcrumbExtension">
+            <argument type="service" id="Integrated\Bundle\MenuBundle\Provider\BreadcrumbMenuProvider" />
+            <argument type="service" id="knp_menu.helper" />
+            <argument type="service" id="Integrated\Bundle\PageBundle\Breadcrumb\BreadcrumbResolver"/>
+            <argument>%knp_menu.renderer.twig.template%</argument>
+
             <tag name="twig.extension" />
         </service>
 
