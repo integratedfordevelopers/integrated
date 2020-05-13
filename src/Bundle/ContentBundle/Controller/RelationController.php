@@ -255,7 +255,14 @@ class RelationController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('integrated_content_relation_delete', ['id' => $relation->getId()]))
             ->setMethod('DELETE')
-            ->add('submit', SubmitType::class, ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Delete',
+                'attr' =>
+                    [
+                        'class' => 'btn-danger',
+                        'onclick' => 'return confirm(\'Are you sure you want to delete this relation?\');'
+                    ]
+            ])
             ->getForm()
         ;
     }
