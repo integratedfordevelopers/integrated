@@ -30,25 +30,33 @@ class RelationType extends AbstractType
         $builder
             ->add('name')
             ->add('type')
-            ->add('sources',
-                DocumentType::class, [
-                    'class' => ContentType::class,
-                    'choice_label' => 'name',
-                    'multiple' => true,
-                    'required' => false,
-                    ])->add('targets',
-                DocumentType::class, [
-                    'class' => ContentType::class,
-                    'choice_label' => 'name',
-                    'multiple' => true,
-                    'required' => false,
-                ])->add('multiple', null,
+            ->add(
+                'sources',
+                DocumentType::class,
                 [
+                    'class' => ContentType::class,
+                    'choice_label' => 'name',
+                    'multiple' => true,
                     'required' => false,
-                    'attr' => [
-                        'align_with_widget' => true,
-                    ],
                 ]
+            )->add(
+                'targets',
+                DocumentType::class,
+                [
+                        'class' => ContentType::class,
+                        'choice_label' => 'name',
+                        'multiple' => true,
+                        'required' => false,
+                        ]
+            )->add(
+                'multiple',
+                null,
+                [
+                            'required' => false,
+                            'attr' => [
+                            'align_with_widget' => true,
+                            ],
+                            ]
             )
             ->add(
                 'required',
