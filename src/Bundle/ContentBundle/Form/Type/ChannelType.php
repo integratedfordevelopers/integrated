@@ -37,11 +37,11 @@ class ChannelType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('name', TextType::class, [
-            'constraints' => new Length(['max' => 50]),
+            'constraints' => new Length(['max' => 100]),
         ]);
 
         $builder->add('logo', ImageDropzoneType::class);
-        $builder->add('color', ColorType::class);
+        $builder->add('color', ColorType::class, ['required' => false]);
 
         $builder->add('domains', BootstrapCollectionType::class, [
             'label' => 'Domains (example.com)',
