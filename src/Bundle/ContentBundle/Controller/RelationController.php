@@ -257,11 +257,10 @@ class RelationController extends Controller
             ->setMethod('DELETE')
             ->add('submit', SubmitType::class, [
                 'label' => 'Delete',
-                'attr' =>
-                    [
+                'attr' => [
                         'class' => 'btn-danger',
-                        'onclick' => 'return confirm(\'Are you sure you want to delete this relation?\');'
-                    ]
+                        'onclick' => 'return confirm(\'Are you sure you want to delete this relation?\');',
+                    ],
             ])
             ->getForm()
         ;
