@@ -32,7 +32,7 @@ class BundleTest
 
         $finder = new Finder();
 
-        $finder->directories()->in($directory);
+        $finder->directories()->in($directory)->depth(0);
 
         $errors = [];
         foreach ($finder as $directory) {
