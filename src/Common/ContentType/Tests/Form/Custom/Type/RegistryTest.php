@@ -26,7 +26,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     /**
      * Setup the test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->registry = new Registry();
     }

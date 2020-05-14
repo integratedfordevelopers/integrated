@@ -7,7 +7,12 @@ parameters:
     -
       message: '#does not call parent constructor#'
       path: */ContainerAware*
+    - '#Unsafe usage of new static#'
+    - '#Cannot unset offset mixed on array#'
   reportUnmatchedIgnoredErrors: false
   level: 1
   paths:
     - src/
+  excludes_analyse:
+    - src/Bundle/ContentBundle/Tests/Form/Type/CustomFieldsTypeTest.php #https://github.com/phpstan/phpstan/issues/2732
+    - src/Bundle/ContentBundle/Tests/Form/Type/RelationTypeTest.php #https://github.com/phpstan/phpstan/issues/2732

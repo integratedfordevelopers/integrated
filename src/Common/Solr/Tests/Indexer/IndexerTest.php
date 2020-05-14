@@ -66,7 +66,7 @@ class IndexerTest extends \PHPUnit\Framework\TestCase
      */
     private $dispatcher;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->factory = $this->createMock(CommandFactoryInterface::class);
 //        $this->batch = $this->createMock(Batch::class);
@@ -506,14 +506,14 @@ class IndexerTest extends \PHPUnit\Framework\TestCase
 
         $this->factory->expects($this->at(0))
             ->method('create')
-            ->withConsecutive($this->identicalTo($payload1))
+            ->withConsecutive([$this->identicalTo($payload1)])
             ->willThrowException($exception);
 
         $command = $this->getCommand();
 
         $this->factory->expects($this->at(1))
             ->method('create')
-            ->withConsecutive($this->identicalTo($payload2))
+            ->withConsecutive([$this->identicalTo($payload2)])
             ->willReturn($command);
 
         $query = $this->getQuery();

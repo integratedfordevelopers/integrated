@@ -172,7 +172,7 @@ class XmlProviderTest extends \PHPUnit\Framework\TestCase
      */
     public static function assertContainsTypes($expected, $actual)
     {
-        self::assertInternalType('array', $actual);
+        self::assertIsArray($actual);
         self::assertContainsOnlyInstancesOf('Integrated\\Common\\Converter\\Config\\TypeConfigInterface', $actual);
 
         /** @var TypeConfigInterface $type */

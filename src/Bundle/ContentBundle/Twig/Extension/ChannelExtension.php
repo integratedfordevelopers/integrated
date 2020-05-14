@@ -14,11 +14,13 @@ namespace Integrated\Bundle\ContentBundle\Twig\Extension;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\Extension\GlobalsInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class ChannelExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInterface
+class ChannelExtension extends AbstractExtension implements GlobalsInterface
 {
     /**
      * @var ContainerInterface

@@ -23,7 +23,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 class ImageChoiceType extends AbstractType
 {
     /**
-     * @var \Doctrine\ODM\MongoDB\DocumentRepository
+     * @var \Doctrine\ODM\MongoDB\Repository\DocumentRepository
      */
     private $repository;
 

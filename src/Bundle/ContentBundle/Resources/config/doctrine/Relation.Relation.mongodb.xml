@@ -5,12 +5,12 @@
 
     <document name="Integrated\Bundle\ContentBundle\Document\Relation\Relation" collection="relation">
 
-        <field fieldName="id" id="true" strategy="NONE" />
-        <field fieldName="name" type="string" index="true" />
-        <field fieldName="type" type="string" />
-        <field fieldName="multiple" type="boolean" />
-        <field fieldName="required" type="boolean" />
-        <field fieldName="createdAt" type="date" />
+        <field field-name="id" id="true" strategy="NONE" />
+        <field field-name="name" type="string" index="true" />
+        <field field-name="type" type="string" />
+        <field field-name="multiple" type="boolean" />
+        <field field-name="required" type="boolean" />
+        <field field-name="createdAt" type="date" />
 
         <reference-many
                 field="sources"

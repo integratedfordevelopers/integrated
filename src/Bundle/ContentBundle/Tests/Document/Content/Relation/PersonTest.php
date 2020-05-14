@@ -27,7 +27,7 @@ class PersonTest extends RelationTest
     /**
      * Setup the test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->person = new Person();
     }

@@ -5,7 +5,7 @@
 
     <embedded-document name="Integrated\Bundle\ContentBundle\Document\Content\Embedded\CustomFields">
 
-        <field fieldName="data" type="hash" />
+        <field field-name="data" type="hash" />
 
     </embedded-document>
 

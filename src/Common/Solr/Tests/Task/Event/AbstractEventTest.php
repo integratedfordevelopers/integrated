@@ -25,7 +25,7 @@ abstract class AbstractEventTest extends \PHPUnit\Framework\TestCase
      */
     protected $worker;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->worker = $this->getMockBuilder(Worker::class)->disableOriginalConstructor()->getMock();
     }

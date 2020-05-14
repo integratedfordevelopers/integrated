@@ -16,9 +16,9 @@ use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Integrated\Bundle\ChannelBundle\EventListener\Doctrine\ChannelDistributionListener;
 use Integrated\Bundle\ChannelBundle\Tests\EventListener\Mock\Serializer;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
+use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Common\Channel\Exporter\Queue\Request;
 use Integrated\Common\Content\ChannelableInterface;
-use Integrated\Common\Content\PublishableInterface;
 use Integrated\Common\Content\PublishTimeInterface;
 use Integrated\Common\Queue\Memory\QueueMessageInterface;
 use Integrated\Common\Queue\Provider\Memory\QueueProvider;
@@ -38,7 +38,7 @@ class ChannelDistributionListenerTest extends TestCase
      */
     private $listener;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->queue = new Queue(new QueueProvider(), 'test');
         $this->listener = new ChannelDistributionListener($this->queue, new Serializer());
@@ -163,10 +163,7 @@ class ChannelDistributionListenerTest extends TestCase
      */
     private function getDocument(): MockObject
     {
-        $document = $this->getMockBuilder([
-            PublishableInterface::class,
-            ChannelableInterface::class,
-        ])->getMock();
+        $document = $this->createMock(Content::class);
 
         $document
             ->method('getChannels')

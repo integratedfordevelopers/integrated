@@ -5,10 +5,10 @@
 
     <embedded-document name="Integrated\Bundle\ContentHistoryBundle\Document\Embedded\Workflow">
 
-        <field fieldName="state" type="string" />
-        <field fieldName="assigned" type="string" />
-        <field fieldName="deadline" type="string" />
-        <field fieldName="comment" type="string" />
+        <field field-name="state" type="string" />
+        <field field-name="assigned" type="string" />
+        <field field-name="deadline" type="string" />
+        <field field-name="comment" type="string" />
 
     </embedded-document>
 

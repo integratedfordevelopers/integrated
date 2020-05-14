@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\PageBundle\Controller;
 
+use Doctrine\ODM\MongoDB\Query\Builder;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Bundle\PageBundle\Form\Type\ContentTypePageType;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
@@ -51,6 +52,8 @@ class ContentTypePageController extends Controller
         $builder = $this->getDocumentManager()->createQueryBuilder(ContentTypePage::class)
             ->field('channel.$id')->equals($channel->getId())
             ->sort('contentType');
+
+        $this->displayPathErrors($builder);
 
         $pagination = $this->getPaginator()->paginate(
             $builder,
@@ -120,5 +123,23 @@ class ContentTypePageController extends Controller
         $form->add('submit', SubmitType::class, ['label' => 'Save']);
 
         return $form;
+    }
+
+    /**
+     * @param Builder $builder
+     *
+     * @throws \Doctrine\ODM\MongoDB\MongoDBException
+     */
+    protected function displayPathErrors(Builder $builder)
+    {
+        $paths = [];
+        foreach ($builder->getQuery()->execute() as $item) {
+            $settings = $item->getControllerService().$item->getLayout();
+            if (isset($paths[$item->getPath()]) && $paths[$item->getPath()] != $settings) {
+                $this->get('braincrafted_bootstrap.flash')->error('Path '.$item->getPath().' is used multiple times with diffent settings. Only one will be used');
+                continue;
+            }
+            $paths[$item->getPath()] = $settings;
+        }
     }
 }

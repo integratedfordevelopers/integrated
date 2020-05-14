@@ -43,7 +43,7 @@ class BreadcrumbExtensionTest extends \PHPUnit\Framework\TestCase
      */
     protected $breadcrumbExtension;
 
-    protected function setup()
+    protected function setUp(): void
     {
         $this->breadcrumbMenuProvider = $this->createMock('Integrated\Bundle\MenuBundle\Provider\BreadcrumbMenuProvider');
         $this->menuTwigHelper = $this->createMock('Knp\Menu\Twig\Helper');

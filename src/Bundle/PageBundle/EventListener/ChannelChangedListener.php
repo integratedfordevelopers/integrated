@@ -146,7 +146,7 @@ class ChannelChangedListener implements EventSubscriberInterface
     }
 
     /**
-     * @return \Doctrine\ODM\MongoDB\DocumentRepository
+     * @return \Doctrine\ODM\MongoDB\Repository\DocumentRepository
      */
     protected function getPageRepository()
     {
@@ -154,7 +154,7 @@ class ChannelChangedListener implements EventSubscriberInterface
     }
 
     /**
-     * @return \Doctrine\ODM\MongoDB\DocumentRepository
+     * @return \Doctrine\ODM\MongoDB\Repository\DocumentRepository
      */
     protected function getChannelRepository()
     {
@@ -162,7 +162,7 @@ class ChannelChangedListener implements EventSubscriberInterface
     }
 
     /**
-     * @return \Doctrine\ODM\MongoDB\DocumentRepository
+     * @return \Doctrine\ODM\MongoDB\Repository\DocumentRepository
      */
     protected function getContentTypeRepository()
     {

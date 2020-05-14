@@ -63,7 +63,7 @@ class ContentFormTypeTest extends \PHPUnit\Framework\TestCase
      */
     private $dispatcher;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->type = $this->createMock(ContentTypeInterface::class);
         $this->metadataFactory = $this->createMock(MetadataFactoryInterface::class);

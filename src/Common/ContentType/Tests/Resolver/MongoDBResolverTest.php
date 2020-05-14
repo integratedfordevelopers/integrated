@@ -11,7 +11,7 @@
 
 namespace Integrated\Common\ContentType\Tests\Resolver;
 
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\ContentType\Resolver\MongoDBResolver;
 
@@ -25,11 +25,11 @@ class MongoDBResolverTest extends \PHPUnit\Framework\TestCase
      */
     private $repository;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $class = $this->getMockClass('Integrated\\Common\\ContentType\\ContentTypeInterface');
 
-        $this->repository = $this->getMockBuilder('Doctrine\\ODM\\MongoDB\\DocumentRepository')->disableOriginalConstructor()->getMock();
+        $this->repository = $this->getMockBuilder('Doctrine\\ODM\\MongoDB\\Repository\\DocumentRepository')->disableOriginalConstructor()->getMock();
         $this->repository->expects($this->any())
             ->method('getClassName')
             ->willReturn($class);
@@ -44,7 +44,7 @@ class MongoDBResolverTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Integrated\Common\ContentType\Exception\ExceptionInterface::class);
 
-        $this->repository = $this->getMockBuilder('Doctrine\\ODM\\MongoDB\\DocumentRepository')->disableOriginalConstructor()->getMock();
+        $this->repository = $this->getMockBuilder('Doctrine\\ODM\\MongoDB\\Repository\\DocumentRepository')->disableOriginalConstructor()->getMock();
         $this->repository->expects($this->any())
             ->method('getClassName')
             ->willReturn('stdClass');

@@ -30,7 +30,7 @@
 {% block integrated_datetime_widget  %}
     {% spaceless %}
         <div class="input-group date form_datetime" data-locale="{{ app.request.locale }}" style="width: 230px;" data-date-format="d-m-Y H:i">
-            <input {{ block('widget_attributes') }} class="form-control" size="16" type="text" {% if value is not empty %}value="{{ value }}" {% endif %} >
+            <input {{ block('widget_attributes') }} class="form-control" size="16" type="text" {% if value is not empty %}value="{{ value }}" {% endif %} autocomplete="off">
             <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
         </div>
     {% endspaceless %}
@@ -66,7 +66,7 @@
 
 {% block integrated_editor_row  %}
     {% spaceless %}
-    
+
     {# @todo to this include with a Twig extension #}
     <link href="/bundles/integratedformtype/css/tinymce.editor.css" rel="stylesheet" type="text/css" />
 
@@ -265,7 +265,6 @@
     {% integrated_javascripts mode='prepend'
     'bundles/integratedformtype/js/content_choice.js' %}
     {% endintegrated_javascripts %}
-
     {% set attr = attr|merge({
         'data-ajax-url' : path(route, params),
         'data-allow-clear' : (allow_clear ? 'true' : 'false'),
@@ -277,6 +276,25 @@
                 {{ block('integrated_content_choice_multiple') }}
             {% else %}
                 {{ block('integrated_content_choice_single') }}
+            {% endif %}
+        </select>
+    {% endspaceless %}
+{% endblock %}
+
+{% block integrated_content_rank_widget %}
+    {% integrated_javascripts mode='prepend'
+        'bundles/integratedformtype/js/content_choice.js' %}
+    {% endintegrated_javascripts %}
+
+    {% set attr = attr|merge({
+        'data-ajax-url' : path(route, params|merge({'current': data})),
+        'data-allow-clear' : (allow_clear ? 'true' : 'false'),
+        'class' : (attr.class|default('') ~ ' form-control integrated_content_choice')|trim
+    }) %}
+    {% spaceless %}
+        <select {{ block('widget_attributes') }}>
+            {% if data %}
+                <option value="{{ data }}" selected="selected">Keep current position</option>
             {% endif %}
         </select>
     {% endspaceless %}

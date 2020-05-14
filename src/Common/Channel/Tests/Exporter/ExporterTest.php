@@ -54,7 +54,7 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
      */
     private $dm;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->registry = $this->createMock('Integrated\\Common\\Channel\\Connector\\Adapter\\RegistryInterface');
         $this->resolver = $this->createMock('Integrated\\Common\\Channel\\Connector\\Config\\ResolverInterface');

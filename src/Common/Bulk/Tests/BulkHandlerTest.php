@@ -31,7 +31,7 @@ class BulkHandlerTest extends \PHPUnit\Framework\TestCase
      */
     private $registry;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->registry = $this->getMockBuilder(HandlerFactoryRegistry::class)->disableOriginalConstructor()->getMock();
     }

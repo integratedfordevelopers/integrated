@@ -506,6 +506,30 @@
                 <source>Relation</source>
                 <target>Relatie</target>
             </trans-unit>
+            <trans-unit id="130">
+                <source>Publication date</source>
+                <target>Publicatiedatum</target>
+            </trans-unit>
+            <trans-unit id="131">
+                <source>Linked order</source>
+                <target>Gekoppelde volgorde</target>
+            </trans-unit>
+            <trans-unit id="132">
+                <source>Create</source>
+                <target>Aanmaken</target>
+            </trans-unit>
+            <trans-unit id="133">
+                <source>Items per page</source>
+                <target>Aantal per pagina</target>
+            </trans-unit>
+            <trans-unit id="134">
+                <source>Sort direction</source>
+                <target>Sorteervolgorde</target>
+            </trans-unit>
+            <trans-unit id="135">
+                <source>Form submitted</source>
+                <target>Formulier ingestuurd</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -27,7 +27,7 @@ class DiscriminatorMapMetadataSubscriberTest extends \PHPUnit\Framework\TestCase
      */
     private $resolver;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->resolver = $this->createMock('Integrated\\Doctrine\\ODM\\MongoDB\\Mapping\\DiscriminatorMapResolverInterface');
     }

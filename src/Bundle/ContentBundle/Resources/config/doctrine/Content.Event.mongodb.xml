@@ -5,9 +5,9 @@
 
     <document name="Integrated\Bundle\ContentBundle\Document\Content\Event">
 
-        <field fieldName="startDate" type="date" />
-        <field fieldName="endDate" type="date" />
-        <field fieldName="website" type="string" />
+        <field field-name="startDate" type="date" />
+        <field field-name="endDate" type="date" />
+        <field field-name="website" type="string" />
 
     </document>
 

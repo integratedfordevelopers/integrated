@@ -24,7 +24,7 @@ class BatchEventTest extends AbstractEventTest
      */
     protected $operation;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

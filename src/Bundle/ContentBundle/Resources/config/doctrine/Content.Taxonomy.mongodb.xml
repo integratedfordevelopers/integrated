@@ -5,8 +5,9 @@
 
     <document name="Integrated\Bundle\ContentBundle\Document\Content\Taxonomy">
 
-        <field fieldName="title" type="string" />
-        <field fieldName="description" type="string" />
+        <field field-name="title" type="string" />
+        <field field-name="description" type="string" />
+        <field field-name="rank" type="string" index="true" />
 
     </document>
 

@@ -5,8 +5,8 @@
 
     <embedded-document name="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job">
 
-        <field fieldName="function" type="string" />
-        <field fieldName="department" type="string" />
+        <field field-name="function" type="string" />
+        <field field-name="department" type="string" />
 
         <reference-one
                 field="company"

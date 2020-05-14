@@ -5,8 +5,8 @@
 
     <embedded-document name="Integrated\Bundle\ContentBundle\Document\Block\Embedded\FacetField">
 
-        <field fieldName="name" type="string" />
-        <field fieldName="field" type="string" />
+        <field field-name="name" type="string" />
+        <field field-name="field" type="string" />
 
     </embedded-document>
 

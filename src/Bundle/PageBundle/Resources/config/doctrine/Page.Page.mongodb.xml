@@ -4,10 +4,10 @@
 
     <document name="Integrated\Bundle\PageBundle\Document\Page\Page">
 
-        <field fieldName="title" type="string" />
-        <field fieldName="description" type="string" />
-        <field fieldName="disabled" type="boolean" />
-        <field fieldName="locked" type="boolean" />
+        <field field-name="title" type="string" />
+        <field field-name="description" type="string" />
+        <field field-name="disabled" type="boolean" />
+        <field field-name="locked" type="boolean" />
 
     </document>
 

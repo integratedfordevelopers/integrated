@@ -26,7 +26,7 @@ class ReferenceTest extends \PHPUnit\Framework\TestCase
      */
     private $taxonomy;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->taxonomy = new Taxonomy();
     }

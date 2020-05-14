@@ -4,7 +4,7 @@
 
     <embedded-document name="Integrated\Bundle\PageBundle\Document\Page\Grid\Column">
 
-        <field fieldName="size" type="int" />
+        <field field-name="size" type="int" />
 
         <embed-many field="items" target-document="Integrated\Bundle\PageBundle\Document\Page\Grid\Item" />
 

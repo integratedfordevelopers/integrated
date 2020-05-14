@@ -5,16 +5,16 @@
 
     <document name="Integrated\Bundle\ContentHistoryBundle\Document\ContentHistory" collection="content_history">
 
-        <field fieldName="id" id="true" strategy="UUID" />
+        <field field-name="id" id="true" strategy="UUID" />
 
-        <field fieldName="contentId" type="string" />
-        <field fieldName="contentType" type="string" />
-        <field fieldName="contentClass" type="string" />
+        <field field-name="contentId" type="string" />
+        <field field-name="contentType" type="string" />
+        <field field-name="contentClass" type="string" />
 
-        <field fieldName="action" type="string" />
-        <field fieldName="date" type="date" />
+        <field field-name="action" type="string" />
+        <field field-name="date" type="date" />
 
-        <field fieldName="changeSet" type="hash" nullable="true" />
+        <field field-name="changeSet" type="hash" nullable="true" />
 
         <embed-one field="request" target-document="Integrated\Bundle\ContentHistoryBundle\Document\Embedded\Request" />
         <embed-one field="user" target-document="Integrated\Bundle\ContentHistoryBundle\Document\Embedded\User" />

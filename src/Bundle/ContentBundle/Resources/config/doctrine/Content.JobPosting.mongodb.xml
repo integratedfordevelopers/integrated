@@ -5,9 +5,9 @@
 
     <document name="Integrated\Bundle\ContentBundle\Document\Content\JobPosting">
 
-        <field fieldName="jobTitle" type="string" />
-        <field fieldName="salary" type="string" />
-        <field fieldName="applyUrl" type="string" />
+        <field field-name="jobTitle" type="string" />
+        <field field-name="salary" type="string" />
+        <field field-name="applyUrl" type="string" />
 
         <reference-one
             field="company"
