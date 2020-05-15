@@ -138,12 +138,6 @@ class IntegratedInstallCommand extends Command
             $this->migrations->execute();
             $this->mongoDBMigrations->execute();
         }
-/*
-$ php bin/console doctrine:mongodb:schema:update
-
-$ php bin/console init:scope
- */
-        //
     }
 
     /**
