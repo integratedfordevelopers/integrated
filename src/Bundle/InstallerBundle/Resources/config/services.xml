@@ -11,6 +11,7 @@
             <argument id="doctrine_mongodb.odm.document_manager" type="service"/>
             <argument id="solarium.client" type="service"/>
             <argument id="Integrated\Bundle\InstallerBundle\Install\MySQLMigrations" type="service"/>
+            <argument id="Integrated\Bundle\InstallerBundle\Install\MongoDBMigrations" type="service"/>
             <argument id="Integrated\Bundle\InstallerBundle\Test\BundleTest" type="service"/>
             <tag name="console.command"/>
         </service>

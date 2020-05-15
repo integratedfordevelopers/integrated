@@ -5,6 +5,7 @@ namespace Integrated\Bundle\InstallerBundle\Install;
 use AntiMattr\MongoDB\Migrations\Configuration\Configuration;
 use AntiMattr\MongoDB\Migrations\Migration;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class MongoDBMigrations
@@ -12,7 +13,7 @@ class MongoDBMigrations
     const DOCTRINE_MIGRATIONS_DIRECTORY = '/../Migrations/MongoDB';
     const DOCTRINE_MIGRATIONS_NAMESPACE = 'Integrated\Bundle\InstallerBundle\Migrations\MongoDB';
     const DOCTRINE_MIGRATIONS_NAME = 'Integrated MongoDB Migrations';
-    const DOCTRINE_MIGRATIONS_TABLE = 'integrated_migration_versions';
+    const DOCTRINE_MIGRATIONS_COLLECTION = 'integrated_migration_versions';
 
     /**
      * @var DocumentManager
@@ -44,11 +45,12 @@ class MongoDBMigrations
         $directory = realpath(__DIR__ . self::DOCTRINE_MIGRATIONS_DIRECTORY);
 
         $configuration = new Configuration($this->documentManager->getConnection());
-        $configuration->setMigrationsNamespace(self::DOCTRINE_MIGRATIONS_NAMESPACE);
+        $configuration->setMigrationsCollectionName(self::DOCTRINE_MIGRATIONS_COLLECTION);
+        $configuration->setMigrationsDatabaseName($this->documentManager->getDocumentDatabase(Content::class)->getName());
         $configuration->setMigrationsDirectory($directory);
-        $configuration->registerMigrationsFromDirectory($directory);
+        $configuration->setMigrationsNamespace(self::DOCTRINE_MIGRATIONS_NAMESPACE);
         $configuration->setName(self::DOCTRINE_MIGRATIONS_NAME);
-        $configuration->setMigrationsTableName(self::DOCTRINE_MIGRATIONS_TABLE);
+        $configuration->registerMigrationsFromDirectory($directory);
 
         $versions = $configuration->getMigrations();
         foreach ($versions as $version) {

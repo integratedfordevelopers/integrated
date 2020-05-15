@@ -3,6 +3,7 @@ namespace Integrated\Bundle\InstallerBundle\Command;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
+use Integrated\Bundle\InstallerBundle\Install\MongoDBMigrations;
 use Integrated\Bundle\InstallerBundle\Install\MySQLMigrations;
 use Integrated\Bundle\InstallerBundle\Test\BundleTest;
 use Solarium\Client;
@@ -25,6 +26,11 @@ class IntegratedInstallCommand extends Command
      * @var MySQLMigrations
      */
     private $migrations;
+
+    /**
+     * @var MongoDBMigrations
+     */
+    private $mongoDBMigrations;
 
     /**
      * @var EntityManager
@@ -53,9 +59,10 @@ class IntegratedInstallCommand extends Command
      * @param MySQLMigrations $migrations
      * @param BundleTest      $bundleTest
      */
-    public function __construct(EntityManager $entityManager, DocumentManager $documentManager, Client $solrClient, MySQLMigrations $migrations, BundleTest $bundleTest)
+    public function __construct(EntityManager $entityManager, DocumentManager $documentManager, Client $solrClient, MySQLMigrations $migrations, MongoDBMigrations $mongoDBMigrations, BundleTest $bundleTest)
     {
         $this->migrations = $migrations;
+        $this->mongoDBMigrations = $mongoDBMigrations;
         $this->entityManager = $entityManager;
         $this->documentManager = $documentManager;
         $this->solrClient = $solrClient;
@@ -129,6 +136,7 @@ class IntegratedInstallCommand extends Command
             $io->section('Execute migrations');
 
             $this->migrations->execute();
+            $this->mongoDBMigrations->execute();
         }
 /*
 $ php bin/console doctrine:mongodb:schema:update
