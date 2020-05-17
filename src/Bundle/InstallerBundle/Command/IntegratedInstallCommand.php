@@ -1,4 +1,5 @@
 <?php
+
 namespace Integrated\Bundle\InstallerBundle\Command;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
@@ -13,12 +14,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 
 /**
- * Command for executing single migrations up or down manually
+ * Command for executing single migrations up or down manually.
  */
 class IntegratedInstallCommand extends Command
 {
@@ -85,8 +85,9 @@ class IntegratedInstallCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
+     *
      * @return int|void|null
      */
     public function execute(InputInterface $input, OutputInterface $output)
@@ -94,7 +95,7 @@ class IntegratedInstallCommand extends Command
         $steps = $input->getOption('step');
         $io = new SymfonyStyle($input, $output);
 
-        if (in_array('tests', $steps) || empty($steps)) {
+        if (\in_array('tests', $steps) || empty($steps)) {
             $io->section('Test environment');
 
             $this->entityManager->getConnection()->connect();
@@ -107,7 +108,7 @@ class IntegratedInstallCommand extends Command
             $io->success('Solr connection successful');
 
             $bundleErrors = $this->bundleTest->execute();
-            if (count($bundleErrors) > 0) {
+            if (\count($bundleErrors) > 0) {
                 foreach ($bundleErrors as $bundleError) {
                     $io->error($bundleError);
                 }
@@ -116,23 +117,23 @@ class IntegratedInstallCommand extends Command
             }
         }
 
-        if (in_array('cache', $steps) || empty($steps)) {
+        if (\in_array('cache', $steps) || empty($steps)) {
             $io->section('Clear cache');
 
-            $this->executeCommand("cache:clear", $output);
+            $this->executeCommand('cache:clear', $output);
         }
 
-        if (in_array('assets', $steps) || empty($steps)) {
+        if (\in_array('assets', $steps) || empty($steps)) {
             $io->section('Install assets');
 
-            $this->executeCommand("braincrafted:bootstrap:install", $output);
-            $this->executeCommand("sp:bower:install", $output);
-            $this->executeCommand("assetic:dump", $output);
-            $this->executeCommand("fos:js-routing:dump", $output);
-            $this->executeCommand("assets:install", $output);
+            $this->executeCommand('braincrafted:bootstrap:install', $output);
+            $this->executeCommand('sp:bower:install', $output);
+            $this->executeCommand('assetic:dump', $output);
+            $this->executeCommand('fos:js-routing:dump', $output);
+            $this->executeCommand('assets:install', $output);
         }
 
-        if (in_array('migrations', $steps) || empty($steps)) {
+        if (\in_array('migrations', $steps) || empty($steps)) {
             $io->section('Execute migrations');
 
             $this->migrations->execute();
@@ -169,11 +170,12 @@ class IntegratedInstallCommand extends Command
 
     /**
      * @param bool $includeArgs
+     *
      * @return array|false|string|null
      */
     protected static function getPhp($includeArgs = true)
     {
-        $phpFinder = new PhpExecutableFinder;
+        $phpFinder = new PhpExecutableFinder();
         if (!$phpPath = $phpFinder->find($includeArgs)) {
             throw new \RuntimeException(
                 'The php executable could not be found, add it to your PATH environment variable and try again'

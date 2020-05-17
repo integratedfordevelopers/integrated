@@ -12,7 +12,7 @@ final class Version20200102214019 extends AbstractMigration
      */
     public function getDescription()
     {
-        return "Indexes";
+        return 'Indexes';
     }
 
     /**

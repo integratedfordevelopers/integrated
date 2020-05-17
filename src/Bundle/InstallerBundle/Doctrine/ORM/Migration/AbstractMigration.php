@@ -3,7 +3,6 @@
 namespace Integrated\Bundle\InstallerBundle\Doctrine\ORM\Migration;
 
 use Doctrine\Migrations;
-
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

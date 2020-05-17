@@ -43,7 +43,7 @@ class MongoDBMigrations
      */
     public function execute()
     {
-        $directory = realpath(__DIR__ . self::DOCTRINE_MIGRATIONS_DIRECTORY);
+        $directory = realpath(__DIR__.self::DOCTRINE_MIGRATIONS_DIRECTORY);
 
         $configuration = new Configuration($this->documentManager->getConnection());
         $configuration->setMigrationsCollectionName(self::DOCTRINE_MIGRATIONS_COLLECTION);

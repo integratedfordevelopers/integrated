@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Integrated\Bundle\InstallerBundle\Migrations\MySQL;
 
@@ -7,7 +9,7 @@ use Doctrine\Migrations\AbstractMigration;
 
 final class Version20190102214019 extends AbstractMigration
 {
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
@@ -162,7 +164,7 @@ final class Version20190102214019 extends AbstractMigration
         $this->addSql('ALTER TABLE security_group_roles ADD CONSTRAINT FK_C6BD52C1D60322AC FOREIGN KEY (role_id) REFERENCES security_roles (id)');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 

@@ -4,7 +4,6 @@ namespace Integrated\Bundle\InstallerBundle\Doctrine\ODM\Migration;
 
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use AntiMattr\MongoDB\Migrations;
 
 abstract class AbstractMigration extends Migrations\AbstractMigration implements ContainerAwareInterface
@@ -14,7 +13,7 @@ abstract class AbstractMigration extends Migrations\AbstractMigration implements
      */
     public function getDescription()
     {
-        return "";
+        return '';
     }
 
     /**

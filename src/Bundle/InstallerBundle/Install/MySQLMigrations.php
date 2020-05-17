@@ -43,7 +43,7 @@ class MySQLMigrations
      */
     public function execute()
     {
-        $directory = realpath(__DIR__ . self::DOCTRINE_MIGRATIONS_DIRECTORY);
+        $directory = realpath(__DIR__.self::DOCTRINE_MIGRATIONS_DIRECTORY);
 
         $configuration = new Configuration($this->entityManager->getConnection());
         $configuration->setMigrationsNamespace(self::DOCTRINE_MIGRATIONS_NAMESPACE);

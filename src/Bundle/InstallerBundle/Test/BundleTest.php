@@ -28,7 +28,7 @@ class BundleTest
      */
     public function execute()
     {
-        $directory = realpath(__DIR__ . self::BUNDLES_DIRECTORY);
+        $directory = realpath(__DIR__.self::BUNDLES_DIRECTORY);
 
         $finder = new Finder();
 
