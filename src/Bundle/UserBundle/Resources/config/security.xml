@@ -8,6 +8,7 @@
 
         <service id="integrated_user.security.provider" class="Integrated\Bundle\UserBundle\Security\UserProvider">
             <argument type="service" id="integrated_user.user.manager"/>
+            <argument type="service" id="channel.context"/>
         </service>
 
         <service id="Integrated\Bundle\UserBundle\Security\Authentication\Provider\ScopeProvider" public="false"/>
