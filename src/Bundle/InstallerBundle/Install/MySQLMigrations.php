@@ -2,9 +2,7 @@
 
 namespace Integrated\Bundle\InstallerBundle\Install;
 
-use Doctrine\DBAL\Migrations\Migration;
-use Doctrine\DBAL\Migrations\Configuration\Configuration;
-use Doctrine\DBAL\Migrations\MigrationException;
+use Doctrine\Migrations\Configuration\Configuration;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -15,6 +13,7 @@ class MySQLMigrations
     const DOCTRINE_MIGRATIONS_NAMESPACE = 'Integrated\Bundle\InstallerBundle\Migrations\MySQL';
     const DOCTRINE_MIGRATIONS_NAME = 'Integrated MySQL Migrations';
     const DOCTRINE_MIGRATIONS_TABLE = 'integrated_migration_versions';
+    const DOCTRINE_MIGRATIONS_DIRECTION_UP = 'up';
 
     /**
      * @var EntityManager
@@ -38,9 +37,6 @@ class MySQLMigrations
         $this->container = $container;
     }
 
-    /**
-     * @throws MigrationException
-     */
     public function execute()
     {
         $directory = realpath(__DIR__.self::DOCTRINE_MIGRATIONS_DIRECTORY);
@@ -58,9 +54,7 @@ class MySQLMigrations
             if ($migration instanceof ContainerAwareInterface) {
                 $migration->setContainer($this->container);
             }
+            $version->execute(self::DOCTRINE_MIGRATIONS_DIRECTION_UP);
         }
-
-        $migration = new Migration($configuration);
-        $migration->migrate();
     }
 }
