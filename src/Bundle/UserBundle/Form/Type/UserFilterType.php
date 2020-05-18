@@ -34,7 +34,7 @@ class UserFilterType extends AbstractType
         $builder
             ->add('q', TextType::class, [
                 'attr' => ['placeholder' => 'Find by username'],
-                'required' => false
+                'required' => false,
             ])
             ->add('groups', ChoiceType::class, [
                 'choices' => $this->filterQueryProvider->getGroupChoices($options['users']),
