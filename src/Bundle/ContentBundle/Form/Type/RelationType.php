@@ -43,20 +43,20 @@ class RelationType extends AbstractType
                 'targets',
                 DocumentType::class,
                 [
-                        'class' => ContentType::class,
-                        'choice_label' => 'name',
-                        'multiple' => true,
-                        'required' => false,
-                        ]
+                    'class' => ContentType::class,
+                    'choice_label' => 'name',
+                    'multiple' => true,
+                    'required' => false,
+                ]
             )->add(
                 'multiple',
                 null,
                 [
-                            'required' => false,
-                            'attr' => [
-                            'align_with_widget' => true,
-                            ],
-                            ]
+                    'required' => false,
+                    'attr' => [
+                        'align_with_widget' => true,
+                    ],
+                ]
             )
             ->add(
                 'required',
