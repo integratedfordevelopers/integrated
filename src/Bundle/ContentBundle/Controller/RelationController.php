@@ -258,9 +258,9 @@ class RelationController extends Controller
             ->add('submit', SubmitType::class, [
                 'label' => 'Delete',
                 'attr' => [
-                        'class' => 'btn-danger',
-                        'onclick' => 'return confirm(\'Are you sure you want to delete this relation?\');',
-                    ],
+                    'class' => 'btn-danger',
+                    'onclick' => 'return confirm(\'Are you sure you want to delete this relation?\');',
+                ],
             ])
             ->getForm()
         ;

@@ -24,9 +24,9 @@ class RelationTypeTest extends TypeTestCase
 {
     protected function setUp(): void
     {
-        DoctrineTestHelper::createTestEntityManager();
-
         parent::setUp();
+
+        DoctrineTestHelper::createTestEntityManager();
     }
 
     protected function createRegistryMock($name, $em)

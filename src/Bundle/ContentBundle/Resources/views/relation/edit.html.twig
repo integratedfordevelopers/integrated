@@ -22,11 +22,12 @@
     </div>
 {% endblock %}
 {% block javascript %}
-{{ parent() }}
-<script>
-$(document).ready(function() {
-    $('#integrated_relation_sources').select2();
-    $('#integrated_relation_targets').select2();
-});
-</script>
+    {{ parent() }}
+
+    <script>
+    $(document).ready(function() {
+        $('#integrated_relation_sources').select2();
+        $('#integrated_relation_targets').select2();
+    });
+    </script>
 {% endblock javascript %}
