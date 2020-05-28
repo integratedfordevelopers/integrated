@@ -14,6 +14,7 @@ namespace Integrated\Bundle\ContentBundle\Tests\Form\Type;
 use Doctrine\Common\Collections\ArrayCollection;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ContentBundle\Form\Type\RelationType;
+use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 /**
@@ -21,6 +22,24 @@ use Symfony\Component\Form\Test\TypeTestCase;
  */
 class RelationTypeTest extends TypeTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        DoctrineTestHelper::createTestEntityManager();
+    }
+
+    protected function createRegistryMock($name, $em)
+    {
+        $registry = $this->getMockBuilder('Doctrine\Common\Persistence\ManagerRegistry')->getMock();
+        $registry->expects($this->any())
+            ->method('getManager')
+            ->with($this->equalTo($name))
+            ->will($this->returnValue($em));
+
+        return $registry;
+    }
+
     /**
      * @dataProvider getValidTestData
      *
