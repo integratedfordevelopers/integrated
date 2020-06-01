@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ThemeBundle\Templating;
 
 use Integrated\Bundle\ThemeBundle\Exception\CircularFallbackException;
+use Integrated\Bundle\ThemeBundle\Scraper\ScraperPageLoader;
 use Symfony\Component\HttpKernel\Kernel;
 
 /**
@@ -40,11 +41,18 @@ class ThemeManager
     private $fallbackStack = [];
 
     /**
-     * @param Kernel $kernel
+     * @var ScraperPageLoader
      */
-    public function __construct(Kernel $kernel)
+    private $scraperPageLoader;
+
+    /**
+     * @param Kernel            $kernel
+     * @param ScraperPageLoader $scraperPageLoader
+     */
+    public function __construct(Kernel $kernel, ScraperPageLoader $scraperPageLoader)
     {
         $this->kernel = $kernel;
+        $this->scraperPageLoader = $scraperPageLoader;
     }
 
     /**
@@ -164,7 +172,7 @@ class ThemeManager
         $this->fallbackStack[$theme->getId()] = 1;
 
         foreach ($theme->getPaths() as $path) {
-            if (file_exists($this->locateResource($path).'/'.$template)) {
+            if (file_exists($this->locateResource($path).'/'.$template) || $this->scraperPageLoader->exists($this->locateResource($path).'/'.$template)) {
                 $this->fallbackStack = []; // reset
 
                 return $path.'/'.$template;
