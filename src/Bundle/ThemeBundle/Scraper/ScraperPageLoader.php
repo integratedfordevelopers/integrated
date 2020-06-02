@@ -12,11 +12,18 @@
 namespace Integrated\Bundle\ThemeBundle\Scraper;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Integrated\Bundle\ThemeBundle\Entity\Scraper as ScraperEntity;
+use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Symfony\Component\Cache\Adapter\ApcuAdapter;
+use Symfony\Component\Cache\Simple\ApcuCache;
+use Twig\Error\LoaderError;
 use Twig\Loader\LoaderInterface;
+use Twig\Source;
 
 class ScraperPageLoader implements LoaderInterface
 {
+    const CACHEKEY = 'scraper.pagelist';
+
     /**
      * @var EntityManagerInterface
      */
@@ -30,28 +37,58 @@ class ScraperPageLoader implements LoaderInterface
     /**
      * @var Array
      */
-    private $pages = null;
+    private $pageList = null;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    /**
+     * @var ChannelContextInterface
+     */
+    private $channelContext;
+
+    /**
+     * ScraperPageLoader constructor.
+     *
+     * @param EntityManagerInterface  $entityManager
+     * @param ChannelContextInterface $channelContext
+     */
+    public function __construct(EntityManagerInterface $entityManager, ChannelContextInterface $channelContext)
     {
-
+        $this->cache = new ApcuCache('integrated.theme');
         $this->entityManager = $entityManager;
-        $this->cache = new ApcuAdapter('integrated.template.scraper');
+        $this->channelContext = $channelContext;
     }
 
+    /**
+     * @param string $name
+     *
+     * @return Source
+     * @throws LoaderError
+     */
     public function getSourceContext($name)
     {
-        if (false === $source = $this->getValue('source', $name)) {
-            throw new \Twig\Error\LoaderError(sprintf('Template "%s" does not exist.', $name));
+        if (!$channel = $this->channelContext->getChannel()) {
+            throw new LoaderError(sprintf('Unkown channel for template "%s"', $name));
         }
 
-        return new \Twig\Source($source, $name);
+        if (!$template = $this->entityManager->getRepository(ScraperEntity::class)->findOneBy(['channelId' => $channel->getId(), 'templateName' => $name])) {
+            throw new LoaderError(sprintf('Template "%s" does not exist for channel', $name));
+        }
+
+        return new Source($template->getTemplate(), $name);
     }
 
     public function exists($name)
     {
-        return false;
-        return $name === $this->getValue('name', $name);
+        if (!$channel = $this->channelContext->getChannel()) {
+            return false;
+        }
+
+        $this->pageListCacheWarmup();
+
+        if (!isset($this->pageList[$channel->getId()])) {
+            return false;
+        }
+
+        return in_array($name, $this->pageList[$channel->getId()]);
     }
 
     public function getCacheKey($name)
@@ -61,18 +98,39 @@ class ScraperPageLoader implements LoaderInterface
 
     public function isFresh($name, $time)
     {
-        if (false === $lastModified = $this->getValue('last_modified', $name)) {
-            return false;
+        if (!$channel = $this->channelContext->getChannel()) {
+            throw new LoaderError(sprintf('Unkown channel for template "%s"', $name));
         }
 
-        return $lastModified <= $time;
+        if (!$template = $this->entityManager->getRepository(ScraperEntity::class)->findOneBy(['channelId' => $channel->getId(), 'templateName' => $name])) {
+            throw new LoaderError(sprintf('Template "%s" does not exist for channel', $name));
+        }
+
+        return ($time > $template->getLastModified());
     }
 
-    protected function getValue($column, $name)
-    {
-        $sth = $this->dbh->prepare('SELECT '.$column.' FROM templates WHERE name = :name');
-        $sth->execute([':name' => (string) $name]);
+    /**
+     * @param bool $force
+     *
+     * @throws \Psr\Cache\InvalidArgumentException
+     */
+    private function pageListCacheWarmup(bool $force = false) {
 
-        return $sth->fetchColumn();
+        if (!$force && $this->pageList !== null) {
+            return;
+        }
+
+        if (!$force && $this->pageList = $this->cache->get(self::CACHEKEY)) {
+            return;
+        }
+
+        $this->pageList = [];
+
+        $scrapers = $this->entityManager->getRepository(ScraperEntity::class)->findAll();
+        foreach ($scrapers as $scraper) {
+            $this->pageList[$scraper->getChannelId()][] = $scraper->getTemplateName();
+        }
+
+        $this->cache->set(self::CACHEKEY, $this->pageList);
     }
 }
