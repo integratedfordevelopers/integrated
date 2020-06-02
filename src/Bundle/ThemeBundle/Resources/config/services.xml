@@ -30,8 +30,19 @@
             <tag name="kernel.event_listener" event="content.event" method="replaceImages" />
         </service>
 
+        <service id="Integrated\Bundle\ThemeBundle\Command\ScraperRunCommand">
+            <argument type="service" id="Integrated\Bundle\ThemeBundle\Scraper\Scraper" />
+
+            <tag name="console.command" />
+        </service>
+
+        <service id="Integrated\Bundle\ThemeBundle\Scraper\Scraper">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+        </service>
+
         <service id="Integrated\Bundle\ThemeBundle\Scraper\ScraperPageLoader">
             <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="channel.context" />
 
             <tag name="twig.loader" priority="5" />
         </service>
