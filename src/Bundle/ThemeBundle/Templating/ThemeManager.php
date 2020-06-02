@@ -172,7 +172,7 @@ class ThemeManager
         $this->fallbackStack[$theme->getId()] = 1;
 
         foreach ($theme->getPaths() as $path) {
-            if (file_exists($this->locateResource($path).'/'.$template) || $this->scraperPageLoader->exists($this->locateResource($path).'/'.$template)) {
+            if (file_exists($this->locateResource($path).'/'.$template) || $this->scraperPageLoader->exists($path.'/'.$template)) {
                 $this->fallbackStack = []; // reset
 
                 return $path.'/'.$template;
