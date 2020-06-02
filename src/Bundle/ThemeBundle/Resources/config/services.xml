@@ -33,7 +33,7 @@
         <service id="Integrated\Bundle\ThemeBundle\Scraper\ScraperPageLoader">
             <argument type="service" id="doctrine.orm.default_entity_manager" />
 
-            <tag name="twig.loader" />
+            <tag name="twig.loader" priority="5" />
         </service>
 
     </services>
