@@ -64,7 +64,6 @@ class Scraper
 
     public function prepare(ScraperEntity $scraper)
     {
-
         try {
             $template = file_get_contents($this->kernel->locateResource($scraper->getTemplateName()));
 
@@ -117,9 +116,7 @@ class Scraper
 
         /** @var ScraperEntity $scraper */
         foreach ($scapers as $scraper) {
-
             try {
-                //$pattern = '/' . $config['delimiter'] . '/';
                 $html = $this->replaceUrls(file_get_contents($scraper->getUrl()), $scraper->getUrl());
 
                 $dom = new DomQuery($html);

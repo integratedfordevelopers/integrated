@@ -14,8 +14,6 @@ namespace Integrated\Bundle\ThemeBundle\Form\Type;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Integrated\Bundle\ChannelBundle\Form\Type\ChannelChoiceType;
-use Integrated\Bundle\FormTypeBundle\Form\Type\CollectionType;
-use Integrated\Bundle\ThemeBundle\Entity\Scraper\Block;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -23,11 +21,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class ScraperType extends AbstractType
 {
-
-    public function __construct()
-    {
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('name', TextType::class);
@@ -48,5 +41,4 @@ class ScraperType extends AbstractType
             ],
         ]);
     }
-
 }

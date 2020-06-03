@@ -116,7 +116,6 @@ class ScraperPageLoader implements LoaderInterface
      * @throws InvalidArgumentException
      */
     public function pageListCacheWarmup(bool $force = false) {
-
         if (!$force && $this->pageList !== null) {
             return;
         }
