@@ -36,7 +36,7 @@ class ScraperPageLoader implements LoaderInterface
     private $cache;
 
     /**
-     * @var Array
+     * @var array
      */
     private $pageList = null;
 
@@ -62,6 +62,7 @@ class ScraperPageLoader implements LoaderInterface
      * @param string $name
      *
      * @return Source
+     *
      * @throws LoaderError
      */
     public function getSourceContext($name)
@@ -89,7 +90,7 @@ class ScraperPageLoader implements LoaderInterface
             return false;
         }
 
-        return in_array($name, $this->pageList[$channel->getId()]);
+        return \in_array($name, $this->pageList[$channel->getId()]);
     }
 
     public function getCacheKey($name)
@@ -107,7 +108,7 @@ class ScraperPageLoader implements LoaderInterface
             throw new LoaderError(sprintf('Template "%s" does not exist for channel', $name));
         }
 
-        return ($time > $template->getLastModified());
+        return $time > $template->getLastModified();
     }
 
     /**
@@ -115,8 +116,8 @@ class ScraperPageLoader implements LoaderInterface
      *
      * @throws InvalidArgumentException
      */
-    public function pageListCacheWarmup(bool $force = false) {
-
+    public function pageListCacheWarmup(bool $force = false)
+    {
         if (!$force && $this->pageList !== null) {
             return;
         }

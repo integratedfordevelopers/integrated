@@ -40,7 +40,7 @@ class ThemeManager
     private $fallbackStack = [];
 
     /**
-     * @param Kernel            $kernel
+     * @param Kernel $kernel
      */
     public function __construct(Kernel $kernel)
     {

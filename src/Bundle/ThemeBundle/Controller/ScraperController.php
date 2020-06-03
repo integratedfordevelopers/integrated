@@ -13,26 +13,15 @@ namespace Integrated\Bundle\ThemeBundle\Controller;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Doctrine\ORM\EntityManagerInterface;
-use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
-use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
-use Integrated\Bundle\ContentBundle\Form\Type\ContentTypeFormType;
 use Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\ThemeBundle\Entity\Scraper;
 use Integrated\Bundle\ThemeBundle\Form\Type\ScraperType;
 use Integrated\Bundle\ThemeBundle\Scraper\Scraper as ScraperService;
-use Integrated\Common\ContentType\Event\ContentTypeEvent;
-use Integrated\Common\ContentType\Events;
-use Integrated\Common\Form\Mapping\MetadataFactory;
-use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
-use Integrated\Common\Form\Mapping\MetadataInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ScraperController extends Controller
 {
@@ -56,7 +45,7 @@ class ScraperController extends Controller
     }
 
     /**
-     * Lists all the Scrapers
+     * Lists all the Scrapers.
      *
      * @return Response
      */
@@ -72,7 +61,7 @@ class ScraperController extends Controller
     }
 
     /**
-     * Creates a new Scraper
+     * Creates a new Scraper.
      *
      * @param Request $request
      *
@@ -104,7 +93,7 @@ class ScraperController extends Controller
     }
 
     /**
-     * Edits an existing Scraper
+     * Edits an existing Scraper.
      *
      * @param Scraper $scraper
      * @param Request $request
@@ -134,7 +123,7 @@ class ScraperController extends Controller
     }
 
     /**
-     * Deletes a Scraper
+     * Deletes a Scraper.
      *
      * @param Scraper $scraper
      * @param Request $request
@@ -165,7 +154,7 @@ class ScraperController extends Controller
     }
 
     /**
-     * Creates a form to delete a Scraper
+     * Creates a form to delete a Scraper.
      *
      * @param Scraper $scraper
      *

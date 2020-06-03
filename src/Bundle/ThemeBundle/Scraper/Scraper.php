@@ -64,7 +64,6 @@ class Scraper
 
     public function prepare(ScraperEntity $scraper)
     {
-
         try {
             $template = file_get_contents($this->kernel->locateResource($scraper->getTemplateName()));
 
@@ -117,9 +116,7 @@ class Scraper
 
         /** @var ScraperEntity $scraper */
         foreach ($scapers as $scraper) {
-
             try {
-                //$pattern = '/' . $config['delimiter'] . '/';
                 $html = $this->replaceUrls(file_get_contents($scraper->getUrl()), $scraper->getUrl());
 
                 $dom = new DomQuery($html);
@@ -171,14 +168,15 @@ class Scraper
     /**
      * @param string $html
      * @param string $url
+     *
      * @return string
      */
     protected function replaceUrls($html, $url)
     {
-        $host = parse_url($url, PHP_URL_SCHEME) . '://' . parse_url($url, PHP_URL_HOST);
+        $host = parse_url($url, PHP_URL_SCHEME).'://'.parse_url($url, PHP_URL_HOST);
 
         // Replace relative URL's
-        $html = preg_replace('/((?:href|src) *= *[\'"](?!(http|mailto|data:|\/\/)))/i', '$1' . $host, $html);
+        $html = preg_replace('/((?:href|src) *= *[\'"](?!(http|mailto|data:|\/\/)))/i', '$1'.$host, $html);
 
         // Remove base
         $html = preg_replace('|<base href="(.+)"\s?/>|', '', $html);

@@ -210,7 +210,7 @@ class Scraper
      */
     public function setLastError(?string $lastError = null): void
     {
-        $this->lastError = is_string($lastError) ? substr($lastError, 0, 800) : null;
+        $this->lastError = \is_string($lastError) ? substr($lastError, 0, 800) : null;
     }
 
     /**
