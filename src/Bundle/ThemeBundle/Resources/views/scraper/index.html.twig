@@ -1,0 +1,80 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% block crumbs %}
+    <div class="breadcrumb-holder">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="active">
+                    {% trans %}Scrapers{% endtrans %}
+                </li>
+            </ol>
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 push-sm-down">
+            <ul class="list-inline">
+                <li class="dropdown">
+                    <a href="{{ path('integrated_theme_scraper_new') }}"  role="button">{% trans %}Create new{% endtrans %}</a>
+                </li>
+            </ul>
+
+            <section class="section-white section-padding section-shadow section-radius">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>{% trans %}Name{% endtrans %}</th>
+                        <th>{% trans %}Channel{% endtrans %}</th>
+                        <th>{% trans %}Template{% endtrans %}</th>
+                        <th>{% trans %}URL{% endtrans %}</th>
+                        <th>{% trans %}Updated{% endtrans %}</th>
+                        <th>{% trans %}Actions{% endtrans %}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for scraper in result %}
+                        <tr>
+                            <td>
+                                {{ scraper.name }}
+                            </td>
+                            <td>
+                                {{ scraper.channelId }}
+                            </td>
+                            <td>
+                                {{ scraper.templateName|replace({'Resources/views': '[..]'})|truncate(50) }}
+                            </td>
+                            <td>
+                                {{ scraper.url|truncate(50) }}
+                            </td>
+                            <td>
+                                {{ scraper.lastModified|localizeddate("medium", "none") }}
+                            </td>
+                            <td>
+                                <a href="{{ path('integrated_theme_scraper_edit', {'id': scraper.id}) }}" title="{% trans %}Edit{% endtrans %}">
+                                    {{ icon('pencil') }}
+                                </a>
+                                <a class="href-red" href="{{ path('integrated_theme_scraper_delete', {'id': scraper.id}) }}" title="{% trans %}Remove{% endtrans %}">
+                                    {{ icon('trash') }}
+                                </a>
+                            </td>
+                        </tr>
+                        {% if scraper.lastError %}
+                            <tr>
+                                <td colspan="6">
+                                    <pre>{{ scraper.lastError }}</pre>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4">
+                                {% trans %}No content types added{% endtrans %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+{% endblock %}

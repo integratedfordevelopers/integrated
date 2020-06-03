@@ -14,6 +14,7 @@ namespace Integrated\Bundle\ThemeBundle\Scraper;
 use Doctrine\ORM\EntityManagerInterface;
 use Integrated\Bundle\ThemeBundle\Entity\Scraper as ScraperEntity;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
+use Psr\SimpleCache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\ApcuAdapter;
 use Symfony\Component\Cache\Simple\ApcuCache;
 use Twig\Error\LoaderError;
@@ -112,9 +113,9 @@ class ScraperPageLoader implements LoaderInterface
     /**
      * @param bool $force
      *
-     * @throws \Psr\Cache\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
-    private function pageListCacheWarmup(bool $force = false) {
+    public function pageListCacheWarmup(bool $force = false) {
 
         if (!$force && $this->pageList !== null) {
             return;
