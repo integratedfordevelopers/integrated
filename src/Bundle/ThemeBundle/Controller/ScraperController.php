@@ -45,7 +45,7 @@ class ScraperController extends Controller
     }
 
     /**
-     * Lists all the Scrapers
+     * Lists all the Scrapers.
      *
      * @return Response
      */
@@ -61,7 +61,7 @@ class ScraperController extends Controller
     }
 
     /**
-     * Creates a new Scraper
+     * Creates a new Scraper.
      *
      * @param Request $request
      *
@@ -93,7 +93,7 @@ class ScraperController extends Controller
     }
 
     /**
-     * Edits an existing Scraper
+     * Edits an existing Scraper.
      *
      * @param Scraper $scraper
      * @param Request $request
@@ -123,7 +123,7 @@ class ScraperController extends Controller
     }
 
     /**
-     * Deletes a Scraper
+     * Deletes a Scraper.
      *
      * @param Scraper $scraper
      * @param Request $request
@@ -154,7 +154,7 @@ class ScraperController extends Controller
     }
 
     /**
-     * Creates a form to delete a Scraper
+     * Creates a form to delete a Scraper.
      *
      * @param Scraper $scraper
      *

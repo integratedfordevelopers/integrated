@@ -32,7 +32,7 @@ class ScraperBlockType extends AbstractType
                 'Append' => Block::MODE_APPEND,
                 'Replace' => Block::MODE_REPLACE,
                 'Inner replace' => Block::MODE_REPLACE_INNER,
-            ]
+            ],
         ]);
 
         $builder->add('selector', TextType::class, [
