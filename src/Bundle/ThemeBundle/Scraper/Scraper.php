@@ -126,6 +126,7 @@ class Scraper
 
                 $template = file_get_contents($this->kernel->locateResource($scraper->getTemplateName()));
 
+                $scraperBlocks = [];
                 foreach ($scraper->getBlocks() as $block) {
                     if ($block->getMode() == ScraperEntity\Block::MODE_IGNORE) {
                         continue;
@@ -133,22 +134,28 @@ class Scraper
 
                     preg_match('/{% block '.$block->getName().' %}([\s\S]*){% endblock(.*)%}/msU', $template, $matches);
 
+                    $scraperBlocks[$block->getName()] = $matches[0];
+
                     switch ($block->getMode()) {
                         case ScraperEntity\Block::MODE_REPLACE:
-                            $dom->find($block->getSelector())->replaceWith('<scrapermodification>'.$matches[0].'</scrapermodification>');
+                            $dom->find($block->getSelector())->replaceWith('<scraperblock>'.$block->getName().'</scraperblock>');
                             break;
 
                         case ScraperEntity\Block::MODE_APPEND:
-                            $dom->find($block->getSelector())->append('<scrapermodification>'.$matches[0].'</scrapermodification>');
+                            $dom->find($block->getSelector())->append('<scraperblock>'.$block->getName().'</scraperblock>');
                             break;
 
                         case ScraperEntity\Block::MODE_REPLACE_INNER:
-                            $dom->find($block->getSelector())->html('<scrapermodification>'.$matches[0].'</scrapermodification>');
+                            $dom->find($block->getSelector())->html('<scraperblock>'.$block->getName().'</scraperblock>');
                             break;
                     }
                 }
 
                 $html = (string) $dom;
+
+                foreach ($scraperBlocks as $blockName => $content) {
+                    $html = str_replace('<scraperblock>'.$blockName.'</scraperblock>', $content, $html);
+                }
 
                 $scraper->setTemplate($html);
                 $scraper->setLastModified(time());
