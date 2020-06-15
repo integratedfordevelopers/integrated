@@ -150,9 +150,9 @@ class IntegratedInstallCommand extends Command
         $php = escapeshellarg(self::getPhp(false));
         $console = escapeshellarg('bin/console');
 
-        $output->writeln('Execute '.$php.' '.$console.' '.$command, OutputInterface::VERBOSITY_VERY_VERBOSE);
+        $output->writeln(sprintf('Execute %s %s %s', $php, $console, $command), OutputInterface::VERBOSITY_VERY_VERBOSE);
 
-        $process = new Process($php.' '.$console.' '.$command);
+        $process = new Process(sprintf('%s %s %s', $php, $console, $command));
 
         $process->setTimeout(0);
         $process->run(function ($type, $buffer) use ($output) {
@@ -164,7 +164,7 @@ class IntegratedInstallCommand extends Command
         });
 
         if (!$process->isSuccessful()) {
-            $output->writeln('Command '.$command.' failed');
+            $output->writeln(sprintf('Command %s failed', $command));
         }
     }
 
