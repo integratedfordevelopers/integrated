@@ -7,7 +7,7 @@ namespace Integrated\Bundle\InstallerBundle\Migrations\MySQL;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20190102214021 extends AbstractMigration
+final class Version20200615124022 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {

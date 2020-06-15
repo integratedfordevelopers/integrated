@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 use Integrated\Bundle\InstallerBundle\Doctrine\ORM\Migration\AbstractMigration;
 use Integrated\Bundle\UserBundle\Model\Scope;
 
-final class Version20200515094933 extends AbstractMigration
+final class Version20200615124024 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {

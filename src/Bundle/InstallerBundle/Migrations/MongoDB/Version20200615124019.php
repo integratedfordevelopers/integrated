@@ -5,7 +5,7 @@ namespace Integrated\Bundle\InstallerBundle\Migrations\MongoDB;
 use AntiMattr\MongoDB\Migrations\AbstractMigration;
 use Doctrine\MongoDB\Database;
 
-final class Version20200102214019 extends AbstractMigration
+final class Version20200615124019 extends AbstractMigration
 {
     /**
      * @return string
