@@ -11,10 +11,13 @@
 
 namespace Integrated\Bundle\AssetBundle\Twig\Node;
 
+use Twig\Compiler;
+use Twig\Node\Node;
+
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class AssetNode extends \Twig_Node
+class AssetNode extends Node
 {
     /**
      * @var string
@@ -62,7 +65,7 @@ class AssetNode extends \Twig_Node
     /**
      * {@inheritdoc}
      */
-    public function compile(\Twig_Compiler $compiler)
+    public function compile(Compiler $compiler)
     {
         $body = $this->getNode('body');
 

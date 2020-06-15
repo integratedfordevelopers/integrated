@@ -84,6 +84,10 @@ class WorkflowFormType extends AbstractType
     public function getAssigned()
     {
         $builder = $this->userManager->createQueryBuilder();
+
+        $builder->join('User.scope', 'us');
+        $builder->where('us.admin = 1');
+
         $query = $builder->getQuery();
 
         $users = [];
