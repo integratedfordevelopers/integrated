@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
+use Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType;
+use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -28,9 +30,25 @@ class RelationType extends AbstractType
         $builder
             ->add('name')
             ->add('type')
-            ->add('sources')
-            ->add('targets')
             ->add(
+                'sources',
+                DocumentType::class,
+                [
+                    'class' => ContentType::class,
+                    'choice_label' => 'name',
+                    'multiple' => true,
+                    'required' => false,
+                ]
+            )->add(
+                'targets',
+                DocumentType::class,
+                [
+                    'class' => ContentType::class,
+                    'choice_label' => 'name',
+                    'multiple' => true,
+                    'required' => false,
+                ]
+            )->add(
                 'multiple',
                 null,
                 [
@@ -49,8 +67,7 @@ class RelationType extends AbstractType
                         'align_with_widget' => true,
                     ],
                 ]
-            )
-        ;
+            );
     }
 
     /**

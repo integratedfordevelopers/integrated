@@ -52,5 +52,11 @@
             <tag name="form.type"/>
         </service>
 
+        <service id="integrated_user.form_type.user_filter_type" class="Integrated\Bundle\UserBundle\Form\Type\UserFilterType">
+            <argument type="service" id="integrated_user.provider.filter_query" />
+            <argument>%kernel.bundles%</argument>
+            <tag name="form.type" />
+        </service>
+
     </services>
 </container>
