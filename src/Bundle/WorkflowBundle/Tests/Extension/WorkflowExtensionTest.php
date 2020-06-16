@@ -24,7 +24,7 @@ class WorkflowExtensionTest extends \PHPUnit\Framework\TestCase
      */
     private $container;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->container = $this->createMock('Symfony\\Component\\DependencyInjection\\ContainerInterface');
     }

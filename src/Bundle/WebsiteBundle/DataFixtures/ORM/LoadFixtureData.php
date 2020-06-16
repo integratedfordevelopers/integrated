@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\WebsiteBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Integrated\Bundle\ChannelBundle\Model\Options;
 use Nelmio\Alice\Loader\SimpleFilesLoader;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;

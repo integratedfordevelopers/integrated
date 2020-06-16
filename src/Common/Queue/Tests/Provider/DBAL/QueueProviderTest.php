@@ -32,7 +32,7 @@ class QueueProviderTest extends \PHPUnit\Framework\TestCase
      */
     protected $connection;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $options = [
             'queue_table_name' => 'queue',

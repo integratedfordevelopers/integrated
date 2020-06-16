@@ -38,7 +38,7 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit\Framework\T
     /**
      * Set up the test.
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->event = $this->getMockBuilder('Symfony\Component\Form\FormEvent')->disableOriginalConstructor()->getMock();
         $this->form = $this->createMock('Symfony\Component\Form\FormInterface');

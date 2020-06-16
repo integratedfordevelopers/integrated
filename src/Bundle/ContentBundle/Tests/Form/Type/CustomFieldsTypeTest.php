@@ -15,6 +15,7 @@ use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField;
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
 use Integrated\Bundle\ContentBundle\Form\Type\CustomFieldsType;
 use Integrated\Common\ContentType\ContentTypeInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -70,23 +71,23 @@ class CustomFieldsTypeTest extends TypeTestCase
     }
 
     /**
-     * @return ContentTypeInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @return ContentTypeInterface|MockObject
      */
     protected function getContentType()
     {
-        /** @var ContentTypeInterface|\PHPUnit_Framework_MockObject_MockObject $contentType */
+        /** @var ContentTypeInterface|MockObject $contentType */
         $contentType = $this->createMock(ContentTypeInterface::class);
 
-        /** @var Field|\PHPUnit_Framework_MockObject_MockObject $defaultField */
+        /** @var Field|MockObject $defaultField */
         $defaultField = $this->createMock(Field::class);
 
-        /** @var CustomField|\PHPUnit_Framework_MockObject_MockObject $customField1 */
+        /** @var CustomField|MockObject $customField1 */
         $customField1 = $this->createMock(CustomField::class);
 
-        /** @var CustomField|\PHPUnit_Framework_MockObject_MockObject $customField2 */
+        /** @var CustomField|MockObject $customField2 */
         $customField2 = $this->createMock(CustomField::class);
 
-        /** @var CustomField|\PHPUnit_Framework_MockObject_MockObject $customField3 */
+        /** @var CustomField|MockObject $customField3 */
         $customField3 = $this->createMock(CustomField::class);
 
         // Stub the customField getters so we can check the outcome

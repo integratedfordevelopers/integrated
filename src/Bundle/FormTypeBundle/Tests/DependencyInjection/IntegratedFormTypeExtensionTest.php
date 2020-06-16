@@ -26,7 +26,7 @@ class IntegratedFormTypeExtensionTest extends \PHPUnit\Framework\TestCase
     /**
      * Setup the test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->extension = new IntegratedFormTypeExtension();
     }

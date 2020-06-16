@@ -26,7 +26,7 @@ class FileTest extends ContentTest
     /**
      * Setup the test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->file = new File();
     }

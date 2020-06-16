@@ -52,6 +52,14 @@ class PriorityResolver implements ResolverInterface
     }
 
     /**
+     * @return ResolverInterface[]
+     */
+    public function getResolvers()
+    {
+        return $this->resolvers;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function hasConfig($name)

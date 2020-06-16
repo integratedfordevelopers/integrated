@@ -131,7 +131,7 @@ class ContentTypeChangedListener implements EventSubscriberInterface
     }
 
     /**
-     * @return \Doctrine\ODM\MongoDB\DocumentRepository
+     * @return \Doctrine\ODM\MongoDB\Repository\DocumentRepository
      */
     protected function getPageRepository()
     {
@@ -139,7 +139,7 @@ class ContentTypeChangedListener implements EventSubscriberInterface
     }
 
     /**
-     * @return \Doctrine\ODM\MongoDB\DocumentRepository
+     * @return \Doctrine\ODM\MongoDB\Repository\DocumentRepository
      */
     protected function getChannelRepository()
     {

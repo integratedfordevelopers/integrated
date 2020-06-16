@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\BlockBundle\Form\Type;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
 use Integrated\Bundle\BlockBundle\Form\DataTransformer\BlockTransformer;
 use Symfony\Component\Form\AbstractType;

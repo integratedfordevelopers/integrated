@@ -4,25 +4,19 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-
-        <parameter key="integrated_menu.provider.menu_provider.class">Integrated\Bundle\MenuBundle\Provider\MenuProvider</parameter>
-
-        <parameter key="integrated_menu.provider.database_menu_provider.class">Integrated\Bundle\MenuBundle\Provider\DatabaseMenuProvider</parameter>
-
-    </parameters>
-
     <services>
 
-        <service id="integrated_menu.provider.menu_provider" class="%integrated_menu.provider.menu_provider.class%">
+        <service id="integrated_menu.provider.menu_provider" class="Integrated\Bundle\MenuBundle\Provider\MenuProvider">
             <argument type="service" id="knp_menu.factory" />
             <argument type="service" id="event_dispatcher" />
             <tag name="knp_menu.provider" />
         </service>
 
-        <service id="integrated_menu.provider.database_menu_provider" class="%integrated_menu.provider.database_menu_provider.class%" public="true">
+        <service id="integrated_menu.provider.integrated_menu_provider" class="Integrated\Bundle\MenuBundle\Provider\IntegratedMenuProvider" public="true">
             <argument type="service" id="channel.context" />
             <argument type="service" id="integrated_menu.document.menu.repository" />
+            <argument type="service" id="integrated_content.provider.solarium" />
+            <argument type="service" id="integrated_page.services.solr_url_extractor" />
             <tag name="knp_menu.provider" />
         </service>
 

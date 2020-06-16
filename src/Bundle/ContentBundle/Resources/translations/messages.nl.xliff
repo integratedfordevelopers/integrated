@@ -526,6 +526,10 @@
                 <source>Sort direction</source>
                 <target>Sorteervolgorde</target>
             </trans-unit>
+            <trans-unit id="135">
+                <source>Form submitted</source>
+                <target>Formulier ingestuurd</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

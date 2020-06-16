@@ -45,7 +45,7 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
      */
     private $urlResolver;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->facebook = $this->createMock(Facebook::class);
         $this->config = $this->createMock(ConfigInterface::class);

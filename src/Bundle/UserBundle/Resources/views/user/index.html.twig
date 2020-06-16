@@ -1,62 +1,62 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
+
+{% form_theme facetFilter 'IntegratedBlockBundle:form:form_div_filter.html.twig' %}
+
 {% block content %}
     <div class="row">
-        <div class="col-md-12 push-sm-down">
+        <div class="col-md-8 push-sm-down">
+
             <ul class="list-inline">
-                <li class="dropdown">
-                    <a href="#" data-toggle="dropdown" role="button" id="drop_1">Options <b class="caret"></b></a>
-                    <ul aria-labelledby="drop_1" role="menu" class="dropdown-menu" id="menu_1">
-                        <li role="presentation"><a href="{{ path('integrated_user_user_new') }}" tabindex="-1" role="menuitem">New</a></li>
-                    </ul>
+                <li>
+                    <a href="{{ path('integrated_user_user_new') }}">Nieuw</a>
                 </li>
             </ul>
 
-            <section class="section-white section-padding section-shadow section-radius">
-                <table class="table table-hover">
+            {% include 'IntegratedUserBundle:user/partials:user_list.html.twig' %}
 
-                    <colgroup>
-                        <col style="width: 3em" />
-                        <col />
-                        <col />
-                        <col style="width: 5em" />
-                    </colgroup>
+        </div>
 
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Username</th>
-                            <th>Relation</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
+        <div class="col-sm-4">
+            <aside>
+                <div class="aside-holder section-gray section-shadow section-radius">
+                    {{ form_start(facetFilter) }}
 
-                    <tbody>
-                    {% for user in users %}
+                    <div class="aside-item-holder">
+                        <div class="input-group">
+                            {{ form_widget(facetFilter.q) }}
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-search"></span>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
 
-                        <tr>
-                            <td>{{ user.id }}</td>
-                            <td>{{ user.username }}</td>
-                            <td>{% if user.relation.id|default %}
-                                    <a href="{{ path('integrated_content_content_edit', {id: user.relation.id}) }}">{{ user.relation.name|default }} {{ user.relation.firstname|default }} {{ user.relation.lastname|default }}</a>
-                                {% endif %}
-                            </td>
-                            <td>
-                                <a href="{{ path('integrated_user_user_edit', {'id': user.id}) }}" title="{% trans %}Edit{% endtrans %}"><span class="glyphicon glyphicon-edit"></span></a>
-                                {% if app.user.id != user.id %}
-                                    <a href="{{ path('integrated_user_user_delete', {'id': user.id}) }}" title="{% trans %}Delete{% endtrans %}"><span class="glyphicon glyphicon-remove-circle"></span></a>
-                                {% endif %}
-                            </td>
-                        </tr>
+                    <div class="aside-item-holder {% if facetFilter.groups|length == 0 %} hidden{% endif %}">
+                        {{ form_row(facetFilter.groups) }}
+                    </div>
 
-                   {% endfor %}
+                    <div class="aside-item-holder {% if facetFilter.scope|length == 0 %} hidden{% endif %}">
+                        {{ form_row(facetFilter.scope) }}
+                    </div>
 
-                    </tbody>
-
-                </table>
-
-                {{ knp_pagination_render(users) }}
-
-            </section>
+                    {{ form_end(facetFilter) }}
+                </div>
+            </aside>
         </div>
     </div>
+
+{% endblock %}
+
+{% block javascript %}
+{{ parent() }}
+<script type="text/javascript">
+    $(function () {
+        $('[data-toggle="popover"]').popover();
+
+        $('form[name="integrated_user_filter"]').on('change', function () {
+            $(this).trigger('submit');
+        });
+    });
+</script>
 {% endblock %}

@@ -5,8 +5,8 @@
 
     <embedded-document name="Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field">
 
-        <field fieldName="name" type="string" />
-        <field fieldName="options" type="hash" />
+        <field field-name="name" type="string" />
+        <field field-name="options" type="hash" />
 
     </embedded-document>
 

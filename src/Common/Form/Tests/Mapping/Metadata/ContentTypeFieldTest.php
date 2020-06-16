@@ -28,7 +28,7 @@ class ContentTypeFieldTest extends \PHPUnit\Framework\TestCase
     /**
      * Setup the test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->contentTypeField = new Field(self::NAME);
     }

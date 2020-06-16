@@ -39,7 +39,7 @@ class ConfigureMenuSubscriberTest extends \PHPUnit\Framework\TestCase
     /**
      * Setup the test.
      */
-    protected function setup()
+    protected function setUp(): void
     {
         $this->event = $this->getMockBuilder(ConfigureMenuEvent::class)->disableOriginalConstructor()->getMock();
         $this->authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);

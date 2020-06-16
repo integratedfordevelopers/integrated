@@ -24,7 +24,7 @@ class ErrorEventTest extends MessageEventTest
      */
     protected $exception;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

@@ -75,6 +75,8 @@
                     </array>
                 </array>
 
+                <string key="rank">rank</string>
+
             </options>
         </type>
 
@@ -168,6 +170,8 @@
                         <string>@slug</string>
                     </array>
                 </array>
+
+                <string key="rank">rank</string>
 
             </options>
         </type>

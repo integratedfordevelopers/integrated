@@ -63,7 +63,7 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
      */
     private $state = null;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->manager = $this->createMock('Doctrine\\Common\\Persistence\\ManagerRegistry');
         $this->resolver = $this->createMock('Integrated\\Common\\ContentType\\ResolverInterface');

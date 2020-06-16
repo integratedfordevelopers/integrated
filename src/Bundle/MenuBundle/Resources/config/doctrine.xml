@@ -10,7 +10,7 @@
 
         <parameter key="integrated_menu.document.menu_item.class">Integrated\Bundle\MenuBundle\Document\MenuItem</parameter>
 
-        <parameter key="integrated_menu.document.menu.repository.class">Doctrine\ODM\MongoDB\DocumentRepository</parameter>
+        <parameter key="integrated_menu.document.menu.repository.class">Doctrine\ODM\MongoDB\Repository\DocumentRepository</parameter>
 
     </parameters>
 

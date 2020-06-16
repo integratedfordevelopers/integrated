@@ -13,6 +13,12 @@
             <tag name="controller.service_arguments" />
         </service>
 
+        <service id="Integrated\Bundle\ContentBundle\Controller\RankController">
+            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <argument type="service" id="integrated_content.provider.content_provider" />
+            <tag name="controller.service_arguments" />
+        </service>
+
         <service id="integrated_content.controller.search_controller" class="Integrated\Bundle\ContentBundle\Controller\SearchController" public="true">
             <argument type="service" id="integrated_solr.indexer.client" />
             <argument type="service" id="serializer" />

@@ -59,7 +59,7 @@ class BreadcrumbResolverTest extends TestCase
      */
     protected $breadcrumbResolver;
 
-    protected function setup()
+    protected function setUp(): void
     {
         $this->documentManager = $this->createMock(DocumentManager::class);
         $this->urlResolver = $this->createMock(UrlResolver::class);
