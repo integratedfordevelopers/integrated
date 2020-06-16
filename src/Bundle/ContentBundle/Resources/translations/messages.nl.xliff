@@ -530,6 +530,26 @@
                 <source>Form submitted</source>
                 <target>Formulier ingestuurd</target>
             </trans-unit>
+            <trans-unit id="136">
+                <source>Rank</source>
+                <target>Volgorde</target>
+            </trans-unit>
+            <trans-unit id="137">
+                <source>After</source>
+                <target>Na</target>
+            </trans-unit>
+            <trans-unit id="138">
+                <source>First item</source>
+                <target>1e item</target>
+            </trans-unit>
+            <trans-unit id="139">
+                <source>Current position</source>
+                <target>Huidige positie</target>
+            </trans-unit>
+            <trans-unit id="140">
+                <source>Keep current position</source>
+                <target>Behoud huidige positie</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
