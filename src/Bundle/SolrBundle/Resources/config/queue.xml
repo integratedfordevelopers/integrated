@@ -8,13 +8,6 @@
 
 		<service id="integrated_queue.dbal.connection" alias="database_connection" public="true" /> <!-- config option -->
 
-		<service id="integrated_queue.dbal.schema" class="Integrated\Common\Queue\Provider\DBAL\Schema" public="true">
-			<argument type="collection">
-				<argument key="queue_table_name">queue</argument> <!-- config option -->
-			</argument>
-			<argument type="service" id="integrated_queue.dbal.connection" />
-		</service>
-
 		<service id="integrated_queue.dbal.provider" class="Integrated\Common\Queue\Provider\DBAL\QueueProvider" public="true">
 			<argument type="service" id="integrated_queue.dbal.connection" />
 			<argument type="collection">

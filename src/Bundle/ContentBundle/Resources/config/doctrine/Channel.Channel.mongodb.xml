@@ -9,7 +9,7 @@
         collection="channel">
 
         <id field-name="id" strategy="NONE" />
-        <field field-name="name" type="string" index="true" />
+        <field field-name="name" type="string" />
         <field field-name="color" type="string" />
         <field field-name="domains" type="collection" />
         <field field-name="primaryDomain" type="string" />

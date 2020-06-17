@@ -6,7 +6,6 @@
 
     <parameters>
 
-		<parameter key="integrated_locking.dbal.schema.class">Integrated\Common\Locks\Provider\DBAL\Schema</parameter>
 		<parameter key="integrated_locking.dbal.manager.class">Integrated\Common\Locks\Provider\DBAL\Manager</parameter>
 
     </parameters>
@@ -14,13 +13,6 @@
     <services>
 
 		<service id="integrated_locking.dbal.connection" alias="database_connection" public="true" /> <!-- config option -->
-
-		<service id="integrated_locking.dbal.schema" class="%integrated_locking.dbal.schema.class%" public="true">
-			<argument type="collection">
-				<argument key="lock_table_name">locks</argument> <!-- config option -->
-			</argument>
-			<argument type="service" id="integrated_locking.dbal.connection" />
-		</service>
 
 		<service id="integrated_locking.dbal.manager" class="%integrated_locking.dbal.manager.class%" public="true">
 			<argument type="service" id="integrated_locking.dbal.connection" />
