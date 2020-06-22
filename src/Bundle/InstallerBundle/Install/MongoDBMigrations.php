@@ -15,6 +15,7 @@ class MongoDBMigrations
     const DOCTRINE_MIGRATIONS_NAMESPACE = 'Integrated\Bundle\InstallerBundle\Migrations\MongoDB';
     const DOCTRINE_MIGRATIONS_NAME = 'Integrated MongoDB Migrations';
     const DOCTRINE_MIGRATIONS_COLLECTION = 'integrated_migration_versions';
+    const DOCTRINE_MIGRATIONS_DIRECTION_UP = 'up';
 
     /**
      * @var DocumentManager
@@ -53,7 +54,8 @@ class MongoDBMigrations
         $configuration->setName(self::DOCTRINE_MIGRATIONS_NAME);
         $configuration->registerMigrationsFromDirectory($directory);
 
-        $versions = $configuration->getMigrations();
+        $to = $configuration->getLatestVersion();
+        $versions = $configuration->getMigrationsToExecute(self::DOCTRINE_MIGRATIONS_DIRECTION_UP, $to);
         foreach ($versions as $version) {
             $migration = $version->getMigration();
             if ($migration instanceof ContainerAwareInterface) {

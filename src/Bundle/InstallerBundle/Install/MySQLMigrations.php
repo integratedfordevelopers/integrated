@@ -48,7 +48,8 @@ class MySQLMigrations
         $configuration->setName(self::DOCTRINE_MIGRATIONS_NAME);
         $configuration->setMigrationsTableName(self::DOCTRINE_MIGRATIONS_TABLE);
 
-        $versions = $configuration->getMigrations();
+        $to = $configuration->getLatestVersion();
+        $versions = $configuration->getMigrationsToExecute(self::DOCTRINE_MIGRATIONS_DIRECTION_UP, $to);
         foreach ($versions as $version) {
             $migration = $version->getMigration();
             if ($migration instanceof ContainerAwareInterface) {
