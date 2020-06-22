@@ -24,7 +24,7 @@ final class Version20200615124019 extends AbstractMigration
 
         $db->selectCollection('content')->ensureIndex(['class' => 1]);
         $db->selectCollection('content')->ensureIndex(['relations.references.$id' => 1, 'class' => 1]);
-        $db->selectCollection('content')->ensureIndex(['slug' => 1]);
+        $db->selectCollection('content')->ensureIndex(['slug' => 1], ['unique' => true, 'sparse' => true]);
         $db->selectCollection('content')->ensureIndex(['contentType' => 1]);
         $db->selectCollection('content')->ensureIndex(['relations.relationId' => 1]);
         $db->selectCollection('content')->ensureIndex(['relations.relationType' => 1]);
