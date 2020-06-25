@@ -5,6 +5,7 @@
     <embedded-document name="Integrated\Bundle\ContentBundle\Document\Bulk\Action\DeleteAction">
 
         <field name="handler" type="string" />
+        <field name="removeReferences" type="boolean" />
 
     </embedded-document>
 

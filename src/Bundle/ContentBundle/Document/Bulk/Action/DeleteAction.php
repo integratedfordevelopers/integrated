@@ -21,6 +21,11 @@ class DeleteAction implements BulkActionInterface
     private $handler;
 
     /**
+     * @var bool
+     */
+    private $removeReferences = false;
+
+    /**
      * ContentTypeAction constructor.
      *
      * @param string $handler
@@ -51,10 +56,26 @@ class DeleteAction implements BulkActionInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isRemoveReferences(): bool
+    {
+        return $this->removeReferences;
+    }
+
+    /**
+     * @param bool $removeReferences
+     */
+    public function setRemoveReferences(bool $removeReferences): void
+    {
+        $this->removeReferences = $removeReferences;
+    }
+
+    /**
      * @return array
      */
     public function getOptions()
     {
-        return [];
+        return ['removeReferences' => $this->removeReferences];
     }
 }

@@ -14,6 +14,7 @@ namespace Integrated\Bundle\ContentBundle\Form\Type;
 use Integrated\Bundle\ContentBundle\Bulk\DeleteHandler;
 use Integrated\Bundle\ContentBundle\Document\Bulk\Action\DeleteAction;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,6 +26,15 @@ class BulkActionDeleteType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->add(
+            'removeReferences',
+            ChoiceType::class,
+            [
+                'label' => $options['label'],
+                'multiple' => false,
+                'choices' => ['Skip items which are in use' => false, 'Remove references before deletion' => true],
+            ]
+        );
     }
 
     /**

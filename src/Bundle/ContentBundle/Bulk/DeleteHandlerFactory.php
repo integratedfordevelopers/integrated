@@ -14,6 +14,7 @@ namespace Integrated\Bundle\ContentBundle\Bulk;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Services\SearchContentReferenced;
 use Integrated\Common\Bulk\Action\HandlerFactoryInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DeleteHandlerFactory implements HandlerFactoryInterface
 {
@@ -28,6 +29,11 @@ class DeleteHandlerFactory implements HandlerFactoryInterface
     private $searchContentReferenced;
 
     /**
+     * @var OptionsResolver
+     */
+    private $resolver;
+
+    /**
      * Constructor.
      *
      * @param DocumentManager         $documentManager
@@ -37,6 +43,11 @@ class DeleteHandlerFactory implements HandlerFactoryInterface
     {
         $this->documentManager = $documentManager;
         $this->searchContentReferenced = $searchContentReferenced;
+
+        $this->resolver = new OptionsResolver();
+        $this->resolver
+            ->setRequired(['removeReferences'])
+            ->addAllowedTypes('removeReferences', 'boolean');
     }
 
     /**
@@ -44,6 +55,8 @@ class DeleteHandlerFactory implements HandlerFactoryInterface
      */
     public function createHandler(array $options)
     {
-        return new DeleteHandler($this->documentManager, $this->searchContentReferenced);
+        $options = $this->resolver->resolve($options);
+
+        return new DeleteHandler($this->documentManager, $this->searchContentReferenced, $options['removeReferences']);
     }
 }

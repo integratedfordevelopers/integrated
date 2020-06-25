@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Bulk;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Services\SearchContentReferenced;
 use Integrated\Common\Bulk\Action\HandlerInterface;
 use Integrated\Common\Content\ContentInterface;
@@ -32,17 +33,24 @@ class DeleteHandler implements HandlerInterface
     private $searchContentReferenced;
 
     /**
+     * @var bool
+     */
+    private $removeReferences;
+
+    /**
      * Constructor.
      *
      * @param DocumentManager         $documentManager         document manager, manage content items
      * @param SearchContentReferenced $searchContentReferenced service to find out if a content item is in use
      *                                                         somewhere - we don't allow a class change when the
      *                                                         content item is referenced
+     * @param boolean                 $removeReferences
      */
-    public function __construct(DocumentManager $documentManager, SearchContentReferenced $searchContentReferenced)
+    public function __construct(DocumentManager $documentManager, SearchContentReferenced $searchContentReferenced, bool $removeReferences)
     {
         $this->documentManager = $documentManager;
         $this->searchContentReferenced = $searchContentReferenced;
+        $this->removeReferences = $removeReferences;
     }
 
     /**
@@ -50,10 +58,19 @@ class DeleteHandler implements HandlerInterface
      */
     public function execute(ContentInterface $content)
     {
+        if ($this->removeReferences) {
+            $this->documentManager->createQueryBuilder(Content::class)
+                ->updateMany()
+                ->field('relations.references.$id')->equals($content->getId())
+                ->field('relations.$.references')->pull(['$id' => $content->getId()])
+                ->getQuery()
+                ->execute();
+        }
+
         $referencedItems = $this->searchContentReferenced->getReferenced($content);
+
         if (\count($referencedItems) > 0) {
             return;
-            throw new \Exception('Item '.(string) $content.' is referenced by '.\count($referencedItems).' other content item(s) and can\'t be deleted');
         }
 
         $this->documentManager->remove($content);
