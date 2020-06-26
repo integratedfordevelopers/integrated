@@ -39,6 +39,13 @@
             <tag name="integrated_content.bulk.handler" class="Integrated\Bundle\ContentBundle\Bulk\ContentTypeHandler" />
         </service>
 
+        <service id="integrated_content.bulk.action.delete_handler_factory" class="Integrated\Bundle\ContentBundle\Bulk\DeleteHandlerFactory" public="false">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="integrated_content.services.search.content.referenced" />
+
+            <tag name="integrated_content.bulk.handler" class="Integrated\Bundle\ContentBundle\Bulk\DeleteHandler" />
+        </service>
+
         <service id="integrated_content.bulk.action.relation_add_handler_factory" class="Integrated\Bundle\ContentBundle\Bulk\RelationHandlerFactory" public="false">
             <argument type="string">Integrated\Bundle\ContentBundle\Bulk\RelationAddHandler</argument>
 
@@ -64,6 +71,10 @@
         </service>
 
         <service id="integrated_content.bulk.form.contenttype_provider" class="Integrated\Bundle\ContentBundle\Bulk\ContentTypeFormProvider" public="false">
+            <tag name="integrated_content.bulk.form.provider" />
+        </service>
+
+        <service id="integrated_content.bulk.form.delete_provider" class="Integrated\Bundle\ContentBundle\Bulk\DeleteFormProvider" public="false">
             <tag name="integrated_content.bulk.form.provider" />
         </service>
 
