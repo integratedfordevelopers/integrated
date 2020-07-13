@@ -177,7 +177,7 @@ class BulkController extends Controller
     }
 
     /**
-     *
+     * Try to prevent reaching the timeout on large bulk actions
      */
     private function preventTimeout()
     {
