@@ -241,6 +241,7 @@ class FieldMapperType implements TypeInterface
     {
         if ($data instanceof DateTime) {
             $data = clone $data; // don't change to original value
+
             return $data->setTimezone($this->timezone)->format('Y-m-d\TG:i:s\Z');
         }
 
