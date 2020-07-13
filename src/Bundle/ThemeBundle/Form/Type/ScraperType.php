@@ -14,6 +14,7 @@ namespace Integrated\Bundle\ThemeBundle\Form\Type;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Integrated\Bundle\ChannelBundle\Form\Type\ChannelChoiceType;
+use Integrated\Bundle\FormTypeBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -25,13 +26,13 @@ class ScraperType extends AbstractType
     {
         $builder->add('name', TextType::class);
 
-        $builder->add('channelId', ChannelChoiceType::class);
+        $builder->add('channelId', ChannelChoiceType::class, ['label' => 'Channel']);
 
         $builder->add('templateName', TextType::class);
 
-        $builder->add('url', TextType::class);
+        $builder->add('url', TextType::class, ['label' => 'Scraper page URL']);
 
-        $builder->add('blocks', BootstrapCollectionType::class, [
+        $builder->add('blocks', CollectionType::class, [
             'entry_type' => ScraperBlockType::class,
         ]);
 
