@@ -5,8 +5,8 @@
 
     <document name="Integrated\Bundle\ContentBundle\Document\Relation\Relation" collection="relation">
 
-        <field field-name="id" id="true" strategy="NONE" />
-        <field field-name="name" type="string" index="true" />
+        <id field-name="id" strategy="NONE" />
+        <field field-name="name" type="string" />
         <field field-name="type" type="string" />
         <field field-name="multiple" type="boolean" />
         <field field-name="required" type="boolean" />

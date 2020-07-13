@@ -21,7 +21,7 @@ trait RegistryTrait
      */
     protected $extensions = [];
 
-    protected function addExtension(ExtensionInterface $extension)
+    public function addExtension(ExtensionInterface $extension)
     {
         $name = $extension->getName();
 

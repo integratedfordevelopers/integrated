@@ -261,6 +261,9 @@ class WorkflowController extends Controller
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $userRepository->createQueryBuilder('u');
 
+        $queryBuilder->join('u.scope', 'us');
+        $queryBuilder->where('us.admin = 1');
+
         if ($permissionObject && (!$isDefaultState || !$currentUserCanWrite)) {
             $queryBuilder->join('u.groups', 'ug');
             $queryBuilder->where('ug.id IN (:groups)')->setParameter('groups', $groups);

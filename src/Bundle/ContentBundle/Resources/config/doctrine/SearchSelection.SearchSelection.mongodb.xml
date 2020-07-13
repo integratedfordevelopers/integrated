@@ -8,8 +8,8 @@
         collection="search_selection"
         repository-class="Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelectionRepository">
 
-        <field field-name="id" id="true" strategy="NONE" />
-        <field field-name="title" type="string" index="true" />
+        <id field-name="id" strategy="NONE" />
+        <field field-name="title" type="string" />
         <field field-name="filters" type="hash" />
         <field field-name="internalParams" type="hash" />
         <field field-name="locked" type="boolean" />
