@@ -142,6 +142,8 @@ class BulkController extends Controller
      */
     public function confirmAction(Request $request, BulkAction $bulk)
     {
+        $this->preventTimeout();
+
         if ($bulk->getExecutedAt()) {
             return $this->redirectToRoute('integrated_content_content_index', $bulk->getFilters());
         }
@@ -172,5 +174,13 @@ class BulkController extends Controller
             'selection' => \count($bulk->getSelection()),
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     *
+     */
+    private function preventTimeout()
+    {
+        ini_set('max_execution_time', '600');
     }
 }
