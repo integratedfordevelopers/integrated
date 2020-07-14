@@ -76,7 +76,7 @@ class Scraper
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -84,7 +84,7 @@ class Scraper
     /**
      * @return \DateTime
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
@@ -92,7 +92,7 @@ class Scraper
     /**
      * @param \DateTime $createdAt
      */
-    public function setCreatedAt(\DateTime $createdAt)
+    public function setCreatedAt(\DateTime $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
@@ -100,21 +100,17 @@ class Scraper
     /**
      * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
      * @param string|null $name
-     *
-     * @return $this
      */
-    public function setName(?string $name)
+    public function setName(?string $name): void
     {
         $this->name = $name;
-
-        return $this;
     }
 
     /**
@@ -216,7 +212,7 @@ class Scraper
     /**
      * @return Block[]
      */
-    public function getBlocks()
+    public function getBlocks(): array
     {
         return $this->blocks->toArray();
     }
@@ -224,7 +220,7 @@ class Scraper
     /**
      * @param Block[] $blocks
      */
-    public function setBlocks(array $blocks)
+    public function setBlocks(array $blocks): void
     {
         $this->blocks = new ArrayCollection($blocks);
     }
@@ -232,7 +228,7 @@ class Scraper
     /**
      * @param Block $block
      */
-    public function addBlock(Block $block)
+    public function addBlock(Block $block): void
     {
         if (!$this->blocks->contains($block)) {
             $this->blocks->add($block);
@@ -244,7 +240,7 @@ class Scraper
      *
      * @return bool
      */
-    public function hasBlock(Block $block)
+    public function hasBlock(Block $block): bool
     {
         return $this->blocks->contains($block);
     }
@@ -252,7 +248,7 @@ class Scraper
     /**
      * @param Block $block
      */
-    public function removeBlock(Block $block)
+    public function removeBlock(Block $block): void
     {
         $this->blocks->removeElement($block);
     }
