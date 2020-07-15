@@ -82,6 +82,7 @@ class ScraperPageLoader implements LoaderInterface
      * @param string $name
      *
      * @return bool
+     *
      * @throws InvalidArgumentException
      */
     public function exists($name): bool
@@ -114,6 +115,7 @@ class ScraperPageLoader implements LoaderInterface
      * @param int    $time
      *
      * @return bool
+     *
      * @throws LoaderError
      */
     public function isFresh($name, $time): bool
