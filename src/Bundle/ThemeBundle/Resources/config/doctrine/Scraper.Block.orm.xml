@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Integrated\Bundle\ThemeBundle\Entity\Scraper\Block" table="scraper_block">
+
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO" />
+        </id>
+
+        <field name="createdAt" column="created_at" type="datetime" />
+        <field name="name" column="name" type="string" length="255" nullable="true" />
+        <field name="mode" column="mode" type="string" length="255" nullable="true" />
+        <field name="selector" column="selector" type="string" length="255" nullable="true" />
+
+    </entity>
+
+</doctrine-mapping>

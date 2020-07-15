@@ -29,6 +29,8 @@ class IntegratedThemeExtension extends Extension
         $config = $this->processConfiguration(new Configuration(), $configs);
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('controller.xml');
+        $loader->load('event_listener.xml');
         $loader->load('services.xml');
 
         $definition = $container->getDefinition('integrated_theme.templating.theme_manager');
