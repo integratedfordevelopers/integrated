@@ -62,7 +62,12 @@ class Scraper
         $this->scraperPageLoader = $scraperPageLoader;
     }
 
-    public function prepare(ScraperEntity $scraper)
+    /**
+     * @param ScraperEntity $scraper
+     *
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    public function prepare(ScraperEntity $scraper): void
     {
         try {
             $template = file_get_contents($this->kernel->locateResource($scraper->getTemplateName()));
@@ -106,7 +111,10 @@ class Scraper
         $this->run($scraper);
     }
 
-    public function run(ScraperEntity $scraper = null)
+    /**
+     * @param ScraperEntity|null $scraper
+     */
+    public function run(ScraperEntity $scraper = null): void
     {
         if ($scraper === null) {
             $scapers = $this->entityManager->getRepository(ScraperEntity::class)->findAll();
@@ -171,7 +179,7 @@ class Scraper
      *
      * @return string
      */
-    protected function replaceUrls($html, $url)
+    protected function replaceUrls($html, $url): string
     {
         $host = parse_url($url, PHP_URL_SCHEME).'://'.parse_url($url, PHP_URL_HOST);
 

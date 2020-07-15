@@ -19,6 +19,7 @@ use Integrated\Bundle\ThemeBundle\Form\Type\ScraperType;
 use Integrated\Bundle\ThemeBundle\Scraper\Scraper as ScraperService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,7 +50,7 @@ class ScraperController extends Controller
      *
      * @return Response
      */
-    public function indexAction()
+    public function indexAction(): Response
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 
@@ -67,7 +68,7 @@ class ScraperController extends Controller
      *
      * @return Response|RedirectResponse
      */
-    public function newAction(Request $request)
+    public function newAction(Request $request): Response
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 
@@ -100,7 +101,7 @@ class ScraperController extends Controller
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(Scraper $scraper, Request $request)
+    public function editAction(Scraper $scraper, Request $request): Response
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 
@@ -128,9 +129,9 @@ class ScraperController extends Controller
      * @param Scraper $scraper
      * @param Request $request
      *
-     * @return RedirectResponse
+     * @return Response
      */
-    public function deleteAction(Scraper $scraper, Request $request)
+    public function deleteAction(Scraper $scraper, Request $request): Response
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 
@@ -158,9 +159,9 @@ class ScraperController extends Controller
      *
      * @param Scraper $scraper
      *
-     * @return \Symfony\Component\Form\Form
+     * @return Form
      */
-    protected function createDeleteForm(Scraper $scraper)
+    protected function createDeleteForm(Scraper $scraper): Form
     {
         $form = $this->createForm(
             DeleteFormType::class,

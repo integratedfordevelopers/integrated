@@ -40,7 +40,7 @@ class ConfigureMenuSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             ConfigureMenuEvent::CONFIGURE => 'onMenuConfigure',
@@ -50,7 +50,7 @@ class ConfigureMenuSubscriber implements EventSubscriberInterface
     /**
      * @param ConfigureMenuEvent $event
      */
-    public function onMenuConfigure(ConfigureMenuEvent $event)
+    public function onMenuConfigure(ConfigureMenuEvent $event): void
     {
         $menu = $event->getMenu();
         if ($menu->getName() !== self::MENU) {

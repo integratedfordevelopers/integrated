@@ -65,7 +65,7 @@ class ScraperPageLoader implements LoaderInterface
      *
      * @throws LoaderError
      */
-    public function getSourceContext($name)
+    public function getSourceContext($name): Source
     {
         if (!$channel = $this->channelContext->getChannel()) {
             throw new LoaderError(sprintf('Unkown channel for template "%s"', $name));
@@ -78,7 +78,13 @@ class ScraperPageLoader implements LoaderInterface
         return new Source($template->getTemplate(), $name);
     }
 
-    public function exists($name)
+    /**
+     * @param string $name
+     *
+     * @return bool
+     * @throws InvalidArgumentException
+     */
+    public function exists($name): bool
     {
         if (!$channel = $this->channelContext->getChannel()) {
             return false;
@@ -93,12 +99,24 @@ class ScraperPageLoader implements LoaderInterface
         return \in_array($name, $this->pageList[$channel->getId()]);
     }
 
-    public function getCacheKey($name)
+    /**
+     * @param string $name
+     *
+     * @return string
+     */
+    public function getCacheKey($name): string
     {
         return $name;
     }
 
-    public function isFresh($name, $time)
+    /**
+     * @param string $name
+     * @param int    $time
+     *
+     * @return bool
+     * @throws LoaderError
+     */
+    public function isFresh($name, $time): bool
     {
         if (!$channel = $this->channelContext->getChannel()) {
             throw new LoaderError(sprintf('Unkown channel for template "%s"', $name));
@@ -116,7 +134,7 @@ class ScraperPageLoader implements LoaderInterface
      *
      * @throws InvalidArgumentException
      */
-    public function pageListCacheWarmup(bool $force = false)
+    public function pageListCacheWarmup(bool $force = false): void
     {
         if (!$force && $this->pageList !== null) {
             return;
