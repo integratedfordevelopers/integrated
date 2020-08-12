@@ -39,6 +39,7 @@ class Scraper
      * @var FilesystemLoader
      */
     private $loader;
+
     /**
      * @var ScraperPageLoader
      */
@@ -106,9 +107,9 @@ class Scraper
             return;
         }
 
-        $this->scraperPageLoader->pageListCacheWarmup(true);
-
         $this->run($scraper);
+
+        $this->scraperPageLoader->pageListCacheWarmup(true);
     }
 
     /**
