@@ -23,7 +23,8 @@ use Twig\Source;
 
 class ScraperPageLoader implements LoaderInterface
 {
-    const CACHEKEY = 'scraper.pagelist';
+    const CACHEKEY_PAGELIST = 'scraper.pagelist';
+    const CACHEKEY_LASTUPDATE = 'scraper.lastupdate';
 
     /**
      * @var EntityManagerInterface
@@ -41,6 +42,11 @@ class ScraperPageLoader implements LoaderInterface
     private $pageList = null;
 
     /**
+     * @var int
+     */
+    private $lastUpdate;
+
+    /**
      * @var ChannelContextInterface
      */
     private $channelContext;
@@ -56,6 +62,8 @@ class ScraperPageLoader implements LoaderInterface
         $this->cache = new ApcuCache('integrated.theme');
         $this->entityManager = $entityManager;
         $this->channelContext = $channelContext;
+        $this->pageList = $this->cache->get(self::CACHEKEY_PAGELIST);
+        $this->lastUpdate = $this->cache->get(self::CACHEKEY_LASTUPDATE);
     }
 
     /**
@@ -107,7 +115,7 @@ class ScraperPageLoader implements LoaderInterface
      */
     public function getCacheKey($name): string
     {
-        return $name;
+        return $name.$this->lastUpdate;
     }
 
     /**
@@ -142,10 +150,6 @@ class ScraperPageLoader implements LoaderInterface
             return;
         }
 
-        if (!$force && $this->pageList = $this->cache->get(self::CACHEKEY)) {
-            return;
-        }
-
         $this->pageList = [];
 
         $scrapers = $this->entityManager->getRepository(ScraperEntity::class)->findAll();
@@ -153,6 +157,9 @@ class ScraperPageLoader implements LoaderInterface
             $this->pageList[$scraper->getChannelId()][] = $scraper->getTemplateName();
         }
 
-        $this->cache->set(self::CACHEKEY, $this->pageList);
+        $this->lastUpdate = time();
+
+        $this->cache->set(self::CACHEKEY_PAGELIST, $this->pageList);
+        $this->cache->set(self::CACHEKEY_LASTUPDATE, $this->lastUpdate);
     }
 }
