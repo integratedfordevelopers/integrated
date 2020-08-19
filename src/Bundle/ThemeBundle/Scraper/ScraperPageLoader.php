@@ -115,7 +115,11 @@ class ScraperPageLoader implements LoaderInterface
      */
     public function getCacheKey($name): string
     {
-        return $name.$this->lastUpdate;
+        if (!$channel = $this->channelContext->getChannel()) {
+            return $name;
+        }
+
+        return $name.$this->lastUpdate.$channel->getId();
     }
 
     /**
