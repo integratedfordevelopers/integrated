@@ -150,7 +150,7 @@ class ScraperPageLoader implements LoaderInterface
      */
     public function pageListCacheWarmup(bool $force = false): void
     {
-        if (!$force && $this->pageList !== null && $this->lastUpdate > (time()-900)) {
+        if (!$force && $this->pageList !== null && $this->lastUpdate > (time() - 900)) {
             return;
         }
 
