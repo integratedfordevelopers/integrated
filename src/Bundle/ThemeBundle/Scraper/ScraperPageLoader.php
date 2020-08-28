@@ -150,10 +150,11 @@ class ScraperPageLoader implements LoaderInterface
      */
     public function pageListCacheWarmup(bool $force = false): void
     {
-        if (!$force && $this->pageList !== null) {
+        if (!$force && $this->pageList !== null && $this->lastUpdate > (time()-900)) {
             return;
         }
 
+        $this->lastUpdate = [];
         $this->pageList = [];
 
         $scrapers = $this->entityManager->getRepository(ScraperEntity::class)->findAll();
