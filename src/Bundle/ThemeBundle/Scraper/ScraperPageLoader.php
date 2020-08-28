@@ -154,7 +154,6 @@ class ScraperPageLoader implements LoaderInterface
             return;
         }
 
-        $this->lastUpdate = [];
         $this->pageList = [];
 
         $scrapers = $this->entityManager->getRepository(ScraperEntity::class)->findAll();
