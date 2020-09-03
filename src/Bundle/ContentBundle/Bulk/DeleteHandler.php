@@ -46,7 +46,7 @@ class DeleteHandler implements HandlerInterface
      *                                                         content item is referenced
      * @param bool                    $removeReferences
      */
-    public function __construct(DocumentManager $documentManager, SearchContentReferenced $searchContentReferenced, bool $removeReferences)
+    public function __construct(DocumentManager $documentManager, SearchContentReferenced $searchContentReferenced, ?bool $removeReferences)
     {
         $this->documentManager = $documentManager;
         $this->searchContentReferenced = $searchContentReferenced;
@@ -58,7 +58,7 @@ class DeleteHandler implements HandlerInterface
      */
     public function execute(ContentInterface $content)
     {
-        if ($this->removeReferences) {
+        if ($this->removeReferences === true) {
             $this->documentManager->createQueryBuilder(Content::class)
                 ->updateMany()
                 ->field('relations.references.$id')->equals($content->getId())
