@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="1">
+                <source>Block name</source>
+                <target>Blok titel</target>
+            </trans-unit>
+            <trans-unit id="2">
+                <source>Short code</source>
+                <target>Korte code</target>
+            </trans-unit>
+            <trans-unit id="3">
+                <source>Type</source>
+                <target>Soort</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

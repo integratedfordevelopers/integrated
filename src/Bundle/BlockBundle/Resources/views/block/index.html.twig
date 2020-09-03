@@ -2,6 +2,16 @@
 
 {% form_theme facetFilter 'IntegratedBlockBundle:form:form_div_filter.html.twig' %}
 
+{% block crumbs %}
+    <div class="breadcrumb-holder">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="active">{% trans %}Blocks{% endtrans %}</li>
+            </ol>
+        </div>
+    </div>
+{% endblock %}
+
 {% block content %}
     <div class="row">
         <div class="col-md-8 push-sm-down">
