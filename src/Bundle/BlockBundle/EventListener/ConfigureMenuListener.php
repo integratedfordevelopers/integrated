@@ -79,7 +79,7 @@ class ConfigureMenuListener implements EventSubscriberInterface
             $hasBlocks = $session->get('hasBlocks', false);
 
             if ($session->has('hasBlocks') && $user = $this->tokenStorage->getToken()->getUser()) {
-                $hasBlocks = (bool) count($this->filterQueryProvider->getBlockIds([], $user));
+                $hasBlocks = (bool) \count($this->filterQueryProvider->getBlockIds([], $user));
                 $session->set('hasBlocks', $hasBlocks);
             }
 

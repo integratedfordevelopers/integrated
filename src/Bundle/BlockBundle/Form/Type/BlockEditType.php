@@ -27,8 +27,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class BlockEditType extends AbstractType
 {
     /**
-     * @param LayoutLocator            $layoutLocator
-     * @param GroupManagerInterface    $groupManager
+     * @param LayoutLocator         $layoutLocator
+     * @param GroupManagerInterface $groupManager
      */
     public function __construct(
         LayoutLocator $layoutLocator,
@@ -44,7 +44,7 @@ class BlockEditType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $layouts = $this->layoutLocator->getLayouts($options['type']);
-        if (count($layouts) === 1) {
+        if (\count($layouts) === 1) {
             $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($layouts) {
                 $data = $event->getData();
                 if ($data instanceof Block) {

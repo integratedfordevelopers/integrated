@@ -53,6 +53,7 @@ class FilterQueryProvider
      * @param object|null $groupUser
      *
      * @return \Doctrine\MongoDB\Query\Builder
+     *
      * @throws \MongoException
      */
     public function getBlocksByChannelQueryBuilder($data, ?object $groupUser)
@@ -93,6 +94,7 @@ class FilterQueryProvider
      * @param object|null $groupUser
      *
      * @return array
+     *
      * @throws \MongoException
      */
     public function getBlockIds($data, ?object $groupUser)
