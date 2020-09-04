@@ -71,7 +71,7 @@
                                 {{ icon('pencil') }}
                             </a>
                             &nbsp;
-                            {% if not block.locked %}
+                            {% if not block.locked and (is_granted('ROLE_ADMIN') or is_granted('ROLE_WEBSITE_MANAGER')) %}
                                 {% if pageBundleInstalled and not integrated_find_pages(block) %}
                                     <a href="{{ path('integrated_block_block_delete', { 'id': block.id }) }}" title="{% trans %}Delete{% endtrans %}">
                                         {{ icon('remove-circle') }}

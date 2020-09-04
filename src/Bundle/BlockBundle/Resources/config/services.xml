@@ -37,6 +37,9 @@
 
         <service id="integrated_block.configure_menu" class="%integrated_block.configure_menu.class%">
             <argument type="service" id="security.authorization_checker" />
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="integrated_block.provider.filter_query" />
+
             <tag name="kernel.event_subscriber" />
         </service>
 

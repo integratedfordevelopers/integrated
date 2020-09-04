@@ -15,18 +15,20 @@
 {% block content %}
     <div class="row">
         <div class="col-md-8 push-sm-down">
-            <ul class="list-inline">
-                <li class="dropdown">
-                    <a href="#" data-toggle="dropdown" role="button">{% trans %}Create new{% endtrans %} <b class="caret"></b></a>
-                    <ul role="menu" class="dropdown-menu">
-                        {% for metadata in factory.allMetadata if 'InlineTextBlock' not in metadata.class %}
-                            <li role="presentation">
-                                <a href="{{ path('integrated_block_block_new') }}?class={{ metadata.class }}">{{ metadata.type|default(metadata.class) }}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </li>
-            </ul>
+            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_WEBSITE_MANAGER') %}
+                <ul class="list-inline">
+                    <li class="dropdown">
+                        <a href="#" data-toggle="dropdown" role="button">{% trans %}Create new{% endtrans %} <b class="caret"></b></a>
+                        <ul role="menu" class="dropdown-menu">
+                            {% for metadata in factory.allMetadata if 'InlineTextBlock' not in metadata.class %}
+                                <li role="presentation">
+                                    <a href="{{ path('integrated_block_block_new') }}?class={{ metadata.class }}">{{ metadata.type|default(metadata.class) }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                </ul>
+`           {% endif %}
 
             {% include 'IntegratedBlockBundle:block/partials:block_list.html.twig' %}
 
