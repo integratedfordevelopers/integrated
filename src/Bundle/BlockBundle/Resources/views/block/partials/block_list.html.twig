@@ -70,6 +70,7 @@
                             <a href="{{ path('integrated_block_block_edit', { 'id': block.id }) }}"  title="{% trans %}Edit{% endtrans %}">
                                 {{ icon('pencil') }}
                             </a>
+                            &nbsp;
                             {% if not block.locked %}
                                 {% if pageBundleInstalled and not integrated_find_pages(block) %}
                                     <a href="{{ path('integrated_block_block_delete', { 'id': block.id }) }}" title="{% trans %}Delete{% endtrans %}">

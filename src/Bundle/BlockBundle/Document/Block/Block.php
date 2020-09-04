@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\BlockBundle\Document\Block;
 
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
+use Integrated\Bundle\UserBundle\Model\GroupInterface;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -84,6 +85,11 @@ abstract class Block implements BlockInterface
      * @var bool
      */
     protected $locked = false;
+
+    /**
+     * @var array
+     */
+    protected $groups = [];
 
     public function __construct($id = null)
     {
@@ -293,6 +299,59 @@ abstract class Block implements BlockInterface
         $this->locked = (bool) $locked;
 
         return $this;
+    }
+
+    /**
+     * @return int[]
+     */
+    public function getGroups()
+    {
+        return $this->groups;
+    }
+
+    /**
+     * @return array
+     */
+    public function hasGroup(int $group)
+    {
+        foreach ($this->groups as $item) {
+            if ($item === $group) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param GroupInterface[] $groups
+     *
+     * @return bool
+     */
+    public function allowsGroupAccess(array $groups)
+    {
+        foreach ($groups as $group) {
+            if ($this->hasGroup($group->getId())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param int[] $groups
+     */
+    public function setGroups(array $groups): void
+    {
+        $this->groups = [];
+
+        foreach ($groups as $group) {
+            if ($group instanceof GroupInterface) {
+                $group = $group->getId();
+            }
+            $this->groups[] = $group;
+        }
     }
 
     /**

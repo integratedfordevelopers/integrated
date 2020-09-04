@@ -14,6 +14,14 @@
                 <source>Type</source>
                 <target>Soort</target>
             </trans-unit>
+            <trans-unit id="4">
+                <source>Block</source>
+                <target>Blok</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>User group access</source>
+                <target>Toegang voor gebruikersgroepen</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

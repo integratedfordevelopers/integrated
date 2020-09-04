@@ -18,6 +18,7 @@
         <field name="publishedUntil" type="date" />
         <field name="disabled" type="boolean" />
         <field name="locked" type="boolean" />
+        <field name="groups" type="collection" />
 
         <discriminator-field name="class" />
 

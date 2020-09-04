@@ -13,13 +13,11 @@ namespace Integrated\Bundle\BlockBundle\Controller;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
+use Integrated\Bundle\BlockBundle\Form\Type\BlockEditType;
 use Integrated\Bundle\BlockBundle\Form\Type\BlockFilterType;
-use Integrated\Bundle\BlockBundle\Form\Type\LayoutChoiceType;
-use Integrated\Bundle\BlockBundle\Locator\LayoutLocator;
-use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
+use Integrated\Bundle\UserBundle\Model\User;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
-use Integrated\Common\Form\Type\MetadataType;
 use Knp\Component\Pager\Paginator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -47,26 +45,18 @@ class BlockController extends Controller
     protected $paginator;
 
     /**
-     * @var LayoutLocator
-     */
-    protected $layoutLocator;
-
-    /**
      * @param MetadataFactoryInterface $metadataFactory
      * @param DocumentManager          $documentManager
      * @param Paginator                $paginator
-     * @param LayoutLocator            $layoutLocator
      */
     public function __construct(
         MetadataFactoryInterface $metadataFactory,
         DocumentManager $documentManager,
-        Paginator $paginator,
-        LayoutLocator $layoutLocator
+        Paginator $paginator
     ) {
         $this->metadataFactory = $metadataFactory;
         $this->documentManager = $documentManager;
         $this->paginator = $paginator;
-        $this->layoutLocator = $layoutLocator;
     }
 
     /**
@@ -76,8 +66,9 @@ class BlockController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $groupUser = null;
         if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
-            throw $this->createAccessDeniedException();
+            $groupUser = $this->getUser();
         }
 
         $pageBundleInstalled = isset($this->getParameter('kernel.bundles')['IntegratedPageBundle']);
@@ -85,12 +76,12 @@ class BlockController extends Controller
         $queryProvider = $this->get('integrated_block.provider.filter_query');
 
         $facetFilter = $this->createForm(BlockFilterType::class, null, [
-            'blockIds' => $queryProvider->getBlockIds($data),
+            'blockIds' => $queryProvider->getBlockIds($data, $groupUser),
         ]);
         $facetFilter->handleRequest($request);
 
         $pagination = $this->paginator->paginate(
-            $queryProvider->getBlocksByChannelQueryBuilder($data),
+            $queryProvider->getBlocksByChannelQueryBuilder($data, $groupUser),
             $request->query->get('page', 1),
             $request->query->get('limit', 20),
             ['defaultSortFieldName' => 'title', 'defaultSortDirection' => 'asc', 'query_type' => 'block_overview']
@@ -142,7 +133,15 @@ class BlockController extends Controller
             throw $this->createNotFoundException(sprintf('Invalid block "%s"', $class));
         }
 
-        $form = $this->createCreateForm($block);
+        $form = $this->createForm(
+            BlockEditType::class,
+            $block,
+            [
+                'method' => 'PUT',
+                'data_class' => \get_class($block),
+                'type' => $block->getType(),
+            ]
+        );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -206,10 +205,21 @@ class BlockController extends Controller
     public function editAction(Request $request, Block $block)
     {
         if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
-            throw $this->createAccessDeniedException();
+            $user = $this->getUser();
+            if (!$user instanceof User || !$block->allowsGroupAccess($user->getGroups())) {
+                throw $this->createAccessDeniedException();
+            }
         }
 
-        $form = $this->createEditForm($block);
+        $form = $this->createForm(
+            BlockEditType::class,
+            $block,
+            [
+                'method' => 'POST',
+                'data_class' => \get_class($block),
+                'type' => $block->getType(),
+            ]
+        );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -270,55 +280,6 @@ class BlockController extends Controller
             'block' => $block,
             'form' => $form->createView(),
         ]);
-    }
-
-    /**
-     * @param BlockInterface $block
-     *
-     * @return \Symfony\Component\Form\FormInterface
-     */
-    protected function createCreateForm(BlockInterface $block)
-    {
-        $form = $this->createEditForm($block);
-
-        //overwrite edit form
-        $form->add('actions', SaveCancelType::class, [
-            'cancel_route' => 'integrated_block_block_index',
-            'label' => 'Create',
-            'button_class' => '',
-        ]);
-
-        return $form;
-    }
-
-    /**
-     * @param BlockInterface $block
-     *
-     * @return \Symfony\Component\Form\FormInterface
-     */
-    protected function createEditForm(BlockInterface $block)
-    {
-        $form = $this->createForm(
-            MetadataType::class,
-            $block,
-            [
-                'method' => 'PUT',
-                'data_class' => \get_class($block),
-            ]
-        );
-
-        $layouts = $this->layoutLocator->getLayouts($block->getType());
-        if (count($layouts) === 1) {
-            $block->setLayout($layouts[0]);
-        } else {
-            $form->add('layout', LayoutChoiceType::class, [
-                'type' => $block->getType(),
-            ]);
-        }
-
-        $form->add('actions', SaveCancelType::class, ['cancel_route' => 'integrated_block_block_index']);
-
-        return $form;
     }
 
     /**

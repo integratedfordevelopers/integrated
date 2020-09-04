@@ -28,7 +28,7 @@
         <default key="_format">json</default>
     </route>
 
-    <route id="integrated_block_block_edit" path="/{id}/edit/{_format}" methods="GET|PUT">
+    <route id="integrated_block_block_edit" path="/{id}/edit/{_format}" methods="GET|POST">
         <default key="_controller">IntegratedBlockBundle:Block:edit</default>
         <default key="_format">html</default>
         <requirement key="_format">html|iframe.html</requirement>

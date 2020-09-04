@@ -10,7 +10,6 @@
             <argument type="service" id="integrated_block.metadata.factory"/>
             <argument type="service" id="doctrine_mongodb.odm.document_manager"/>
             <argument type="service" id="knp_paginator"/>
-            <argument type="service" id="integrated_block.layout_locator"/>
 
             <tag name="controller.service_arguments"/>
         </service>
@@ -19,7 +18,6 @@
             <argument type="service" id="integrated_block.metadata.factory"/>
             <argument type="service" id="doctrine_mongodb.odm.document_manager"/>
             <argument type="service" id="knp_paginator"/>
-            <argument type="service" id="integrated_block.layout_locator"/>
 
             <tag name="controller.service_arguments"/>
         </service>
