@@ -16,9 +16,9 @@
 
                 <thead>
                 <tr>
-                    <th>{{ knp_pagination_sortable(blocks, 'Block name', 'title') }}</th>
-                    <th>{{ knp_pagination_sortable(blocks, 'Short code', 'id') }}</th>
-                    <th>{{ knp_pagination_sortable(blocks, 'Type', 'type') }}</th>
+                    <th>{{ knp_pagination_sortable(blocks, 'Block name'|trans, 'title') }}</th>
+                    <th>{{ knp_pagination_sortable(blocks, 'Short code'|trans, 'id') }}</th>
+                    <th>{{ knp_pagination_sortable(blocks, 'Type'|trans, 'type') }}</th>
                     {% if pageBundleInstalled %}
                         <th>{% trans %}Usage{% endtrans %}</th>
                     {% endif %}

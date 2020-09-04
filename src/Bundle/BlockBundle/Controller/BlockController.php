@@ -11,12 +11,16 @@
 
 namespace Integrated\Bundle\BlockBundle\Controller;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
 use Integrated\Bundle\BlockBundle\Form\Type\BlockFilterType;
 use Integrated\Bundle\BlockBundle\Form\Type\LayoutChoiceType;
+use Integrated\Bundle\BlockBundle\Locator\LayoutLocator;
 use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
 use Integrated\Common\Block\BlockInterface;
+use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Integrated\Common\Form\Type\MetadataType;
+use Knp\Component\Pager\Paginator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,6 +31,44 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class BlockController extends Controller
 {
+    /**
+     * @var MetadataFactoryInterface
+     */
+    protected $metadataFactory;
+
+    /**
+     * @var DocumentManager
+     */
+    protected $documentManager;
+
+    /**
+     * @var Paginator
+     */
+    protected $paginator;
+
+    /**
+     * @var LayoutLocator
+     */
+    protected $layoutLocator;
+
+    /**
+     * @param MetadataFactoryInterface $metadataFactory
+     * @param DocumentManager          $documentManager
+     * @param Paginator                $paginator
+     * @param LayoutLocator            $layoutLocator
+     */
+    public function __construct(
+        MetadataFactoryInterface $metadataFactory,
+        DocumentManager $documentManager,
+        Paginator $paginator,
+        LayoutLocator $layoutLocator
+    ) {
+        $this->metadataFactory = $metadataFactory;
+        $this->documentManager = $documentManager;
+        $this->paginator = $paginator;
+        $this->layoutLocator = $layoutLocator;
+    }
+
     /**
      * @param Request $request
      *
@@ -47,7 +89,7 @@ class BlockController extends Controller
         ]);
         $facetFilter->handleRequest($request);
 
-        $pagination = $this->getPaginator()->paginate(
+        $pagination = $this->paginator->paginate(
             $queryProvider->getBlocksByChannelQueryBuilder($data),
             $request->query->get('page', 1),
             $request->query->get('limit', 20),
@@ -56,7 +98,7 @@ class BlockController extends Controller
 
         return $this->render(sprintf('IntegratedBlockBundle:block:index.%s.twig', $request->getRequestFormat()), [
             'blocks' => $pagination,
-            'factory' => $this->getFactory(),
+            'factory' => $this->metadataFactory,
             'pageBundleInstalled' => $pageBundleInstalled,
             'facetFilter' => $facetFilter->createView(),
         ]);
@@ -104,10 +146,8 @@ class BlockController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $dm = $this->getDocumentManager();
-
-            $dm->persist($block);
-            $dm->flush();
+            $this->documentManager->persist($block);
+            $this->documentManager->flush();
 
             if ('iframe.html' === $request->getRequestFormat()) {
                 return $this->render('IntegratedBlockBundle:block:saved.iframe.html.twig', ['id' => $block->getId()]);
@@ -151,8 +191,8 @@ class BlockController extends Controller
 
         $block->setTitle($name);
         $block->setLayout('default.html.twig');
-        $this->getDocumentManager()->persist($block);
-        $this->getDocumentManager()->flush();
+        $this->documentManager->persist($block);
+        $this->documentManager->flush();
 
         return new JsonResponse(['result' => 'ok']);
     }
@@ -173,7 +213,7 @@ class BlockController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDocumentManager()->flush();
+            $this->documentManager->flush();
 
             if ('iframe.html' === $request->getRequestFormat()) {
                 return $this->render('IntegratedBlockBundle:block:saved.iframe.html.twig', [
@@ -208,9 +248,8 @@ class BlockController extends Controller
         }
 
         /* check if current Block not used on some page */
-        $dm = $this->getDocumentManager();
         if ($this->container->has('integrated_page.form.type.page')) {
-            if ($dm->getRepository(Block::class)->isUsed($block)) {
+            if ($this->documentManager->getRepository(Block::class)->isUsed($block)) {
                 throw $this->createNotFoundException(sprintf('Block "%s" is used.', $block->getId()));
             }
         }
@@ -219,8 +258,8 @@ class BlockController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $dm->remove($block);
-            $dm->flush();
+            $this->documentManager->remove($block);
+            $this->documentManager->flush();
 
             $this->get('braincrafted_bootstrap.flash')->success('Block deleted');
 
@@ -268,9 +307,14 @@ class BlockController extends Controller
             ]
         );
 
-        $form->add('layout', LayoutChoiceType::class, [
-            'type' => $block->getType(),
-        ]);
+        $layouts = $this->layoutLocator->getLayouts($block->getType());
+        if (count($layouts) === 1) {
+            $block->setLayout($layouts[0]);
+        } else {
+            $form->add('layout', LayoutChoiceType::class, [
+                'type' => $block->getType(),
+            ]);
+        }
 
         $form->add('actions', SaveCancelType::class, ['cancel_route' => 'integrated_block_block_index']);
 
@@ -291,29 +335,5 @@ class BlockController extends Controller
         $builder->add('submit', SubmitType::class, ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']]);
 
         return $builder->getForm();
-    }
-
-    /**
-     * @return \Doctrine\ODM\MongoDB\DocumentManager
-     */
-    protected function getDocumentManager()
-    {
-        return $this->get('doctrine_mongodb')->getManager();
-    }
-
-    /**
-     * @return \Knp\Component\Pager\Paginator
-     */
-    protected function getPaginator()
-    {
-        return $this->get('knp_paginator');
-    }
-
-    /**
-     * @return \Integrated\Common\Form\Mapping\MetadataFactoryInterface
-     */
-    protected function getFactory()
-    {
-        return $this->get('integrated_block.metadata.factory');
     }
 }

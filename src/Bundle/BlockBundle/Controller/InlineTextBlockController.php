@@ -40,8 +40,8 @@ class InlineTextBlockController extends BlockController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDocumentManager()->persist($block);
-            $this->getDocumentManager()->flush();
+            $this->documentManager->persist($block);
+            $this->documentManager->flush();
 
             return $this->render('IntegratedBlockBundle:block:saved.iframe.html.twig', ['id' => $block->getId()]);
         }

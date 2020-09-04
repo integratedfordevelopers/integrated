@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="Integrated\Bundle\BlockBundle\Controller\BlockController">
+            <argument type="service" id="integrated_block.metadata.factory"/>
+            <argument type="service" id="doctrine_mongodb.odm.document_manager"/>
+            <argument type="service" id="knp_paginator"/>
+            <argument type="service" id="integrated_block.layout_locator"/>
+
+            <tag name="controller.service_arguments"/>
+        </service>
+
+        <service id="Integrated\Bundle\BlockBundle\Controller\InlineTextBlockController">
+            <argument type="service" id="integrated_block.metadata.factory"/>
+            <argument type="service" id="doctrine_mongodb.odm.document_manager"/>
+            <argument type="service" id="knp_paginator"/>
+            <argument type="service" id="integrated_block.layout_locator"/>
+
+            <tag name="controller.service_arguments"/>
+        </service>
+
+    </services>
+
+</container>
