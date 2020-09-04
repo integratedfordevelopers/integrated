@@ -27,6 +27,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class BlockEditType extends AbstractType
 {
     /**
+     * @var LayoutLocator
+     */
+    private $layoutLocator;
+
+    /**
+     * @var GroupManagerInterface
+     */
+    private $groupManager;
+
+    /**
      * @param LayoutLocator         $layoutLocator
      * @param GroupManagerInterface $groupManager
      */
