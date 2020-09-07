@@ -23,6 +23,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class BlockEditType extends AbstractType
 {
@@ -32,19 +33,27 @@ class BlockEditType extends AbstractType
     private $layoutLocator;
 
     /**
+     * @var AuthorizationCheckerInterface
+     */
+    private $authorizationChecker;
+
+    /**
      * @var GroupManagerInterface
      */
     private $groupManager;
 
     /**
-     * @param LayoutLocator         $layoutLocator
-     * @param GroupManagerInterface $groupManager
+     * @param LayoutLocator                 $layoutLocator
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param GroupManagerInterface         $groupManager
      */
     public function __construct(
         LayoutLocator $layoutLocator,
+        AuthorizationCheckerInterface $authorizationChecker,
         GroupManagerInterface $groupManager
     ) {
         $this->layoutLocator = $layoutLocator;
+        $this->authorizationChecker = $authorizationChecker;
         $this->groupManager = $groupManager;
     }
 
@@ -67,17 +76,19 @@ class BlockEditType extends AbstractType
             ]);
         }
 
-        $builder->add('groups', GroupType::class, [
-            'required' => false,
-            'multiple' => true,
-            'label' => 'User group access',
-            'attr' => [
-                'class' => 'select2',
-                'data-placeholder' => 'Block managers only',
-            ],
-        ]);
+        if ($this->authorizationChecker->isGranted('ROLE_WEBSITE_MANAGER') || $this->authorizationChecker->isGranted('ROLE_ADMIN')) {
+            $builder->add('groups', GroupType::class, [
+                'required' => false,
+                'multiple' => true,
+                'label' => 'User group access',
+                'attr' => [
+                    'class' => 'select2',
+                    'data-placeholder' => 'Block managers only',
+                ],
+            ]);
 
-        $builder->get('groups')->addModelTransformer(new GroupTransformer($this->groupManager));
+            $builder->get('groups')->addModelTransformer(new GroupTransformer($this->groupManager));
+        }
 
         if ($options['method'] == 'PUT') {
             $builder->add('actions', SaveCancelType::class, [
