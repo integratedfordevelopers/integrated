@@ -316,7 +316,7 @@ abstract class Block implements BlockInterface
      */
     public function hasGroup(int $group)
     {
-        if (in_array($group, $this->groups)) {
+        if (\in_array($group, $this->groups)) {
             return true;
         }
 
