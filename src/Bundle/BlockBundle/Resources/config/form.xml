@@ -21,6 +21,14 @@
             <tag name="form.type" />
         </service>
 
+        <service id="Integrated\Bundle\BlockBundle\Form\Type\BlockEditType">
+            <argument type="service" id="integrated_block.layout_locator"/>
+            <argument type="service" id="security.authorization_checker"/>
+            <argument type="service" id="integrated_user.group.manager"/>
+
+            <tag name="form.type" />
+        </service>
+
         <service id="integrated_block.form.type.block_size" class="Integrated\Bundle\BlockBundle\Form\Type\BlockSizeType">
             <tag name="form.type" />
         </service>
