@@ -310,14 +310,14 @@ abstract class Block implements BlockInterface
     }
 
     /**
-     * @return array
+     * @param int $group
+     *
+     * @return bool
      */
     public function hasGroup(int $group)
     {
-        foreach ($this->groups as $item) {
-            if ($item === $group) {
-                return true;
-            }
+        if (in_array($group, $this->groups)) {
+            return true;
         }
 
         return false;
@@ -340,7 +340,7 @@ abstract class Block implements BlockInterface
     }
 
     /**
-     * @param int[] $groups
+     * @param int[]|GroupInterface[] $groups
      */
     public function setGroups(array $groups): void
     {
@@ -350,7 +350,7 @@ abstract class Block implements BlockInterface
             if ($group instanceof GroupInterface) {
                 $group = $group->getId();
             }
-            $this->groups[] = $group;
+            $this->groups[] = (int) $group;
         }
     }
 

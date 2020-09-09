@@ -66,9 +66,9 @@ class BlockController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $groupUser = null;
+        $user = null;
         if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
-            $groupUser = $this->getUser();
+            $user = $this->getUser();
         }
 
         $pageBundleInstalled = isset($this->getParameter('kernel.bundles')['IntegratedPageBundle']);
@@ -76,12 +76,12 @@ class BlockController extends Controller
         $queryProvider = $this->get('integrated_block.provider.filter_query');
 
         $facetFilter = $this->createForm(BlockFilterType::class, null, [
-            'blockIds' => $queryProvider->getBlockIds($data, $groupUser),
+            'blockIds' => $queryProvider->getBlockIds($data, $user),
         ]);
         $facetFilter->handleRequest($request);
 
         $pagination = $this->paginator->paginate(
-            $queryProvider->getBlocksByChannelQueryBuilder($data, $groupUser),
+            $queryProvider->getBlocksByChannelQueryBuilder($data, $user),
             $request->query->get('page', 1),
             $request->query->get('limit', 20),
             ['defaultSortFieldName' => 'title', 'defaultSortDirection' => 'asc', 'query_type' => 'block_overview']
