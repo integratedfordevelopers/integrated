@@ -107,7 +107,10 @@ class RedirectContentSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $url = $this->urlResolver->generateUrl($document);
+        $url = $this->urlResolver->generateUrl($document, null, false);
+        if ($url === null || $url === $request->getRequestUri()) {
+            return;
+        }
 
         try {
             $this->matcher->match($url);
