@@ -2,6 +2,16 @@
 
 {% form_theme facetFilter 'IntegratedBlockBundle:form:form_div_filter.html.twig' %}
 
+{% block crumbs %}
+    <div class="breadcrumb-holder">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="active">{% trans %}Users{% endtrans %}</li>
+            </ol>
+        </div>
+    </div>
+{% endblock %}
+
 {% block content %}
     <div class="row">
         <div class="col-md-8 push-sm-down">
@@ -32,13 +42,17 @@
                         </div>
                     </div>
 
+                    {% block user_filter_groups %}
                     <div class="aside-item-holder {% if facetFilter.groups|length == 0 %} hidden{% endif %}">
                         {{ form_row(facetFilter.groups) }}
                     </div>
+                    {% endblock %}
 
+                    {% block user_filter_scope %}
                     <div class="aside-item-holder {% if facetFilter.scope|length == 0 %} hidden{% endif %}">
                         {{ form_row(facetFilter.scope) }}
                     </div>
+                    {% endblock %}
 
                     {{ form_end(facetFilter) }}
                 </div>
