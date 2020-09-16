@@ -1,0 +1,23 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% block crumbs %}
+    <div class="breadcrumb-holder">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{{ path('integrated_theme_scraper_index') }}">{% trans %}Scrapers{% endtrans %}</a>
+                </li>
+                <li class="active">{% trans %}New{% endtrans %}</li>
+            </ol>
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 push-sm-down">
+            <h1 class="main-title font-regular">{% trans %}New{% endtrans %}</h1>
+            <section class="section-white section-padding section-shadow section-radius">
+                {{ form(form, { 'style': 'horizontal' }) }}
+            </section>
+        </div>
+    </div>
+{% endblock %}

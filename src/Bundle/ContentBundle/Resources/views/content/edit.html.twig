@@ -75,22 +75,24 @@
                             {% endif %}
                         {% endif %}
 
-                        {% if content is defined %}
-                            {% if content.getChannels|length > 0 %}
-                                <div class="aside-item-holder section-white">
-                                    {% for channel in content.getChannels %}
-                                        {% set domain = channel.primaryDomain|default(channel.domains(0))|default("") %}
-                                        {% if (domain != "") %}
-                                            {% if (domain == app.request.httphost) %}
-                                                <a href="{{ integrated_url(content) }}">View on {{ channel.name }}</a><br />
-                                            {% else %}
-                                                <a href="//{{ domain }}{{ path('integrated_website_enter_session', {'sessionId': app.session.id, 'path': integrated_url(content)}) }}">View on {{ channel.name }}</a><br />
+                        {% block content_website_links %}
+                            {% if content is defined %}
+                                {% if content.getChannels|length > 0 %}
+                                    <div class="aside-item-holder section-white">
+                                        {% for channel in content.getChannels %}
+                                            {% set domain = channel.primaryDomain|default(channel.domains(0))|default("") %}
+                                            {% set url = integrated_url(content, channel.id, false) %}
+                                            {% if (domain != "" and url) %}
+                                                {% if (domain != app.request.httphost) %}
+                                                    {% set url = "//" ~ domain ~ path('integrated_website_enter_session', {'sessionId': app.session.id, 'path': url}) %}
+                                                {% endif %}
+                                                <a href="{{ url }}">{% trans %}View on{% endtrans %} {{ channel.name }}</a><br />
                                             {% endif %}
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
                             {% endif %}
-                        {% endif %}
+                        {% endblock %}
 
                         <div class="aside-item-holder section-white" id="used-by">
                         </div>

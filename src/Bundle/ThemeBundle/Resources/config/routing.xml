@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="integrated_theme_scraper_index" path="/scraper" methods="GET">
+        <default key="_controller">IntegratedThemeBundle:Scraper:index</default>
+    </route>
+
+    <route id="integrated_theme_scraper_new" path="/scraper/new">
+        <default key="_controller">IntegratedThemeBundle:Scraper:new</default>
+    </route>
+
+    <route id="integrated_theme_scraper_edit" path="/scraper/{id}">
+        <default key="_controller">IntegratedThemeBundle:Scraper:edit</default>
+    </route>
+
+    <route id="integrated_theme_scraper_delete" path="/scraper/{id}/delete">
+        <default key="_controller">IntegratedThemeBundle:Scraper:delete</default>
+    </route>
+
+</routes>

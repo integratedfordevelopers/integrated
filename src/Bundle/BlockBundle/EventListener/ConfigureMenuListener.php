@@ -11,8 +11,11 @@
 
 namespace Integrated\Bundle\BlockBundle\EventListener;
 
+use Integrated\Bundle\BlockBundle\Provider\FilterQueryProvider;
 use Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
@@ -31,11 +34,28 @@ class ConfigureMenuListener implements EventSubscriberInterface
     protected $authorizationChecker;
 
     /**
-     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @var TokenStorageInterface
      */
-    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
-    {
+    private $tokenStorage;
+
+    /**
+     * @var FilterQueryProvider
+     */
+    private $filterQueryProvider;
+
+    /**
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param TokenStorageInterface         $tokenStorage
+     * @param FilterQueryProvider           $filterQueryProvider
+     */
+    public function __construct(
+        AuthorizationCheckerInterface $authorizationChecker,
+        TokenStorageInterface $tokenStorage,
+        FilterQueryProvider $filterQueryProvider
+    ) {
         $this->authorizationChecker = $authorizationChecker;
+        $this->tokenStorage = $tokenStorage;
+        $this->filterQueryProvider = $filterQueryProvider;
     }
 
     /**
@@ -55,7 +75,17 @@ class ConfigureMenuListener implements EventSubscriberInterface
     {
         if (!$this->authorizationChecker->isGranted(self::ROLE_WEBSITE_MANAGER) &&
             !$this->authorizationChecker->isGranted(self::ROLE_ADMIN)) {
-            return;
+            $session = new Session();
+            $hasBlocks = $session->get('hasBlocks', false);
+
+            if (!$session->has('hasBlocks') && $user = $this->tokenStorage->getToken()->getUser()) {
+                $hasBlocks = (bool) \count($this->filterQueryProvider->getBlockIds([], $user));
+                $session->set('hasBlocks', $hasBlocks);
+            }
+
+            if (!$hasBlocks) {
+                return;
+            }
         }
 
         $menu = $event->getMenu();

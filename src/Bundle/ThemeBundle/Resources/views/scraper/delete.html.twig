@@ -1,0 +1,39 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+
+{% block crumbs %}
+    <div class="breadcrumb-holder">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{{ path('integrated_theme_scraper_index') }}">{% trans %}Scrapers{% endtrans %}</a>
+                </li>
+                <li class="active">{% trans %}Delete{% endtrans %}</li>
+            </ol>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <h1 class="main-title font-regular">
+        {% trans %}Delete{% endtrans %} {{ scraper.name }}
+        <i class="integrate-icon-edit"></i>
+    </h1>
+
+    <div class="row">
+        <div class="col-md-12">
+            <section class="section-white section-padding section-shadow section-radius">
+                <p>
+                    {% trans with {'%name%': scraper.name} %}
+                        You are about to delete "%name%", click the delete button below to confirm the action.
+                    {% endtrans %}
+                </p>
+                <p>
+                    <a class="btn btn-primary" href="{{ path('integrated_theme_scraper_index') }}">
+                        {% trans %}Cancel{% endtrans %}
+                    </a>
+                </p>
+                {{ form(form) }}
+            </section>
+        </div>
+    </div>
+{% endblock %}

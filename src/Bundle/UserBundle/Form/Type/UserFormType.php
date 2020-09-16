@@ -22,6 +22,7 @@ use ReflectionClass;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\Extension\Validator\Constraints\FormValidator;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\Options;
@@ -186,7 +187,7 @@ class UserFormType extends AbstractType
                 $method = $reflection->getMethod('getValidationGroups');
                 $method->setAccessible(true);
 
-                return $method->invoke(null, $form->getParent());
+                return $method->invoke(new FormValidator(), $form->getParent());
             };
         };
 

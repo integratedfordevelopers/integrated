@@ -14,6 +14,7 @@ namespace Integrated\Bundle\BlockBundle\Provider;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
 use Integrated\Bundle\BlockBundle\Document\Block\InlineTextBlock;
+use Integrated\Bundle\UserBundle\Model\UserInterface;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
@@ -48,11 +49,14 @@ class FilterQueryProvider
     }
 
     /**
-     * @param array|null $data
+     * @param array|null  $data
+     * @param object|null $groupUser
      *
      * @return \Doctrine\MongoDB\Query\Builder
+     *
+     * @throws \MongoException
      */
-    public function getBlocksByChannelQueryBuilder($data)
+    public function getBlocksByChannelQueryBuilder($data, ?object $groupUser)
     {
         $qb = $this->mr->getManager()->createQueryBuilder(Block::class);
 
@@ -78,17 +82,24 @@ class FilterQueryProvider
             $qb->field('id')->in($availableBlockIds);
         }
 
+        if ($groupUser !== null) {
+            $qb->field('groups')->in($this->getUserGroupIds($groupUser));
+        }
+
         return $qb;
     }
 
     /**
-     * @param array|null $data
+     * @param array|null  $data
+     * @param object|null $groupUser
      *
      * @return array
+     *
+     * @throws \MongoException
      */
-    public function getBlockIds($data)
+    public function getBlockIds($data, ?object $groupUser)
     {
-        $queryBuilder = $this->getBlocksByChannelQueryBuilder($data);
+        $queryBuilder = $this->getBlocksByChannelQueryBuilder($data, $groupUser);
 
         $blocks = $queryBuilder->select('_id')
             ->hydrate(false)
@@ -97,5 +108,22 @@ class FilterQueryProvider
             ->toArray();
 
         return array_keys($blocks);
+    }
+
+    /**
+     * @param object $user
+     *
+     * @return array
+     */
+    private function getUserGroupIds($user)
+    {
+        $groupIds = [];
+        if ($user instanceof UserInterface) {
+            foreach ($user->getGroups() as $group) {
+                $groupIds[] = $group->getId();
+            }
+        }
+
+        return $groupIds;
     }
 }

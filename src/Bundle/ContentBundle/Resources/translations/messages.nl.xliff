@@ -531,22 +531,26 @@
                 <target>Formulier ingestuurd</target>
             </trans-unit>
             <trans-unit id="136">
+                <source>View on</source>
+                <target>Tonen op</target>
+            </trans-unit>
+            <trans-unit id="137">
                 <source>Rank</source>
                 <target>Volgorde</target>
             </trans-unit>
-            <trans-unit id="137">
+            <trans-unit id="138">
                 <source>After</source>
                 <target>Na</target>
             </trans-unit>
-            <trans-unit id="138">
+            <trans-unit id="139">
                 <source>First item</source>
                 <target>1e item</target>
             </trans-unit>
-            <trans-unit id="139">
+            <trans-unit id="140">
                 <source>Current position</source>
                 <target>Huidige positie</target>
             </trans-unit>
-            <trans-unit id="140">
+            <trans-unit id="141">
                 <source>Keep current position</source>
                 <target>Behoud huidige positie</target>
             </trans-unit>

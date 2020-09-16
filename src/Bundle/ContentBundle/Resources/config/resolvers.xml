@@ -18,7 +18,7 @@
             <argument type="string">Integrated\Bundle\ContentBundle\Document\ContentType\ContentType</argument>
         </service>
 
-        <service id="integrated_content.resolver.mongodb" class="Integrated\Common\ContentType\Resolver\MongoDBResolver">
+        <service id="integrated_content.resolver.mongodb" class="Integrated\Common\ContentType\Resolver\MongoDBResolver" lazy="true">
             <argument type="service" id="integrated_content.resolver.mongodb.repository" />
 
             <tag name="integrated_content.resolver" priority="10" />

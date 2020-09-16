@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="Integrated\Bundle\ThemeBundle\EventListener\ConfigureMenuSubscriber">
+            <argument type="service" id="security.authorization_checker" />
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="integrated_theme.event_listener.content_image_listener" class="Integrated\Bundle\ThemeBundle\EventListener\Objects\ContentImageListener">
+            <argument type="service" id="integrated_theme.templating.theme_manager" />
+            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <argument type="service" id="templating" />
+            <argument type="service" id="integrated_slug.slugger" />
+            <argument>%kernel.environment%</argument>
+            <tag name="kernel.event_listener" event="content.event" method="replaceImages" />
+        </service>
+
+    </services>
+</container>
