@@ -34,6 +34,14 @@
                 <source>Password will only be changed if a new password is entered</source>
                 <target>Het wachtwoord wordt alleen gewijzigd als u een nieuw wachtwoord invult</target>
             </trans-unit>
+            <trans-unit id="9">
+                <source>Find by username</source>
+                <target>Zoek op gebruikersnaam</target>
+            </trans-unit>
+            <trans-unit id="10">
+                <source>Date created</source>
+                <target>Datum aangemaakt</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

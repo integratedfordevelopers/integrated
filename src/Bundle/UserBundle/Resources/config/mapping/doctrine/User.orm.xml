@@ -9,6 +9,10 @@
             <unique-constraint columns="username,scope"></unique-constraint>
         </unique-constraints>
 
+        <indexes>
+            <index columns="relation"></index>
+        </indexes>
+
         <id name="id" column="id" type="integer">
             <generator strategy="AUTO"/>
         </id>

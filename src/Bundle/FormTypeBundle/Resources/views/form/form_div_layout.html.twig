@@ -294,7 +294,7 @@
     {% spaceless %}
         <select {{ block('widget_attributes') }}>
             {% if data %}
-                <option value="{{ data }}" selected="selected">Keep current position</option>
+                <option value="{{ data }}" selected="selected">{% trans%}Keep current position{% endtrans %}</option>
             {% endif %}
         </select>
     {% endspaceless %}

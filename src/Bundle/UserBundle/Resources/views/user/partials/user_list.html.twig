@@ -11,11 +11,11 @@
         <thead>
         <tr>
             <th>{{ knp_pagination_sortable(users, '#', 'id') }}</th>
-            <th>{{ knp_pagination_sortable(users, 'Username', 'username')}}</th>
-            <th>{{ knp_pagination_sortable(users, 'Scope', 'scope.name')}}</th>
-            <th>{{ knp_pagination_sortable(users, 'Datum aangemaaakt', 'createdAt')}}</th>
-            <th>Relation</th>
-            <th>Acties</th>
+            <th>{{ knp_pagination_sortable(users, 'Username'|trans, 'username')}}</th>
+            <th>{{ knp_pagination_sortable(users, 'Scope'|trans, 'scope.name')}}</th>
+            <th>{{ knp_pagination_sortable(users, 'Date created'|trans, 'createdAt')}}</th>
+            <th>{% trans %}Relation{% endtrans %}</th>
+            <th>{% trans %}Actions{% endtrans %}</th>
         </tr>
         </thead>
 
