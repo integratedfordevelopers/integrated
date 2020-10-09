@@ -20,7 +20,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Remove unused files from the storage
+ * Remove unused files from the storage.
  */
 class CleanCommand extends Command
 {
@@ -35,8 +35,8 @@ class CleanCommand extends Command
     protected $registry;
 
     /**
-     * @param DatabaseInterface        $database
-     * @param FilesystemRegistry       $registry
+     * @param DatabaseInterface  $database
+     * @param FilesystemRegistry $registry
      */
     public function __construct(
         DatabaseInterface $database,
