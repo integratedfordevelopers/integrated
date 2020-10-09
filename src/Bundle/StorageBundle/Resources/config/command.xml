@@ -21,6 +21,13 @@
             <tag name="console.command" />
         </service>
 
+        <service id="integrated_storage.command_filesystem_clean" class="Integrated\Bundle\StorageBundle\Command\Filesystem\CleanCommand">
+            <argument type="service" id="integrated_storage.database" />
+            <argument type="service" id="integrated_storage.registry" />
+
+            <tag name="console.command" />
+        </service>
+
         <service id="integrated_storage.command_add" class="Integrated\Bundle\StorageBundle\Command\Filesystem\AddCommand">
             <argument type="service" id="integrated_storage.database" />
             <argument type="service" id="integrated_storage.registry" />
