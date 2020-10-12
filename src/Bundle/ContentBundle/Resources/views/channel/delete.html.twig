@@ -1,0 +1,29 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% block crumbs %}
+    <div class="breadcrumb-holder">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{{ path('integrated_content_channel_index') }}">{% trans %}Channel{% endtrans %}</a>
+                </li>
+                <li class="active">{% trans %}Delete{% endtrans %}</li>
+            </ol>
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 push-sm-down">
+            <h1 class="main-title font-regular"><h1>{% trans %}Delete{% endtrans %} <small>{% trans %}Channel{% endtrans %}</small></h1></h1>
+            <section class="section-white section-padding section-shadow section-radius">
+                <p>
+                    {% trans with {'%name%':  channel.name} %}You are about to delete "%name%", click the delete button below to confirm the action.{% endtrans %}
+                </p>
+                {% if referenced %}
+                    {% include '@IntegratedContent/referencedAlert.html.twig' with {'referenced':referenced} only %}
+                {% endif %}
+                {{ form(form) }}
+            </section>
+        </div>
+    </div>
+{% endblock %}

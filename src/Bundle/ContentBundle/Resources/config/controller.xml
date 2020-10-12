@@ -13,6 +13,12 @@
             <tag name="controller.service_arguments" />
         </service>
 
+        <service id="Integrated\Bundle\ContentBundle\Controller\ChannelController">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="integrated_content.services.search.content.referenced" />
+            <tag name="controller.service_arguments" />
+        </service>
+
         <service id="Integrated\Bundle\ContentBundle\Controller\RankController">
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
             <argument type="service" id="integrated_content.provider.content_provider" />

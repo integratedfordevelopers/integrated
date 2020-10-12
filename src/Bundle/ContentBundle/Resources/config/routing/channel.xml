@@ -24,10 +24,9 @@
         <default key="_controller">IntegratedContentBundle:Channel:update</default>
     </route>
 
-    <route id="integrated_content_channel_delete" path="/{id}" methods="DELETE">
+    <route id="integrated_content_channel_delete" path="/{id}/delete" methods="GET,DELETE">
         <default key="_controller">IntegratedContentBundle:Channel:delete</default>
     </route>
-
 
     <route id="integrated_content_channel_show" path="/{id}" methods="GET">
         <default key="_controller">IntegratedContentBundle:Channel:show</default>
