@@ -68,7 +68,7 @@ class ChannelController extends Controller
             throw $this->createAccessDeniedException();
         }
 
-        $documents = $this->documentManager->getRepository(ChannelController::CHANNEL_CLASS)->findBy([], ['name' => 1]);
+        $documents = $this->documentManager->getRepository(self::CHANNEL_CLASS)->findBy([], ['name' => 1]);
 
         return $this->render('IntegratedContentBundle:channel:index.html.twig', [
             'documents' => $documents,
@@ -286,7 +286,7 @@ class ChannelController extends Controller
     /**
      * Creates a form to delete a Channel document by id.
      *
-     * @param mixed $id The document id
+     * @param mixed $id            The document id
      * @param bool  $deleteAllowed
      *
      * @return \Symfony\Component\Form\FormInterface
