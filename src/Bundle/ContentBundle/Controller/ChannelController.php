@@ -31,11 +31,6 @@ use Symfony\Component\HttpFoundation\Response;
 class ChannelController extends Controller
 {
     /**
-     * @var string
-     */
-    const CHANNEL_CLASS = 'Integrated\\Bundle\\ContentBundle\\Document\\Channel\\Channel';
-
-    /**
      * @var DocumentManager
      */
     protected $documentManager;
@@ -68,7 +63,7 @@ class ChannelController extends Controller
             throw $this->createAccessDeniedException();
         }
 
-        $documents = $this->documentManager->getRepository(self::CHANNEL_CLASS)->findBy([], ['name' => 1]);
+        $documents = $this->documentManager->getRepository(Channel::class)->findBy([], ['name' => 1]);
 
         return $this->render('IntegratedContentBundle:channel:index.html.twig', [
             'documents' => $documents,
