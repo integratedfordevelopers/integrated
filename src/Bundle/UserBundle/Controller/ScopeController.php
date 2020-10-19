@@ -185,7 +185,7 @@ class ScopeController extends Controller
             }
         }
 
-        return $this->render('IntegratedUserBundle:scope:index.html.twig', [
+        return $this->render('IntegratedUserBundle:scope:delete.html.twig', [
             'scope' => $scope,
             'form' => $form->createView(),
         ]);

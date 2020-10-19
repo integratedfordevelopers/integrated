@@ -11,8 +11,10 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Form\Type as Form;
+use Integrated\Bundle\ContentBundle\Services\SearchContentReferenced;
 use Integrated\Common\Channel\Event\ChannelEvent;
 use Integrated\Common\Channel\Events;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -29,14 +31,26 @@ use Symfony\Component\HttpFoundation\Response;
 class ChannelController extends Controller
 {
     /**
-     * @var string
+     * @var DocumentManager
      */
-    protected $channelClass = 'Integrated\\Bundle\\ContentBundle\\Document\\Channel\\Channel';
+    protected $documentManager;
 
     /**
-     * @var \Doctrine\ODM\MongoDB\DocumentManager
+     * @var SearchContentReferenced
      */
-    protected $dm;
+    protected $searchContentReferenced;
+
+    /**
+     * ChannelController constructor.
+     *
+     * @param DocumentManager         $documentManager
+     * @param SearchContentReferenced $searchContentReferenced
+     */
+    public function __construct(DocumentManager $documentManager, SearchContentReferenced $searchContentReferenced)
+    {
+        $this->searchContentReferenced = $searchContentReferenced;
+        $this->documentManager = $documentManager;
+    }
 
     /**
      * Lists all the Channel documents.
@@ -49,7 +63,7 @@ class ChannelController extends Controller
             throw $this->createAccessDeniedException();
         }
 
-        $documents = $this->getDocumentManager()->getRepository($this->channelClass)->findAll();
+        $documents = $this->documentManager->getRepository(Channel::class)->findBy([], ['name' => 1]);
 
         return $this->render('IntegratedContentBundle:channel:index.html.twig', [
             'documents' => $documents,
@@ -69,10 +83,7 @@ class ChannelController extends Controller
             throw $this->createAccessDeniedException();
         }
 
-        $form = $this->createDeleteForm($channel->getId());
-
         return $this->render('IntegratedContentBundle:channel:show.html.twig', [
-            'form' => $form->createView(),
             'channel' => $channel,
         ]);
     }
@@ -116,8 +127,8 @@ class ChannelController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $this->getDocumentManager()->persist($channel);
-            $this->getDocumentManager()->flush();
+            $this->documentManager->persist($channel);
+            $this->documentManager->flush();
 
             $this->get('braincrafted_bootstrap.flash')->success('Item created');
 
@@ -171,7 +182,7 @@ class ChannelController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $this->getDocumentManager()->flush();
+            $this->documentManager->flush();
 
             $this->get('braincrafted_bootstrap.flash')->success('Item updated');
 
@@ -201,20 +212,28 @@ class ChannelController extends Controller
             throw $this->createAccessDeniedException();
         }
 
-        $form = $this->createDeleteForm($channel->getId());
+        $referenced = $this->searchContentReferenced->getReferenced($channel);
+
+        $form = $this->createDeleteForm($channel->getId(), \count($referenced) === 0);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            $this->getDocumentManager()->remove($channel);
-            $this->getDocumentManager()->flush();
+        if ($form->isSubmitted() && $form->isValid() && $form->has('submit') && $form->get('submit')->isClicked()) {
+            $this->documentManager->remove($channel);
+            $this->documentManager->flush();
 
             $dispatcher = $this->get('integrated_content.event_dispatcher');
             $dispatcher->dispatch(Events::CHANNEL_DELETED, new ChannelEvent($channel));
 
-            $this->get('braincrafted_bootstrap.flash')->success('Item deleted');
+            $this->get('braincrafted_bootstrap.flash')->success('Channel deleted');
+
+            return $this->redirect($this->generateUrl('integrated_content_channel_index'));
         }
 
-        return $this->redirect($this->generateUrl('integrated_content_channel_index'));
+        return $this->render('IntegratedContentBundle:channel:delete.html.twig', [
+            'channel' => $channel,
+            'form' => $form->createView(),
+            'referenced' => $referenced,
+        ]);
     }
 
     /**
@@ -262,29 +281,23 @@ class ChannelController extends Controller
     /**
      * Creates a form to delete a Channel document by id.
      *
-     * @param mixed $id The document id
+     * @param mixed $id            The document id
+     * @param bool  $deleteAllowed
      *
      * @return \Symfony\Component\Form\FormInterface
      */
-    protected function createDeleteForm($id)
+    protected function createDeleteForm($id, bool $deleteAllowed)
     {
-        return $this->createFormBuilder()
+        $form = $this->createFormBuilder()
             ->setAction($this->generateUrl('integrated_content_channel_delete', ['id' => $id]))
-            ->setMethod('DELETE')
-            ->add('submit', SubmitType::class, ['label' => 'Delete', 'attr' => ['onclick' => 'return confirm(\'Are you sure you want to delete this channel?\')', 'class' => 'btn-danger']])
+            ->setMethod('DELETE');
 
-            ->getForm();
-    }
-
-    /**
-     * @return \Doctrine\ODM\MongoDB\DocumentManager
-     */
-    protected function getDocumentManager()
-    {
-        if (null === $this->dm) {
-            $this->dm = $this->get('doctrine_mongodb')->getManager();
+        if ($deleteAllowed) {
+            $form->add('submit', SubmitType::class, ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']]);
+        } else {
+            $form->add('reload', SubmitType::class, ['label' => 'Reload', 'attr' => ['class' => 'btn-default']]);
         }
 
-        return $this->dm;
+        return $form->getForm();
     }
 }

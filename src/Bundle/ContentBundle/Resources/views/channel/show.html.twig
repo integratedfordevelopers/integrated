@@ -45,7 +45,9 @@
                 <a class="pull-left btn btn-primary" style="margin-right:10px;" href="{{ path('integrated_content_channel_edit', {'id': channel.id}) }}">
                     {% trans %}Edit{% endtrans %}
                 </a>
-                {{ form(form, { 'style': 'inline' }) }}
+                <a class="btn-danger btn btn-primary" href="{{ path('integrated_content_channel_delete', {'id': channel.id}) }}">
+                    {% trans %}Delete{% endtrans %}
+                </a>
             </section>
         </div>
     </div>
