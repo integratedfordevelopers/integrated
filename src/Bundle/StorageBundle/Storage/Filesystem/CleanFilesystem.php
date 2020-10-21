@@ -39,7 +39,7 @@ class CleanFilesystem
     /**
      * Finds unused files in the storage and moves them to the given directory
      * When the directory is not specified just the list with cleanable files
-     * is returned
+     * is returned.
      *
      * @param string      $identifier
      * @param string|null $moveDirectory
