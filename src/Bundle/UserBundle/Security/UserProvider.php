@@ -60,7 +60,7 @@ class UserProvider implements UserProviderInterface
     public function loadUserByUsername($username)
     {
         /** @var User $user */
-        $user = $this->manager->findByUsernameAndScope($username, new Scope());
+        $user = $this->manager->findByUsernameAndScope($username);
 
         if (!$user) {
             $exception = new UsernameNotFoundException(sprintf('No user with the username "%s" exists', $username));
