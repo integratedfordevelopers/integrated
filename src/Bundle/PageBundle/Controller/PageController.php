@@ -62,7 +62,8 @@ class PageController extends Controller
             $channel = $this->getSelectedChannel();
 
             $builder = $this->getDocumentManager()->createQueryBuilder(Page::class)
-                ->field('channel.$id')->equals($channel->getId());
+                ->field('channel.$id')->equals($channel->getId())
+                ->sort('title', 1);
 
             $pagination = $this->getPaginator()->paginate(
                 $builder,
