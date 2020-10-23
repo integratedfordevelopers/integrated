@@ -118,4 +118,28 @@ class ContentTypePage extends AbstractPage
     {
         $this->controllerAction = $controllerAction;
     }
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->getContentType()->getName();
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return 'content_type_page';
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isLocked()
+    {
+        return true;
+    }
 }

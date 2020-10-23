@@ -12,8 +12,11 @@
 namespace Integrated\Bundle\PageBundle\Controller;
 
 use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
+use Integrated\Bundle\PageBundle\Document\Page\AbstractPage;
+use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Bundle\PageBundle\Document\Page\Page;
 use Integrated\Bundle\PageBundle\Form\Type\PageCopyType;
+use Integrated\Bundle\PageBundle\Form\Type\PageFilterType;
 use Integrated\Bundle\PageBundle\Form\Type\PageType;
 use Integrated\Bundle\PageBundle\Services\PageCopyService;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
@@ -58,28 +61,44 @@ class PageController extends Controller
             throw $this->createAccessDeniedException();
         }
 
-        try {
-            $channel = $this->getSelectedChannel();
+        $filterForm = $this->createForm(PageFilterType::class, null, ['method' => 'GET']);
+        $filterForm->handleRequest($request);
 
-            $builder = $this->getDocumentManager()->createQueryBuilder(Page::class)
-                ->field('channel.$id')->equals($channel->getId())
-                ->sort('title', 1);
-
-            $pagination = $this->getPaginator()->paginate(
-                $builder,
-                $request->query->get('page', 1),
-                25
-            );
-        } catch (\RuntimeException $e) {
-            $this->get('braincrafted_bootstrap.flash')->error('Please add a website connector for at least one channel to manage pages');
-
-            return $this->render('IntegratedPageBundle:page:error.html.twig');
+        switch ($filterForm->get('pagetype')->getData()) {
+            case 'page':
+                $class = Page::class;
+                break;
+            case 'contenttype':
+                $class = ContentTypePage::class;
+                break;
+            default:
+                $class = AbstractPage::class;
         }
+
+        $builder = $this->getDocumentManager()->createQueryBuilder($class);
+
+        if ($query = $filterForm->get('q')->getData()) {
+            $builder->addOr($builder->expr()->field('title')->equals(new \MongoRegex('/'.$query.'/i')));
+            $builder->addOr($builder->expr()->field('path')->equals(new \MongoRegex('/'.$query.'/i')));
+        }
+
+        if ($channel = $filterForm->get('channel')->getData()) {
+            $builder->field('channel.$id')->equals($channel);
+        }
+
+        $builder->sort('path', 1);
+
+        $pagination = $this->getPaginator()->paginate(
+            $builder,
+            $request->query->get('page', 1),
+            25
+        );
 
         $response = $this->render('IntegratedPageBundle:page:index.html.twig', [
             'pages' => $pagination,
             'channels' => $this->getChannels(),
             'selectedChannel' => $channel,
+            'filterForm' => $filterForm->createView(),
         ]);
 
         if ($request->query->has('channel')) {

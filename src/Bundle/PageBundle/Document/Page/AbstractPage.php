@@ -250,6 +250,30 @@ abstract class AbstractPage
     /**
      * @return string
      */
+    public function getTitle()
+    {
+        return $this->getPath();
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return 'abstract';
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isLocked()
+    {
+        return false;
+    }
+
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->getPath();
