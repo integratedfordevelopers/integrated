@@ -57,51 +57,6 @@ class Controller extends BaseController
     }
 
     /**
-     * @return \Integrated\Common\Channel\ChannelInterface
-     *
-     * @throws \RuntimeException
-     */
-    protected function getSelectedChannel()
-    {
-        $request = $this->get('request_stack')->getCurrentRequest();
-
-        if (!$request instanceof Request) {
-            throw new \RuntimeException('Unable to get the request');
-        }
-
-        $channel = $request->query->get(
-            'channel',
-            $request->cookies->get(
-                'channel',
-                $this->channelContext->getChannel() ? $this->channelContext->getChannel()->getId() : null
-            )
-        );
-
-        $channel = $this->getChannelManager()->find($channel);
-
-        if (!$channel instanceof Channel) {
-            $channels = $this->getChannels();
-            $channel = reset($channels);
-        }
-
-        if (!$channel instanceof Channel) {
-            throw new \RuntimeException('Please configure at least one channel');
-        }
-
-        return $channel;
-    }
-
-    /**
-     * @param Channel $channel
-     *
-     * @return string
-     */
-    protected function getTheme(Channel $channel)
-    {
-        return $this->get('integrated_page.theme_resolver')->getTheme($channel);
-    }
-
-    /**
      * @return \Doctrine\ODM\MongoDB\DocumentManager
      */
     protected function getDocumentManager()

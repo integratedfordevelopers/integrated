@@ -28,26 +28,31 @@ class PageCopyType extends AbstractType
     {
         $builder->add('action', HiddenType::class);
 
+        $builder->add('sourceChannel', ChannelChoiceType::class, [
+            'label' => 'Source channel',
+            'placeholder' => '-- choose a source channel --',
+            'attr' => [
+                'onchange' => '$(\'#page_copy_action\').val(\'refresh\');document.page_copy.submit();',
+            ],
+        ]);
+
         $builder->add('targetChannel', ChannelChoiceType::class, [
             'label' => 'Target channel',
             'placeholder' => '-- choose a target channel --',
             'attr' => [
                 'onchange' => '$(\'#page_copy_action\').val(\'refresh\');document.page_copy.submit();',
             ],
-            'constraints' => [
-                new NotEqualTo($options['channel']),
-            ],
+            'constraints' => ($options['sourceChannel']) ? [new NotEqualTo($options['sourceChannel'])] : [],
         ]);
 
         if ($options['targetChannel'] !== null) {
             $builder->add('pages', PageCopyPagesType::class, [
-                'channel' => $options['channel'],
+                'channel' => $options['sourceChannel'],
                 'targetChannel' => $options['targetChannel'],
             ]);
 
             $builder->add('actions', SaveCancelType::class, [
                 'cancel_route' => 'integrated_page_page_index',
-                'cancel_route_parameters' => ['channel' => $options['channel']],
                 'label' => 'Copy pages',
                 'button_class' => '',
                 'attr' => [
@@ -62,8 +67,8 @@ class PageCopyType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(['channel']);
-        $resolver->setAllowedTypes('channel', 'string');
+        $resolver->setRequired(['sourceChannel']);
+        $resolver->setAllowedTypes('sourceChannel', ['string', 'null']);
 
         $resolver->setDefault('targetChannel', null);
         $resolver->setAllowedTypes('targetChannel', ['string', 'null']);

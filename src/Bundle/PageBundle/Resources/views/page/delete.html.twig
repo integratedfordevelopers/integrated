@@ -19,7 +19,7 @@
             </h1>
             <section class="section-white section-padding section-shadow section-radius">
                 <p>
-                    {% trans with {'%name%':  page.title} %}You are about to delete "%name%", click the delete button below to confirm the action.{% endtrans %}
+                    {% trans with {'%name%':  page.title, '%channel%':  page.channel.name} %}You are about to delete "%name%" on %channel%, click the delete button below to confirm the action.{% endtrans %}
                 </p>
                 {{ form(form, { 'style': 'horizontal' }) }}
             </section>

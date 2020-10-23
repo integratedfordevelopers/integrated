@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\PageBundle\Controller;
 
+use Doctrine\ODM\MongoDB\Query\Builder;
 use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
 use Integrated\Bundle\PageBundle\Document\Page\AbstractPage;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
@@ -22,7 +23,6 @@ use Integrated\Bundle\PageBundle\Services\PageCopyService;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -77,6 +77,8 @@ class PageController extends Controller
 
         $builder = $this->getDocumentManager()->createQueryBuilder($class);
 
+        $this->displayPathErrors($builder);
+
         if ($query = $filterForm->get('q')->getData()) {
             $builder->addOr($builder->expr()->field('title')->equals(new \MongoRegex('/'.$query.'/i')));
             $builder->addOr($builder->expr()->field('path')->equals(new \MongoRegex('/'.$query.'/i')));
@@ -87,6 +89,7 @@ class PageController extends Controller
         }
 
         $builder->sort('path', 1);
+        $builder->sort('channel.$id', 1);
 
         $pagination = $this->getPaginator()->paginate(
             $builder,
@@ -100,10 +103,6 @@ class PageController extends Controller
             'selectedChannel' => $channel,
             'filterForm' => $filterForm->createView(),
         ]);
-
-        if ($request->query->has('channel')) {
-            $response->headers->setCookie(new Cookie('channel', $request->query->get('channel')));
-        }
 
         return $response;
     }
@@ -125,10 +124,6 @@ class PageController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $channel = $this->getSelectedChannel();
-
-            $page->setChannel($channel);
-
             $dm = $this->getDocumentManager();
 
             $dm->persist($page);
@@ -138,7 +133,7 @@ class PageController extends Controller
 
             $this->get('braincrafted_bootstrap.flash')->success('Page created');
 
-            return $this->redirect($this->generateUrl('integrated_page_page_index', ['channel' => $channel->getId()]));
+            return $this->redirect($this->generateUrl('integrated_page_page_index'));
         }
 
         return $this->render('IntegratedPageBundle:page:new.html.twig', [
@@ -162,15 +157,13 @@ class PageController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $channel = $this->getSelectedChannel();
-
             $this->getDocumentManager()->flush();
 
             $this->get('integrated_page.services.route_cache')->clear();
 
             $this->get('braincrafted_bootstrap.flash')->success('Page updated');
 
-            return $this->redirect($this->generateUrl('integrated_page_page_index', ['channel' => $channel->getId()]));
+            return $this->redirect($this->generateUrl('integrated_page_page_index'));
         }
 
         return $this->render('IntegratedPageBundle:page:edit.html.twig', [
@@ -199,8 +192,6 @@ class PageController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $channel = $this->getSelectedChannel();
-
             $dm = $this->getDocumentManager();
 
             $dm->remove($page);
@@ -210,7 +201,7 @@ class PageController extends Controller
 
             $this->get('braincrafted_bootstrap.flash')->success('Page deleted');
 
-            return $this->redirect($this->generateUrl('integrated_page_page_index', ['channel' => $channel->getId()]));
+            return $this->redirect($this->generateUrl('integrated_page_page_index'));
         }
 
         return $this->render('IntegratedPageBundle:page:delete.html.twig', [
@@ -233,36 +224,21 @@ class PageController extends Controller
             throw $this->createAccessDeniedException();
         }
 
-        try {
-            $channel = $this->getSelectedChannel();
-
-            $builder = $this->getDocumentManager()->createQueryBuilder(Page::class)
-                ->field('channel.$id')->equals($channel->getId());
-
-            $pagination = $this->getPaginator()->paginate(
-                $builder,
-                $request->query->get('page', 1),
-                25
-            );
-        } catch (\RuntimeException $e) {
-            $this->get('braincrafted_bootstrap.flash')->error('Please add a website connector for at least one channel to manage pages');
-
-            return $this->render('IntegratedPageBundle:page:error.html.twig');
-        }
-
         if ($formData = $request->request->get('page_copy', null)) {
-            $targetChannel = $formData['targetChannel'];
+            $targetChannel = $formData['targetChannel'] ?? null;
+            $sourceChannel = $formData['sourceChannel'] ?? null;
         } else {
             $targetChannel = null;
+            $sourceChannel = null;
         }
 
         $form = $this->createForm(
             PageCopyType::class,
             null,
             [
-                'channel' => $channel->getId(),
+                'sourceChannel' => $sourceChannel,
                 'targetChannel' => $targetChannel,
-                'action' => $this->generateUrl('integrated_page_page_copy', ['channel' => $channel->getId()]),
+                'action' => $this->generateUrl('integrated_page_page_copy'),
                 'method' => 'POST',
             ]
         );
@@ -273,18 +249,16 @@ class PageController extends Controller
             $data = $form->getData();
 
             if ($data['action'] != 'refresh') {
-                $this->pageCopyService->copyPages($channel->getId(), $form->getData());
+                $this->pageCopyService->copyPages($form->getData());
 
                 $this->get('braincrafted_bootstrap.flash')->success('Pages copied');
 
-                return $this->redirect($this->generateUrl('integrated_page_page_index', ['channel' => $channel->getId()]));
+                return $this->redirect($this->generateUrl('integrated_page_page_index'));
             }
         }
 
         return $this->render('IntegratedPageBundle:page:copy.html.twig', [
-            'pages' => $pagination,
             'channels' => $this->getChannels(),
-            'selectedChannel' => $channel,
             'form' => $form->createView(),
         ]);
     }
@@ -296,21 +270,18 @@ class PageController extends Controller
      */
     protected function createCreateForm(Page $page)
     {
-        $channel = $this->getSelectedChannel();
-
         $form = $this->createForm(
             PageType::class,
             $page,
             [
-                'action' => $this->generateUrl('integrated_page_page_new', ['channel' => $channel->getId()]),
+                'action' => $this->generateUrl('integrated_page_page_new'),
                 'method' => 'POST',
-                'theme' => $this->getTheme($channel),
+                //'theme' => $this->getTheme($channel),
             ]
         );
 
         $form->add('actions', SaveCancelType::class, [
             'cancel_route' => 'integrated_page_page_index',
-            'cancel_route_parameters' => ['channel' => $this->getSelectedChannel()->getId()],
             'label' => 'Create',
             'button_class' => '',
         ]);
@@ -325,24 +296,20 @@ class PageController extends Controller
      */
     protected function createEditForm(Page $page)
     {
-        $channel = $page->getChannel();
-
         $form = $this->createForm(
             PageType::class,
             $page,
             [
                 'action' => $this->generateUrl(
                     'integrated_page_page_edit',
-                    ['id' => $page->getId(), 'channel' => $channel->getId()]
+                    ['id' => $page->getId()]
                 ),
                 'method' => 'PUT',
-                'theme' => $this->getTheme($channel),
             ]
         );
 
         $form->add('actions', SaveCancelType::class, [
             'cancel_route' => 'integrated_page_page_index',
-            'cancel_route_parameters' => ['channel' => $this->getSelectedChannel()->getId()],
         ]);
 
         return $form;
@@ -362,5 +329,29 @@ class PageController extends Controller
         $builder->add('submit', SubmitType::class, ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']]);
 
         return $builder->getForm();
+    }
+
+    /**
+     * @param Builder $builder
+     *
+     * @throws \Doctrine\ODM\MongoDB\MongoDBException
+     */
+    protected function displayPathErrors(Builder $builder)
+    {
+        $paths = [];
+        foreach ($builder->getQuery()->execute() as $item) {
+            if (!$item instanceof ContentTypePage) {
+                continue;
+            }
+
+            $settings = $item->getControllerService().$item->getLayout();
+            $key = $item->getChannel()->getId().'-'.$item->getPath();
+            if (isset($paths[$key]) && $paths[$key] != $settings) {
+                $this->get('braincrafted_bootstrap.flash')->error('Path '.$item->getPath().' is used multiple times with diffent settings. Only one will be used');
+                continue;
+            }
+
+            $paths[$key] = $settings;
+        }
     }
 }

@@ -7,6 +7,9 @@
     <services>
 
         <service id="integrated_page.form.type.page" class="Integrated\Bundle\PageBundle\Form\Type\PageType" public="true">
+            <argument type="service" id="channel.context" />
+            <argument type="service" id="integrated_page.theme_resolver" />
+
             <tag name="form.type" />
         </service>
 
@@ -18,6 +21,8 @@
 
         <service id="integrated_page.form.content_type_page.page" class="Integrated\Bundle\PageBundle\Form\Type\ContentTypePageType">
             <argument type="service" id="integrated_page.services.content_type_controller_manager" />
+            <argument type="service" id="integrated_page.theme_resolver" />
+
             <tag name="form.type" alias="integrated_page_content_type_page" />
         </service>
 

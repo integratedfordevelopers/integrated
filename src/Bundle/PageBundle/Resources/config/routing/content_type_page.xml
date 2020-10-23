@@ -4,10 +4,6 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="integrated_page_content_type_page_index" path="/" methods="GET">
-        <default key="_controller">IntegratedPageBundle:ContentTypePage:index</default>
-    </route>
-
     <route id="integrated_page_content_type_page_edit" path="/{id}/edit" methods="GET|PUT">
         <default key="_controller">IntegratedPageBundle:ContentTypePage:edit</default>
     </route>
