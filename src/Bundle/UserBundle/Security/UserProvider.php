@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\UserBundle\Security;
 
-use Integrated\Bundle\UserBundle\Model\Scope;
 use Integrated\Bundle\UserBundle\Model\User;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -60,7 +59,7 @@ class UserProvider implements UserProviderInterface
     public function loadUserByUsername($username)
     {
         /** @var User $user */
-        $user = $this->manager->findByUsernameAndScope($username, new Scope());
+        $user = $this->manager->findByUsernameAndScope($username);
 
         if (!$user) {
             $exception = new UsernameNotFoundException(sprintf('No user with the username "%s" exists', $username));

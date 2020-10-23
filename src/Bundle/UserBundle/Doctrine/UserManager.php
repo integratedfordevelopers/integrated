@@ -168,19 +168,22 @@ class UserManager implements UserManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function findByUsernameAndScope($username, ScopeInterface $scope)
+    public function findByUsernameAndScope($username, ?ScopeInterface $scope = null)
     {
-        return $this->createQueryBuilder()
+        $builder = $this->createQueryBuilder()
             ->select('User')
             ->leftJoin('User.scope', 'Scope')
             ->where('User.username = :username')
-            ->andWhere('(Scope.admin = true OR User.scope = :scope)')
-            ->setParameters([
-                'username' => $username,
-                'scope' => (int) $scope->getId(),
-            ])
-            ->getQuery()
-            ->getOneOrNullResult();
+            ->setParameter('username', $username);
+
+        if ($scope) {
+            $builder->andWhere('(User.scope = :scope)');
+            $builder->setParameter('scope', (int) $scope->getId());
+        } else {
+            $builder->andWhere('(Scope.admin = true)');
+        }
+
+        return $builder->getQuery()->getOneOrNullResult();
     }
 
     /**
