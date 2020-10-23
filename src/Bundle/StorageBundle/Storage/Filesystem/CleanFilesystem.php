@@ -37,7 +37,7 @@ class CleanFilesystem
     }
 
     /**
-     * Finds unused files in the storage and moves them to the given directory
+     * Finds unused files in the storage and moves them to the given directory.
      *
      * @param string      $identifier
      * @param string|null $targetDirectory
