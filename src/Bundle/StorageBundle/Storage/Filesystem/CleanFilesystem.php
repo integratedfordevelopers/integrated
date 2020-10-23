@@ -38,27 +38,23 @@ class CleanFilesystem
 
     /**
      * Finds unused files in the storage and moves them to the given directory
-     * When the directory is not specified just the list with cleanable files
-     * is returned.
      *
      * @param string      $identifier
-     * @param string|null $moveDirectory
+     * @param string|null $targetDirectory
      *
-     * @return array
+     * @return void
      */
-    public function clean(string $identifier, ?string $moveDirectory = null)
+    public function clean(string $identifier, string $targetDirectory)
     {
         $filesystem = $this->registry->get($identifier);
-
-        $cleanable = [];
 
         $keys = $filesystem->listKeys();
         $keys = array_flip($keys['keys']);
 
         $objects = $this->database->getStorageKeys();
 
-        if ($moveDirectory && !is_dir($moveDirectory)) {
-            throw new \RuntimeException(sprintf('Directory %s does not exists', $moveDirectory));
+        if ($targetDirectory && !is_dir($targetDirectory)) {
+            throw new \RuntimeException(sprintf('Directory %s does not exists', $targetDirectory));
         }
 
         foreach ($keys as $key => $value) {
@@ -70,13 +66,11 @@ class CleanFilesystem
                 continue;
             }
 
-            $cleanable[] = $key;
-
-            if (!$moveDirectory) {
+            if (!$targetDirectory) {
                 continue;
             }
 
-            $targetFile = rtrim($moveDirectory, '/').'/'.$key;
+            $targetFile = rtrim($targetDirectory, '/').'/'.$key;
             if (file_exists($targetFile)) {
                 throw new \RuntimeException(sprintf('File %s does already exists', $targetFile));
             }
@@ -85,7 +79,5 @@ class CleanFilesystem
                 $filesystem->delete($key);
             }
         }
-
-        return $cleanable;
     }
 }

@@ -63,7 +63,7 @@ class CleanCommand extends Command
                 ),
                 new InputArgument(
                     'directory',
-                    InputArgument::OPTIONAL,
+                    InputArgument::REQUIRED,
                     'Target directory for movement of the used files'
                 ),
             ])
@@ -79,10 +79,8 @@ class CleanCommand extends Command
         $directory = $input->getArgument('directory');
 
         $cleanFileSystem = new CleanFilesystem($this->registry, $this->database);
-        $cleanableKeys = $cleanFileSystem->clean($filesystem, $directory);
+        $cleanFileSystem->clean($filesystem, $directory);
 
-        foreach ($cleanableKeys as $key) {
-            $output->writeln(($directory) ? sprintf('%s moved to %s', $key, $directory) : sprintf('%s can be cleaned', $key));
-        }
+        $output->writeln(sprintf('Cleanable files for %s have been moved to %s', $filesystem, $directory));
     }
 }
