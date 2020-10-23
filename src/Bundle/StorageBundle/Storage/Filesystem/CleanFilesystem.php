@@ -51,11 +51,11 @@ class CleanFilesystem
         $keys = $filesystem->listKeys();
         $keys = array_flip($keys['keys']);
 
-        $objects = $this->database->getStorageKeys();
-
         if ($targetDirectory && !is_dir($targetDirectory)) {
             throw new \RuntimeException(sprintf('Directory %s does not exists', $targetDirectory));
         }
+
+        $objects = $this->database->getStorageKeys();
 
         foreach ($keys as $key => $value) {
             if (substr($key, 0, 1) === '.') {
