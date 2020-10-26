@@ -368,7 +368,7 @@ class PageController extends Controller
     }
 
     /**
-     * return null|Page
+     * @return Page|null
      */
     private function getLastEditPage()
     {
