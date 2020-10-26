@@ -264,7 +264,7 @@ abstract class AbstractPage
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isLocked()
     {
@@ -285,7 +285,7 @@ abstract class AbstractPage
         }
 
         $domains = $channel->getDomains();
-        if (count($domains)) {
+        if (\count($domains)) {
             return $domains[0];
         }
 

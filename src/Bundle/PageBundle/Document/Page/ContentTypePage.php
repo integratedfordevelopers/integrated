@@ -136,7 +136,7 @@ class ContentTypePage extends AbstractPage
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isLocked()
     {
