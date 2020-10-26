@@ -13,16 +13,32 @@
 {% endblock %}
 
 {% block content %}
+    {% if lastPage %}
+        {% if (lastPage.domain == app.request.httphost) %}
+            {% set lastUrl = lastPage.path %}
+        {% else %}
+            {% set lastUrl = '//'~lastPage.domain~path('integrated_website_enter_session', {'sessionId': app.session.id, 'path': lastPage.path}) %}
+        {% endif %}
+        <div class="alert alert-info">
+        <div class="clearfix">
+            {% trans %}Last changed{% endtrans %}: "{{ lastPage.title }}" {% trans %}on{% endtrans %} "{{ lastPage.channel.name }}"
+            <div class="pull-right">
+                <button type="button" class="btn btn-primary" onclick="window.location.href='{{ lastUrl }}';">{% trans %}Open page{% endtrans %}</button>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
     <section>
         <div class="btn-group">
-            <button type="button" class="btn btn-primary" onclick="window.location.href='{{ path('integrated_page_page_new') }}';">New page</button>
+            <button type="button" class="btn btn-primary" onclick="window.location.href='{{ path('integrated_page_page_new') }}';">{% trans %}New page{% endtrans %}</button>
             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="caret"></span>
                 <span class="sr-only"></span>
             </button>
             <ul class="dropdown-menu">
-                <li><a href="{{ path('integrated_page_page_new') }}">New page</a></li>
-                <li><a href="{{ path('integrated_page_page_copy') }}">Copy pages</a></li>
+                <li><a href="{{ path('integrated_page_page_new') }}">{% trans %}New page{% endtrans %}</a></li>
+                <li><a href="{{ path('integrated_page_page_copy') }}">{% trans %}Copy pages{% endtrans %}</a></li>
             </ul>
         </div>
     </section>

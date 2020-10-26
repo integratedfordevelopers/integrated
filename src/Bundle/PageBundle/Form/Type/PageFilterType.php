@@ -30,7 +30,7 @@ class PageFilterType extends AbstractType
         $session = new Session();
 
         $builder->add('q', TextType::class, [
-            'label' => 'Search filter',
+            'label' => 'Search query',
             'required' => false,
             'data' => $session->get('pagefilter_q', ''),
         ]);

@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="1">
+                <source>New page</source>
+                <target>Nieuwe pagina</target>
+            </trans-unit>
+            <trans-unit id="2">
+                <source>Open page</source>
+                <target>Pagina openen</target>
+            </trans-unit>
+            <trans-unit id="3">
+                <source>Last changed</source>
+                <target>Laatst gewijzigd</target>
+            </trans-unit>
+            <trans-unit id="4">
+                <source>Copy pages</source>
+                <target>Kopieer pagina's</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>on</source>
+                <target>op</target>
+            </trans-unit>
+            <trans-unit id="6">
+                <source>Channel</source>
+                <target>Kanaal</target>
+            </trans-unit>
+            <trans-unit id="7">
+                <source>Path</source>
+                <target>URL</target>
+            </trans-unit>
+            <trans-unit id="8">
+                <source>Search query</source>
+                <target>Zoektekst</target>
+            </trans-unit>
+            <trans-unit id="9">
+                <source>Page type</source>
+                <target>Pagina type</target>
+            </trans-unit>
+            <trans-unit id="10">
+                <source>Cancel</source>
+                <target>Annuleren</target>
+            </trans-unit>
+            <trans-unit id="11">
+                <source>Path %s is used multiple times with diffent settings. Only one will be used</source>
+                <target>URL %s is meerdere keren in gebruik met verschillende instellingen. Slechts één wordt gebruikt</target>
+            </trans-unit>
+            <trans-unit id="12">
+                <source>Page "%s" has been updated</source>
+                <target>Pagina "%s" is bijgewerkt</target>
+            </trans-unit>
+            <trans-unit id="13">
+                <source>Page "%s" has been created</source>
+                <target>Pagina "%s" is aangemaakt</target>
+            </trans-unit>
+            <trans-unit id="14">
+                <source>Source channel</source>
+                <target>Bron kanaal</target>
+            </trans-unit>
+            <trans-unit id="15">
+                <source>choose a source channel</source>
+                <target>kies een bron kanaal</target>
+            </trans-unit>
+            <trans-unit id="16">
+                <source>Target channel</source>
+                <target>Doel kanaal</target>
+            </trans-unit>
+            <trans-unit id="17">
+                <source>choose a target channel</source>
+                <target>kies een doel kanaal</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -27,6 +27,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -105,6 +106,7 @@ class PageController extends Controller
         $response = $this->render('IntegratedPageBundle:page:index.html.twig', [
             'pages' => $pagination,
             'filterForm' => $filterForm->createView(),
+            'lastPage' => $this->getLastEditPage(),
         ]);
 
         return $response;
@@ -132,7 +134,9 @@ class PageController extends Controller
 
             $this->get('integrated_page.services.route_cache')->clear();
 
-            $this->get('braincrafted_bootstrap.flash')->success('Page created');
+            $this->get('braincrafted_bootstrap.flash')->success(sprintf('Page "%s" has been created', $page->getTitle()));
+
+            $this->setLastEditPage($page);
 
             return $this->redirect($this->generateUrl('integrated_page_page_index'));
         }
@@ -162,7 +166,9 @@ class PageController extends Controller
 
             $this->get('integrated_page.services.route_cache')->clear();
 
-            $this->get('braincrafted_bootstrap.flash')->success('Page updated');
+            $this->get('braincrafted_bootstrap.flash')->success(sprintf('Page "%s" has been updated', $page->getTitle()));
+
+            $this->setLastEditPage($page);
 
             return $this->redirect($this->generateUrl('integrated_page_page_index'));
         }
@@ -349,6 +355,26 @@ class PageController extends Controller
             }
 
             $paths[$key] = $settings;
+        }
+    }
+
+    /**
+     * @param Page $page
+     */
+    private function setLastEditPage(Page $page)
+    {
+        $session = new Session();
+        $session->set('page_lastedit_id', $page->getId());
+    }
+
+    /**
+     * return null|Page
+     */
+    private function getLastEditPage()
+    {
+        $session = new Session();
+        if ($pageId = $session->get('page_lastedit_id')) {
+            return $this->documentManager->getRepository(Page::class)->find($pageId);
         }
     }
 }
