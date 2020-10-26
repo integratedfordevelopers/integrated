@@ -11,10 +11,10 @@
 
 namespace Integrated\Bundle\PageBundle\Controller;
 
-use Doctrine\ODM\MongoDB\Query\Builder;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Bundle\PageBundle\Form\Type\ContentTypePageType;
-use Integrated\Common\Content\Channel\ChannelContextInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -27,13 +27,18 @@ use Symfony\Component\HttpFoundation\Response;
 class ContentTypePageController extends Controller
 {
     /**
+     * @var DocumentManager
+     */
+    private $documentManager;
+
+    /**
      * PageController constructor.
      *
-     * @param ChannelContextInterface $channelContext
+     * @param DocumentManager $documentManager
      */
-    public function __construct(ChannelContextInterface $channelContext)
+    public function __construct(DocumentManager $documentManager)
     {
-        parent::__construct($channelContext);
+        $this->documentManager = $documentManager;
     }
 
     /**
@@ -52,7 +57,7 @@ class ContentTypePageController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $this->getDocumentManager()->flush();
+            $this->documentManager->flush();
 
             $this->get('integrated_page.services.route_cache')->clear();
 

@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\PageBundle\Controller;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
 use Integrated\Bundle\PageBundle\Document\Page\AbstractPage;
@@ -20,7 +21,7 @@ use Integrated\Bundle\PageBundle\Form\Type\PageCopyType;
 use Integrated\Bundle\PageBundle\Form\Type\PageFilterType;
 use Integrated\Bundle\PageBundle\Form\Type\PageType;
 use Integrated\Bundle\PageBundle\Services\PageCopyService;
-use Integrated\Common\Content\Channel\ChannelContextInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -33,6 +34,11 @@ use Symfony\Component\HttpFoundation\Response;
 class PageController extends Controller
 {
     /**
+     * @var DocumentManager
+     */
+    private $documentManager;
+
+    /**
      * @var PageCopyService
      */
     private $pageCopyService;
@@ -40,13 +46,12 @@ class PageController extends Controller
     /**
      * PageController constructor.
      *
-     * @param ChannelContextInterface $channelContext
-     * @param PageCopyService         $pageCopyService
+     * @param DocumentManager $documentManager
+     * @param PageCopyService $pageCopyService
      */
-    public function __construct(ChannelContextInterface $channelContext, PageCopyService $pageCopyService)
+    public function __construct(DocumentManager $documentManager, PageCopyService $pageCopyService)
     {
-        parent::__construct($channelContext);
-
+        $this->documentManager = $documentManager;
         $this->pageCopyService = $pageCopyService;
     }
 
@@ -75,7 +80,7 @@ class PageController extends Controller
                 $class = AbstractPage::class;
         }
 
-        $builder = $this->getDocumentManager()->createQueryBuilder($class);
+        $builder = $this->documentManager->createQueryBuilder($class);
 
         $this->displayPathErrors($builder);
 
@@ -91,7 +96,7 @@ class PageController extends Controller
         $builder->sort('path', 1);
         $builder->sort('channel.$id', 1);
 
-        $pagination = $this->getPaginator()->paginate(
+        $pagination = $this->get('knp_paginator')->paginate(
             $builder,
             $request->query->get('page', 1),
             25
@@ -99,8 +104,6 @@ class PageController extends Controller
 
         $response = $this->render('IntegratedPageBundle:page:index.html.twig', [
             'pages' => $pagination,
-            'channels' => $this->getChannels(),
-            'selectedChannel' => $channel,
             'filterForm' => $filterForm->createView(),
         ]);
 
@@ -124,10 +127,8 @@ class PageController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $dm = $this->getDocumentManager();
-
-            $dm->persist($page);
-            $dm->flush();
+            $this->documentManager->persist($page);
+            $this->documentManager->flush();
 
             $this->get('integrated_page.services.route_cache')->clear();
 
@@ -157,7 +158,7 @@ class PageController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDocumentManager()->flush();
+            $this->documentManager->flush();
 
             $this->get('integrated_page.services.route_cache')->clear();
 
@@ -192,10 +193,8 @@ class PageController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $dm = $this->getDocumentManager();
-
-            $dm->remove($page);
-            $dm->flush();
+            $this->documentManager->remove($page);
+            $this->documentManager->flush();
 
             $this->get('integrated_page.services.route_cache')->clear();
 
@@ -258,7 +257,6 @@ class PageController extends Controller
         }
 
         return $this->render('IntegratedPageBundle:page:copy.html.twig', [
-            'channels' => $this->getChannels(),
             'form' => $form->createView(),
         ]);
     }
@@ -276,7 +274,6 @@ class PageController extends Controller
             [
                 'action' => $this->generateUrl('integrated_page_page_new'),
                 'method' => 'POST',
-                //'theme' => $this->getTheme($channel),
             ]
         );
 

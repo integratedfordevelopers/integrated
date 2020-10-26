@@ -54,16 +54,15 @@
                     {% for page in pages %}
                         <tr>
                             <td>
-                                {% set domain = page.channel.primaryDomain|default(page.channel.domains|first)|default("") %}
-                                {% if page.type == 'page' and domain != "" %}
-                                    {% if (domain == app.request.httphost) %}
-                                        <a href="/{{ page.path }}">
+                                {% if page.type == 'page' and page.domain != "" %}
+                                    {% if (page.domain == app.request.httphost) %}
+                                        <a href="{{ page.path }}">
                                     {% else %}
-                                        <a href="//{{ domain }}{{ path('integrated_website_enter_session', {'sessionId': app.session.id, 'path': page.path}) }}">
+                                        <a href="//{{ page.domain }}{{ path('integrated_website_enter_session', {'sessionId': app.session.id, 'path': page.path}) }}">
                                     {% endif %}
                                 {% endif %}
                                 {{ page.path }}
-                                {% if page.type == 'page' and domain != "" %}
+                                {% if page.type == 'page' and page.domain != "" %}
                                     </a>
                                 {% endif %}
                             </td>
