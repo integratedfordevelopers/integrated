@@ -272,6 +272,27 @@ abstract class AbstractPage
     }
 
     /**
+     * @return string|null
+     */
+    public function getDomain()
+    {
+        if (!$channel = $this->getChannel()) {
+            return null;
+        }
+
+        if ($channel->getPrimaryDomain()) {
+            return $channel->getPrimaryDomain();
+        }
+
+        $domains = $channel->getDomains();
+        if (count($domains)) {
+            return $domains[0];
+        }
+
+        return null;
+    }
+
+    /**
      * @return string
      */
     public function __toString()
