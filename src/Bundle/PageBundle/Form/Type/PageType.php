@@ -51,7 +51,7 @@ class PageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('channel', ChannelChoiceType::class, [
-            'useObject' => true,
+            'return_object' => true,
             'disabled' => ($builder->getData()->getChannel()) ? true : false,
             'data' => $builder->getData()->getChannel() ?? $this->channelContext->getChannel(),
         ]);

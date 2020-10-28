@@ -44,7 +44,7 @@ class ChannelChoiceType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if (!$options['useObject']) {
+        if (!$options['return_object']) {
             $builder->addModelTransformer(new ChannelTransformer($this->repository, $options['multiple']));
         }
     }
@@ -56,7 +56,7 @@ class ChannelChoiceType extends AbstractType
     {
         $resolver->setDefault('class', Channel::class);
         $resolver->setDefault('choice_label', 'name');
-        $resolver->setDefault('useObject', false);
+        $resolver->setDefault('return_object', false);
     }
 
     /**

@@ -57,7 +57,7 @@ class ContentTypePageType extends AbstractType
         $contentTypePage = $builder->getData();
 
         $builder->add('channel', ChannelChoiceType::class, [
-            'useObject' => true,
+            'return_object' => true,
             'disabled' => true,
         ]);
 
