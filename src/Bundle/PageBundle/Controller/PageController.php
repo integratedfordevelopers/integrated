@@ -27,7 +27,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -67,7 +67,11 @@ class PageController extends Controller
             throw $this->createAccessDeniedException();
         }
 
-        $filterForm = $this->createForm(PageFilterType::class, null, ['method' => 'GET']);
+        $filterForm = $this->createForm(
+            PageFilterType::class,
+            $request->getSession()->get('page_filterform_data', []),
+            ['method' => 'GET']
+        );
         $filterForm->handleRequest($request);
 
         switch ($filterForm->get('pagetype')->getData()) {
@@ -97,6 +101,10 @@ class PageController extends Controller
         $builder->sort('path', 1);
         $builder->sort('channel.$id', 1);
 
+        if ($filterForm->isSubmitted()) {
+            $request->getSession()->set('page_filterform_data', $filterForm->getData());
+        }
+
         $pagination = $this->get('knp_paginator')->paginate(
             $builder,
             $request->query->get('page', 1),
@@ -106,7 +114,7 @@ class PageController extends Controller
         $response = $this->render('IntegratedPageBundle:page:index.html.twig', [
             'pages' => $pagination,
             'filterForm' => $filterForm->createView(),
-            'lastPage' => $this->getLastEditPage(),
+            'lastPage' => $this->getLastEditPage($request->getSession()),
         ]);
 
         return $response;
@@ -136,7 +144,7 @@ class PageController extends Controller
 
             $this->get('braincrafted_bootstrap.flash')->success(sprintf('Page "%s" has been created', $page->getTitle()));
 
-            $this->setLastEditPage($page);
+            $this->setLastEditPage($request->getSession(), $page);
 
             return $this->redirect($this->generateUrl('integrated_page_page_index'));
         }
@@ -168,7 +176,7 @@ class PageController extends Controller
 
             $this->get('braincrafted_bootstrap.flash')->success(sprintf('Page "%s" has been updated', $page->getTitle()));
 
-            $this->setLastEditPage($page);
+            $this->setLastEditPage($request->getSession(), $page);
 
             return $this->redirect($this->generateUrl('integrated_page_page_index'));
         }
@@ -359,20 +367,21 @@ class PageController extends Controller
     }
 
     /**
-     * @param Page $page
+     * @param SessionInterface $session
+     * @param Page             $page
      */
-    private function setLastEditPage(Page $page)
+    private function setLastEditPage(SessionInterface $session, Page $page)
     {
-        $session = new Session();
         $session->set('page_lastedit_id', $page->getId());
     }
 
     /**
+     * @param SessionInterface $session
+     *
      * @return Page|null
      */
-    private function getLastEditPage()
+    private function getLastEditPage(SessionInterface $session)
     {
-        $session = new Session();
         if ($pageId = $session->get('page_lastedit_id')) {
             return $this->documentManager->getRepository(Page::class)->find($pageId);
         }

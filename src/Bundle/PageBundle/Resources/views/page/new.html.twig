@@ -24,3 +24,28 @@
         </div>
     </div>
 {% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+
+    <script>
+        var $channel = $('#integrated_page_page_channel');
+        var $token = $('#integrated_page_page__token');
+        $channel.change(function() {
+            var $form = $(this).closest('form');
+            var data = {};
+            data[$channel.attr('name')] = $channel.val();
+            data[$token.attr('name')] = $token.val();
+            $.ajax({
+                url : $form.attr('action'),
+                type: $form.attr('method'),
+                data : data,
+                success: function(html) {
+                    $('#integrated_page_page_layout').replaceWith(
+                        $(html).find('#integrated_page_page_layout')
+                    );
+                }
+            });
+        });
+    </script>
+{% endblock %}
