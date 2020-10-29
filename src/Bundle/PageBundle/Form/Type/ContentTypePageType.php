@@ -70,11 +70,11 @@ class ContentTypePageType extends AbstractType
         ]);
 
         if (!preg_match('/Content\\\(.+)Controller$/', \get_class($options['controller']), $matchController)) {
-            throw new \InvalidArgumentException(sprintf('The "%s" class does not look like a contentTypeController class (it must be in a "Controller\Content" sub-namespace and the class name must end with "Controller")', \get_class($options['controller'])));
+            throw new \InvalidArgumentException(sprintf('The %s class is not a contentTypeController class (the namespace must contain Controller\Content and the class name must end with Controller)', \get_class($options['controller'])));
         }
 
         if (!preg_match('/^(.+)Action$/', $contentTypePage->getControllerAction(), $matchAction)) {
-            throw new \InvalidArgumentException(sprintf('The "%s" method does not look like an action method (it does not end with Action)', $contentTypePage->getControllerAction()));
+            throw new \InvalidArgumentException(sprintf('The %s method does not look like an action method (it does not end with Action)', $contentTypePage->getControllerAction()));
         }
 
         $builder->add('layout', LayoutChoiceType::class, [
