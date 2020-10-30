@@ -119,6 +119,14 @@ class Page extends AbstractPage
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return 'page';
+    }
+
     public function __clone()
     {
         $this->id = null;

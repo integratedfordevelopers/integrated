@@ -11,10 +11,10 @@
 
 namespace Integrated\Bundle\PageBundle\Controller;
 
-use Doctrine\ODM\MongoDB\Query\Builder;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Bundle\PageBundle\Form\Type\ContentTypePageType;
-use Integrated\Common\Content\Channel\ChannelContextInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -27,45 +27,18 @@ use Symfony\Component\HttpFoundation\Response;
 class ContentTypePageController extends Controller
 {
     /**
-     * PageController constructor.
-     *
-     * @param ChannelContextInterface $channelContext
+     * @var DocumentManager
      */
-    public function __construct(ChannelContextInterface $channelContext)
-    {
-        parent::__construct($channelContext);
-    }
+    private $documentManager;
 
     /**
-     * @param Request $request
+     * PageController constructor.
      *
-     * @return Response
+     * @param DocumentManager $documentManager
      */
-    public function indexAction(Request $request)
+    public function __construct(DocumentManager $documentManager)
     {
-        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
-            throw $this->createAccessDeniedException();
-        }
-
-        $channel = $this->getSelectedChannel();
-
-        $builder = $this->getDocumentManager()->createQueryBuilder(ContentTypePage::class)
-            ->field('channel.$id')->equals($channel->getId())
-            ->sort('contentType');
-
-        $this->displayPathErrors($builder);
-
-        $pagination = $this->getPaginator()->paginate(
-            $builder,
-            $request->query->get('page', 1),
-            25
-        );
-
-        return $this->render('IntegratedPageBundle:content_type_page:index.html.twig', [
-            'pages' => $pagination,
-            'channels' => $this->getChannels(),
-            'selectedChannel' => $channel,
-        ]);
+        $this->documentManager = $documentManager;
     }
 
     /**
@@ -84,15 +57,13 @@ class ContentTypePageController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $channel = $page->getChannel();
-
-            $this->getDocumentManager()->flush();
+            $this->documentManager->flush();
 
             $this->get('integrated_page.services.route_cache')->clear();
 
             $this->get('braincrafted_bootstrap.flash')->success('Page updated');
 
-            return $this->redirectToRoute('integrated_page_content_type_page_index', ['channel' => $channel->getId()]);
+            return $this->redirectToRoute('integrated_page_page_index');
         }
 
         return $this->render('IntegratedPageBundle:content_type_page:edit.html.twig', [
@@ -108,14 +79,11 @@ class ContentTypePageController extends Controller
      */
     protected function createEditForm(ContentTypePage $page)
     {
-        $channel = $page->getChannel();
-
         $form = $this->createForm(
             ContentTypePageType::class,
             $page,
             [
                 'method' => 'PUT',
-                'theme' => $this->getTheme($channel),
                 'controller' => $this->get($page->getControllerService()),
             ]
         );
@@ -123,23 +91,5 @@ class ContentTypePageController extends Controller
         $form->add('submit', SubmitType::class, ['label' => 'Save']);
 
         return $form;
-    }
-
-    /**
-     * @param Builder $builder
-     *
-     * @throws \Doctrine\ODM\MongoDB\MongoDBException
-     */
-    protected function displayPathErrors(Builder $builder)
-    {
-        $paths = [];
-        foreach ($builder->getQuery()->execute() as $item) {
-            $settings = $item->getControllerService().$item->getLayout();
-            if (isset($paths[$item->getPath()]) && $paths[$item->getPath()] != $settings) {
-                $this->get('braincrafted_bootstrap.flash')->error('Path '.$item->getPath().' is used multiple times with diffent settings. Only one will be used');
-                continue;
-            }
-            $paths[$item->getPath()] = $settings;
-        }
     }
 }

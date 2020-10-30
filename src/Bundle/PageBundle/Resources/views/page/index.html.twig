@@ -13,48 +13,44 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-md-12 push-sm-down">
-            <ul class="list-inline">
-                <li class="dropdown">
-                    <a href="#" data-toggle="dropdown" role="button">{% trans %}Options{% endtrans %} <b class="caret"></b></a>
-                    <ul role="menu" class="dropdown-menu">
-                        <li role="presentation">
-                            <a href="{{ path('integrated_page_page_new', { 'channel': selectedChannel.id }) }}" tabindex="-1" role="menuitem">{% trans %}New page{% endtrans %}</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('integrated_page_page_copy', { 'channel': selectedChannel.id }) }}" tabindex="-1" role="menuitem">{% trans %}Copy pages{% endtrans %}</a>
-                        </li>
-                    </ul>
+    {% if lastPage %}
+        {% if (lastPage.domain == app.request.httphost) %}
+            {% set lastUrl = lastPage.path %}
+        {% else %}
+            {% set lastUrl = '//'~lastPage.domain~path('integrated_website_enter_session', {'sessionId': app.session.id, 'path': lastPage.path}) %}
+        {% endif %}
+        <div class="alert alert-info">
+        <div class="clearfix">
+            {% trans %}Last changed{% endtrans %}: "{{ lastPage.title }}" {% trans %}on{% endtrans %} "{{ lastPage.channel.name }}"
+            <div class="pull-right">
+                <button type="button" class="btn btn-primary" onclick="window.location.href='{{ lastUrl }}';">{% trans %}Open page{% endtrans %}</button>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 
-                <li class="dropdown pull-right">
-                    <a href="#" data-toggle="dropdown" role="button">{{ selectedChannel.name }} <b class="caret"></b></a>
-                    <ul role="menu" class="dropdown-menu">
-                        {% for channel in channels %}
-                            <li role="presentation">
-                                <a href="{{ path('integrated_page_page_index', { 'channel': channel.id }) }}" tabindex="-1" role="menuitem">{{ channel.name }}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </li>
-
-                <li class="dropdown pull-right">
-                    <a href="#" data-toggle="dropdown" role="button">
-                        {% trans %}Static pages{% endtrans %}
-                        <b class="caret"></b>
-                    </a>
-                    <ul role="menu" class="dropdown-menu">
-                        <li role="presentation">
-                            <a href="{{ path('integrated_page_content_type_page_index', { 'channel': selectedChannel.id }) }}" role="menuitem">{% trans %}Content type pages{% endtrans %}</a>
-                        </li>
-                    </ul>
-                </li>
+    <section>
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary" onclick="window.location.href='{{ path('integrated_page_page_new') }}';">{% trans %}New page{% endtrans %}</button>
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="{{ path('integrated_page_page_new') }}">{% trans %}New page{% endtrans %}</a></li>
+                <li><a href="{{ path('integrated_page_page_copy') }}">{% trans %}Copy pages{% endtrans %}</a></li>
             </ul>
+        </div>
+    </section>
 
+    <div class="row">
+        <div class="col-md-9">
             <section class="section-white section-padding section-shadow section-radius">
 
                 <table class="table table-hover">
                     <colgroup>
+                        <col />
+                        <col />
                         <col />
                         <col />
                         <col style="width: 5em" />
@@ -62,39 +58,48 @@
 
                     <thead>
                         <tr>
+                            <th>{% trans %}Path{% endtrans %}</th>
                             <th>{% trans %}Title{% endtrans %}</th>
-                            <th>{% trans %}URL{% endtrans %}</th>
+                            <th>{% trans %}Channel{% endtrans %}</th>
+                            <th>{% trans %}Layout{% endtrans %}</th>
                             <th>{% trans %}Actions{% endtrans %}</th>
                         </tr>
                     </thead>
                     <tbody>
 
                     {% for page in pages %}
-
                         <tr>
                             <td>
-                                {{ page.title }}
-                            </td>
-                            <td>
-                                {% set domain = page.channel.primaryDomain|default(page.channel.domains(0))|default("") %}
-                                {% if (domain != "") %}
-                                    {% if (domain == app.request.httphost) %}
-                                        <a href="/{{ page.path }}">
+                                {% if page.type == 'page' and page.domain != "" %}
+                                    {% if (page.domain == app.request.httphost) %}
+                                        <a href="{{ page.path }}">
                                     {% else %}
-                                        <a href="//{{ domain }}{{ path('integrated_website_enter_session', {'sessionId': app.session.id, 'path': page.path}) }}">
+                                        <a href="//{{ page.domain }}{{ path('integrated_website_enter_session', {'sessionId': app.session.id, 'path': page.path}) }}">
                                     {% endif %}
                                 {% endif %}
                                 {{ page.path }}
-                                {% if (domain != "") %}
+                                {% if page.type == 'page' and page.domain != "" %}
                                     </a>
                                 {% endif %}
                             </td>
                             <td>
-                                <a href="{{ path('integrated_page_page_edit', { 'id': page.id, 'channel': selectedChannel.id }) }}" title="{% trans %}Edit{% endtrans %}">
+                                {{ page.title }}
+                            </td>
+                            <td>
+                                {{ page.channel.name }}
+                            </td>
+                            <td>
+                                {{ page.layout|split('/')|last|replace({'.html.twig': ''}) }}
+                            </td>
+                            <td>
+                                <a href="{{ path('integrated_page_'~page.type~'_edit', { 'id': page.id}) }}" title="{% trans %}Edit{% endtrans %}">
                                     {{ icon('pencil') }}
                                 </a>
+
+                                &nbsp;
+
                                 {% if not page.locked %}
-                                    <a href="{{ path('integrated_page_page_delete', { 'id': page.id, 'channel': selectedChannel.id }) }}" title="{% trans %}Delete{% endtrans %}">
+                                    <a href="{{ path('integrated_page_page_delete', { 'id': page.id }) }}" title="{% trans %}Delete{% endtrans %}">
                                         {{ icon('remove-circle') }}
                                     </a>
                                 {% endif %}
@@ -116,6 +121,15 @@
 
                 {{ knp_pagination_render(pages) }}
             </section>
+        </div>
+        <div class="col-md-3">
+            <aside>
+                <div class="aside-holder section-gray section-shadow section-radius">
+                    <div class="aside-item-holder">
+                        {{ form(filterForm) }}
+                    </div>
+                </div>
+            </aside>
         </div>
     </div>
 

@@ -29,19 +29,6 @@
 {% block content %}
     <div class="row">
         <div class="col-md-12 push-sm-down">
-            <ul class="list-inline">
-                <li class="dropdown pull-right">
-                    <a href="#" data-toggle="dropdown" role="button">{{ selectedChannel.name }} <b class="caret"></b></a>
-                    <ul role="menu" class="dropdown-menu">
-                        {% for channel in channels %}
-                            <li role="presentation">
-                                <a href="{{ path('integrated_page_page_copy', { 'channel': channel.id }) }}" tabindex="-1" role="menuitem">{{ channel.name }}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </li>
-            </ul>
-
             <section class="section-white section-padding section-shadow section-radius">
 
                 {% form_theme form with ['IntegratedPageBundle:form:form_div_layout.html.twig'] %}

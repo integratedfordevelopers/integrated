@@ -11,8 +11,10 @@
 
 namespace Integrated\Bundle\PageBundle\Form\Type;
 
+use Integrated\Bundle\ChannelBundle\Form\Type\ChannelChoiceType;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Bundle\PageBundle\Form\EventListener\ContentTypePageListener;
+use Integrated\Bundle\PageBundle\Resolver\ThemeResolver;
 use Integrated\Bundle\PageBundle\Services\ContentTypeControllerManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -30,13 +32,20 @@ class ContentTypePageType extends AbstractType
     protected $controllerManager;
 
     /**
+     * @var ThemeResolver
+     */
+    private $themeResolver;
+
+    /**
      * ContentTypePageType constructor.
      *
      * @param ContentTypeControllerManager $controllerManager
+     * @param ThemeResolver                $themeResolver
      */
-    public function __construct(ContentTypeControllerManager $controllerManager)
+    public function __construct(ContentTypeControllerManager $controllerManager, ThemeResolver $themeResolver)
     {
         $this->controllerManager = $controllerManager;
+        $this->themeResolver = $themeResolver;
     }
 
     /**
@@ -47,22 +56,29 @@ class ContentTypePageType extends AbstractType
         /** @var ContentTypePage $contentTypePage */
         $contentTypePage = $builder->getData();
 
+        if (!$contentTypePage instanceof ContentTypePage) {
+            throw new \InvalidArgumentException(sprintf('Form needs an instance of %s', ContentTypePage::class));
+        }
+
+        $builder->add('channel', ChannelChoiceType::class, [
+            'return_object' => true,
+            'disabled' => true,
+        ]);
+
         $builder->add('path', TextType::class, [
             'label' => 'URL',
         ]);
 
         if (!preg_match('/Content\\\(.+)Controller$/', \get_class($options['controller']), $matchController)) {
-            throw new \InvalidArgumentException(sprintf('The "%s" class does not look like a 
-            contentTypeController class (it must be in a "Controller\Content" sub-namespace and the
-             class name must end with "Controller")', \get_class($options['controller'])));
+            throw new \InvalidArgumentException(sprintf('The %s class is not a contentTypeController class (the namespace must contain Controller\Content and the class name must end with Controller)', \get_class($options['controller'])));
         }
+
         if (!preg_match('/^(.+)Action$/', $contentTypePage->getControllerAction(), $matchAction)) {
-            throw new \InvalidArgumentException(sprintf('The "%s" method does not look like an action method
-             (it does not end with Action)', $contentTypePage->getControllerAction()));
+            throw new \InvalidArgumentException(sprintf('The %s method does not look like an action method (it does not end with Action)', $contentTypePage->getControllerAction()));
         }
 
         $builder->add('layout', LayoutChoiceType::class, [
-            'theme' => $options['theme'],
+            'theme' => $this->themeResolver->getTheme($contentTypePage->getChannel()),
             'directory' => strtolower(sprintf('/content/%s/%s', $matchController[1], $matchAction[1])),
         ]);
 
@@ -75,8 +91,7 @@ class ContentTypePageType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Integrated\Bundle\PageBundle\Document\Page\ContentTypePage',
-            'theme' => 'default',
+            'data_class' => ContentTypePage::class,
         ]);
 
         $resolver->setRequired('controller');

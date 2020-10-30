@@ -7,11 +7,11 @@
     <services>
 
         <service id="Integrated\Bundle\PageBundle\Controller\ContentTypePageController">
-            <argument type="service" id="channel.context" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
         </service>
 
         <service id="Integrated\Bundle\PageBundle\Controller\PageController">
-            <argument type="service" id="channel.context" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <argument type="service" id="Integrated\Bundle\PageBundle\Services\PageCopyService" />
         </service>
 

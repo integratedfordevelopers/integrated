@@ -48,7 +48,7 @@ class PageCopyService
      * @throws MongoDBExceptionAlias
      * @throws MappingExceptionAlias
      */
-    public function copyPages(string $channel, array $data)
+    public function copyPages(array $data)
     {
         $targetChannel = $this->documentManager->getRepository(Channel::class)->find($data['targetChannel']);
         if ($targetChannel === null) {
@@ -57,7 +57,7 @@ class PageCopyService
 
         $result = $this->documentManager->getRepository(Page::class)->findBy(
             [
-                'channel.$id' => $channel,
+                'channel.$id' => $data['sourceChannel'],
             ]
         );
 

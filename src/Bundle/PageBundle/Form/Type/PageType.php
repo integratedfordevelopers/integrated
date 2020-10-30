@@ -11,12 +11,18 @@
 
 namespace Integrated\Bundle\PageBundle\Form\Type;
 
+use Integrated\Bundle\ChannelBundle\Form\Type\ChannelChoiceType;
+use Integrated\Bundle\PageBundle\Resolver\ThemeResolver;
+use Integrated\Common\Channel\ChannelInterface;
+use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -24,10 +30,44 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class PageType extends AbstractType
 {
     /**
+     * @var ChannelContextInterface
+     */
+    private $channelContext;
+
+    /**
+     * @var ThemeResolver
+     */
+    private $themeResolver;
+
+    /**
+     * @param ChannelContextInterface $channelContext
+     * @param ThemeResolver           $themeResolver
+     */
+    public function __construct(ChannelContextInterface $channelContext, ThemeResolver $themeResolver)
+    {
+        $this->channelContext = $channelContext;
+        $this->themeResolver = $themeResolver;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $channel = $this->channelContext->getChannel();
+
+        if ($page = $builder->getData()) {
+            if ($page->getChannel()) {
+                $channel = $page->getChannel();
+            }
+        }
+
+        $builder->add('channel', ChannelChoiceType::class, [
+            'return_object' => true,
+            'disabled' => $page && $page->getChannel(),
+            'data' => $channel,
+        ]);
+
         $builder->add('title', TextType::class);
         $builder->add('description', TextareaType::class, [
             'required' => false,
@@ -37,26 +77,41 @@ class PageType extends AbstractType
             'label' => 'URL',
         ]);
 
-        $builder->add('layout', LayoutChoiceType::class, [
-            'theme' => $options['theme'],
-        ]);
-
         $builder->add('disabled', CheckboxType::class, [
             'required' => false,
             'attr' => [
                 'align_with_widget' => true,
             ],
         ]);
-    }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'theme' => 'default',
-        ]);
+        $formModifier = function (FormInterface $form, ChannelInterface $channel = null) {
+            $theme = null === $channel ? 'default' : $this->themeResolver->getTheme($channel);
+
+            $form->add('layout', LayoutChoiceType::class, [
+                'theme' => $theme,
+            ]);
+        };
+
+        $builder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event) use ($formModifier) {
+                $data = $event->getData();
+
+                $channel = $this->channelContext->getChannel();
+                if ($data && $data->getChannel()) {
+                    $channel = $data->getChannel();
+                }
+
+                $formModifier($event->getForm(), $channel);
+            }
+        );
+
+        $builder->get('channel')->addEventListener(
+            FormEvents::POST_SUBMIT,
+            function (FormEvent $event) use ($formModifier) {
+                $formModifier($event->getForm()->getParent(), $event->getForm()->getData());
+            }
+        );
     }
 
     /**
