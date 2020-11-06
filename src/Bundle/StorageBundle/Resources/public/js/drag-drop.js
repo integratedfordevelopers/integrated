@@ -50,6 +50,11 @@ $(document).ready(function(){
                 $(box).hide();
                 $dropZone.find('.remove-file').val(0);
             },
+            onSelect: function (item) {
+                if ($('#integrated_content_title').val() == '') {
+                    $('#integrated_content_title').val(item.name.split('.').slice(0, -1).join('.'));
+                }
+            },
             onEmpty: function (box) {
                 $(box).show();
                 $dropZone.find('.remove-file').val(1);

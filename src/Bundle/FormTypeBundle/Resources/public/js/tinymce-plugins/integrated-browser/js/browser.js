@@ -36,7 +36,16 @@ $(document).ready(function() {
             // Grab the item html
             var item = renderItem(images[i]);
 
-            // Grab the route
+            // Grab the routes
+            images[i].preview = Routing.generate(
+                'integrated_storage_file_resize',
+                {
+                    id: images[i].id,
+                    ext: images[i].extension,
+                    width: 150,
+                    height: 150
+                }
+            );
             images[i].source = Routing.generate(
                 'integrated_storage_file',
                 {
@@ -78,10 +87,10 @@ $(document).ready(function() {
     {
         var html = '<div class="col-sm-3"><div class="thumbnail"><div class="thumbnail-img">';
 
-        if (item.mimeType.match('^video\/(.*)$')) {
+        if (item.mimeType && item.mimeType.match('^video\/(.*)$')) {
             html += '<video poster="{{poster}}" controls class="img-responsive click-insert" data-integrated-id="{{id}}"><source src="{{source}}" type="{{mimeType}}"></video>';
-        } else if (item.mimeType.match('^image\/(.*)$')) {
-            html += '<img src="{{source}}" class="img-responsive click-insert" title="{{title}}" alt="{{title}}" data-integrated-id="{{id}}" />';
+        } else if (item.mimeType && item.mimeType.match('^image\/(.*)$')) {
+            html += '<img src="{{preview}}" data-source="{{source}}" class="img-responsive click-insert" title="{{title}}" alt="{{title}}" data-integrated-id="{{id}}" />';
         } else {
             html += '<p>Not supported content type</p>'
         }
@@ -256,6 +265,8 @@ $(document).ready(function() {
 
         var item = $(this);
         item.removeClass('click-insert');
+        item.prop('src', item.data('source'));
+        item.removeAttr('data-source');
 
         // Inject the image
         tinymce.activeEditor.insertContent(item[0].outerHTML);

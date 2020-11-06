@@ -1011,7 +1011,7 @@ class ContentController extends Controller
             $output[] = [
                 'id' => $contentType->getId(),
                 'name' => $contentType->getName(),
-                'path' => $this->generateUrl('integrated_content_content_new', ['type' => $contentType->getId()]),
+                'path' => $this->generateUrl('integrated_content_content_new', ['type' => $contentType->getId(), '_format' => 'iframe.html']),
             ];
         }
 
