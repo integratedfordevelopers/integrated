@@ -67,7 +67,7 @@ class ScraperPageLoader implements LoaderInterface
     public function __construct(EntityManagerInterface $entityManager, ChannelContextInterface $channelContext)
     {
         $this->cachekeyPagelist .= '.'.md5(__DIR__);
-        $this->cachekeyLastupdate .=  '.'.md5(__DIR__);
+        $this->cachekeyLastupdate .= '.'.md5(__DIR__);
         $this->cache = new ApcuCache('integrated.theme');
         $this->entityManager = $entityManager;
         $this->channelContext = $channelContext;
