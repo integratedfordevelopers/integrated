@@ -37,6 +37,9 @@ $(".relation-items").each(function() {
                         var item = data.items[k];
                         if (!item.text) {
                             item.text = item.title;
+                            if (item.path) {
+                                item.text = item.path + ' > ' + item.text;
+                            }
                         }
                         items.push(item);
                     }
