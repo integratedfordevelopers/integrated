@@ -113,7 +113,7 @@ class SearchContentReferenced
             }
         }
 
-        return $this->prepareReferenced(array_unique($referenced));
+        return $this->prepareReferenced($referenced);
     }
 
     /**
@@ -154,14 +154,15 @@ class SearchContentReferenced
     {
         $output = [];
         foreach ($referenced as $item) {
+            $key = \get_class($item).'-'.$item->getId();
             if ($item instanceof Content) {
-                $output[] = [
+                $output[$key] = [
                     'action' => 'integrated_content_content_edit',
                     'id' => $item->getId(),
                     'name' => method_exists($item, 'getTitle') ? $item->getTitle() : \get_class($item),
                 ];
             } else {
-                $output[] = [
+                $output[$key] = [
                     'id' => $item->getId(),
                     'name' => \get_class($item),
                 ];
