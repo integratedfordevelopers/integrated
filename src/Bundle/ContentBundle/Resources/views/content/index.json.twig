@@ -22,6 +22,10 @@
     {% if content.alternate_string is defined %}
         {% set item = item|merge({'alternate': content.alternate_string[0]}) %}
     {% endif %}
+    {% if content.parent_id_string is defined %}
+        {% set item = item|merge({'path': integrated_content_path(content)|join(' > ')}) %}
+    {% endif %}
+
     {% set items = items|merge([item]) %}
 {% endfor %}
 {% set paging = [] %}
