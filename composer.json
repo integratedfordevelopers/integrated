@@ -51,7 +51,8 @@
         "solarium/solarium": "~5.2",
         "swiftmailer/swiftmailer": "~6.1",
         "twbs/bootstrap": "~3.3",
-        "twig/twig": ">=2.12"
+        "twig/twig": ">=2.12",
+        "psr/simple-cache": "^1.0"
     },
     "replace": {
         "integrated/asset-bundle": "self.version",
