@@ -129,6 +129,11 @@ class DoctrineODMDatabase implements DatabaseInterface
                     }
                 } elseif ($fieldMetaData = $metadataFactory->getMetadataFor($assocClassName)) {
                     $fieldAssociations = $fieldMetaData->getAssociationNames();
+                    if ($fieldMetaData instanceof ClassMetadata) {
+                        if (!$fieldMetaData->isEmbeddedDocument) {
+                            continue;
+                        }
+                    }
 
                     foreach ($fieldAssociations as $fieldAssociation) {
                         $fieldAssocClassName = $fieldMetaData->getAssociationTargetClass($fieldAssociation);
