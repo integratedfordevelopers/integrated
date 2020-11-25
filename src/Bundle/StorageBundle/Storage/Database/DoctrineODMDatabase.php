@@ -148,7 +148,7 @@ class DoctrineODMDatabase implements DatabaseInterface
 
                             if ($items) {
                                 foreach ($items as $item) {
-                                    if (is_array($item[$assocFieldName])) {
+                                    if (\is_array($item[$assocFieldName])) {
                                         foreach ($item[$assocFieldName] as $subItem) {
                                             if (isset($subItem[$fieldAssociation]['identifier'])) {
                                                 $keys[$subItem[$fieldAssociation]['identifier']] = true;
