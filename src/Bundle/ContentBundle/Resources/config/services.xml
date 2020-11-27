@@ -28,5 +28,11 @@
 
         </service>
 
+        <service id="Integrated\Bundle\UserBundle\Service\Password">
+            <argument type="service" id="integrated_user.user.manager" />
+            <argument type="service" id="mailer" />
+            <argument type="service" id="templating" />
+        </service>
+
     </services>
 </container>

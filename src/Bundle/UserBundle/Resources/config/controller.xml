@@ -5,6 +5,12 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
 
+        <service id="Integrated\Bundle\UserBundle\Controller\SecurityController">
+            <argument type="service" id="Integrated\Bundle\UserBundle\Service\Password" />
+
+            <tag name="controller.service_arguments" />
+        </service>
+
         <service id="integrated_user.controller.profile" class="Integrated\Bundle\UserBundle\Controller\ProfileController" public="true">
             <argument type="service" id="integrated_user.user.manager" />
             <argument type="service" id="security.encoder_factory" />

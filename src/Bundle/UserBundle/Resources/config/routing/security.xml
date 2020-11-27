@@ -12,4 +12,8 @@
 
 	<route id="integrated_user_logout" path="/logout" />
 
+    <route id="integrated_user_password_reset" path="/login/reset-password">
+        <default key="_controller">IntegratedUserBundle:Security:passwordReset</default>
+    </route>
+
 </routes>
