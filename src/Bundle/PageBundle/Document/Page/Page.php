@@ -11,10 +11,14 @@
 
 namespace Integrated\Bundle\PageBundle\Document\Page;
 
+use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @author Ger Jan van den Bosch <gerjan@e-active.nl>
+ * @MongoDBUnique(
+ *     fields={"channel", "path"},
+ *     message="This URL is already in use on this channel"
+ * )
  */
 class Page extends AbstractPage
 {

@@ -70,6 +70,9 @@
                 <source>choose a target channel</source>
                 <target>kies een doel kanaal</target>
             </trans-unit>
+            <trans-unit id="18">
+                <source>This URL is already in use on this channel</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>
