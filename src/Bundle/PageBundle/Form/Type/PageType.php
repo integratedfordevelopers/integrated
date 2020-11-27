@@ -81,7 +81,7 @@ class PageType extends AbstractType
             'required' => false,
             'constraints' => [
                 new NotBlank(),
-                new Regex('/^\/$|(\/[a-zA-Z_0-9-\.\/]+)+$/')
+                new Regex('/^\/$|(\/[a-zA-Z_0-9-\.\/]+)+$/'),
             ],
         ]);
 
