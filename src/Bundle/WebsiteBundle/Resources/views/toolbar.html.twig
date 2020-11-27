@@ -7,9 +7,11 @@
             <a href="{{ path('integrated_content_content_index') }}">Integrated</a>
         </div>
 
+        {% if (message != '') %}
         <div class="integrated-website-toolbar-message">
             {{ message|trans }}
         </div>
+        {% endif %}
 
         <div class="integrated-website-toolbar-right">
             {% set params = app.request.attributes.get('_route_params')|merge(app.request.query.all) %}
