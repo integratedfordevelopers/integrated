@@ -16,4 +16,8 @@
         <default key="_controller">IntegratedUserBundle:Security:passwordReset</default>
     </route>
 
+    <route id="integrated_user_password_change" path="/login/change-password/{id}/{timestamp}/{key}">
+        <default key="_controller">IntegratedUserBundle:Security:passwordChange</default>
+    </route>
+
 </routes>

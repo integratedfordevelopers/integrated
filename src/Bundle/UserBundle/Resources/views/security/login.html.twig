@@ -6,10 +6,14 @@
     {% include('IntegratedUserBundle:partial:modal.html.twig') %}
 {% endblock style %}
 
+{% block flash %}
+{% endblock flash %}
+
 {% block body %}
 <div class="modal auth">
     <div class="modal-dialog">
         <div class="modal-content ">
+
             {{ form_start(form, {'attr': {'id': 'login_form'}, 'style': 'horizontal', 'label_col': 3, 'widget_col': 9, 'col_size': 'sm'}) }}
 
                 <div class="modal-header">
@@ -17,6 +21,8 @@
                 </div>
 
                 <div class="modal-body">
+                    {% include 'BraincraftedBootstrapBundle::flash.html.twig' with { 'close': true } %}
+
                     {{ form_widget(form) }}
                     <p><a href="{{ path('integrated_user_password_reset') }}">{% trans %}Password reset{% endtrans %}</a></p>
                 </div>

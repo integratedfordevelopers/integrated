@@ -15,6 +15,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Email;
 
 class PasswordResetType extends AbstractType
 {
@@ -23,8 +24,13 @@ class PasswordResetType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('email', EmailType::class, ['label' => 'E-mail address']);
+        $builder->add('email', EmailType::class, [
+            'label' => 'E-mail address',
+            'constraints' => [
+                new Email(),
+            ]
+        ]);
 
-        $builder->add('login', SubmitType::class, ['label' => 'Request password']);
+        $builder->add('login', SubmitType::class, ['label' => 'Request password reset']);
     }
 }

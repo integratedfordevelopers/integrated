@@ -32,6 +32,9 @@
             <argument type="service" id="integrated_user.user.manager" />
             <argument type="service" id="mailer" />
             <argument type="service" id="templating" />
+            <argument type="service" id="router.default" />
+            <argument type="service" id="translator" />
+            <argument type="service" id="security.encoder_factory" />
         </service>
 
     </services>

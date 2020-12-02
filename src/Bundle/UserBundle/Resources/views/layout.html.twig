@@ -26,7 +26,9 @@
 {% endblock %}
 
     <div class="container">
-        {% include 'BraincraftedBootstrapBundle::flash.html.twig' with { 'close': true } %}
+        {% block flash %}
+            {% include 'BraincraftedBootstrapBundle::flash.html.twig' with { 'close': true } %}
+        {% endblock flash %}
         {% block body %}{% endblock body %}
     </div>
 
