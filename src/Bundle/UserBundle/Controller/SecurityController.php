@@ -95,6 +95,7 @@ class SecurityController extends Controller
      * @param string  $key
      *
      * @return RedirectResponse|Response
+     *
      * @throws \Twig\Error\Error
      */
     public function passwordChangeAction(Request $request, int $id, int $timestamp, string $key)

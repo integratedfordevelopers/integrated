@@ -28,7 +28,7 @@ class PasswordResetType extends AbstractType
             'label' => 'E-mail address',
             'constraints' => [
                 new Email(),
-            ]
+            ],
         ]);
 
         $builder->add('login', SubmitType::class, ['label' => 'Request password reset']);

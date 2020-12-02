@@ -72,10 +72,10 @@ class Password
 
     /**
      * @param string              $email
-     *
      * @param ScopeInterface|null $scope
      *
      * @return bool
+     *
      * @throws \Twig\Error\Error
      */
     public function sendResetMail(string $email, ScopeInterface $scope = null)
@@ -121,7 +121,7 @@ class Password
      */
     public function isValidKey(int $id, int $timestamp, string $key)
     {
-        if ($timestamp > time() || $timestamp < (time()-24*3600)) {
+        if ($timestamp > time() || $timestamp < (time() - 24 * 3600)) {
             return false;
         }
 
@@ -129,7 +129,7 @@ class Password
             return false;
         }
 
-        return ($key === sha1($timestamp.$user->getPassword().$user->getId()));
+        return $key === sha1($timestamp.$user->getPassword().$user->getId());
     }
 
     /**
