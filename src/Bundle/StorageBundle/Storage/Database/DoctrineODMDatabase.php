@@ -129,11 +129,16 @@ class DoctrineODMDatabase implements DatabaseInterface
                     }
                 } elseif ($fieldMetaData = $metadataFactory->getMetadataFor($assocClassName)) {
                     $fieldAssociations = $fieldMetaData->getAssociationNames();
+                    if ($fieldMetaData instanceof ClassMetadata) {
+                        if (!$fieldMetaData->isEmbeddedDocument) {
+                            continue;
+                        }
+                    }
 
                     foreach ($fieldAssociations as $fieldAssociation) {
                         $fieldAssocClassName = $fieldMetaData->getAssociationTargetClass($fieldAssociation);
 
-                        if (StorageInterface::class == $fieldAssocClassName || is_subclass_of(StorageInterface::class, $fieldAssocClassName)) {
+                        if (StorageInterface::class == $fieldAssocClassName || is_subclass_of($fieldAssocClassName, StorageInterface::class)) {
                             $items = $this->dm->createQueryBuilder($classMetadata->getName())
                                 ->hydrate(false)
                                 ->select($assocFieldName.'.'.$fieldAssociation.'.identifier')
@@ -143,7 +148,15 @@ class DoctrineODMDatabase implements DatabaseInterface
 
                             if ($items) {
                                 foreach ($items as $item) {
-                                    $keys[$item[$assocFieldName][$fieldAssociation]['identifier']] = true;
+                                    if (\is_array($item[$assocFieldName])) {
+                                        foreach ($item[$assocFieldName] as $subItem) {
+                                            if (isset($subItem[$fieldAssociation]['identifier'])) {
+                                                $keys[$subItem[$fieldAssociation]['identifier']] = true;
+                                            }
+                                        }
+                                    } else {
+                                        $keys[$item[$assocFieldName][$fieldAssociation]['identifier']] = true;
+                                    }
                                 }
                             }
                         }
