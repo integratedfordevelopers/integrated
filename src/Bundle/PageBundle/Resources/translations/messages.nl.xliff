@@ -82,6 +82,18 @@
                 <source>Edit page properties</source>
                 <target>Bewerk pagina eigenschappen</target>
             </trans-unit>
+            <trans-unit id="21">
+                <source>Save page</source>
+                <target>Pagina opslaan</target>
+            </trans-unit>
+            <trans-unit id="22">
+                <source>Go to page overview</source>
+                <target>Naar pagina overzicht</target>
+            </trans-unit>
+            <trans-unit id="23">
+                <source>This item is currently unpublished</source>
+                <target>Dit item is niet gepubliceerd</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

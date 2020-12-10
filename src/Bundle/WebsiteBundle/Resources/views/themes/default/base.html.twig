@@ -15,11 +15,6 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
 
     {% block stylesheets %}
-        {% stylesheets output='css/styles.css' 
-            '@IntegratedWebsiteBundle/Resources/less/styles.less' %}
-            <link rel="stylesheet" type="text/css" href="{{ asset_url }}" />
-        {% endstylesheets %}
-
         {{ integrated_stylesheets() }}
     {% endblock %}
 </head>
