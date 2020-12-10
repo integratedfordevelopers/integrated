@@ -70,6 +70,18 @@
                 <source>choose a target channel</source>
                 <target>kies een doel kanaal</target>
             </trans-unit>
+            <trans-unit id="18">
+                <source>This URL is already in use on this channel</source>
+                <target>Deze URL is al in gebruik op dit kanaal</target>
+            </trans-unit>
+            <trans-unit id="19">
+                <source>Edit page</source>
+                <target>Bewerk pagina</target>
+            </trans-unit>
+            <trans-unit id="20">
+                <source>Edit page properties</source>
+                <target>Bewerk pagina eigenschappen</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
