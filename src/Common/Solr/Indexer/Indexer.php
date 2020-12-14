@@ -169,7 +169,7 @@ class Indexer extends Configurable implements IndexerInterface
         }
 
         if ($this->getClient() === null) {
-            throw new InvalidArgumentException(sprintf('No instance of a Solarium\Core\Client\Client has been inserted into the indexer.'));
+            throw new InvalidArgumentException('No instance of a Solarium\Core\Client\Client has been inserted into the indexer.');
         }
 
         $this->getEventDispatcher()->dispatch(Events::PRE_EXECUTE, new IndexerEvent($this));

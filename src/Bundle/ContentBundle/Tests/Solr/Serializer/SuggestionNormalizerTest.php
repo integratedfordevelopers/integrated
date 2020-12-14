@@ -39,7 +39,7 @@ class SuggestionNormalizerTest extends \PHPUnit\Framework\TestCase
      */
     protected $resolver;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->generator = $this->createMock(UrlGeneratorInterface::class);
         $this->resolver = $this->createMock(ResolverInterface::class);
