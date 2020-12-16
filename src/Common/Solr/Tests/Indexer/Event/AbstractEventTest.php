@@ -25,7 +25,7 @@ abstract class AbstractEventTest extends \PHPUnit\Framework\TestCase
      */
     protected $indexer;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->indexer = $this->createMock(IndexerInterface::class);
     }

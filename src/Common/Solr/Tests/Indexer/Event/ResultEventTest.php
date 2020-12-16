@@ -24,7 +24,7 @@ class ResultEventTest extends AbstractEventTest
      */
     protected $result;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
