@@ -86,7 +86,7 @@ class RelationsType extends AbstractType
     }
 
     /**
-     * {@inheritdoc.
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {

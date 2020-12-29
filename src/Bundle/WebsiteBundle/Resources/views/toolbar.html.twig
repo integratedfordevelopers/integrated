@@ -1,38 +1,53 @@
-<div class="navbar navbar-fixed-top integrated-website-toolbar">
+{% include integrated_active_theme('objects/toolbar-css.html.twig') %}
+
+<div class="integrated-website-toolbar">
     <div class="container">
 
-        <div class="navbar-header">
-            <a href="{{ path('integrated_content_content_index') }}" class="navbar-brand">Integrated</a>
+        <div class="integrated-website-toolbar-logo">
+            <a href="{{ path('integrated_content_content_index') }}">Integrated</a>
         </div>
 
-        <div class="pull-left" class="integrated-website-toolbar-message">
-            {{ message }}
+        {% if (message != '') %}
+        <div class="integrated-website-toolbar-message">
+            {{ message|trans }}
         </div>
+        {% endif %}
 
-        <div class="pull-right">
+        <div class="integrated-website-toolbar-right">
             {% set params = app.request.attributes.get('_route_params')|merge(app.request.query.all) %}
 
             {% if app.request.query.get('integrated_website_edit') and layoutEditable %}
-                <a href="javascript:;" class="btn btn-default navbar-btn" data-action="integrated-website-page-save"
+                <a href="javascript:;" class="integrated-website-toolbar-button" data-action="integrated-website-page-save"
                    {% if app.request.attributes.get('page').id|default %}data-id="{{ app.request.attributes.get('page').id }}" {% endif %}
                    data-target="{{ path(app.request.attributes.get('_route'), params|merge({'integrated_website_edit': 0})) }}">
                     {% trans %}Save page{% endtrans %}
                 </a>
 
-                <a href="{{ path(app.request.attributes.get('_route'), params|merge({'integrated_website_edit': 0})) }}" class="btn btn-default navbar-btn">
+                <a href="{{ path(app.request.attributes.get('_route'), params|merge({'integrated_website_edit': 0})) }}" class="integrated-website-toolbar-button integrated-website-toolbar-button-secondary">
                     {% trans %}Cancel{% endtrans %}
                 </a>
             {% else %}
                 {% if content is defined and content is not null %}
-                <a href="{{ path('integrated_content_content_edit', {'id': content.id}) }}" class="btn btn-default navbar-btn">
+                <a href="{{ path('integrated_content_content_edit', {'id': content.id}) }}" class="integrated-website-toolbar-button">
                     {% trans %}Edit{% endtrans %}
                 </a> &nbsp;
                 {% endif %}
 
                 {% if layoutEditable %}
-                <a href="{{  path(app.request.attributes.get('_route'), params|merge({'integrated_website_edit': 1})) }}" class="btn btn-default navbar-btn">
-                    {% trans %}Edit page layout{% endtrans %}
-                </a>
+                <div class="integrated-website-toolbar-button-group">
+                    <a href="{{  path(app.request.attributes.get('_route'), params|merge({'integrated_website_edit': 1})) }}" class="integrated-website-toolbar-button">
+                        {% trans %}Edit page{% endtrans %}
+                    </a>
+                    <div onclick="integratedDropdownToggle('integrated-page-button-dropdown');" class="integrated-website-toolbar-button integrated-website-toolbar-button-dropdown"></div>
+                    <ul id="integrated-page-button-dropdown" class="integrated-website-toolbar-dropdown">
+                        {% if app.request.attributes.get('page').type == 'content_type_page' %}
+                            <li><a href="{{ path('integrated_page_content_type_page_edit', {'id': app.request.attributes.get('page').id}) }}">{% trans %}Edit page properties{% endtrans %}</a></li>
+                        {% else %}
+                            <li><a href="{{ path('integrated_page_page_edit', {'id': app.request.attributes.get('page').id}) }}">{% trans %}Edit page properties{% endtrans %}</a></li>
+                        {% endif %}
+                        <li><a href="{{ path('integrated_page_page_index') }}">{% trans %}Go to page overview{% endtrans %}</a></li>
+                    </ul>
+                </div>
                 {% endif %}
             {% endif %}
         </div>
@@ -40,3 +55,10 @@
 </div>
 
 <div class="integrated-website-body-margin-top"></div>
+
+<script>
+function integratedDropdownToggle(id)
+{
+    document.getElementById(id).classList.toggle('integrated-website-toolbar-show');
+}
+</script>

@@ -16,14 +16,26 @@
     {% if lastPage %}
         {% if (lastPage.domain == app.request.httphost) %}
             {% set lastUrl = lastPage.path %}
+            {% set editUrl = lastPage.path ~ '?integrated_website_edit=1' %}
         {% else %}
             {% set lastUrl = '//'~lastPage.domain~path('integrated_website_enter_session', {'sessionId': app.session.id, 'path': lastPage.path}) %}
+            {% set editUrl = '//'~lastPage.domain~path('integrated_website_enter_session', {'sessionId': app.session.id, 'path': lastPage.path ~ '?integrated_website_edit=1'}) %}
         {% endif %}
         <div class="alert alert-info">
         <div class="clearfix">
             {% trans %}Last changed{% endtrans %}: "{{ lastPage.title }}" {% trans %}on{% endtrans %} "{{ lastPage.channel.name }}"
             <div class="pull-right">
-                <button type="button" class="btn btn-primary" onclick="window.location.href='{{ lastUrl }}';">{% trans %}Open page{% endtrans %}</button>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary" onclick="window.location.href='{{ lastUrl }}';">{% trans %}Open page{% endtrans %}</button>
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ editUrl }}">{% trans %}Edit page{% endtrans %}</a></li>
+                        <li><a href="{{ path('integrated_page_page_copy') }}">{% trans %}Edit page properties{% endtrans %}</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -72,9 +84,9 @@
                             <td>
                                 {% if page.type == 'page' and page.domain != "" %}
                                     {% if (page.domain == app.request.httphost) %}
-                                        <a href="{{ page.path }}">
+                                        <a href="{{ page.path }}" title="{% trans %}Open page{% endtrans %}">
                                     {% else %}
-                                        <a href="//{{ page.domain }}{{ path('integrated_website_enter_session', {'sessionId': app.session.id, 'path': page.path}) }}">
+                                        <a href="//{{ page.domain }}{{ path('integrated_website_enter_session', {'sessionId': app.session.id, 'path': page.path}) }}" title="{% trans %}Open page{% endtrans %}">
                                     {% endif %}
                                 {% endif %}
                                 {{ page.path }}
@@ -92,7 +104,7 @@
                                 {{ page.layout|split('/')|last|replace({'.html.twig': ''}) }}
                             </td>
                             <td>
-                                <a href="{{ path('integrated_page_'~page.type~'_edit', { 'id': page.id}) }}" title="{% trans %}Edit{% endtrans %}">
+                                <a href="{{ path('integrated_page_'~page.type~'_edit', { 'id': page.id}) }}" title="{% trans %}Edit page properties{% endtrans %}">
                                     {{ icon('pencil') }}
                                 </a>
 

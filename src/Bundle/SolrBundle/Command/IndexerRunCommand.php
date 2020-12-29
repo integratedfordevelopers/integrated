@@ -23,6 +23,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Lock\Exception\LockConflictedException;
 use Symfony\Component\Lock\Factory;
 use Symfony\Component\Process\Process;
 
@@ -169,7 +170,7 @@ The <info>%command.name%</info> command starts a indexer run.
                 $lock->release();
             }
         } catch (Exception $e) {
-            $output->writeln('Aborting: '.$e->getMessage());
+            $output->writeln('Aborting: '.$e->getMessage(), ($e instanceof LockConflictedException) ? OutputInterface::VERBOSITY_VERBOSE : 0);
 
             return 1;
         }
