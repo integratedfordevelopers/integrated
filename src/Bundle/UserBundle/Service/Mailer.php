@@ -13,8 +13,6 @@ namespace Integrated\Bundle\UserBundle\Service;
 use Integrated\Bundle\UserBundle\Doctrine\UserManager;
 use Integrated\Bundle\UserBundle\Model\ScopeInterface;
 use Symfony\Bridge\Twig\TwigEngine;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class Mailer
@@ -45,12 +43,12 @@ class Mailer
     private $keyGenerator;
 
     /**
-     * @var null|string
+     * @var string|null
      */
     private $from;
 
     /**
-     * @var null|string
+     * @var string|null
      */
     private $name;
 
