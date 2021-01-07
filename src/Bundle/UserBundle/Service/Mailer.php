@@ -45,23 +45,35 @@ class Mailer
     private $keyGenerator;
 
     /**
+     * @var null|string
+     */
+    private $from;
+
+    /**
+     * @var null|string
+     */
+    private $name;
+
+    /**
      * Password constructor.
      *
-     * @param UserManager             $userManager
-     * @param \Swift_Mailer           $mailer
-     * @param TwigEngine              $templating
-     * @param RouterInterface         $router
-     * @param TranslatorInterface     $translator
-     * @param EncoderFactoryInterface $encoderFactory
-     * @param KeyGenerator            $keyGenerator
+     * @param UserManager         $userManager
+     * @param \Swift_Mailer       $mailer
+     * @param TwigEngine          $templating
+     * @param TranslatorInterface $translator
+     * @param KeyGenerator        $keyGenerator
+     * @param                     $from
+     * @param                     $name
      */
-    public function __construct(UserManager $userManager, \Swift_Mailer $mailer, TwigEngine $templating, RouterInterface $router, TranslatorInterface $translator, KeyGenerator $keyGenerator)
+    public function __construct(UserManager $userManager, \Swift_Mailer $mailer, TwigEngine $templating, TranslatorInterface $translator, KeyGenerator $keyGenerator, $from, $name)
     {
         $this->userManager = $userManager;
         $this->mailer = $mailer;
         $this->templating = $templating;
         $this->translator = $translator;
         $this->keyGenerator = $keyGenerator;
+        $this->from = $from;
+        $this->name = $name;
     }
 
     /**
@@ -93,7 +105,7 @@ class Mailer
 
         $message = (new \Swift_Message())
             ->setSubject($data['subject'])
-            ->setFrom('mailer@integratedforpublishers.com')
+            ->setFrom($this->from, $this->name)
             ->setTo($email)
             ->setBody(
                 $this->templating->render($template, $data),
