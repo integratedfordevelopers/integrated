@@ -66,7 +66,7 @@ class ScopeListener implements ListenerInterface
 
         $roles = $user->getRoles();
 
-        array_push($roles, 'ROLE_SCOPE_INTEGRATED');
+        $roles[] = 'ROLE_SCOPE_INTEGRATED';
 
         $newToken = new UsernamePasswordToken(
             $user,

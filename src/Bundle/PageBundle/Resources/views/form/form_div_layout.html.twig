@@ -1,3 +1,10 @@
+{% block _integrated_page_page_path_widget %}
+    <div class="input-group">
+        <div class="input-group-addon">/</div>
+        <input type="text" {{ block('widget_attributes') }} class="form-control" {% if value is not empty %}value="{{ value }}" {% endif %}>
+    </div>
+{% endblock %}
+
 {% block page_copy_pages_row %}
     {% spaceless %}
         <table class="table table-hover" id="copy-table">
