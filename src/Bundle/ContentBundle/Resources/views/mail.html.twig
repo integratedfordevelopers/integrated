@@ -29,14 +29,16 @@
                                 <table width="100%" cellpadding="0" cellspacing="0">
                                     <tr>
                                         <td class="content-block" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px; padding: 20px; background: #e9e9e9;" valign="top">
-                                            {{ body }}
+                                            {% block body %}{{ body }}{% endblock %}
                                         </td>
                                     </tr>
-                                    {% if buttonLink is defined %}
-                                    <tr>
-                                        <td class="content-block" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px; padding: 20px; background: #e9e9e9;" valign="top"><a href="{{ buttonLink }}" class="btn-primary" style="font-size: 14px; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: block; border-radius: 5px; text-transform: capitalize; background-color: #016aac; border-color: #016aac; padding: 8px 0;color:#ffffff;">{{ buttonText }}</a></td>
-                                    </tr>
-                                    {% endif %}
+                                    {% block buttonRow %}
+                                        {% if buttonLink is defined %}
+                                        <tr>
+                                            <td class="content-block" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px; padding: 20px; background: #e9e9e9;" valign="top"><a href="{{ buttonLink }}" class="btn-primary" style="font-size: 14px; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: block; border-radius: 5px; text-transform: capitalize; background-color: #016aac; border-color: #016aac; padding: 8px 0;color:#ffffff;">{{ buttonText }}</a></td>
+                                        </tr>
+                                        {% endif %}
+                                    {% endblock %}
                                     <tr>
                                         <td class="content-block" style="font-family: Arial, Helvetica, sans-serif; font-size: 14px; text-align: center; color: #BCC1C7; background: #e9e9e9;" valign="top">{% trans with {'%domain%': app.request.httpHost}  %}This email was sent by Integrated on %domain%{% endtrans %}</td>
                                     </tr>

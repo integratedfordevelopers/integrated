@@ -11,10 +11,12 @@
 
 namespace Integrated\Bundle\UserBundle\Controller;
 
+use Integrated\Bundle\UserBundle\Doctrine\UserManager;
 use Integrated\Bundle\UserBundle\Form\Type\LoginFormType;
 use Integrated\Bundle\UserBundle\Form\Type\PasswordChangeType;
 use Integrated\Bundle\UserBundle\Form\Type\PasswordResetType;
-use Integrated\Bundle\UserBundle\Service\Password;
+use Integrated\Bundle\UserBundle\Service\KeyGenerator;
+use Integrated\Bundle\UserBundle\Service\Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,18 +30,30 @@ use Symfony\Component\HttpFoundation\Response;
 class SecurityController extends Controller
 {
     /**
-     * @var Password
+     * @var UserManager
      */
-    private $password;
+    private $userManager;
 
     /**
-     * SecurityController constructor.
-     *
-     * @param Password $password
+     * @var Mailer
      */
-    public function __construct(Password $password)
+    private $mailer;
+
+    /**
+     * @var KeyGenerator
+     */
+    private $keyGenerator;
+
+    /**
+     * @param UserManager  $userManager
+     * @param Mailer       $mailer
+     * @param KeyGenerator $keyGenerator
+     */
+    public function __construct(UserManager $userManager, Mailer $mailer, KeyGenerator $keyGenerator)
     {
-        $this->password = $password;
+        $this->userManager = $userManager;
+        $this->mailer = $mailer;
+        $this->keyGenerator = $keyGenerator;
     }
 
     /**
@@ -78,7 +92,7 @@ class SecurityController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->password->sendResetMail($form->get('email')->getData());
+            $this->mailer->sendPasswordResetMail($form->get('email')->getData());
 
             $this->get('braincrafted_bootstrap.flash')->success('An e-mail with a password reset link has been sent');
 
@@ -104,8 +118,8 @@ class SecurityController extends Controller
             return $this->redirectToRoute('integrated_user_profile_index');
         }
 
-        if (!$this->password->isValidKey($id, $timestamp, $key)) {
-            $this->get('braincrafted_bootstrap.flash')->success('Password reset link is invalid or expired');
+        if (!$this->keyGenerator->isValidKey($id, $timestamp, $key)) {
+            $this->get('braincrafted_bootstrap.flash')->error('Password reset link is invalid or expired');
 
             return $this->redirectToRoute('integrated_user_login');
         }
@@ -119,9 +133,11 @@ class SecurityController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->password->changePassword($id, $form->get('password')->getData());
-
-            $this->get('braincrafted_bootstrap.flash')->success('Your password has been changed');
+            if ($this->userManager->changePassword($id, $form->get('password')->getData())) {
+                $this->get('braincrafted_bootstrap.flash')->success('Your password has been changed');
+            } else {
+                $this->get('braincrafted_bootstrap.flash')->error('An error occurred while changing the password');
+            }
 
             return $this->redirectToRoute('integrated_user_login');
         }
