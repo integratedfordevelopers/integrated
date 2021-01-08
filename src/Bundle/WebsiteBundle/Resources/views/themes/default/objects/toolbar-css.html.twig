@@ -213,4 +213,40 @@
         border-left: 5px solid red;
         z-index: 9999;
     }
+
+    @import url(https://fonts.googleapis.com/css?family=Roboto:100);
+
+    #integrated-loader {
+        width: 100vw;
+        height: 100vh;
+        background: #fff;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 10000;
+    }
+
+    #integrated-loader-spinner {
+        width: 50px;
+        height: 50px;
+        border: 3px solid rgba(0,0,0,.3);
+        border-radius: 50%;
+        border-top-color: #000000;
+        animation: integrated-spin 1s ease-in-out infinite;
+        -webkit-animation: integrated-spin 1s ease-in-out infinite;
+        z-index: 10001;
+        position: absolute;
+        margin: auto;
+        display: inline-block;
+        top: 50%;
+        left: calc(50% - 25px);
+    }
+
+    @keyframes integrated-spin {
+        to { -webkit-transform: rotate(360deg); }
+    }
+
+    @-webkit-keyframes integrated-spin {
+        to { -webkit-transform: rotate(360deg); }
+    }
 </style>

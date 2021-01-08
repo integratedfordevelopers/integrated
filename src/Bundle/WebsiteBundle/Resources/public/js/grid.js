@@ -132,6 +132,17 @@
             .append('<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-edit" title="Edit block"><span class="glyphicon glyphicon-pencil"></span></a>');
     };
 
+    var showLoader = function() {
+        var element = document.createElement('div');
+        element.innerHTML = '<div id="integrated-loader"><div id="integrated-loader-spinner"></div></div></div>';
+        document.querySelector('body').insertAdjacentElement('afterend', element);
+    };
+
+    var hideLoader = function() {
+        var element = document.querySelector('#integrated-loader');
+        element.parentNode.removeChild(element);
+    };
+
     /**
      * Init grid buttons on page load
      */
@@ -149,6 +160,8 @@
     $(document).on('click', '[data-action="integrated-website-block-add"]', function(e) {
         e.preventDefault();
 
+        showLoader();
+
         $blockTarget = $(this).parent();
 
         $.ajax({
@@ -161,6 +174,8 @@
                     title: 'Add block',
                     message: $(template(data))
                 });
+
+                hideLoader();
             }
         });
     });
