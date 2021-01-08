@@ -11,6 +11,7 @@
         <service id="integrated_user.user.manager.doctrine" class="Integrated\Bundle\UserBundle\Doctrine\UserManager">
             <argument type="service" id="integrated_user.doctrine.object_manager"/>
             <argument>%integrated_user.user.class%</argument>
+            <argument type="service" id="security.encoder_factory"/>
         </service>
 
         <service id="integrated_user.group.manager.doctrine" class="Integrated\Bundle\UserBundle\Doctrine\GroupManager">
