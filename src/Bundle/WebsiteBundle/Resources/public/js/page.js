@@ -3,15 +3,17 @@
     var success = 0;
     var target = null;
 
-    $('[data-action="integrated-website-page-save"]').click(function(e) {
-        e.preventDefault();
+    document.querySelectorAll('[data-action="integrated-website-page-save"]').forEach(item =>
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
 
-        success = 0;
-        target = $(this).data('target');
+            success = 0;
+            target = $(this).data('target');
 
-        saveMenus();
-        saveGrids($(this).data('id'));
-    });
+            saveMenus();
+            saveGrids($(this).data('id'));
+        })
+    );
 
     var saveMenus = function () {
         var menus = [];
