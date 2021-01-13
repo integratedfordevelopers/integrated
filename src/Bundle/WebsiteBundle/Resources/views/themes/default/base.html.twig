@@ -38,10 +38,6 @@
 <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 <script type="text/javascript" src="{{ path('fos_js_routing_js', { 'callback': 'fos.Router.setData' }) }}"></script>
 
-{% if app.request.attributes.get('integrated_block_edit') %}
-    {{ include('@IntegratedWebsite/handlebars/grid.html.twig') }}
-{% endif %}
-
 {% if app.request.attributes.get('integrated_menu_edit') %}
     {{ include('@IntegratedWebsite/handlebars/menu.html.twig') }}
 {% endif %}

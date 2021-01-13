@@ -158,100 +158,85 @@
 
         var addBlockModalTemplateHTML = function(data) {
             var type = 'yo';
-            console.log(data.filters);
-            return '    <div>' +
-                '        <div id="add_block_filters" class="row">' +
-                '            <form id="add_block_filters_form" action="{{ path('integrated_block_block_index', { '_format': 'json', 'limit': 10}) }}">' +
-            '                    <div class="col-sm-3">' +
-            '                        <div class="dropdown">' +
-            '                            <button class="btn btn-default" type="button" data-toggle="dropdown">{% trans %}New block{% endtrans %}' +
-            '                                <span class="caret"></span>\n' +
-            '                            </button>\n' +
-            '                            <ul class="dropdown-menu">\n' +
-            {% for metadata in integrated_find_block_types() if 'InlineTextBlock' not in metadata.class %}
-            '                                    <li role="presentation">\n' +
-            '                                        <a href="{{ path('integrated_block_block_new', { '_format': 'iframe.html', 'class': metadata.class} ) }}" data-action="integrated-website-block-new">{{ metadata.type|default(metadata.class) }}</a>' +
-            '                                    </li>\n' +
-            {% endfor %}
-            '                            </ul>\n' +
-            '                        </div>\n' +
-            '                    </div>\n' +
-            '                    <div class="col-sm-3">\n'+
-            '                        <select class="form-control" name="integrated_block_filter[type][]">\n'+
-            '                            <option value="">{% trans %}All types{% endtrans %}</option>\n' +
-            {% verbatim %}
-            `                            ${data.filters.type.map(type => `<option value="${type.value}" ${type.value == type ? "selected" : ""}>${type.label}</option>`)}`+
-            {% endverbatim %}
-            '                        </select>\n'+
-            '                    </div>\n'+
-            '                    <div class="col-sm-3">\n'+
-            '                        <div class="input-group">\n'+
-            '                            <input type="text" value="${data.q}" class="form-control" name="integrated_block_filter[q]" placeholder="{% trans %}Search{% endtrans %}...">\n'+
-            '                        </div>\n'+
-            '                    </div>\n'+
-            '                    <div class="col-sm-3">\n'+
-            '                        <select class="form-control" name="integrated_block_filter[channels][]">\n'+
-            '                            <option value="">{% trans %}Channel usage{% endtrans %}</option>\n'+
-            {% verbatim %}
-            `                            ${data.filters.channels.map(channel => `<option value="${channel.value}" ${channel.value == channel ? "selected" : ""}>${channel.label}</option>`)}`+
-            {% endverbatim %}
-            '                        </select>\n'+
-            '                    </div>\n'+
-            '            </form>\n' +
-            '        </div>\n' +
-            '\n' +
-            '        <div id="add_block_results">\n' +
-            {% verbatim %}
-'                {{#each blocks}}\n'+
-'                    <div class="row form-group">\n'+
-'                        <div class="col-sm-8">\n'+
-'                            <b>{{ title }}</b>\n'+
-'                            <p>{{ type }}</p>\n'+
-'                        </div>\n'+
-'                        <div class="col-sm-4">\n'+
-'                            <a href="javascript:;" data-action="integrated-website-block-choose" data-id="{{ id }}" class="btn btn-default pull-right">Choose</a>\n'+
-'                        </div>\n'+
-'                    </div>\n'+
-'                {{/each}}\n'+
-            {% endverbatim %}
-            '        </div>\n' +
-            '\n' +
-            '        <div class="row form-group">\n' +
-            '            <div class="col-sm-12">\n' +
-            {% verbatim %}
-'                    {{#hasPages pagination.pageCount}}\n'+
-'                        <ul class="pagination" id="add_block_pagination">\n'+
-'                            {{#if pagination.previous}}\n'+
-'                                <li>\n'+
-'                                    <a href="{{pagination.previous.href}}">&laquo;</a>\n'+
-'                                </li>\n'+
-'                            {{else}}\n'+
-'                                <li class="disabled">\n'+
-'                                    <span>&laquo;</span>\n'+
-'                                </li>\n'+
-'                            {{/if}}\n'+
-'\n'+
-'                            {{#each pagination.pages }}\n'+
-'                                <li {{#equals @key ../pagination.page }}class="active disabled"{{/equals}}>\n'+
-'                                    <a href="{{href}}">{{ @key }}</a>\n'+
-'                                </li>\n'+
-'                            {{/each}}\n'+
-'\n'+
-'                            {{#if pagination.next}}\n'+
-'                                <li>\n'+
-'                                    <a href="{{pagination.next.href}}">&raquo;</a>\n'+
-'                                </li>\n'+
-'                            {{else}}\n'+
-'                                <li class="disabled">\n'+
-'                                    <span>&raquo;</span>\n'+
-'                                </li>\n'+
-'                            {{/if}}\n'+
-'                        </ul>\n'+
-'                    {{/hasPages}}\n'+
-            {% endverbatim %}
-            '            </div>\n' +
+
+            var output = '<div>' +
+                '   <div id="add_block_filters" class="row">' +
+                '       <form id="add_block_filters_form" action="{{ path('integrated_block_block_index', { '_format': 'json', 'limit': 10}) }}">' +
+                '           <div class="col-sm-3">' +
+                '               <div class="dropdown">' +
+                '                   <button class="btn btn-default" type="button" data-toggle="dropdown">{% trans %}New block{% endtrans %}' +
+                '                       <span class="caret"></span>\n' +
+                '                   </button>\n' +
+                '                   <ul class="dropdown-menu">\n' +
+                    {% for metadata in integrated_find_block_types() if 'InlineTextBlock' not in metadata.class %}
+                '                       <li role="presentation">\n' +
+                '                               <a href="{{ path('integrated_block_block_new', { '_format': 'iframe.html', 'class': metadata.class} ) }}" data-action="integrated-website-block-new">{{ metadata.type|default(metadata.class) }}</a>' +
+                '                           </li>\n' +
+                    {% endfor %}
+                '                        </ul>\n' +
+                '                    </div>\n' +
+                '               </div>\n' +
+                '               <div class="col-sm-3">\n'+
+                '                   <select class="form-control" name="integrated_block_filter[type][]">\n'+
+                '                       <option value="">{% trans %}All types{% endtrans %}</option>\n' +
+                `                        ${data.filters.type.map(type => `<option value="${type.value}" ${type.value == type ? "selected" : ""}>${type.label}</option>`).join('')}`+
+                '                        </select>\n'+
+                '                    </div>\n'+
+                '                    <div class="col-sm-3">\n'+
+                '                        <div class="input-group">\n'+
+                `                            <input type="text" value="${data.q}" class="form-control" name="integrated_block_filter[q]" placeholder="{% trans %}Search{% endtrans %}...">\n`+
+                '                        </div>\n'+
+                '                    </div>\n'+
+                '                    <div class="col-sm-3">\n'+
+                '                        <select class="form-control" name="integrated_block_filter[channels][]">\n'+
+                '                            <option value="">{% trans %}Channel usage{% endtrans %}</option>\n'+
+                `                            ${data.filters.channels.map(channel => `<option value="${channel.value}" ${channel.value == channel ? "selected" : ""}>${channel.label}</option>`).join('')}`+
+                '                        </select>\n'+
+                '                    </div>\n'+
+                '            </form>\n' +
+                '        </div>\n' +
+                '        <div id="add_block_results">\n' +
+                `           ${data.blocks.map(block => `<div class="row form-group">
+                                <div class="col-sm-8">
+                                    <b>${block.title}</b>
+                                    <p>${block.type}</p>
+                                </div><div class="col-sm-4"><button onclick="addBlock('${block.id}', $blockTarget);$('.modal').modal('hide');" href="javascript:;" data-action="integrated-website-block-choose" data-id="${block.id}" class="btn btn-default pull-right">Choose</button></div></div>`).join('')}`+
+                '        </div>\n' +
+                '        <div class="row form-group">\n' +
+                '            <div class="col-sm-12">\n';
+
+            if (data.pagination.pageCount > 0) {
+                output = output + '<ul class="pagination" id="add_block_pagination">\n';
+
+                if (data.pagination.previous) {
+                    output = output + `<li><a href="${data.pagination.previous.href}">&laquo;</a></li>`;
+                } else {
+                    output = output + `<li class="disabled"><span>&laquo;</span></li>`;
+                }
+
+                for (var key in data.pagination.pages) {
+                    page = data.pagination.pages[key];
+                    if (data.pagination.page == key) {
+                        output = output + `<li class="active disabled"><a href="${page.href}">${key}</a></li>`;
+                    } else {
+                        output = output + `<li><a href="${page.href}">${key}</a></li>`;
+                    }
+                };
+
+                if (data.pagination.next) {
+                    output = output + `<li><a href="${data.pagination.next.href}">&laquo;</a></li>`;
+                } else {
+                    output = output + `<li class="disabled"><span>&raquo;</span></li>`;
+                }
+
+                output = output + '</ul>\n';
+            }
+
+            output = output + '</div>\n' +
             '        </div>\n' +
             '    </div>\n';
+
+            return output;
         }
 
         /**

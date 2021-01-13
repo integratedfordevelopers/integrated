@@ -250,4 +250,29 @@
     @-webkit-keyframes integrated-spin {
         to { -webkit-transform: rotate(360deg); }
     }
+
+    .integrated-modal {
+        background-color: rgba(0,0,0,0.4); /* Transparent dimmed overlay */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: table;
+    }
+
+    .integrated-modal .container {
+        display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+        width: 200px;
+    }
+
+    .integrated-modal .body {
+        box-shadow: 5px 10px #888888;
+        display: inline-block;
+        background-color: white;
+        border: 1px solid black;
+        padding: 10px;
+    }
 </style>
