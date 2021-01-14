@@ -16,6 +16,8 @@ namespace Integrated\Bundle\ContentHistoryBundle\Diff;
  */
 class ArrayComparer
 {
+    const IGNORE_KEYS = ['$db'];
+
     /**
      * @param array $old
      * @param array $new
@@ -24,29 +26,54 @@ class ArrayComparer
      */
     public static function diff(array $old = [], array $new = [])
     {
-        foreach (array_keys($old) as $key) {
-            if (!\array_key_exists($key, $new)) {
-                // add missing key
-                $new[$key] = null;
-            }
-        }
+        $old = self::normalize($new, $old);
 
-        foreach (array_keys($new) as $key) {
-            if (!\array_key_exists($key, $old)) {
-                // add missing key
-                $old[$key] = null;
-            }
-        }
+        $new = self::normalize($old, $new);
 
         $diff = [];
 
         foreach ($new as $key => $value) {
-            if ($old[$key] != $value) {
+            if (\in_array($key, self::IGNORE_KEYS)) {
+                continue;
+            }
+
+            if (\is_array($value) && null !== $old[$key]) {
+                $result = self::diff($old[$key], $value);
+                if (\count($result)) {
+                    $diff[$key] = $result;
+                }
+            } elseif ($old[$key] !== $value) {
                 // value has changed
                 $diff[$key] = [$old[$key], $value];
             }
         }
 
         return $diff;
+    }
+
+    /**
+     * @param array $old
+     * @param array $new
+     *
+     * @return array
+     */
+    public static function normalize(array $old = [], array $new = [])
+    {
+        foreach (array_keys($old) as $key) {
+            if (!\array_key_exists($key, $new)) {
+                // add missing key
+                if (\is_array($old[$key])) {
+                    $new[$key] = [];
+                } else {
+                    $new[$key] = null;
+                }
+            }
+
+            if (\is_array($old[$key])) {
+                $new[$key] = self::normalize($old[$key], $new[$key]);
+            }
+        }
+
+        return $new;
     }
 }
