@@ -68,9 +68,6 @@ class WebsiteEditableListener implements EventSubscriberInterface
             return;
         }
 
-        $this->javascripts->add('bundles/integratedwebsite/js/page.js');
-        $this->javascripts->add('bundles/integratedwebsite/js/menu.js');
-
         $request->attributes->set('integrated_block_edit', true);
         $request->attributes->set('integrated_menu_edit', true);
     }

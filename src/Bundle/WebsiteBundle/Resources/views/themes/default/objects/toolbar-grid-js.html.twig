@@ -1,5 +1,5 @@
 <script>
-    !function ($, Routing, JSON) {
+    !function (Routing, JSON) {
         /**
          * @type object|null
          */
@@ -37,63 +37,66 @@
 
         /**
          * @param {string} blockId
-         * @param {jQuery} $before
+         * @param element  $before
          */
         var addBlock = function(blockId, $before) {
-            var $block = $('<div>')
-                .attr('data-id', blockId)
-                .attr('data-block-type', 'block')
-                .addClass('integrated-website-sortable');
+            var element = document.createElement('div');
 
-            $before.before($block);
+            element.dataset.id = blockId;
+            element.dataset.blockType = 'block';
+            element.classList.add('integrated-website-sortable');
 
-            refreshBlock($block);
+            $before.insertAdjacentElement('beforebegin', element);
+
+            refreshBlock(element);
         };
 
         /**
-         * @param {jQuery} $block
+         * @param element $block
          */
         var refreshBlock = function($block) {
-            $.ajax({
-                url: Routing.generate('integrated_block_block_show', { 'id': $block.data('id') }),
-                dataType: 'json',
-                success: function(data) {
-                    $block.html(data.html);
-                    if ($block.data('block-type') == 'channel') {
-                        $block.prepend(createChannelBlockButtons());
+            fetch('{{ path('integrated_block_block_show', {'id': 'block-id'}) }}'.replace('block-id', $block.dataset.id))
+                .then(response => response.json())
+                .then(data => {
+                    $block.innerHTML = data.html;
+                    if ($block.dataset.blockType == 'channel') {
+                        $block.insertBefore(createChannelBlockButtons(), $block.firstChild);
                     } else {
-                        $block.prepend(createBlockButtons());
+                        $block.insertBefore(createBlockButtons(), $block.firstChild);
                     }
-                },
-                error: function (result) {
-                    // @todo error handling (INTEGRATED-420)
-                    alert('An error occurred rendering the block!');
-                    console.log(result.responseText);
-                }
-            });
+                });
         };
+
         /**
-         * @return {jQuery}
+         * @return element
          */
         var createRow = function () {
-            return $('<div>')
-                .addClass('row integrated-website-sortable')
-                .attr('data-block-type', 'row');
+            var element = document.createElement('div');
+
+            element.dataset.blockType = 'row';
+            element.classList.add('row');
+            element.classList.add('integrated-website-sortable');
+
+            return element;
         };
 
         /**
          * @param size
          */
         var createColumn = function(size) {
-            var $element = $('<div>')
-                .addClass('integrated-website-col integrated-website-droppable col-sm-' + size)
-                .attr('data-block-type', 'column')
-                .data('size', size)
-                .append(createColumnButtons());
+            var element = document.createElement('div');
 
-            initSortable($element);
+            element.dataset.blockType = 'column';
+            element.dataset.size = size;
+            element.classList.add('integrated-website-col');
+            element.classList.add('integrated-website-droppable');
+            element.classList.add('col-sm-'+size);
 
-            return $element;
+            element.appendChild(createColumnButtons());
+
+            initSortable(element);
+
+            return element;
         };
 
         /**
@@ -101,7 +104,7 @@
          */
         var createRowButtons = function () {
             var element = document.createElement('div');
-            element.innerHTML = 'POEP POEP POEP<div class="row-buttons"><a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-cols-config" title="Configure columns"><span class="glyphicon glyphicon-wrench"></span></a></div>';
+            element.innerHTML = '<div class="row-buttons"><a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-cols-config" title="Configure columns"><span class="glyphicon glyphicon-wrench"></span></a></div>';
 
             return element;
         };
@@ -125,7 +128,7 @@
          */
         var createBlockButtons = function() {
             var element = document.createElement('div');
-            element.innerHTML = 'POEP2 POEP2 POEP2<div class="integrated-website-block-options">' +
+            element.innerHTML = '<div class="integrated-website-block-options">' +
                 '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-edit" title="Edit block"><span class="glyphicon glyphicon-pencil"></span></a>' +
                 '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-remove" title="Remove block"><span class="glyphicon glyphicon-remove"></span></a>' +
                 '</div>';
@@ -137,8 +140,9 @@
          * @return Element
          */
         var createChannelBlockButtons = function() {
-            var element = document.createElement('div');
-            element.innerHTML = 'POEP3 POEP3 POEP3<div class="integrated-website-block-options">' +
+            let element = document.createElement('div');
+
+            element.innerHTML = '<div class="integrated-website-block-options">' +
                 '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-edit" title="Edit block"><span class="glyphicon glyphicon-pencil"></span></a>' +
                 '</div>';
 
@@ -146,13 +150,15 @@
         };
 
         var showLoader = function() {
-            var element = document.createElement('div');
+            let element = document.createElement('div');
+
             element.innerHTML = '<div id="integrated-loader"><div id="integrated-loader-spinner"></div></div></div>';
             document.querySelector('body').insertAdjacentElement('afterend', element);
         };
 
         var hideLoader = function() {
-            var element = document.querySelector('#integrated-loader');
+            let element = document.querySelector('#integrated-loader');
+
             element.parentNode.removeChild(element);
         };
 
@@ -200,10 +206,11 @@
                                 <div class="col-sm-8">
                                     <b>${block.title}</b>
                                     <p>${block.type}</p>
-                                </div><div class="col-sm-4"><button onclick="addBlock('${block.id}', $blockTarget);$('.modal').modal('hide');" href="javascript:;" data-action="integrated-website-block-choose" data-id="${block.id}" class="btn btn-default pull-right">Choose</button></div></div>`).join('')}`+
+                                </div><div class="col-sm-4"><a href="javascript:;" data-action="integrated-website-block-choose" data-id="${block.id}" class="btn btn-default pull-right">Choose</a></div></div>`).join('')}`+
                 '        </div>\n' +
                 '        <div class="row form-group">\n' +
                 '            <div class="col-sm-12">\n';
+                // onclick="addBlock('${block.id}', $blockTarget);$('.modal').modal('hide');"
 
             if (data.pagination.pageCount > 0) {
                 output = output + '<ul class="pagination" id="add_block_pagination">\n';
@@ -262,7 +269,6 @@
 
                     $blockTarget = item.parentNode;
 
-
                     fetch('{{ path('integrated_block_block_index', { '_format': 'json', 'limit': 10}) }}')
                         .then(response => response.json())
                         .then(data => {
@@ -291,15 +297,21 @@
         /**
          * Handle choose block button
          */
-        $(document).on('click', '[data-action="integrated-website-block-choose"]', function(e) {
-            addBlock($(this).attr('data-id'), $blockTarget);
+        document.querySelectorAll('body').forEach(item =>
+            item.addEventListener('click', function(e) {
+                if (e.target.dataset.action != 'integrated-website-block-choose') {
+                    return true;
+                }
+                addBlock(e.target.dataset.id, $blockTarget);
 
-            $('.modal').modal('hide');
-        });
+                //document.querySelectorAll('.modal').modal('hide');
+            })
+        );
 
         /**
          * Handle remove block button
          */
+        /*
         $(document).on('click', '[data-action="integrated-website-block-remove"]', function(e) {
             e.preventDefault();
 
@@ -307,10 +319,12 @@
                 $(this).closest('[data-block-type="block"]').remove();
             }
         });
+        */
 
         /**
          * Handle edit block button
          */
+        /*
         $(document).on('click', '[data-action="integrated-website-block-edit"]', function(e) {
             e.preventDefault();
 
@@ -319,20 +333,24 @@
             var blockId = $(this).closest('[data-block-type="block"],[data-block-type="channel"]').data('id');
             createIframe(Routing.generate('integrated_block_block_edit', { 'id': blockId, '_format': 'iframe.html'}), 'Edit block');
         });
+        */
 
         /**
          * Handle new block button
          */
+        /*
         $(document).on('click', '[data-action="integrated-website-block-new"]', function(e) {
             e.preventDefault();
 
             $('.modal').modal('hide');
             createIframe($(this).attr('href'), 'Add block');
         });
+         */
 
         /**
          * Handle new channel block button
          */
+        /*
         $(document).on('click', '[data-action="integrated-website-block-new-channel-block"]', function(e) {
             e.preventDefault();
 
@@ -353,10 +371,12 @@
                 }
             );
         });
+        */
 
         /**
          * Handle new textblock button
          */
+        /*
         $(document).on('click', '[data-action="integrated-website-textblock-add"]', function(e) {
             e.preventDefault();
 
@@ -368,6 +388,7 @@
 
             createIframe(Routing.generate('integrated_block_inline_text_block_create', { 'id': pageId}), 'New block');
         });
+        */
 
         /**
          * @param url
@@ -444,6 +465,7 @@
         /**
          * Add columns
          */
+        /*
         $(document).on('click', '[data-action="integrated-website-cols-add"]', function(e) {
             e.preventDefault();
 
@@ -465,10 +487,12 @@
                 $(this).parent().before($row);
             }
         });
+        */
 
         /**
          * Update row and columns
          */
+        /*
         $(document).on('click', '[data-action="integrated-website-cols-config"]', function(e) {
             e.preventDefault();
 
@@ -510,16 +534,18 @@
                 $row.remove();
             }
         });
+        */
 
         /**
          * Make grid sortable
          */
-        initSortable($('.integrated-website-droppable'));
+        //initSortable($('.integrated-website-droppable'));
 
         /**
          * Modal eventlisteners
          */
 
+        /*
         $(document).on('change', '#add_block_filters_form input, #add_block_filters_form select', function() {
             $('#add_block_filters_form').submit();
         });
@@ -540,6 +566,8 @@
 
             return false;
         });
+
+         */
 
         function refreshBlockData(url) {
             $('#add_block_results').html('Loading blocks...');
@@ -566,7 +594,7 @@
                 }
             });
         }
-    } (window.jQuery, window.Routing, JSON);
+    } (window.Routing, JSON);
 
     var Integrated = Integrated || {};
 </script>
