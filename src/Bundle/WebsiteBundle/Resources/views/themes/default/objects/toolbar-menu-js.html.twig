@@ -25,19 +25,19 @@
                 .then(response => response.json())
                 .then(data => {
                     // success
-                    console.log(data);
-                    element.data('options', result.options);
-                    element.html(result.html);
+                    element.dataset.options = data.options;
+                    element.innerHTML = data.html;
 
-                    element.find('.integrated-website-menu-list, .integrated-website-menu-item').each(function() {
-                        var item = $(this);
-
-                        if (item.attr('data-json')) {
-                            item.data('data', $.parseJSON(item.attr('data-json')));
-                            item.removeAttr('data-json');
+                    element.querySelectorAll('.integrated-website-menu-list, .integrated-website-menu-item').forEach(item => {
+                            if (item.dataset.json) {
+                                console.log(JSON.parse(item.dataset.json));
+                                item.data = JSON.parse(item.dataset.json);
+                                console.log(item.data);
+                                item.dataset.json = null;
+                            }
                         }
-                    });
-
+                    );
+/*
                     element.find('.integrated-website-menu-list').sortable({
                         tolerance: 'intersect',
                         items: '[data-action="integrated-website-menu-item-edit"]',
@@ -49,26 +49,17 @@
                         helper: function() {
                             return $('<div>').css('width', '20px').css('height', '10px');
                         }
-                        //update: function(e, ui) {
-                        //    menu.refresh();
-                        //}
                     });
+*/
 
+/*
                     element.find('.dropdown').droppable({
                         accept: '.integrated-website-menu-item',
                         tolerance: 'fit',
                         greedy: true
-                        //over: function(e, ui) {
-                        //    $(this).addClass('open');
-                        //    $(this).closest('.integrated-website-menu-placeholder').hide();
-                        //},
-                        //out: function(e, ui) {
-                        //    $(this).removeClass('open');
-                        //    $(this).closest('.integrated-website-menu-placeholder').show();
-                        //}
                     });
-
-                    if ($.isFunction(success)) {
+*/
+                    if (success) {
                         success();
                     }
                 });
@@ -82,15 +73,13 @@
         };
 
         Menu.prototype.getData = function(id) {
-            console.log(id);
-            var menu = this.element.closestChildren('.integrated-website-menu-list');
-            console.log(menu);
-            var data = menu.dataset.data;
+            let menu = this.element.closestChildren('.integrated-website-menu-list');
+            let data = menu.item(0).data;
 
             data.children = [];
 
-            menu.closestChildren('.integrated-website-menu-item').each(function() {
-                var item = new Item($(this));
+            menu.item(0).closestChildren('.integrated-website-menu-item').forEach(item => {
+                var item = new Item(item);
                 var result = item.getData(id);
 
                 if (result) {
@@ -117,16 +106,16 @@
         Item.prototype.getData = function(id, item) {
             item = item || this.element;
 
-            var data = item.data('data');
+            var data = item.data;
 
-            if (id && data.id == id || 'integrated-website-menu-item-edit' == item.attr('data-action')) {
+            if (id && data.id == id || 'integrated-website-menu-item-edit' == item.dataset.action) {
                 var items = item.closestChildren('.integrated-website-menu-item');
 
                 if (items.length) {
                     var children = [];
 
                     for (var i = 0; i < items.length; i++) {
-                        var result = this.getData(id, $(items[i]));
+                        var result = this.getData(id, items[i]);
 
                         if (result) {
                             children.push(result);
@@ -163,8 +152,6 @@
         Integrated = {...Integrated, ...{
                 Menu: {
                     create: function(element) {
-                        alert('crea');
-                        console.log(element);
                         return new Menu(element);
                     },
                     updateLinkType: function() {
@@ -208,13 +195,19 @@
          */
 
         function init() {
-            document.querySelectorAll('.integrated-website-menu').forEach(item => {
-                    var menu = new Menu(item);
-                    var script = item.querySelector('script[type="text/json"]');
+            console.log(document.querySelector('.integrated-website-menu'));
 
+            document.querySelectorAll('.integrated-website-menu').forEach(item => {
+                    let menu = new Menu(item);
+                    let script = item.querySelector('script[type="text/json"]');
+
+                    menu.load(script.innerHTML);
+                    /*
                     menu.load(script.innerHTML, function() {
+                        console.log(script.parentNode);
                         script.parentNode.removeChild(script);
                     });
+                     */
                 }
             );
 
@@ -325,7 +318,7 @@
                 return children;
             }
 
-            return this.closestChildren('> '+selector);
+            return this.querySelectorAll(selector);
             children = this.children;
 
             if (children.length) {
