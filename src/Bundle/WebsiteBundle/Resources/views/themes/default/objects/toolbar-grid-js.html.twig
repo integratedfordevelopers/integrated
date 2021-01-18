@@ -104,7 +104,8 @@
          */
         var createRowButtons = function () {
             var element = document.createElement('div');
-            element.innerHTML = '<div class="row-buttons"><a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-cols-config" title="Configure columns"><span class="glyphicon glyphicon-wrench"></span></a></div>';
+            element.classList.add('row-buttons');
+            element.innerHTML = '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-cols-config" title="Configure columns"><span class="glyphicon glyphicon-wrench"></span></a>';
 
             return element;
         };
@@ -114,11 +115,12 @@
          */
         var createColumnButtons = function () {
             var element = document.createElement('div');
-            element.innerHTML = '<div class="block-buttons">' +
+            element.classList.add('block-buttons');
+            element.innerHTML = '' +
                 '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-add" title="Add block">ADD<span class="glyphicon glyphicon-plus"></span></a>' +
                 '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-textblock-add" title="Add textblock"><span class="glyphicon glyphicon-font"></span></a>' +
                 '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-cols-add" title="Add columns"><span class="glyphicon glyphicon-th-large"></span></a>' +
-                '</div>';
+                '';
 
             return element;
         };
@@ -128,10 +130,10 @@
          */
         var createBlockButtons = function() {
             var element = document.createElement('div');
-            element.innerHTML = '<div class="integrated-website-block-options">' +
+            element.classList.add('integrated-website-block-options');
+            element.innerHTML =
                 '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-edit" title="Edit block"><span class="glyphicon glyphicon-pencil"></span></a>' +
-                '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-remove" title="Remove block"><span class="glyphicon glyphicon-remove"></span></a>' +
-                '</div>';
+                '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-remove" title="Remove block"><span class="glyphicon glyphicon-remove"></span></a>';
 
             return element;
         };
@@ -141,10 +143,9 @@
          */
         var createChannelBlockButtons = function() {
             let element = document.createElement('div');
-
-            element.innerHTML = '<div class="integrated-website-block-options">' +
-                '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-edit" title="Edit block"><span class="glyphicon glyphicon-pencil"></span></a>' +
-                '</div>';
+            element.classList.add('integrated-website-block-options');
+            element.innerHTML =
+                '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-edit" title="Edit block"><span class="glyphicon glyphicon-pencil"></span></a>';
 
             return element;
         };
