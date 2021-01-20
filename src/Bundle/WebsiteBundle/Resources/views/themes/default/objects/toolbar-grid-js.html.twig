@@ -1,3 +1,10 @@
+<svg class="integrated-svg-defs">
+    <defs>
+        <symbol id="integrated-icon-plus" viewBox="0 0 32 32">
+            <path d="M31 12h-11v-11c0-0.552-0.448-1-1-1h-6c-0.552 0-1 0.448-1 1v11h-11c-0.552 0-1 0.448-1 1v6c0 0.552 0.448 1 1 1h11v11c0 0.552 0.448 1 1 1h6c0.552 0 1-0.448 1-1v-11h11c0.552 0 1-0.448 1-1v-6c0-0.552-0.448-1-1-1z"></path>
+        </symbol>
+    </defs>
+</svg>
 <script>
     !function (Routing, JSON) {
         /**
@@ -115,9 +122,11 @@
          */
         var createColumnButtons = function () {
             var element = document.createElement('div');
-            element.classList.add('block-buttons');
+            element.classList.add('integrated-block-buttons');
             element.innerHTML = '' +
-                '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-add" title="Add block">ADD<span class="glyphicon glyphicon-plus"></span></a>' +
+                '<a href="javascript:;" class="integrated-block-button" data-action="integrated-website-block-add" title="Add block">' +
+                '<svg class="integrated-icon integrated-icon-plus"><use xlink:href="#integrated-icon-plus"></use></svg>' +
+                '</symbol>{% trans %}Add block{% endtrans %}</a>' +
                 '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-textblock-add" title="Add textblock"><span class="glyphicon glyphicon-font"></span></a>' +
                 '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-cols-add" title="Add columns"><span class="glyphicon glyphicon-th-large"></span></a>' +
                 '';
@@ -441,7 +450,7 @@
                 stop: function(e, ui) {
                     var $item = $(ui.item);
                     //buttons should always come behind
-                    $item.after($item.prev('.block-buttons'));
+                    $item.after($item.prev('.integrated-block-buttons'));
                 }
             });
         };
