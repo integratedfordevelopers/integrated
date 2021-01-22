@@ -38,7 +38,7 @@
         float: right;
     }
 
-    .integrated-website-toolbar-button {
+    .integrated-button, .integrated-website-toolbar-button {
         display: inline-block;
         border-radius: 0;
         box-shadow: none;
@@ -58,15 +58,20 @@
         text-decoration: none;
     }
 
-    .integrated-website-toolbar-button:link, .integrated-website-toolbar-button:active, .integrated-website-toolbar-button:focus {
+    .integrated-button:link, .integrated-button:active, .integrated-button:focus, .integrated-website-toolbar-button:link, .integrated-website-toolbar-button:active, .integrated-website-toolbar-button:focus {
         text-decoration: none;
         color: #ffffff;
     }
 
-    .integrated-website-toolbar-button:hover {
+    .integrated-button:hover, .integrated-website-toolbar-button:hover {
         text-decoration: none;
         color: #e7e7e7;
         border: 1px solid #e7e7e7;
+    }
+
+    .integrated-button-icon {
+        padding-top: 3px;
+        display: inline-block;
     }
 
     .integrated-website-toolbar-button-secondary {
@@ -251,31 +256,6 @@
         to { -webkit-transform: rotate(360deg); }
     }
 
-    .integrated-modal {
-        background-color: rgba(0,0,0,0.4); /* Transparent dimmed overlay */
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: table;
-    }
-
-    .integrated-modal .container {
-        display: table-cell;
-        text-align: center;
-        vertical-align: middle;
-        width: 200px;
-    }
-
-    .integrated-modal .body {
-        box-shadow: 5px 10px #888888;
-        display: inline-block;
-        background-color: white;
-        border: 1px solid black;
-        padding: 10px;
-    }
-
     .integrated-block-buttons {
         background: #000000;
     }
@@ -320,5 +300,100 @@
     }
     .integrated-svg-defs {
         display: none;
+    }
+    .integrated-modal {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1040;
+        background-color: rgba(255,255,255,0.4);
+    }
+    .integrated-modal-dialog {
+        position: relative;
+        width: 800px;
+        margin: 30px auto;
+
+    }
+    .integrated-modal-content {
+        position: relative;
+        background-color: #000000;
+        box-shadow: 0 5px 15px rgb(0 0 0 / 50%);
+        border: 1px solid rgba(0,0,0,0.2);
+        border-radius: 6px;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+    .integrated-modal-header {
+        padding: 15px;
+        border-bottom: 1px solid #e5e5e5;
+        min-height: 17px;
+    }
+    .integrated-modal-header-title {
+        font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
+        font-size: 16px;
+        font-weight: bold;
+        color: #ffffff;
+    }
+    .integrated-modal-close {
+        float: right;
+        font-size: 21px;
+        font-weight: bold;
+        line-height: 1;
+        color: #ffffff;
+        text-shadow: 0 1px 0 #fff;
+    }
+    .integrated-modal-body {
+        background: #ffffff;
+        position: relative;
+        padding: 15px;
+    }
+
+    .integrated-control-row {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .integrated-control-row form {
+        display: flex;
+    }
+
+    .integrated-control-row form > div {
+        margin-right: 10px;
+    }
+
+    .integrated-control-row form > div:last-child {
+        margin-right: 0px;
+    }
+
+    .integrated-form-control {
+        font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
+        font-size: 14px;
+        border-radius: 0;
+        box-shadow: none;
+        background: #ececec;
+        border: 1px solid #ccc;
+        line-height: 22px;
+        padding: 8px;
+        color: #000000;
+        margin-top: 8px;
+        margin-bottom: 8px;
+        line-height: 22px;
+        height: 40px;
+        display: inline-block;
+        width: 100%;
+    }
+
+    #integrated_block_filter_type {
+        width: 160px;
+    }
+
+    #2integrated_block_filter_q {
+        width: 150px;
+    }
+
+    #integrated_block_filter_channels {
+        width: 160px;
     }
 </style>
