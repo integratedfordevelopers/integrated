@@ -1,0 +1,24 @@
+<script>
+    !function () {
+
+        function init() {
+            document.querySelectorAll('body').forEach(item =>
+                item.addEventListener('click', function(e) {
+                    if (!e.target.dataset.integratedDropdown) {
+                        return true;
+                    }
+                    document.getElementById(e.target.dataset.integratedDropdown).classList.toggle('integrated-website-toolbar-show');
+                })
+            );
+        }
+
+        if (document.readyState != 'loading'){
+            init();
+        } else {
+            document.addEventListener('DOMContentLoaded', init);
+        }
+
+    } ();
+
+    var Integrated = Integrated || {};
+</script>

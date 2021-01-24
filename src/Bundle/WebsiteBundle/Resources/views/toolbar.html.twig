@@ -2,6 +2,7 @@
 {% include integrated_active_theme('objects/toolbar-grid-js.html.twig') %}
 {% include integrated_active_theme('objects/toolbar-menu-js.html.twig') %}
 {% include integrated_active_theme('objects/toolbar-page-js.html.twig') %}
+{% include integrated_active_theme('objects/toolbar-tools-js.html.twig') %}
 
 <div class="integrated-website-toolbar">
     <div class="container">
@@ -41,7 +42,7 @@
                     <a href="{{  path(app.request.attributes.get('_route'), params|merge({'integrated_website_edit': 1})) }}" class="integrated-website-toolbar-button">
                         {% trans %}Edit page{% endtrans %}
                     </a>
-                    <div onclick="integratedDropdownToggle('integrated-page-button-dropdown');" class="integrated-website-toolbar-button integrated-website-toolbar-button-dropdown"></div>
+                    <div data-integrated-dropdown="integrated-page-button-dropdown" class="integrated-website-toolbar-button integrated-website-toolbar-button-dropdown"></div>
                     <ul id="integrated-page-button-dropdown" class="integrated-website-toolbar-dropdown">
                         {% if app.request.attributes.get('page').type == 'content_type_page' %}
                             <li><a href="{{ path('integrated_page_content_type_page_edit', {'id': app.request.attributes.get('page').id}) }}">{% trans %}Edit page properties{% endtrans %}</a></li>
@@ -58,10 +59,3 @@
 </div>
 
 <div class="integrated-website-body-margin-top"></div>
-
-<script>
-function integratedDropdownToggle(id)
-{
-    document.getElementById(id).classList.toggle('integrated-website-toolbar-show');
-}
-</script>
