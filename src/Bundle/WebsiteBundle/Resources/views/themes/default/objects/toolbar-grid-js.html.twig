@@ -6,6 +6,9 @@
         <symbol id="integrated-icon-edit" viewBox="0 0 384 448">
             <path d="M101 277l38 38-13 13h-14v-24h-24v-14zM204.5 179.5c2 1.75 1.5 5.25-0.75 7.5l-72.75 72.75c-2.25 2.25-5.75 2.75-7.5 0.75-2-1.75-1.5-5.25 0.75-7.5l72.75-72.75c2.25-2.25 5.75-2.75 7.5-0.75zM136 352l136-136-72-72-136 136v72h72zM288 200l23-23c9.25-9.25 9.25-24.75 0-34l-38-38c-9.25-9.25-24.75-9.25-34 0l-23 23zM384 104v240c0 39.75-32.25 72-72 72h-240c-39.75 0-72-32.25-72-72v-240c0-39.75 32.25-72 72-72h240c39.75 0 72 32.25 72 72z"></path>
         </symbol>
+        <symbol id="integrated-icon-remove" viewBox="0 0 512 512">
+            <path d="M507.331 411.33c-0.002-0.002-0.004-0.004-0.006-0.005l-155.322-155.325 155.322-155.325c0.002-0.002 0.004-0.003 0.006-0.005 1.672-1.673 2.881-3.627 3.656-5.708 2.123-5.688 0.912-12.341-3.662-16.915l-73.373-73.373c-4.574-4.573-11.225-5.783-16.914-3.66-2.080 0.775-4.035 1.984-5.709 3.655 0 0.002-0.002 0.003-0.004 0.005l-155.324 155.326-155.324-155.325c-0.002-0.002-0.003-0.003-0.005-0.005-1.673-1.671-3.627-2.88-5.707-3.655-5.69-2.124-12.341-0.913-16.915 3.66l-73.374 73.374c-4.574 4.574-5.784 11.226-3.661 16.914 0.776 2.080 1.985 4.036 3.656 5.708 0.002 0.001 0.003 0.003 0.005 0.005l155.325 155.324-155.325 155.326c-0.001 0.002-0.003 0.003-0.004 0.005-1.671 1.673-2.88 3.627-3.657 5.707-2.124 5.688-0.913 12.341 3.661 16.915l73.374 73.373c4.575 4.574 11.226 5.784 16.915 3.661 2.080-0.776 4.035-1.985 5.708-3.656 0.001-0.002 0.003-0.003 0.005-0.005l155.324-155.325 155.324 155.325c0.002 0.001 0.004 0.003 0.006 0.004 1.674 1.672 3.627 2.881 5.707 3.657 5.689 2.123 12.342 0.913 16.914-3.661l73.373-73.374c4.574-4.574 5.785-11.227 3.662-16.915-0.776-2.080-1.985-4.034-3.657-5.707z"></path>
+        </symbol>
     </defs>
 </svg>
 <script>
@@ -33,15 +36,41 @@
 
             $element.querySelectorAll('[data-block-type="block"]').forEach(item => {
                 item.parentNode.insertBefore(createBlockButtons(), item);
-                //item.insertBefore(createBlockButtons(), item.firstChild);
             });
 
-            document.querySelectorAll('.integrated-website-block-edit').forEach(item => {
-                item.addEventListener('mouseover', function (e) {
+            document.querySelectorAll('.integrated-website-block-edit, .integrated-website-block-remove').forEach(item => {
+                item.addEventListener('mouseenter', function (e) {
                     e.target.parentNode.nextSibling.classList.add('integrated-block-hover');
                 });
                 item.addEventListener('mouseleave', function (e) {
                     e.target.parentNode.nextSibling.classList.remove('integrated-block-hover');
+                });
+            });
+
+            document.querySelectorAll('.integrated-website-block-edit').forEach(item => {
+                item.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    $blockTarget = null;
+
+                    element = this.parentNode.nextSibling;
+                    var blockId = element.dataset.id;
+                    var url = '{{ path('integrated_block_block_edit', {'id': 'block-id', '_format':'iframe.html'}) }}'.replace('block-id', blockId);
+                    createIframe(url, 'Edit block');
+                });
+            });
+
+            document.querySelectorAll('.integrated-website-block-remove').forEach(item => {
+                item.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    if (confirm('Are you sure?')) {
+                        element = this.parentNode.nextSibling;
+                        element.parentNode.removeChild(element);
+
+                        element = this.parentNode;
+                        element.parentNode.removeChild(element);
+                    }
                 });
             });
         };
@@ -74,15 +103,17 @@
         /**
          * @param element $block
          */
-        var refreshBlock = function($block) {
+        var refreshBlock = function($block, buttons = true) {
             fetch('{{ path('integrated_block_block_show', {'id': 'block-id'}) }}'.replace('block-id', $block.dataset.id))
                 .then(response => response.json())
                 .then(data => {
                     $block.innerHTML = data.html;
-                    if ($block.dataset.blockType == 'channel') {
-                        $block.insertBefore(createChannelBlockButtons(), $block.firstChild);
-                    } else {
-                        $block.insertBefore(createBlockButtons(), $block.firstChild);
+                    if (buttons) {
+                        if ($block.dataset.blockType == 'channel') {
+                            $block.insertBefore(createChannelBlockButtons(), $block.firstChild);
+                        } else {
+                            $block.insertBefore(createBlockButtons(), $block.firstChild);
+                        }
                     }
                 });
         };
@@ -137,7 +168,7 @@
             var element = document.createElement('div');
             element.classList.add('integrated-block-buttons');
             element.innerHTML = '' +
-                '<a href="javascript:;" class="integrated-block-button" data-action="integrated-website-block-add" title="{% trans %}Add block{% endtrans %}">' +
+                '<a href="javascript:;" class="integrated-block-button" data-action="integrated-website-block-add" title="{% trans %}Add{% endtrans %}">' +
                 '   <svg class="integrated-icon integrated-icon-plus"><use xlink:href="#integrated-icon-plus"></use></svg>' +
                 '<span>{% trans %}Add block{% endtrans %}</span></a>' +
                 '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-textblock-add" title="Add textblock"><span class="glyphicon glyphicon-font"></span></a>' +
@@ -155,16 +186,19 @@
             element.classList.add('integrated-block-buttons');
             //element.classList.add('integrated-website-block-options');
             element.innerHTML =
-                '<a href="javascript:;" class="integrated-block-button" data-action="integrated-website-block-add" title="{% trans %}Add block{% endtrans %}">' +
+                '<a href="javascript:;" class="integrated-block-button" data-action="integrated-website-block-add" title="{% trans %}Add{% endtrans %}">' +
                 '   <svg class="integrated-icon integrated-icon-plus"><use xlink:href="#integrated-icon-plus"></use></svg>' +
                 '<span class="integrated-block-button-label">{% trans %}Add block{% endtrans %}</a></span>' +
 
-                '<a href="javascript:;" class="integrated-block-button integrated-website-block-edit" data-action="integrated-website-block-edit" title="{% trans %}Edit block{% endtrans %}">' +
+                '<a href="javascript:;" class="integrated-block-button integrated-website-block-edit" data-action="integrated-website-block-edit" title="{% trans %}Edit{% endtrans %}">' +
                 '   <svg class="integrated-icon integrated-icon-edit"><use xlink:href="#integrated-icon-edit"></use></svg>' +
                 '<span class="integrated-block-button-label">{% trans %}Edit block{% endtrans %}</a></span>' +
 
+                '<a href="javascript:;" class="integrated-block-button integrated-website-block-remove" data-action="integrated-website-block-remove" title="{% trans %}Remove{% endtrans %}">' +
+                '   <svg class="integrated-icon integrated-icon-remove"><use xlink:href="#integrated-icon-remove"></use></svg>' +
+                '<span class="integrated-block-button-label">{% trans %}Remove block{% endtrans %}</a></span>';
+
                 //'<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-edit" title="Edit block"><span class="glyphicon glyphicon-pencil"></span></a>' +
-                '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-remove" title="Remove block"><span class="glyphicon glyphicon-remove"></span></a>';
 
             return element;
         };
@@ -337,19 +371,6 @@
         );
 
         /**
-         * Handle remove block button
-         */
-        /*
-        $(document).on('click', '[data-action="integrated-website-block-remove"]', function(e) {
-            e.preventDefault();
-
-            if (confirm('Are you sure?')) {
-                $(this).closest('[data-block-type="block"]').remove();
-            }
-        });
-        */
-
-        /**
          * Handle edit block button
          */
         /*
@@ -423,6 +444,15 @@
          * @param title
          */
         var createIframe = function(url, title) {
+            showLoader();
+
+            let element = document.createElement('iframe');
+            element.classList.add('integrated-iframe');
+            element.setAttribute('src', url);
+            //element.style.width = "640px";
+            element.style.height = (window.innerHeight - 160)+'px';
+
+            /*
             var iFrame = $('<iframe frameborder="0" style="width: 100%; max-height:100%; display: auto;">')
                 .attr('src', url)
                 .on('load', function(e){
@@ -439,7 +469,10 @@
                         $('.modal').modal('hide');
                     });
                 });
+                */
 
+            Integrated.showModal(title, element.outerHTML);
+            /*
             var dialog = bootbox.dialog({
                 title: title,
                 message: $('<div>')
@@ -447,6 +480,9 @@
                     .append(iFrame),
                 size: 'large'
             });
+            */
+
+            hideLoader();
         };
 
         /**
@@ -477,15 +513,16 @@
          * Handle block edit in iframe
          */
         document.addEventListener('block-added', function (e) {
-            $('.modal').modal('hide');
+            Integrated.hideModal();
 
             if ($blockTarget) {
                 //new block inserted
                 addBlock(e.detail, $blockTarget);
             } else {
                 //update block
-                $('[data-id="' + e.detail + '"]').each(function () {
-                    refreshBlock($(this));
+
+                document.querySelectorAll('[data-id="' + e.detail + '"]').forEach(item => {
+                    refreshBlock(item, false);
                 });
             }
         }, false);

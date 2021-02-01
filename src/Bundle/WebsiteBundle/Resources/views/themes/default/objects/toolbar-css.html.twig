@@ -273,11 +273,18 @@
         padding: 0px 6px;
         color: #ffffff;
         border: 1px solid #ffffff;
+        border-right: none;
         background-color: #000000;
-        margin-top: 8px;
-        margin-bottom: 8px;
-        margin-left: 8px;
+        margin-top: 1px;
+        margin-bottom: 1px;
+        margin-left: 0px;
         text-decoration: none;
+    }
+    .integrated-block-button:first-child {
+        margin-left: 1px;
+    }
+    .integrated-block-button:last-child {
+        border-right: 1px solid #ffffff;
     }
     .integrated-icon {
         display: inline-block;
@@ -294,12 +301,12 @@
         display: inline-block;
     }
     .integrated-block-button:hover {
-        color: #e7e7e7;
+        color: #a7a7a7;
         text-decoration: none;
     }
     .integrated-block-button:hover .integrated-icon {
-        stroke: #e7e7e7;
-        fill: #e7e7e7;
+        stroke: #a7a7a7;
+        fill: #a7a7a7;
     }
     .integrated-block-button-label {
         display: inline-block;
@@ -349,6 +356,10 @@
         line-height: 1;
         color: #ffffff;
         text-shadow: 0 1px 0 #fff;
+        cursor: pointer;
+    }
+    .integrated-modal-close:hover {
+        text-decoration: none;
     }
     .integrated-modal-body {
         background: #ffffff;
@@ -390,20 +401,21 @@
         display: inline-block;
         width: 100%;
     }
-
     #integrated_block_filter_type {
         width: 160px;
     }
-
     #2integrated_block_filter_q {
         width: 150px;
     }
-
     #integrated_block_filter_channels {
         width: 160px;
     }
-
     .integrated-block-hover {
         opacity: 0.5;
+    }
+    .integrated-iframe {
+        width: 100%;
+        max-height:100%;
+        display: auto;
     }
 </style>
