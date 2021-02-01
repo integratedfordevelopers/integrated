@@ -154,6 +154,7 @@
          * @return Element
          */
         var createRowButtons = function () {
+            //TODO
             var element = document.createElement('div');
             element.classList.add('row-buttons');
             element.innerHTML = '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-cols-config" title="Configure columns"><span class="glyphicon glyphicon-wrench"></span></a>';
@@ -165,6 +166,7 @@
          * @return Element
          */
         var createColumnButtons = function () {
+            //TODO
             var element = document.createElement('div');
             element.classList.add('integrated-block-buttons');
             element.innerHTML = '' +
@@ -198,8 +200,6 @@
                 '   <svg class="integrated-icon integrated-icon-remove"><use xlink:href="#integrated-icon-remove"></use></svg>' +
                 '<span class="integrated-block-button-label">{% trans %}Remove block{% endtrans %}</a></span>';
 
-                //'<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-edit" title="Edit block"><span class="glyphicon glyphicon-pencil"></span></a>' +
-
             return element;
         };
 
@@ -207,6 +207,7 @@
          * @return Element
          */
         var createChannelBlockButtons = function() {
+            //TODO
             let element = document.createElement('div');
             element.classList.add('integrated-website-block-options');
             element.innerHTML =
@@ -268,44 +269,41 @@
                 '            </form>\n' +
                 '        </div>\n' +
                 '        <div id="add_block_results">\n' +
-                `           ${data.blocks.map(block => `<div class="row form-group">
-                                <div class="col-sm-8">
-                                    <b>${block.title}</b>
-                                    <p>${block.type}</p>
-                                </div><div class="col-sm-4"><a href="javascript:;" data-action="integrated-website-block-choose" data-id="${block.id}" class="btn btn-default pull-right">Choose</a></div></div>`).join('')}`+
+                `           ${data.blocks.map(block => `<div class="integrated-card" data-action="integrated-website-block-choose" data-id="${block.id}">
+                                    <p><b data-action="integrated-website-block-choose" data-id="${block.id}">${block.title}</b></p>
+                                    <p data-action="integrated-website-block-choose" data-id="${block.id}">${block.type}</p>
+                                </div>`).join('')}`+
                 '        </div>\n' +
-                '        <div class="row form-group">\n' +
-                '            <div class="col-sm-12">\n';
+                '        <div>\n';
 
             if (data.pagination.pageCount > 0) {
-                output = output + '<ul class="pagination" id="add_block_pagination">\n';
+                output = output + '<ul class="integrated-pagination" id="add_block_pagination">\n';
 
                 if (data.pagination.previous) {
-                    output = output + `<li><a href="${data.pagination.previous.href}">&laquo;</a></li>`;
+                    output = output + `<li class="integrated-pagination-link"><a href="${data.pagination.previous.href}">&laquo;</a></li>`;
                 } else {
-                    output = output + `<li class="disabled"><span>&laquo;</span></li>`;
+                    output = output + `<li class="integrated-pagination-disabled"><span>&laquo;</span></li>`;
                 }
 
                 for (var key in data.pagination.pages) {
                     page = data.pagination.pages[key];
                     if (data.pagination.page == key) {
-                        output = output + `<li class="active disabled"><a href="${page.href}">${key}</a></li>`;
+                        output = output + `<li class="integrated-pagination-active integrated-pagination-disabled"><a href="${page.href}">${key}</a></li>`;
                     } else {
-                        output = output + `<li><a href="${page.href}">${key}</a></li>`;
+                        output = output + `<li class="integrated-pagination-link"><a href="${page.href}">${key}</a></li>`;
                     }
                 };
 
                 if (data.pagination.next) {
-                    output = output + `<li><a href="${data.pagination.next.href}">&laquo;</a></li>`;
+                    output = output + `<li class="integrated-pagination-link"><a href="${data.pagination.next.href}">&raquo;</a></li>`;
                 } else {
-                    output = output + `<li class="disabled"><span>&raquo;</span></li>`;
+                    output = output + `<li class="integrated-pagination-disabled"><span>&raquo;</span></li>`;
                 }
 
                 output = output + '</ul>\n';
             }
 
             output = output + '</div>\n' +
-            '        </div>\n' +
             '    </div>\n';
 
             return output;
@@ -369,20 +367,6 @@
                 Integrated.hideModal();
             })
         );
-
-        /**
-         * Handle edit block button
-         */
-        /*
-        $(document).on('click', '[data-action="integrated-website-block-edit"]', function(e) {
-            e.preventDefault();
-
-            $blockTarget = null;
-
-            var blockId = $(this).closest('[data-block-type="block"],[data-block-type="channel"]').data('id');
-            createIframe(Routing.generate('integrated_block_block_edit', { 'id': blockId, '_format': 'iframe.html'}), 'Edit block');
-        });
-        */
 
         /**
          * Handle new block button
@@ -449,38 +433,9 @@
             let element = document.createElement('iframe');
             element.classList.add('integrated-iframe');
             element.setAttribute('src', url);
-            //element.style.width = "640px";
             element.style.height = (window.innerHeight - 160)+'px';
 
-            /*
-            var iFrame = $('<iframe frameborder="0" style="width: 100%; max-height:100%; display: auto;">')
-                .attr('src', url)
-                .on('load', function(e){
-                    var windowHeight = $(window).height() - 160;
-                    var iframeHeight = e.target.contentWindow.document.body.scrollHeight;
-
-                    $(this).height(windowHeight > iframeHeight && iframeHeight ? iframeHeight : windowHeight);
-
-                    $(this).show();
-                    $(this).siblings('.iframe-loading').hide();
-
-                    //handle cancel button in iframe
-                    $(this).contents().find('.integrated-cancel-button').click(function () {
-                        $('.modal').modal('hide');
-                    });
-                });
-                */
-
             Integrated.showModal(title, element.outerHTML);
-            /*
-            var dialog = bootbox.dialog({
-                title: title,
-                message: $('<div>')
-                    .append('<div class="text-center iframe-loading"><i class="fa fa-spin fa-spinner"></i> Loading...</div>')
-                    .append(iFrame),
-                size: 'large'
-            });
-            */
 
             hideLoader();
         };
@@ -489,6 +444,7 @@
          * @param $element
          */
         var initSortable = function($element) {
+            //TODO
             $element.sortable({
                 connectWith: '.integrated-website-droppable',
                 placeholder: 'integrated-website-item-placeholder',
@@ -623,11 +579,15 @@
             return false;
         });
 
-//        $(document).on('change', '#add_block_filters_form input, #add_block_filters_form select', function() {
-        //          $('#add_block_filters_form').submit();
-        //    });
+        document.addEventListener('submit', function (e) {
+            if (e.target.id != 'add_block_filters_form') {
+                return;
+            }
 
+            e.preventDefault();
 
+            refreshBlockData(e.target);
+        });
 
         /*
         $(document).on('change', '#add_block_filters_form input, #add_block_filters_form select', function() {
@@ -677,24 +637,6 @@
                 document.querySelector('#add_block_results').parentElement.outerHTML = addBlockModalTemplateHTML(data);
 
                 previousCall = null;
-            });
-
-            return;
-            $.ajax({
-                url: url,
-                dataType: 'json',
-                success: function(data) {
-
-                    data.type = $('[name="integrated_block_filter[type][]"]').val();
-                    data.q = $('[name="integrated_block_filter[q]"]').val();
-                    data.channels = $('[name="integrated_block_filter[channels][]"]').val();
-
-                    var template = Handlebars.compile($('#integrated_website_template_modal_block_add').html());
-
-                    var html = $(template(data));
-
-                    $('#add_block_results').parent().replaceWith(html);
-                }
             });
         }
     } (window.Routing, JSON);
