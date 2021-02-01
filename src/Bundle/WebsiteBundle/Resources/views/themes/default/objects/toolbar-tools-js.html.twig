@@ -10,6 +10,15 @@
                     document.getElementById(e.target.dataset.integratedDropdown).classList.toggle('integrated-website-toolbar-show');
                 })
             );
+
+            document.querySelectorAll('body').forEach(item =>
+                item.addEventListener('click', function(e) {
+                    if (!e.target.classList.contains('integrated-modal-close')) {
+                        return true;
+                    }
+                    hideModal();
+                })
+            );
         }
 
         if (document.readyState != 'loading'){
@@ -18,6 +27,35 @@
             document.addEventListener('DOMContentLoaded', init);
         }
 
+        var showModal = function(title, content) {
+            let element = document.createElement('div');
+
+            element.classList.add('integrated-modal');
+            element.innerHTML = '' +
+                '<div class="integrated-modal-dialog" role="document">\n' +
+                '    <div class="integrated-modal-content">\n' +
+                '        <div class="integrated-modal-header">\n' +
+                '            <span class="integrated-modal-header-title">' + title + '</span>\n' +
+                '            <a class="integrated-modal-close">×</a>\n' +
+                '        </div>\n' +
+                '        <div class="integrated-modal-body">\n' + content + '</div>\n' +
+                '    </div>\n' +
+                '</div>\n' +
+                '';
+
+            document.querySelector('body').insertAdjacentElement('beforeend', element);
+        };
+
+        var hideModal = function() {
+            let element = document.querySelector('.integrated-modal');
+
+            element.parentNode.removeChild(element);
+        };
+
+        Integrated = {...Integrated, ...{
+                showModal: showModal,
+                hideModal: hideModal,
+            }};
     } ();
 
     var Integrated = Integrated || {};

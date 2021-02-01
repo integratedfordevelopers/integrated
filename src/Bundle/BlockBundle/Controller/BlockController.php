@@ -72,7 +72,7 @@ class BlockController extends Controller
         }
 
         $pageBundleInstalled = isset($this->getParameter('kernel.bundles')['IntegratedPageBundle']);
-        $data = $request->query->get('integrated_block_filter');
+        $data = $request->get('integrated_block_filter');
         $queryProvider = $this->get('integrated_block.provider.filter_query');
 
         $facetFilter = $this->createForm(BlockFilterType::class, null, [

@@ -3,6 +3,9 @@
         <symbol id="integrated-icon-plus" viewBox="0 0 32 32">
             <path d="M31 12h-11v-11c0-0.552-0.448-1-1-1h-6c-0.552 0-1 0.448-1 1v11h-11c-0.552 0-1 0.448-1 1v6c0 0.552 0.448 1 1 1h11v11c0 0.552 0.448 1 1 1h6c0.552 0 1-0.448 1-1v-11h11c0.552 0 1-0.448 1-1v-6c0-0.552-0.448-1-1-1z"></path>
         </symbol>
+        <symbol id="integrated-icon-edit" viewBox="0 0 384 448">
+            <path d="M101 277l38 38-13 13h-14v-24h-24v-14zM204.5 179.5c2 1.75 1.5 5.25-0.75 7.5l-72.75 72.75c-2.25 2.25-5.75 2.75-7.5 0.75-2-1.75-1.5-5.25 0.75-7.5l72.75-72.75c2.25-2.25 5.75-2.75 7.5-0.75zM136 352l136-136-72-72-136 136v72h72zM288 200l23-23c9.25-9.25 9.25-24.75 0-34l-38-38c-9.25-9.25-24.75-9.25-34 0l-23 23zM384 104v240c0 39.75-32.25 72-72 72h-240c-39.75 0-72-32.25-72-72v-240c0-39.75 32.25-72 72-72h240c39.75 0 72 32.25 72 72z"></path>
+        </symbol>
     </defs>
 </svg>
 <script>
@@ -28,9 +31,19 @@
 
             $element.appendChild(createColumnButtons());
 
-            $element.querySelectorAll('[data-block-type="block"]').forEach(item =>
-                item.insertBefore(createBlockButtons(), item.firstChild)
-            );
+            $element.querySelectorAll('[data-block-type="block"]').forEach(item => {
+                item.parentNode.insertBefore(createBlockButtons(), item);
+                //item.insertBefore(createBlockButtons(), item.firstChild);
+            });
+
+            document.querySelectorAll('.integrated-website-block-edit').forEach(item => {
+                item.addEventListener('mouseover', function (e) {
+                    e.target.parentNode.nextSibling.classList.add('integrated-block-hover');
+                });
+                item.addEventListener('mouseleave', function (e) {
+                    e.target.parentNode.nextSibling.classList.remove('integrated-block-hover');
+                });
+            });
         };
 
         /**
@@ -125,8 +138,8 @@
             element.classList.add('integrated-block-buttons');
             element.innerHTML = '' +
                 '<a href="javascript:;" class="integrated-block-button" data-action="integrated-website-block-add" title="{% trans %}Add block{% endtrans %}">' +
-                '<svg class="integrated-icon integrated-icon-plus"><use xlink:href="#integrated-icon-plus"></use></svg>' +
-                '</symbol>{% trans %}Add block{% endtrans %}</a>' +
+                '   <svg class="integrated-icon integrated-icon-plus"><use xlink:href="#integrated-icon-plus"></use></svg>' +
+                '<span>{% trans %}Add block{% endtrans %}</span></a>' +
                 '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-textblock-add" title="Add textblock"><span class="glyphicon glyphicon-font"></span></a>' +
                 '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-cols-add" title="Add columns"><span class="glyphicon glyphicon-th-large"></span></a>' +
                 '';
@@ -139,9 +152,18 @@
          */
         var createBlockButtons = function() {
             var element = document.createElement('div');
-            element.classList.add('integrated-website-block-options');
+            element.classList.add('integrated-block-buttons');
+            //element.classList.add('integrated-website-block-options');
             element.innerHTML =
-                '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-edit" title="Edit block"><span class="glyphicon glyphicon-pencil"></span></a>' +
+                '<a href="javascript:;" class="integrated-block-button" data-action="integrated-website-block-add" title="{% trans %}Add block{% endtrans %}">' +
+                '   <svg class="integrated-icon integrated-icon-plus"><use xlink:href="#integrated-icon-plus"></use></svg>' +
+                '<span class="integrated-block-button-label">{% trans %}Add block{% endtrans %}</a></span>' +
+
+                '<a href="javascript:;" class="integrated-block-button integrated-website-block-edit" data-action="integrated-website-block-edit" title="{% trans %}Edit block{% endtrans %}">' +
+                '   <svg class="integrated-icon integrated-icon-edit"><use xlink:href="#integrated-icon-edit"></use></svg>' +
+                '<span class="integrated-block-button-label">{% trans %}Edit block{% endtrans %}</a></span>' +
+
+                //'<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-edit" title="Edit block"><span class="glyphicon glyphicon-pencil"></span></a>' +
                 '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-remove" title="Remove block"><span class="glyphicon glyphicon-remove"></span></a>';
 
             return element;
@@ -172,28 +194,7 @@
             element.parentNode.removeChild(element);
         };
 
-        var showModal = function(title, content) {
-            let element = document.createElement('div');
-
-            element.classList.add('integrated-modal');
-            element.innerHTML = '' +
-                '<div class="integrated-modal-dialog" role="document">\n' +
-                '    <div class="integrated-modal-content">\n' +
-                '        <div class="integrated-modal-header">\n' +
-                '            <span class="integrated-modal-header-title">' + title + '</span>\n' +
-                '            <a class="integrated-modal-close" onclick="closeModal()">×</a>\n' +
-                '        </div>\n' +
-                '        <div class="integrated-modal-body">\n' + content + '</div>\n' +
-                '    </div>\n' +
-                '</div>\n' +
-                '';
-
-            document.querySelector('body').insertAdjacentElement('afterend', element);
-        };
-
         var addBlockModalTemplateHTML = function(data) {
-            var type = 'yo';
-
             var output = '<div>' +
                 '   <div id="add_block_filters" class="integrated-control-row">' +
                 '       <form id="add_block_filters_form" action="{{ path('integrated_block_block_index', { '_format': 'json', 'limit': 10}) }}">' +
@@ -204,7 +205,7 @@
                 '                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16"><path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/></svg>' +
                 '                       </div>\n' +
                 '                   </button>\n' +
-                '                   <ul class="integrated-website-toolbar-dropdown" id="integrated-createblock-dropdown">\n' +
+                '                   <ul class="integrated-website-toolbar-dropdown integrated-block-filter" id="integrated-createblock-dropdown">\n' +
                     {% for metadata in integrated_find_block_types() if 'InlineTextBlock' not in metadata.class %}
                 '                       <li role="presentation">\n' +
                 '                               <a href="{{ path('integrated_block_block_new', { '_format': 'iframe.html', 'class': metadata.class} ) }}" data-action="integrated-website-block-new">{{ metadata.type|default(metadata.class) }}</a>' +
@@ -214,9 +215,9 @@
                 '                    </div>\n' +
                 '               </div>\n' +
                 '               <div class="">\n'+
-                '                   <select class="integrated-form-control" name="integrated_block_filter[type][]" id="integrated_block_filter_type">\n'+
+                '                   <select class="integrated-form-control integrated-block-filter" name="integrated_block_filter[type][]" id="integrated_block_filter_type">\n'+
                 '                       <option value="">{% trans %}Filter type{% endtrans %}</option>\n' +
-                `                        ${data.filters.type.map(type => `<option value="${type.value}" ${type.value == type ? "selected" : ""}>${type.label}</option>`).join('')}`+
+                `                        ${data.filters.type.map(type => `<option value="${type.value}" ${type.value == data.type ? "selected" : ""}>${type.label}</option>`).join('')}`+
                 '                        </select>\n'+
                 '                    </div>\n'+
                 '                    <div class="">\n'+
@@ -225,9 +226,9 @@
                 '                        </div>\n'+
                 '                    </div>\n'+
                 '                    <div class="">\n'+
-                '                        <select class="integrated-form-control" name="integrated_block_filter[channels][]" id="integrated_block_filter_channels">\n'+
+                '                        <select class="integrated-form-control integrated-block-filter" name="integrated_block_filter[channels][]" id="integrated_block_filter_channels">\n'+
                 '                            <option value="">{% trans %}Filter channel{% endtrans %}</option>\n'+
-                `                            ${data.filters.channels.map(channel => `<option value="${channel.value}" ${channel.value == channel ? "selected" : ""}>${channel.label}</option>`).join('')}`+
+                `                            ${data.filters.channels.map(channel => `<option value="${channel.value}" ${channel.value == data.channel ? "selected" : ""}>${channel.label}</option>`).join('')}`+
                 '                        </select>\n'+
                 '                    </div>\n'+
                 '            </form>\n' +
@@ -241,7 +242,6 @@
                 '        </div>\n' +
                 '        <div class="row form-group">\n' +
                 '            <div class="col-sm-12">\n';
-                // onclick="addBlock('${block.id}', $blockTarget);$('.modal').modal('hide');"
 
             if (data.pagination.pageCount > 0) {
                 output = output + '<ul class="pagination" id="add_block_pagination">\n';
@@ -304,19 +304,13 @@
                         .then(response => response.json())
                         .then(data => {
                             // success
-                            console.log(data);
-                            console.log(data.filters);
-                            //var template = Handlebars.compile($('#integrated_website_template_modal_block_add').html());
+                            data.type = '';
+                            data.q = '';
+                            data.channels = '';
 
-                            showModal('{% trans %}Add block{% endtrans %}', addBlockModalTemplateHTML(data));
+                            Integrated.showModal('{% trans %}Add block{% endtrans %}', addBlockModalTemplateHTML(data));
+
                             hideLoader();
-
-                            return;
-                            var dialog = bootbox.dialog({
-                                title: 'Add block',
-                                message: addBlockModalTemplateHTML(data) //$(template(data))
-                            });
-
                         });
                 })
             );
@@ -338,7 +332,7 @@
                 }
                 addBlock(e.target.dataset.id, $blockTarget);
 
-                //document.querySelectorAll('.modal').modal('hide');
+                Integrated.hideModal();
             })
         );
 
@@ -496,6 +490,7 @@
             }
         }, false);
 
+
         /**
          * Add columns
          */
@@ -579,6 +574,24 @@
          * Modal eventlisteners
          */
 
+        /**
+         * Handle block edit in iframe
+         */
+        document.addEventListener('change', function (e) {
+            if (!e.target.classList.contains('integrated-block-filter')) {
+                return;
+            }
+
+            refreshBlockData(document.querySelector('#add_block_filters_form'));
+            return false;
+        });
+
+//        $(document).on('change', '#add_block_filters_form input, #add_block_filters_form select', function() {
+        //          $('#add_block_filters_form').submit();
+        //    });
+
+
+
         /*
         $(document).on('change', '#add_block_filters_form input, #add_block_filters_form select', function() {
             $('#add_block_filters_form').submit();
@@ -603,15 +616,34 @@
 
          */
 
-        function refreshBlockData(url) {
-            $('#add_block_results').html('Loading blocks...');
+        function refreshBlockData(form) {
+            document.querySelector('#add_block_results').innerHTML = 'Loading blocks...';
 
-            if(previousCall !== null){
-                previousCall.abort();
-                previousCall = null;
+            if (previousCall !== null){
+                //previousCall.cancel();
+                //previousCall = null;
             }
 
-            previousCall = $.ajax({
+            previousCall = fetch(form.action, {
+                method: 'post',
+                body: new URLSearchParams(new FormData(form)),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                data.type = document.querySelector('[name="integrated_block_filter[type][]"] option:checked').value;
+                data.q = document.querySelector('[name="integrated_block_filter[q]"]').value;
+                data.channels = document.querySelector('[name="integrated_block_filter[channels][]"] option:checked').value;
+
+                document.querySelector('#add_block_results').parentElement.outerHTML = addBlockModalTemplateHTML(data);
+
+                previousCall = null;
+            });
+
+            return;
+            $.ajax({
                 url: url,
                 dataType: 'json',
                 success: function(data) {
