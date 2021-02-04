@@ -1,4 +1,4 @@
-{% spaceless %}
+{% apply spaceless %}
 {% set edit = app.request.attributes.get('integrated_block_edit') %}
 
 {% if edit and grid.id is defined %}
@@ -36,4 +36,4 @@
 {% if edit and grid.id is defined %}
     </div>
 {% endif %}
-{% endspaceless %}
+{% endapply %}
