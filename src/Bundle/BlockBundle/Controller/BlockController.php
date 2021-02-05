@@ -236,8 +236,11 @@ class BlockController extends Controller
             return $this->redirect($this->generateUrl('integrated_block_block_index'));
         }
 
+        $metadata = $this->metadataFactory->getMetadata(get_class($block));
+
         return $this->render(sprintf('IntegratedBlockBundle:block:edit.%s.twig', $request->getRequestFormat()), [
             'form' => $form->createView(),
+            'blockType' => $metadata->getType(),
         ]);
     }
 

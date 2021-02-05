@@ -145,10 +145,12 @@ class BlockFilterType extends AbstractType
             $count = \count(array_intersect($blocks, $blockIds));
             if ($count) {
                 if ($channel = $this->blockUsageProvider->getChannel($channelId)) {
-                    $channelChoices[$channel->getName().' '.$count] = $channelId;
+                    $channelChoices[$channel->getName().' ('.$count.')'] = $channelId;
                 }
             }
         }
+
+        ksort($channelChoices);
 
         return $channelChoices;
     }
