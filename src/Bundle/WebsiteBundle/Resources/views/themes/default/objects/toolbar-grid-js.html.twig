@@ -235,7 +235,7 @@
                 '       <form id="add_block_filters_form" action="{{ path('integrated_block_block_index', { '_format': 'json', 'limit': 10}) }}">' +
                 '           <div class="">' +
                 '               <div class="dropdown">' +
-                '                   <button class="integrated-button integrated-button-dropdown" data-integrated-dropdown="integrated-createblock-dropdown" >{% trans %}Create block{% endtrans %}' +
+                '                   <button type="button" class="integrated-button integrated-button-dropdown" data-integrated-dropdown="integrated-createblock-dropdown" >{% trans %}Create block{% endtrans %}' +
                 '                       <div class="integrated-button-icon">' +
                 '                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16"><path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/></svg>' +
                 '                       </div>\n' +
@@ -270,7 +270,7 @@
                 '        </div>\n' +
                 '        <div id="add_block_results">\n' +
                 `           ${data.blocks.map(block => `<div class="integrated-card" data-action="integrated-website-block-choose" data-id="${block.id}">
-                                    <p><b data-action="integrated-website-block-choose" data-id="${block.id}">${block.title}</b></p>
+                                    <p data-action="integrated-website-block-choose"><b data-action="integrated-website-block-choose" data-id="${block.id}">${block.title}</b></p>
                                     <p data-action="integrated-website-block-choose" data-id="${block.id}">${block.type}</p>
                                 </div>`).join('')}`+
                 '        </div>\n' +
@@ -379,14 +379,17 @@
         /**
          * Handle new block button
          */
-        /*
-        $(document).on('click', '[data-action="integrated-website-block-new"]', function(e) {
-            e.preventDefault();
+        document.querySelectorAll('body').forEach(item =>
+            item.addEventListener('click', function(e) {
+                if (e.target.dataset.action != 'integrated-website-block-new') {
+                    return true;
+                }
+                e.preventDefault();
 
-            $('.modal').modal('hide');
-            createIframe($(this).attr('href'), 'Add block');
-        });
-         */
+                Integrated.hideModal();
+                createIframe(e.target.getAttribute('href'), 'Add block');
+            })
+        );
 
         /**
          * Handle new channel block button
@@ -631,18 +634,6 @@
         });
 
         /*
-        $(document).on('change', '#add_block_filters_form input, #add_block_filters_form select', function() {
-            $('#add_block_filters_form').submit();
-        });
-
-        $(document).on('submit', '#add_block_filters_form', function(e) {
-            e.preventDefault();
-
-            refreshBlockData($(this).attr('action') + '&' + $(this).serialize());
-
-            return false;
-        });
-
 
         $(document).on('click', '#add_block_pagination a', function(e) {
             e.preventDefault();
