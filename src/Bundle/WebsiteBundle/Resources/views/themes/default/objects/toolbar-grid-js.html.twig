@@ -9,6 +9,12 @@
         <symbol id="integrated-icon-remove" viewBox="0 0 512 512">
             <path d="M507.331 411.33c-0.002-0.002-0.004-0.004-0.006-0.005l-155.322-155.325 155.322-155.325c0.002-0.002 0.004-0.003 0.006-0.005 1.672-1.673 2.881-3.627 3.656-5.708 2.123-5.688 0.912-12.341-3.662-16.915l-73.373-73.373c-4.574-4.573-11.225-5.783-16.914-3.66-2.080 0.775-4.035 1.984-5.709 3.655 0 0.002-0.002 0.003-0.004 0.005l-155.324 155.326-155.324-155.325c-0.002-0.002-0.003-0.003-0.005-0.005-1.673-1.671-3.627-2.88-5.707-3.655-5.69-2.124-12.341-0.913-16.915 3.66l-73.374 73.374c-4.574 4.574-5.784 11.226-3.661 16.914 0.776 2.080 1.985 4.036 3.656 5.708 0.002 0.001 0.003 0.003 0.005 0.005l155.325 155.324-155.325 155.326c-0.001 0.002-0.003 0.003-0.004 0.005-1.671 1.673-2.88 3.627-3.657 5.707-2.124 5.688-0.913 12.341 3.661 16.915l73.374 73.373c4.575 4.574 11.226 5.784 16.915 3.661 2.080-0.776 4.035-1.985 5.708-3.656 0.001-0.002 0.003-0.003 0.005-0.005l155.324-155.325 155.324 155.325c0.002 0.001 0.004 0.003 0.006 0.004 1.674 1.672 3.627 2.881 5.707 3.657 5.689 2.123 12.342 0.913 16.914-3.661l73.373-73.374c4.574-4.574 5.785-11.227 3.662-16.915-0.776-2.080-1.985-4.034-3.657-5.707z"></path>
         </symbol>
+        <symbol id="integrated-icon-column2" viewBox="0 0 416 448">
+            <path d="M40 384h152v-288h-160v280c0 4.25 3.75 8 8 8zM384 376v-280h-160v288h152c4.25 0 8-3.75 8-8zM416 72v304c0 22-18 40-40 40h-336c-22 0-40-18-40-40v-304c0-22 18-40 40-40h336c22 0 40 18 40 40z"></path>
+        </symbol>
+        <symbol id="integrated-icon-column" viewBox="0 0 768 768">
+            <path d="M511.5 160.5h160.5v415.5h-160.5v-415.5zM127.5 576v-415.5h160.5v415.5h-160.5zM319.5 576v-415.5h160.5v415.5h-160.5z"></path>
+        </symbol>
     </defs>
 </svg>
 <script>
@@ -25,7 +31,7 @@
          */
         var initGrid = function ($element) {
             $element.querySelectorAll('[data-block-type="row"]').forEach(item =>
-                item.appendChild(createRowButtons())
+                item.insertBefore(createRowButtons(), item.firstChild)
             );
 
             $element.querySelectorAll('[data-block-type="column"]').forEach(item =>
@@ -156,8 +162,11 @@
         var createRowButtons = function () {
             //TODO
             var element = document.createElement('div');
-            element.classList.add('row-buttons');
-            element.innerHTML = '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-cols-config" title="Configure columns"><span class="glyphicon glyphicon-wrench"></span></a>';
+            element.classList.add('integrated-block-buttons');
+            element.innerHTML = '' +
+                '<a href="javascript:;" class="integrated-block-button" data-action="integrated-website-cols-config" title="{% trans %}Configure columns{% endtrans %}">' +
+                '   <svg class="integrated-icon integrated-icon-plus"><use xlink:href="#integrated-icon-plus"></use></svg>' +
+                '<span>{% trans %}Configure columns{% endtrans %}</span></a>';
 
             return element;
         };
@@ -170,12 +179,13 @@
             var element = document.createElement('div');
             element.classList.add('integrated-block-buttons');
             element.innerHTML = '' +
-                '<a href="javascript:;" class="integrated-block-button" data-action="integrated-website-block-add" title="{% trans %}Add{% endtrans %}">' +
+                '<a href="javascript:;" class="integrated-block-button" data-action="integrated-website-block-add" title="{% trans %}Add block{% endtrans %}">' +
                 '   <svg class="integrated-icon integrated-icon-plus"><use xlink:href="#integrated-icon-plus"></use></svg>' +
                 '<span>{% trans %}Add block{% endtrans %}</span></a>' +
-                '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-textblock-add" title="Add textblock"><span class="glyphicon glyphicon-font"></span></a>' +
-                '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-cols-add" title="Add columns"><span class="glyphicon glyphicon-th-large"></span></a>' +
-                '';
+                //'<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-textblock-add" title="Add textblock"><span class="glyphicon glyphicon-font"></span></a>' +
+                '<a href="javascript:;" class="integrated-block-button" data-action="integrated-website-cols-add" title="{% trans %}Add columns{% endtrans %}">' +
+                '   <svg class="integrated-icon integrated-icon-column"><use xlink:href="#integrated-icon-column"></use></svg>' +
+                '<span>{% trans %}Add columns{% endtrans %}</span></a>';
 
             return element;
         };
@@ -344,6 +354,81 @@
 
                             hideLoader();
                         });
+                })
+            );
+
+            /**
+             * Update row and columns
+             */
+            document.querySelectorAll('[data-action="integrated-website-cols-config"]').forEach(item =>
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    var $row = item.parentNode.parentNode;
+                    console.log($row);
+                    var $oldColumns = $row.querySelectorAll(':scope > [data-block-type="column"]');
+
+                    var total = parseInt(prompt('How many columns do you want?', $oldColumns.length));
+
+                    if (total) {
+                        item.parentNode.removeChild(item);
+
+                        for (var i = 0; i < total; i++) {
+                            var oldSize = '';
+
+                            if ($oldColumns[i]) {
+                                oldSize = $oldColumns[i].dataset.size;
+                            }
+
+                            var size = parseInt(prompt('Size of column ' + (i+1) + '?', oldSize));
+
+                            if (size) {
+                                if ($oldColumns[i]) {
+                                    $oldColumns[i].setAttribute('class', 'integrated-website-col integrated-website-droppable col-sm-' + size);
+                                    $oldColumns[i].dataset.size = size;
+                                } else {
+                                    $row.appendChild(createColumn(size));
+                                }
+                            }
+                        }
+
+                        //if there were more columns, remove the last columns
+                        while (typeof $oldColumns[i]  !== 'undefined') {
+                            $oldColumns[i].parentNode.removeChild($oldColumns[i]);
+                        }
+
+                        $row.insertBefore(createRowButtons(), $row.firstChild);
+                    } else {
+                        //no count, so remove entire row
+                        $row.parentNode.removeChild($row);
+                    }
+                })
+            );
+
+            /**
+             * Add columns
+             */
+            document.querySelectorAll('[data-action="integrated-website-cols-add"]').forEach(item =>
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    var total = parseInt(prompt('How many columns do you want?'));
+
+                    if (total) {
+                        var $row = createRow();
+
+                        for (var i = 0; i < total; i++) {
+                            var size = parseInt(prompt('Size of column ' + (i+1) + '?'));
+
+                            if (size) {
+                                $row.append(createColumn(size));
+                            }
+                        }
+
+                        $row.append(createRowButtons());
+
+                        item.parentNode.insertAdjacentElement('beforebegin', $row);
+                    }
                 })
             );
 
@@ -532,80 +617,6 @@
             }
         }, false);
 
-
-        /**
-         * Add columns
-         */
-        /*
-        $(document).on('click', '[data-action="integrated-website-cols-add"]', function(e) {
-            e.preventDefault();
-
-            var total = parseInt(prompt('How many columns do you want?'));
-
-            if (total) {
-                var $row = createRow();
-
-                for (var i = 0; i < total; i++) {
-                    var size = parseInt(prompt('Size of column ' + (i+1) + '?'));
-
-                    if (size) {
-                        $row.append(createColumn(size));
-                    }
-                }
-
-                $row.append(createRowButtons());
-
-                $(this).parent().before($row);
-            }
-        });
-        */
-
-        /**
-         * Update row and columns
-         */
-        /*
-        $(document).on('click', '[data-action="integrated-website-cols-config"]', function(e) {
-            e.preventDefault();
-
-            var $row = $(this).closest('[data-block-type="row"]');
-            var $oldColumns = $row.children('[data-block-type="column"]');
-
-            var total = parseInt(prompt('How many columns do you want?', $oldColumns.length));
-
-            if (total) {
-                $row.children('.row-buttons').remove();
-
-                for (var i = 0; i < total; i++) {
-                    var oldSize = '';
-
-                    if ($oldColumns[i]) {
-                        oldSize = $($oldColumns[i]).data('size');
-                    }
-
-                    var size = parseInt(prompt('Size of column ' + (i+1) + '?', oldSize));
-
-                    if (size) {
-                        if ($oldColumns[i]) {
-                            $($oldColumns[i]).attr('class', 'integrated-website-col integrated-website-droppable col-sm-' + size).data('size', size);
-                        } else {
-                            $row.append(createColumn(size));
-                        }
-                    }
-                }
-
-                //if there were more columns, remove the last columns
-                $oldColumns
-                    .slice(i)
-                    .sortable('destroy')
-                    .remove();
-
-                $row.append(createRowButtons());
-            } else {
-                //no count, so remove entire row
-                $row.remove();
-            }
-        });
-        */
 
         /**
          * Modal eventlisteners
