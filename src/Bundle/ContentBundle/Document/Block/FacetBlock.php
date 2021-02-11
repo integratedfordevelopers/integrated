@@ -53,9 +53,10 @@ class FacetBlock extends Block
      */
     protected $fields;
 
-    public function __construct()
+    public function __construct($id = null)
     {
-        parent::__construct();
+        parent::__construct($id);
+
         $this->fields = new ArrayCollection();
     }
 
