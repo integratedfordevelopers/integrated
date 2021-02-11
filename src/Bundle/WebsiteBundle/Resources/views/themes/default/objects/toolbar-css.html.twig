@@ -369,6 +369,8 @@
         background: #ffffff;
         position: relative;
         padding: 15px;
+        max-height: calc(100vh - 150px);
+        overflow: auto;
     }
 
     .integrated-control-row {
@@ -416,6 +418,7 @@
     }
     .integrated-block-hover {
         opacity: 0.5;
+        outline: 1px solid grey ! important;
     }
     .integrated-iframe {
         width: 100%;
@@ -470,28 +473,26 @@
         cursor: pointer;
         border: #ddd solid 1px;
         border-radius: 3px;
-        line-height: 22px;
-        height: 30px;
-        width: 30px;
+        height: 34px;
+        width: 34px;
         font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
-        font-size: 14px;
+        font-size: 15px;
         font-weight: bold;
-        line-height: 28px;
+        line-height: 32px;
     }
     .integrated-pagination li a {
         color: #000;
     }
     .integrated-pagination li.integrated-pagination-link:hover, .integrated-pagination li.integrated-pagination-active {
         background-color: #606060;
-    }
-    .integrated-pagination li.integrated-pagination-link:hover a, .integrated-pagination li.integrated-pagination-active a {
         color: #ffffff;
-    }
-    .integrated-pagination li.integrated-pagination-link:hover a:hover {
         text-decoration: none;
     }
     .integrated-pagination li.integrated-pagination-disabled {
         color: #c4c4c4;
         cursor: auto;
+    }
+    .integrated-website-col {
+        outline: 1px solid #e3e3e3;
     }
 </style>

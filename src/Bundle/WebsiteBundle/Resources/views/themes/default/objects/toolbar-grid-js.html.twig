@@ -124,7 +124,6 @@
          * @return Element
          */
         var createRowButtons = function () {
-            //TODO
             var element = document.createElement('div');
             element.classList.add('integrated-block-buttons');
             element.innerHTML = '' +
@@ -160,7 +159,6 @@
         var createBlockButtons = function() {
             var element = document.createElement('div');
             element.classList.add('integrated-block-buttons');
-            //element.classList.add('integrated-website-block-options');
             element.innerHTML =
                 '<a href="javascript:;" class="integrated-block-button" data-action="integrated-website-block-add" title="{% trans %}Add{% endtrans %}">' +
                 '   <svg class="integrated-icon integrated-icon-plus"><use xlink:href="#integrated-icon-plus"></use></svg>' +
@@ -244,8 +242,8 @@
                         </div>\n
                         <div id="add_block_results">\n
                            ${data.blocks.map(block => `<div class="integrated-card" data-action="integrated-website-block-choose" data-id="${block.id}">
-                                    <p data-action="integrated-website-block-choose"><b data-action="integrated-website-block-choose" data-id="${block.id}">${block.title}</b></p>
-                                    <p data-action="integrated-website-block-choose" data-id="${block.id}">${block.type}</p>
+                                    <p><b>${block.title}</b></p>
+                                    <p>${block.type}</p>
                                 </div>`).join('')}
                         </div>\n
                         <div>`;
@@ -254,7 +252,7 @@
                 output = output + '<ul class="integrated-pagination" id="add_block_pagination">\n';
 
                 if (data.pagination.previous) {
-                    output = output + `<li class="integrated-pagination-link"><a href="${data.pagination.previous.href}">&laquo;</a></li>`;
+                    output = output + `<li class="integrated-pagination-link" data-href="${data.pagination.previous.href}">&laquo;</li>`;
                 } else {
                     output = output + `<li class="integrated-pagination-disabled"><span>&laquo;</span></li>`;
                 }
@@ -262,14 +260,14 @@
                 for (var key in data.pagination.pages) {
                     page = data.pagination.pages[key];
                     if (data.pagination.page == key) {
-                        output = output + `<li class="integrated-pagination-active integrated-pagination-disabled"><a href="${page.href}">${key}</a></li>`;
+                        output = output + `<li class="integrated-pagination-active integrated-pagination-disabled" data-href="${page.href}">${key}</li>`;
                     } else {
-                        output = output + `<li class="integrated-pagination-link"><a href="${page.href}">${key}</a></li>`;
+                        output = output + `<li class="integrated-pagination-link" data-href="${page.href}">${key}</li>`;
                     }
                 };
 
                 if (data.pagination.next) {
-                    output = output + `<li class="integrated-pagination-link"><a href="${data.pagination.next.href}">&raquo;</a></li>`;
+                    output = output + `<li class="integrated-pagination-link" data-href="${data.pagination.next.href}">&raquo;</li>`;
                 } else {
                     output = output + `<li class="integrated-pagination-disabled"><span>&raquo;</span></li>`;
                 }
@@ -293,60 +291,6 @@
 
             document.querySelectorAll('.integrated-website-channel-block-grid').forEach(item =>
                 initChannelBlockGrid(item)
-            );
-
-            /**
-             * Handle add block button
-             */
-            document.querySelectorAll('[data-action="integrated-website-block-add"]').forEach(item =>
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-
-                    showLoader();
-
-                    $blockTarget = item.parentNode;
-
-                    fetch('{{ path('integrated_block_block_index', { '_format': 'json', 'limit': 10}) }}')
-                        .then(response => response.json())
-                        .then(data => {
-                            // success
-                            data.type = '';
-                            data.q = '';
-                            data.channel = '';
-
-                            Integrated.showModal('{% trans %}Add block{% endtrans %}', addBlockModalTemplateHTML(data));
-
-                            hideLoader();
-                        });
-                })
-            );
-
-
-            /**
-             * Add columns
-             */
-            document.querySelectorAll('[data-action="integrated-website-cols-add"]').forEach(item =>
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-
-                    var total = parseInt(prompt('How many columns do you want?'));
-
-                    if (total) {
-                        var $row = createRow();
-
-                        for (var i = 0; i < total; i++) {
-                            var size = parseInt(prompt('Size of column ' + (i+1) + '?'));
-
-                            if (size) {
-                                $row.append(createColumn(size));
-                            }
-                        }
-
-                        $row.append(createRowButtons());
-
-                        item.parentNode.insertAdjacentElement('beforebegin', $row);
-                    }
-                })
             );
 
             /**
@@ -384,6 +328,61 @@
 
             element.parentNode.nextSibling.classList.remove('integrated-block-hover');
         }, true);
+
+        document.body.addEventListener('mouseenter', function(e) {
+            element = e.target.closest('[data-action="integrated-website-cols-config"]');
+            if (!element) {
+                return;
+            }
+
+            Array.from(element.parentNode.parentNode.children).forEach(item => {
+                if (item.classList.contains('integrated-website-col')) {
+                    item.classList.add('integrated-block-hover');
+                }
+            });
+        }, true);
+
+        document.body.addEventListener('mouseleave', function(e) {
+            element = e.target.closest('[data-action="integrated-website-cols-config"]');
+            if (!element) {
+                return;
+            }
+
+            Array.from(element.parentNode.parentNode.children).forEach(item => {
+                if (item.classList.contains('integrated-website-col')) {
+                    item.classList.remove('integrated-block-hover');
+                }
+            });
+        }, true);
+
+        /**
+         * Handle add block button
+         */
+        document.body.addEventListener('click', function(e) {
+            element = e.target.closest('[data-action="integrated-website-block-add"]');
+            if (!element) {
+                return;
+            }
+
+            e.preventDefault();
+
+            showLoader();
+
+            $blockTarget = element.parentNode;
+
+            fetch('{{ path('integrated_block_block_index', { '_format': 'json', 'limit': 10}) }}')
+                .then(response => response.json())
+                .then(data => {
+                    // success
+                    data.type = '';
+                    data.q = '';
+                    data.channel = '';
+
+                    Integrated.showModal('{% trans %}Add block{% endtrans %}', addBlockModalTemplateHTML(data));
+
+                    hideLoader();
+                });
+        });
 
         /**
          * Handle edit
@@ -454,6 +453,54 @@
         });
 
         /**
+         * Add columns
+         */
+        document.body.addEventListener('click', function(e) {
+            element = e.target.closest('[data-action="integrated-website-cols-add"]');
+            if (!element) {
+                return;
+            }
+
+            e.preventDefault();
+
+            var total = parseInt(prompt('How many columns do you want?'));
+
+            if (total > 12) {
+                alert('A maxiumum of 12 columns is supported')
+                return;
+            }
+
+            if (total > 0) {
+                var $row = createRow();
+                var doneSize = 0;
+
+                for (var i = 0; i < total; i++) {
+                    var size = parseInt(prompt('Size of column ' + (i+1) + '? ('+(12-doneSize)+' or 12 available)'));
+
+                    if (size < 1) {
+                        alert('Size must be at least one');
+
+                        return;
+                    }
+
+                    if (size > (12-doneSize)) {
+                        alert('Size must be at most '+(12-doneSize));
+
+                        return;
+                    }
+
+                    doneSize = doneSize + size;
+
+                    $row.append(createColumn(size));
+                }
+
+                $row.append(createRowButtons());
+
+                element.parentNode.insertAdjacentElement('beforebegin', $row);
+            }
+        });
+
+       /**
          * Update row and columns
          */
         document.body.addEventListener('click', function(e) {
@@ -471,7 +518,10 @@
 
             if (total > 12) {
                 alert('A maxiumum of 12 columns is supported')
-            } else if (total > 0) {
+                return;
+            }
+
+            if (total > 0) {
                 var doneSize = 0;
                 for (var i = 0; i < total; i++) {
                     var oldSize = '';
@@ -512,7 +562,9 @@
                 }
 
                 $row.insertBefore(createRowButtons(), $row.firstChild);
-            } else if (total === 0) {
+            }
+
+            if (total === 0) {
                 //no count, so remove entire row
                 $row.parentNode.removeChild($row);
             }
@@ -686,17 +738,20 @@
             refreshBlockData(e.target);
         });
 
-        /*
+        document.body.addEventListener('click', function(e) {
+            element = e.target.closest('#add_block_pagination li');
+            if (!element) {
+                return;
+            }
 
-        $(document).on('click', '#add_block_pagination a', function(e) {
             e.preventDefault();
 
-            refreshBlockData($(this).attr('href'));
+            form = document.querySelector('#add_block_filters_form');
+            form.setAttribute('action', element.dataset.href);
+            refreshBlockData(form);
 
             return false;
         });
-
-         */
 
         function refreshBlockData(form) {
             document.querySelector('#add_block_results').innerHTML = 'Loading blocks...';
