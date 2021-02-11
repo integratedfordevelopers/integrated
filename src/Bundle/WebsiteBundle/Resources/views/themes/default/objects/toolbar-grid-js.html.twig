@@ -321,53 +321,6 @@
                 })
             );
 
-            /**
-             * Update row and columns
-             */
-            document.querySelectorAll('[data-action="integrated-website-cols-config"]').forEach(item =>
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-
-                    var $row = item.parentNode.parentNode;
-                    console.log($row);
-                    var $oldColumns = $row.querySelectorAll(':scope > [data-block-type="column"]');
-
-                    var total = parseInt(prompt('How many columns do you want?', $oldColumns.length));
-
-                    if (total) {
-                        item.parentNode.removeChild(item);
-
-                        for (var i = 0; i < total; i++) {
-                            var oldSize = '';
-
-                            if ($oldColumns[i]) {
-                                oldSize = $oldColumns[i].dataset.size;
-                            }
-
-                            var size = parseInt(prompt('Size of column ' + (i+1) + '?', oldSize));
-
-                            if (size) {
-                                if ($oldColumns[i]) {
-                                    $oldColumns[i].setAttribute('class', 'integrated-website-col integrated-website-droppable col-sm-' + size);
-                                    $oldColumns[i].dataset.size = size;
-                                } else {
-                                    $row.appendChild(createColumn(size));
-                                }
-                            }
-                        }
-
-                        //if there were more columns, remove the last columns
-                        while (typeof $oldColumns[i]  !== 'undefined') {
-                            $oldColumns[i].parentNode.removeChild($oldColumns[i]);
-                        }
-
-                        $row.insertBefore(createRowButtons(), $row.firstChild);
-                    } else {
-                        //no count, so remove entire row
-                        $row.parentNode.removeChild($row);
-                    }
-                })
-            );
 
             /**
              * Add columns
@@ -416,16 +369,20 @@
          */
         document.body.addEventListener('mouseenter', function(e) {
             element = e.target.closest('.integrated-website-block-edit, .integrated-website-block-remove');
-            if (element) {
-                element.parentNode.nextSibling.classList.add('integrated-block-hover');
+            if (!element) {
+                return;
             }
+
+            element.parentNode.nextSibling.classList.add('integrated-block-hover');
         }, true);
 
         document.body.addEventListener('mouseleave', function(e) {
             element = e.target.closest('.integrated-website-block-edit, .integrated-website-block-remove');
-            if (element) {
-                element.parentNode.nextSibling.classList.remove('integrated-block-hover');
+            if (!element) {
+                return;
             }
+
+            element.parentNode.nextSibling.classList.remove('integrated-block-hover');
         }, true);
 
         /**
@@ -433,16 +390,18 @@
          */
         document.body.addEventListener('click', function(e) {
             element = e.target.closest('.integrated-website-block-edit');
-            if (element) {
-                e.preventDefault();
-
-                $blockTarget = null;
-
-                element = element.parentNode.nextSibling;
-                var blockId = element.dataset.id;
-                var url = '{{ path('integrated_block_block_edit', {'id': 'block-id', '_format':'iframe.html'}) }}'.replace('block-id', blockId);
-                createIframe(url, 'Edit block');
+            if (!element) {
+                return;
             }
+
+            e.preventDefault();
+
+            $blockTarget = null;
+
+            element = element.parentNode.nextSibling;
+            var blockId = element.dataset.id;
+            var url = '{{ path('integrated_block_block_edit', {'id': 'block-id', '_format':'iframe.html'}) }}'.replace('block-id', blockId);
+            createIframe(url, 'Edit block');
         });
 
         /**
@@ -450,47 +409,114 @@
          */
         document.body.addEventListener('click', function(e) {
             element = e.target.closest('.integrated-website-block-remove');
-            if (element) {
-                e.preventDefault();
+            if (!element) {
+                return;
+            }
 
-                if (confirm('Are you sure?')) {
-                    removeElement = element.parentNode.nextSibling;
-                    removeElement.parentNode.removeChild(removeElement);
+            e.preventDefault();
 
-                    removeElement = element.parentNode;
-                    removeElement.parentNode.removeChild(removeElement);
-                }
+            if (confirm('Are you sure?')) {
+                removeElement = element.parentNode.nextSibling;
+                removeElement.parentNode.removeChild(removeElement);
+
+                removeElement = element.parentNode;
+                removeElement.parentNode.removeChild(removeElement);
             }
         });
 
         /**
          * Handle choose block button
          */
-        document.querySelectorAll('body').forEach(item =>
-            item.addEventListener('click', function(e) {
-                if (e.target.dataset.action != 'integrated-website-block-choose') {
-                    return true;
-                }
-                addBlock(e.target.dataset.id, $blockTarget);
+        document.body.addEventListener('click', function(e) {
+            element = e.target.closest('[data-action="integrated-website-block-choose"]');
+            if (!element) {
+                return;
+            }
 
-                Integrated.hideModal();
-            })
-        );
+            addBlock(element.dataset.id, $blockTarget);
+
+            Integrated.hideModal();
+        });
 
         /**
          * Handle new block button
          */
-        document.querySelectorAll('body').forEach(item =>
-            item.addEventListener('click', function(e) {
-                if (e.target.dataset.action != 'integrated-website-block-new') {
-                    return true;
-                }
-                e.preventDefault();
+        document.body.addEventListener('click', function(e) {
+            element = e.target.closest('[data-action="integrated-website-block-new"]');
+            if (!element) {
+                return;
+            }
 
-                Integrated.hideModal();
-                createIframe(e.target.getAttribute('href'), 'Add block');
-            })
-        );
+            e.preventDefault();
+
+            Integrated.hideModal();
+            createIframe(e.target.getAttribute('href'), 'Add block');
+        });
+
+        /**
+         * Update row and columns
+         */
+        document.body.addEventListener('click', function(e) {
+            element = e.target.closest('[data-action="integrated-website-cols-config"]');
+            if (!element) {
+                return;
+            }
+
+            e.preventDefault();
+
+            var $row = element.parentNode.parentNode;
+            var $oldColumns = $row.querySelectorAll(':scope > [data-block-type="column"]');
+
+            var total = parseInt(prompt('How many columns do you want?', $oldColumns.length));
+
+            if (total > 12) {
+                alert('A maxiumum of 12 columns is supported')
+            } else if (total > 0) {
+                var doneSize = 0;
+                for (var i = 0; i < total; i++) {
+                    var oldSize = '';
+
+                    if ($oldColumns[i]) {
+                        oldSize = $oldColumns[i].dataset.size;
+                    }
+
+                    var size = parseInt(prompt('Size of column ' + (i+1) + '? ('+(12-doneSize)+' or 12 available)', oldSize));
+
+                    if (size < 1) {
+                        alert('Size must be at least one');
+
+                        return;
+                    }
+
+                    if (size > (12-doneSize)) {
+                        alert('Size must be at most '+(12-doneSize));
+
+                        return;
+                    }
+
+                    doneSize = doneSize + size;
+
+                    if ($oldColumns[i]) {
+                        $oldColumns[i].setAttribute('class', 'integrated-website-col integrated-website-droppable col-sm-' + size);
+                        $oldColumns[i].dataset.size = size;
+                    } else {
+                        $row.appendChild(createColumn(size));
+                    }
+                }
+
+                element.parentNode.removeChild(element);
+
+                //if there were more columns, remove the last columns
+                while (typeof $oldColumns[i]  !== 'undefined') {
+                    $oldColumns[i].parentNode.removeChild($oldColumns[i]);
+                }
+
+                $row.insertBefore(createRowButtons(), $row.firstChild);
+            } else if (total === 0) {
+                //no count, so remove entire row
+                $row.parentNode.removeChild($row);
+            }
+        });
 
         /**
          * Handle new channel block button
