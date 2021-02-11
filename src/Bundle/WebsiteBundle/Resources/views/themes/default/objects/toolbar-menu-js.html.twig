@@ -1,12 +1,5 @@
 <script>
     !function($, JSON) {
-/*
-        window.Handlebars.registerHelper('select', function( value, options ){
-            var $el = $('<select />').html( options.fn(this) );
-            $el.find('[value="' + value + '"]').attr({'selected':'selected'});
-            return $el.html();
-        });
-*/
         var Menu = function(element) {
             this.element = element;
         };
@@ -192,9 +185,65 @@
 
          */
 
-        function init() {
-            console.log(document.querySelector('.integrated-website-menu'));
+        var editMenuModalTemplateHTML = function(data) {
+            var output = `<div class="row">
+        <div class="col-md-12">
+            <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">{% trans %}Link type{% endtrans %}</label>
+                        <div class="col-md-8">
+                            <div>
+                                <div class="radio">
+                                    <label for="typeLinkUri" class="required">
+                                        <input type="radio" id="typeLinkUri" name="typeLink" required="required" value="0" ${data.typeLinkUri ? " checked=\"checked\"" : ""} onchange="Integrated.Menu.updateLinkType();">{% trans %}URL{% endtrans %}
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label for="typeLinkSearchSelection" class="required">
+                                        <input type="radio" id="typeLinkSearchSelection" name="typeLink" required="required" value="1" ${data.typeLinkSearchSelection ? " checked=\"checked\"" : ""} onchange="Integrated.Menu.updateLinkType();">{% trans %}Search selection{% endtrans %}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" id="integrated-row-name">
+                        <label class="col-md-4 control-label" for="name">{% trans %}Name{% endtrans %}</label>
+                        <div class="col-md-8">
+                            <input id="name" name="name" type="text" value="${data.name}" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group" id="integrated-row-uri">
+                        <label class="col-md-4 control-label" for="uri">{% trans %}URL{% endtrans %}</label>
+                        <div class="col-md-8">
+                            <input id="uri" name="uri" type="text" value="${data.uri}" class="form-control" />
+                        </div>
+                    </div>
+                <div class="form-group" id="integrated-row-searchSelection">
+                    <label class="col-md-4 control-label" for="uri">{% trans %}Search selection{% endtrans %}</label>
+                    <div class="col-md-8">
+                        <select id="searchSelection" name="searchSelection" required="required" class="form-control">
+                        <option value=""></option>
+                        {% set searchSelections = getSearchSelections() %}
+                        {% for searchSelection in searchSelections %}
+                            <option value="{{ searchSelection.id }}">{{ searchSelection.title }}</option>
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                    <div class="form-group" id="integrated-row-maxItems">
+                        <label class="col-md-4 control-label" for="uri">{% trans %}Number of items{% endtrans %}</label>
+                        <div class="col-md-8">
+                            <input id="maxItems" name="maxItems" type="text" value="${data.maxItems}" class="form-control" />
+                        </div>
+                    </div>
+            </form>
+        </div>
+    </div>`;
 
+            return output;
+        }
+
+        function init() {
             document.querySelectorAll('.integrated-website-menu').forEach(item => {
                     let menu = new Menu(item);
                     let script = item.querySelector('script[type="text/json"]');
@@ -220,87 +269,6 @@
                     $(this).removeClass('open');
                 })
             );
-
-            document.querySelectorAll('.integrated-website-menu').forEach(item =>
-                item.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    var item = new Item($(this));
-                    var template = Handlebars.compile($('#integrated_website_template_modal_menu_edit').html());
-                    var html = $(template({
-                        typeLinkUri: true
-                    }));
-
-                    bootbox.dialog({
-                        title: 'Add menu item',
-                        message: html,
-                        buttons: {
-                            success: {
-                                label: 'Save',
-                                callback: function() {
-                                    item.update({
-                                        typeLink: $('input[name=typeLink]:checked').val(),
-                                        name:     $('#name').val(),
-                                        uri:      $('#uri').val(),
-                                        searchSelection: $('#searchSelection').val(),
-                                        maxItems: $('#maxItems').val()
-                                    });
-                                }
-                            }
-                        }
-                    });
-
-                    Integrated.Menu.updateLinkType();
-                })
-            );
-
-            document.querySelectorAll('[data-action="integrated-website-menu-item-edit"]').forEach(item =>
-                item.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    var item = new Item($(this));
-                    var template = Handlebars.compile($('#integrated_website_template_modal_menu_edit').html());
-
-                    var html = $(template({
-                        name:     item.getValue('name'),
-                        uri:      item.getValue('uri'),
-                        typeLinkUri: (typeof(item.getValue('typeLink')) == 'undefined' || item.getValue('typeLink') == 0) ? true : false,
-                        typeLinkSearchSelection: (item.getValue('typeLink') == 1) ? true : false,
-                        searchSelection: item.getValue('searchSelection'),
-                        maxItems: item.getValue('maxItems')
-                    }));
-
-                    bootbox.dialog({
-                        title: 'Edit menu item',
-                        message: html,
-                        buttons: {
-                            danger: {
-                                label: 'Remove',
-                                className: 'btn-danger pull-left',
-                                callback: function() {
-                                    item.remove();
-                                }
-                            },
-                            success: {
-                                label: 'Save',
-                                callback: function() {
-                                    item.update({
-                                        typeLink: $('input[name=typeLink]:checked').val(),
-                                        name: $('#name').val(),
-                                        uri:  $('#uri').val(),
-                                        searchSelection: $('#searchSelection').val(),
-                                        maxItems: $('#maxItems').val()
-                                    });
-                                }
-                            }
-                        }
-                    });
-
-                    Integrated.Menu.updateLinkType();
-                })
-            );
         }
 
         if (document.readyState != 'loading'){
@@ -308,6 +276,91 @@
         } else {
             document.addEventListener('DOMContentLoaded', init);
         }
+
+        document.body.addEventListener('click', function(e) {
+            element = e.target.closest('.integrated-website-menu');
+            if (!element) {
+                return;
+            }
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            var item = new Item(element);
+            var html = editMenuModalTemplateHTML({
+                typeLinkUri: true
+            });
+
+            Integrated.showModal('{% trans %}Add menu item{% endtrans %}', html);
+            bootbox.dialog({
+                buttons: {
+                    success: {
+                        label: 'Save',
+                        callback: function() {
+                            item.update({
+                                typeLink: $('input[name=typeLink]:checked').val(),
+                                name:     $('#name').val(),
+                                uri:      $('#uri').val(),
+                                searchSelection: $('#searchSelection').val(),
+                                maxItems: $('#maxItems').val()
+                            });
+                        }
+                    }
+                }
+            });
+
+            Integrated.Menu.updateLinkType();
+        });
+
+        document.body.addEventListener('click', function(e) {
+            element = e.target.closest('[data-action="integrated-website-menu-item-edit"]');
+            if (!element) {
+                return;
+            }
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            var item = new Item(element);
+            var html = editMenuModalTemplateHTML({
+                name:     item.getValue('name'),
+                uri:      item.getValue('uri'),
+                typeLinkUri: (typeof(item.getValue('typeLink')) == 'undefined' || item.getValue('typeLink') == 0) ? true : false,
+                typeLinkSearchSelection: (item.getValue('typeLink') == 1) ? true : false,
+                searchSelection: item.getValue('searchSelection'),
+                maxItems: item.getValue('maxItems')
+            });
+
+            Integrated.showModal('{% trans %}Edit menu item{% endtrans %}', html);
+
+            bootbox.dialog({
+                title: 'Edit menu item',
+                message: html,
+                buttons: {
+                    danger: {
+                        label: 'Remove',
+                        className: 'btn-danger pull-left',
+                        callback: function() {
+                            item.remove();
+                        }
+                    },
+                    success: {
+                        label: 'Save',
+                        callback: function() {
+                            item.update({
+                                typeLink: $('input[name=typeLink]:checked').val(),
+                                name: $('#name').val(),
+                                uri:  $('#uri').val(),
+                                searchSelection: $('#searchSelection').val(),
+                                maxItems: $('#maxItems').val()
+                            });
+                        }
+                    }
+                }
+            });
+
+            Integrated.Menu.updateLinkType();
+        });
 
         Element.prototype.closestChildren = function(selector) {
             var children = this.querySelectorAll(':scope > '+selector);

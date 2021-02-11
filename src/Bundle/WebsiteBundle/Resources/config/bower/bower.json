@@ -1,6 +1,0 @@
-{
-    "name": "integrated-website-bundle",
-    "dependencies": {
-        "bootbox": "4.4.*"
-    }
-}
