@@ -43,42 +43,6 @@
             $element.querySelectorAll('[data-block-type="block"]').forEach(item => {
                 item.parentNode.insertBefore(createBlockButtons(), item);
             });
-
-            document.querySelectorAll('.integrated-website-block-edit, .integrated-website-block-remove').forEach(item => {
-                item.addEventListener('mouseenter', function (e) {
-                    e.target.parentNode.nextSibling.classList.add('integrated-block-hover');
-                });
-                item.addEventListener('mouseleave', function (e) {
-                    e.target.parentNode.nextSibling.classList.remove('integrated-block-hover');
-                });
-            });
-
-            document.querySelectorAll('.integrated-website-block-edit').forEach(item => {
-                item.addEventListener('click', function (e) {
-                    e.preventDefault();
-
-                    $blockTarget = null;
-
-                    element = this.parentNode.nextSibling;
-                    var blockId = element.dataset.id;
-                    var url = '{{ path('integrated_block_block_edit', {'id': 'block-id', '_format':'iframe.html'}) }}'.replace('block-id', blockId);
-                    createIframe(url, 'Edit block');
-                });
-            });
-
-            document.querySelectorAll('.integrated-website-block-remove').forEach(item => {
-                item.addEventListener('click', function (e) {
-                    e.preventDefault();
-
-                    if (confirm('Are you sure?')) {
-                        element = this.parentNode.nextSibling;
-                        element.parentNode.removeChild(element);
-
-                        element = this.parentNode;
-                        element.parentNode.removeChild(element);
-                    }
-                });
-            });
         };
 
         /**
@@ -240,51 +204,51 @@
         };
 
         var addBlockModalTemplateHTML = function(data) {
-            var output = '<div>' +
-                '   <div id="add_block_filters" class="integrated-control-row">' +
-                '       <form id="add_block_filters_form" action="{{ path('integrated_block_block_index', { '_format': 'json', 'limit': 10}) }}">' +
-                '           <div class="">' +
-                '               <div class="dropdown">' +
-                '                   <button type="button" class="integrated-button integrated-button-dropdown" data-integrated-dropdown="integrated-createblock-dropdown" >{% trans %}Create block{% endtrans %}' +
-                '                       <div class="integrated-button-icon">' +
-                '                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16"><path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/></svg>' +
-                '                       </div>\n' +
-                '                   </button>\n' +
-                '                   <ul class="integrated-website-toolbar-dropdown integrated-block-filter" id="integrated-createblock-dropdown">\n' +
+            var output = `<div>
+                   <div id="add_block_filters" class="integrated-control-row">
+                       <form id="add_block_filters_form" action="{{ path('integrated_block_block_index', { '_format': 'json', 'limit': 10}) }}">
+                           <div class="">
+                               <div class="dropdown">
+                                   <button type="button" class="integrated-button integrated-button-dropdown" data-integrated-dropdown="integrated-createblock-dropdown" >{% trans %}Create block{% endtrans %}
+                                       <div class="integrated-button-icon">
+                                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16"><path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/></svg>
+                                       </div>\n
+                                   </button>\n
+                                   <ul class="integrated-website-toolbar-dropdown integrated-block-filter" id="integrated-createblock-dropdown">\n
                     {% for metadata in integrated_find_block_types() if 'InlineTextBlock' not in metadata.class %}
-                '                       <li role="presentation">\n' +
-                '                               <a href="{{ path('integrated_block_block_new', { '_format': 'iframe.html', 'class': metadata.class} ) }}" data-action="integrated-website-block-new">{{ metadata.type|default(metadata.class) }}</a>' +
-                '                           </li>\n' +
+                                       <li role="presentation">\n
+                                               <a href="{{ path('integrated_block_block_new', { '_format': 'iframe.html', 'class': metadata.class} ) }}" data-action="integrated-website-block-new">{{ metadata.type|default(metadata.class) }}</a>
+                                           </li>\n
                     {% endfor %}
-                '                        </ul>\n' +
-                '                    </div>\n' +
-                '               </div>\n' +
-                '               <div class="">\n'+
-                '                   <select class="integrated-form-control integrated-block-filter" name="integrated_block_filter[type][]" id="integrated_block_filter_type">\n'+
-                '                       <option value="">{% trans %}Filter type{% endtrans %}</option>\n' +
-                `                        ${data.filters.type.map(type => `<option value="${type.value}" ${type.value == data.type ? "selected" : ""}>${type.label}</option>`).join('')}`+
-                '                        </select>\n'+
-                '                    </div>\n'+
-                '                    <div class="">\n'+
-                '                        <div class="input-group">\n'+
-                `                            <input type="text" value="${data.q}" class="integrated-form-control" name="integrated_block_filter[q]" id="integrated_block_filter_q" placeholder="{% trans %}Search{% endtrans %}...">\n`+
-                '                        </div>\n'+
-                '                    </div>\n'+
-                '                    <div class="">\n'+
-                '                        <select class="integrated-form-control integrated-block-filter" name="integrated_block_filter[channels][]" id="integrated_block_filter_channels">\n'+
-                '                            <option value="">{% trans %}Filter channel{% endtrans %}</option>\n'+
-                `                            ${data.filters.channels.map(channel => `<option value="${channel.value}" ${channel.value == data.channel ? "selected" : ""}>${channel.label}</option>`).join('')}`+
-                '                        </select>\n'+
-                '                    </div>\n'+
-                '            </form>\n' +
-                '        </div>\n' +
-                '        <div id="add_block_results">\n' +
-                `           ${data.blocks.map(block => `<div class="integrated-card" data-action="integrated-website-block-choose" data-id="${block.id}">
+                                        </ul>
+                                    </div>\n
+                               </div>\n
+                               <div class="">\n
+                                   <select class="integrated-form-control integrated-block-filter" name="integrated_block_filter[type][]" id="integrated_block_filter_type">\n
+                                       <option value="">{% trans %}Filter type{% endtrans %}</option>\n
+                                        ${data.filters.type.map(type => `<option value="${type.value}" ${type.value == data.type ? "selected" : ""}>${type.label}</option>`).join('')}
+                                        </select>\n
+                                    </div>\n
+                                    <div class="">\n
+                                        <div class="input-group">\n
+                                            <input type="text" value="${data.q}" class="integrated-form-control" name="integrated_block_filter[q]" id="integrated_block_filter_q" placeholder="{% trans %}Search{% endtrans %}...">\n
+                                        </div>\n
+                                    </div>\n
+                                    <div class="">\n
+                                        <select class="integrated-form-control integrated-block-filter" name="integrated_block_filter[channels][]" id="integrated_block_filter_channels">\n
+                                            <option value="">{% trans %}Filter channel{% endtrans %}</option>\n
+                                            ${data.filters.channels.map(channel => `<option value="${channel.value}" ${channel.value == data.channel ? "selected" : ""}>${channel.label}</option>`).join('')}
+                                        </select>\n
+                                    </div>\n
+                            </form>\n
+                        </div>\n
+                        <div id="add_block_results">\n
+                           ${data.blocks.map(block => `<div class="integrated-card" data-action="integrated-website-block-choose" data-id="${block.id}">
                                     <p data-action="integrated-website-block-choose"><b data-action="integrated-website-block-choose" data-id="${block.id}">${block.title}</b></p>
                                     <p data-action="integrated-website-block-choose" data-id="${block.id}">${block.type}</p>
-                                </div>`).join('')}`+
-                '        </div>\n' +
-                '        <div>\n';
+                                </div>`).join('')}
+                        </div>\n
+                        <div>`;
 
             if (data.pagination.pageCount > 0) {
                 output = output + '<ul class="integrated-pagination" id="add_block_pagination">\n';
@@ -348,7 +312,7 @@
                             // success
                             data.type = '';
                             data.q = '';
-                            data.channels = '';
+                            data.channel = '';
 
                             Integrated.showModal('{% trans %}Add block{% endtrans %}', addBlockModalTemplateHTML(data));
 
@@ -446,6 +410,58 @@
         } else {
             document.addEventListener('DOMContentLoaded', init);
         }
+
+        /**
+         * Handle mouseover
+         */
+        document.body.addEventListener('mouseenter', function(e) {
+            element = e.target.closest('.integrated-website-block-edit, .integrated-website-block-remove');
+            if (element) {
+                element.parentNode.nextSibling.classList.add('integrated-block-hover');
+            }
+        }, true);
+
+        document.body.addEventListener('mouseleave', function(e) {
+            element = e.target.closest('.integrated-website-block-edit, .integrated-website-block-remove');
+            if (element) {
+                element.parentNode.nextSibling.classList.remove('integrated-block-hover');
+            }
+        }, true);
+
+        /**
+         * Handle edit
+         */
+        document.body.addEventListener('click', function(e) {
+            element = e.target.closest('.integrated-website-block-edit');
+            if (element) {
+                e.preventDefault();
+
+                $blockTarget = null;
+
+                element = element.parentNode.nextSibling;
+                var blockId = element.dataset.id;
+                var url = '{{ path('integrated_block_block_edit', {'id': 'block-id', '_format':'iframe.html'}) }}'.replace('block-id', blockId);
+                createIframe(url, 'Edit block');
+            }
+        });
+
+        /**
+         * Handle remove
+         */
+        document.body.addEventListener('click', function(e) {
+            element = e.target.closest('.integrated-website-block-remove');
+            if (element) {
+                e.preventDefault();
+
+                if (confirm('Are you sure?')) {
+                    removeElement = element.parentNode.nextSibling;
+                    removeElement.parentNode.removeChild(removeElement);
+
+                    removeElement = element.parentNode;
+                    removeElement.parentNode.removeChild(removeElement);
+                }
+            }
+        });
 
         /**
          * Handle choose block button
@@ -675,7 +691,7 @@
             .then(data => {
                 data.type = document.querySelector('[name="integrated_block_filter[type][]"] option:checked').value;
                 data.q = document.querySelector('[name="integrated_block_filter[q]"]').value;
-                data.channels = document.querySelector('[name="integrated_block_filter[channels][]"] option:checked').value;
+                data.channel = document.querySelector('[name="integrated_block_filter[channels][]"] option:checked').value;
 
                 document.querySelector('#add_block_results').parentElement.outerHTML = addBlockModalTemplateHTML(data);
 
