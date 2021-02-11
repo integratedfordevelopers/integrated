@@ -312,7 +312,7 @@
          * Handle mouseover
          */
         document.body.addEventListener('mouseenter', function(e) {
-            element = e.target.closest('.integrated-website-block-edit, .integrated-website-block-remove');
+            element = e.target.closest('[data-action="integrated-website-block-edit"], .integrated-website-block-remove');
             if (!element) {
                 return;
             }
@@ -321,7 +321,7 @@
         }, true);
 
         document.body.addEventListener('mouseleave', function(e) {
-            element = e.target.closest('.integrated-website-block-edit, .integrated-website-block-remove');
+            element = e.target.closest('[data-action="integrated-website-block-edit"], .integrated-website-block-remove');
             if (!element) {
                 return;
             }
@@ -388,7 +388,7 @@
          * Handle edit
          */
         document.body.addEventListener('click', function(e) {
-            element = e.target.closest('.integrated-website-block-edit');
+            element = e.target.closest('[data-action="integrated-website-block-edit"]');
             if (!element) {
                 return;
             }
@@ -397,8 +397,10 @@
 
             $blockTarget = null;
 
-            element = element.parentNode.nextSibling;
-            var blockId = element.dataset.id;
+            editElement = element.parentNode.nextSibling;
+            console.log(editElement);
+
+            var blockId = editElement.dataset.id;
             var url = '{{ path('integrated_block_block_edit', {'id': 'block-id', '_format':'iframe.html'}) }}'.replace('block-id', blockId);
             createIframe(url, 'Edit block');
         });
@@ -573,28 +575,43 @@
         /**
          * Handle new channel block button
          */
-        /*
-        $(document).on('click', '[data-action="integrated-website-block-new-channel-block"]', function(e) {
+        document.body.addEventListener('click', function(e) {
+            element = e.target.closest('[data-action="integrated-website-block-new-channel-block"]');
+            if (!element) {
+                return;
+            }
+
             e.preventDefault();
 
-            button = e.target;
-            id = $(button).data('id');
-            name = $(button).data('name');
-            className = $(button).data('class');
-            csrfToken = $(button).data('csrf-token');
+            button = element;
+            id = element.dataset.id;
+            name = element.dataset.name;
+            className = element.dataset.class;
+            csrfToken = element.dataset.csrfToken;
 
-            $blockTarget = $('#create-channel-block-'+id);
+            $blockTarget = document.getElementById('#create-channel-block-'+id);
 
-            $.post(
-                Routing.generate('integrated_block_block_new_channel_block'),
-                { 'id': id, 'name': name, 'class': className, 'csrf_token': csrfToken },
-                function() {
-                    $('.modal').modal('hide');
-                    createIframe(Routing.generate('integrated_block_block_edit', { 'id': $(button).data('id'), '_format': 'iframe.html'}), 'Edit block');
-                }
-            );
+            showLoader();
+
+            let formData = new FormData();
+            formData.append('id', id);
+            formData.append('class', className);
+            formData.append('name', name);
+            formData.append('csrf_token', csrfToken);
+
+            fetch('{{ path('integrated_block_block_new_channel_block') }}', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    hideLoader();
+
+                    var url = '{{ path('integrated_block_block_edit', {'id': 'block-id', '_format':'iframe.html'}) }}'.replace('block-id', id);
+                    createIframe(url, 'Edit block');
+                });
+
         });
-        */
 
         /**
          * Handle new textblock button

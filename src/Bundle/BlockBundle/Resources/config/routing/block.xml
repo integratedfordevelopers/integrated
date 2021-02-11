@@ -19,7 +19,6 @@
 
     <route id="integrated_block_block_new_channel_block" path="/channel-block/new/" methods="POST">
         <default key="_controller">IntegratedBlockBundle:Block:newChannelBlock</default>
-        <option key="expose">true</option>
     </route>
 
     <route id="integrated_block_block_show" path="/{id}" methods="GET">
