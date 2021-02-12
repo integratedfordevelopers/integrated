@@ -1,8 +1,10 @@
 <script>
-    !function($, JSON) {
+    !function(JSON) {
         var Menu = function(element) {
             this.element = element;
         };
+
+        var currentItem = null;
 
         Menu.prototype.load = function(data, success) {
             var element = this.element;
@@ -18,13 +20,13 @@
                 .then(response => response.json())
                 .then(data => {
                     // success
-                    element.dataset.options = data.options;
+                    element.dataOptions = data.options;
                     element.innerHTML = data.html;
 
                     element.querySelectorAll('.integrated-website-menu-list, .integrated-website-menu-item').forEach(item => {
                             if (item.dataset.json) {
                                 item.data = JSON.parse(item.dataset.json);
-                                item.dataset.json = null;
+                                item.removeAttribute('data-json');
                             }
                         }
                     );
@@ -82,7 +84,7 @@
         };
 
         Menu.prototype.getOptions = function() {
-            return this.element.data('options');
+            return this.element.dataOptions;
         };
 
         var Item = function(element) {
@@ -121,17 +123,17 @@
         };
 
         Item.prototype.getValue = function(key) {
-            return this.element.data('data')[key];
+            return this.element.data[key];
         };
 
         Item.prototype.update = function(json) {
-            var data = this.element.data('data');
+            var data = this.element.data;
 
-            $.each(json, function(key, value) {
+            for (const [key, value] of Object.entries(json)) {
                 data[key] = value;
-            });
+            }
 
-            this.element.data('data', data);
+            this.element.data = data;
             this.menu.refresh(data.id);
         };
 
@@ -146,99 +148,83 @@
                         return new Menu(element);
                     },
                     updateLinkType: function() {
-                        if (jQuery('#typeLinkUri').prop("checked")) {
-                            jQuery('#integrated-row-uri').show();
-                            jQuery('#integrated-row-searchSelection').hide();
-                            jQuery('#integrated-row-maxItems').hide();
+                        if (document.getElementById('typeLinkUri').checked) {
+                            document.getElementById('integrated-uri-label').style.display = 'block';
+                            document.getElementById('integrated-uri-control').style.display = 'block';
+                            document.getElementById('integrated-search-selection-label').style.display = 'none';
+                            document.getElementById('integrated-search-selection-control').style.display = 'none';
+                            document.getElementById('integrated-maxitems-label').style.display = 'none';
+                            document.getElementById('integrated-maxitems-control').style.display = 'none';
                         }
 
-                        if (jQuery('#typeLinkSearchSelection').prop("checked")) {
-                            jQuery('#integrated-row-uri').hide();
-                            jQuery('#integrated-row-searchSelection').show();
-                            jQuery('#integrated-row-maxItems').show();
+                        if (document.getElementById('typeLinkSearchSelection').checked) {
+                            document.getElementById('integrated-uri-label').style.display = 'none';
+                            document.getElementById('integrated-uri-control').style.display = 'none';
+                            document.getElementById('integrated-search-selection-label').style.display = 'block';
+                            document.getElementById('integrated-search-selection-control').style.display = 'block';
+                            document.getElementById('integrated-maxitems-label').style.display = 'block';
+                            document.getElementById('integrated-maxitems-control').style.display = 'block';
                         }
                     }
                 }
             }};
 
-        /*
-        $.extend(true, Integrated, {
-            Menu: {
-                create: function(element) {
-                    return new Menu(element);
-                },
-                updateLinkType: function() {
-                    if (jQuery('#typeLinkUri').prop("checked")) {
-                        jQuery('#integrated-row-uri').show();
-                        jQuery('#integrated-row-searchSelection').hide();
-                        jQuery('#integrated-row-maxItems').hide();
-                    }
-
-                    if (jQuery('#typeLinkSearchSelection').prop("checked")) {
-                        jQuery('#integrated-row-uri').hide();
-                        jQuery('#integrated-row-searchSelection').show();
-                        jQuery('#integrated-row-maxItems').show();
-                    }
-                }
-            }
-        });
-
-         */
-
-        var editMenuModalTemplateHTML = function(data) {
-            var output = `<div class="row">
-        <div class="col-md-12">
-            <form class="form-horizontal">
-                    <div class="form-group">
-                        <label class="col-md-4 control-label">{% trans %}Link type{% endtrans %}</label>
-                        <div class="col-md-8">
-                            <div>
-                                <div class="radio">
-                                    <label for="typeLinkUri" class="required">
-                                        <input type="radio" id="typeLinkUri" name="typeLink" required="required" value="0" ${data.typeLinkUri ? " checked=\"checked\"" : ""} onchange="Integrated.Menu.updateLinkType();">{% trans %}URL{% endtrans %}
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label for="typeLinkSearchSelection" class="required">
-                                        <input type="radio" id="typeLinkSearchSelection" name="typeLink" required="required" value="1" ${data.typeLinkSearchSelection ? " checked=\"checked\"" : ""} onchange="Integrated.Menu.updateLinkType();">{% trans %}Search selection{% endtrans %}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+        var editMenuModalTemplateHTML = function(data, showRemove = false) {
+            var output = `<form>
+            <div class="integrated-form-grid">
+                <div class="integrated-form-grid-col-1">
+                    <label>{% trans %}Link type{% endtrans %}</label>
+                </div>
+                <div class="integrated-form-grid-col-2">
+                    <div>
+                        <label for="typeLinkUri" class="required">
+                            <input type="radio" id="typeLinkUri" name="integrated-menu-linktype" required="required" value="0" ${data.typeLinkUri ? " checked=\"checked\"" : ""} onchange="Integrated.Menu.updateLinkType();">{% trans %}URL{% endtrans %}
+                        </label>
                     </div>
-                    <div class="form-group" id="integrated-row-name">
-                        <label class="col-md-4 control-label" for="name">{% trans %}Name{% endtrans %}</label>
-                        <div class="col-md-8">
-                            <input id="name" name="name" type="text" value="${data.name}" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="form-group" id="integrated-row-uri">
-                        <label class="col-md-4 control-label" for="uri">{% trans %}URL{% endtrans %}</label>
-                        <div class="col-md-8">
-                            <input id="uri" name="uri" type="text" value="${data.uri}" class="form-control" />
-                        </div>
-                    </div>
-                <div class="form-group" id="integrated-row-searchSelection">
-                    <label class="col-md-4 control-label" for="uri">{% trans %}Search selection{% endtrans %}</label>
-                    <div class="col-md-8">
-                        <select id="searchSelection" name="searchSelection" required="required" class="form-control">
-                        <option value=""></option>
-                        {% set searchSelections = getSearchSelections() %}
-                        {% for searchSelection in searchSelections %}
-                            <option value="{{ searchSelection.id }}">{{ searchSelection.title }}</option>
-                        {% endfor %}
-                        </select>
+                    <div>
+                        <label for="typeLinkSearchSelection" class="required">
+                            <input type="radio" id="typeLinkSearchSelection" name="integrated-menu-linktype" required="required" value="1" ${data.typeLinkSearchSelection ? " checked=\"checked\"" : ""} onchange="Integrated.Menu.updateLinkType();">{% trans %}Search selection{% endtrans %}
+                        </label>
                     </div>
                 </div>
-                    <div class="form-group" id="integrated-row-maxItems">
-                        <label class="col-md-4 control-label" for="uri">{% trans %}Number of items{% endtrans %}</label>
-                        <div class="col-md-8">
-                            <input id="maxItems" name="maxItems" type="text" value="${data.maxItems}" class="form-control" />
-                        </div>
-                    </div>
-            </form>
-        </div>
-    </div>`;
+                <div class="integrated-form-grid-col-1">
+                    <label for="name">{% trans %}Name{% endtrans %}</label>
+                </div>
+                <div class="integrated-form-grid-col-2">
+                    <input id="integrated-menu-name" name="name" type="text" value="${data.name}" class="integrated-form-control" />
+                </div>
+                <div class="integrated-form-grid-col-1" id="integrated-uri-label">
+                    <label for="uri">{% trans %}URL{% endtrans %}</label>
+                </div>
+                <div class="integrated-form-grid-col-2" id="integrated-uri-control">
+                    <input id="integrated-menu-uri" name="uri" type="text" value="${data.uri}" class="integrated-form-control" />
+                </div>
+                <div class="integrated-form-grid-col-1" id="integrated-search-selection-label">
+                    <label for="uri">{% trans %}Search selection{% endtrans %}</label>
+                </div>
+                <div class="integrated-form-grid-col-2" id="integrated-search-selection-control">
+                    <select id="integrated-menu-search-selection" name="searchSelection" required="required" class="integrated-form-control">
+                    <option value="">{% trans %}Choose a search selection{% endtrans %}</option>
+                    {% set searchSelections = getSearchSelections() %}
+                    {% for searchSelection in searchSelections %}
+                        <option value="{{ searchSelection.id }}" ${data.searchSelection == '{{ searchSelection.id }}' ? " selected=\"selected\"" : ""}>{{ searchSelection.title }}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+                <div class="integrated-form-grid-col-1" id="integrated-maxitems-label">
+                    <label for="uri">{% trans %}Number of items{% endtrans %}</label>
+                </div>
+                <div class="integrated-form-grid-col-2" id="integrated-maxitems-control">
+                    <input id="integrated-menu-maxitems" name="maxItems" type="text" value="${data.maxItems}" class="integrated-form-control" />
+                </div>
+                <div class="integrated-form-grid-col-1">
+                </div>
+                <div class="integrated-form-grid-col-2">
+                    <input type="submit" data-action="integrated-website-menu-item-save" class="integrated-button" value="{% trans %}Save{% endtrans %}" />
+                    ${showRemove ? '<input type="button" data-action="integrated-website-menu-item-remove" class="integrated-button integrated-button-red integrated-button-right" value="{% trans %}Remove{% endtrans %}" />' : ''}
+                </div>
+            </div>
+        </form>`;
 
             return output;
         }
@@ -249,25 +235,8 @@
                     let script = item.querySelector('script[type="text/json"]');
 
                     menu.load(script.innerHTML);
-                    /*
-                    menu.load(script.innerHTML, function() {
-                        console.log(script.parentNode);
-                        script.parentNode.removeChild(script);
-                    });
-                     */
+                    script.parentNode.removeChild(script);
                 }
-            );
-
-            document.querySelectorAll('.integrated-website-menu-item').forEach(item =>
-                item.addEventListener('mouseover', function (e) {
-                    $(this).addClass('open');
-                })
-            );
-
-            document.querySelectorAll('.integrated-website-menu-item').forEach(item =>
-                item.addEventListener('mouseout', function (e) {
-                    $(this).removeClass('open');
-                })
             );
         }
 
@@ -278,43 +247,32 @@
         }
 
         document.body.addEventListener('click', function(e) {
-            element = e.target.closest('.integrated-website-menu');
+            element = e.target.closest('[data-action="integrated-website-menu-item-add"]');
             if (!element) {
                 return;
             }
 
-            e.preventDefault();
             e.stopPropagation();
+            e.preventDefault();
 
             var item = new Item(element);
             var html = editMenuModalTemplateHTML({
-                typeLinkUri: true
+                name: '',
+                uri: '',
+                typeLinkUri: true,
+                typeLinkSearchSelection: false,
+                searchSelection: null,
+                maxItems: ''
             });
 
+            currentItem = item;
             Integrated.showModal('{% trans %}Add menu item{% endtrans %}', html);
-            bootbox.dialog({
-                buttons: {
-                    success: {
-                        label: 'Save',
-                        callback: function() {
-                            item.update({
-                                typeLink: $('input[name=typeLink]:checked').val(),
-                                name:     $('#name').val(),
-                                uri:      $('#uri').val(),
-                                searchSelection: $('#searchSelection').val(),
-                                maxItems: $('#maxItems').val()
-                            });
-                        }
-                    }
-                }
-            });
-
             Integrated.Menu.updateLinkType();
         });
 
         document.body.addEventListener('click', function(e) {
             element = e.target.closest('[data-action="integrated-website-menu-item-edit"]');
-            if (!element) {
+            if (!element || e.target.closest('[data-action="integrated-website-menu-item-add"]')) {
                 return;
             }
 
@@ -328,10 +286,12 @@
                 typeLinkUri: (typeof(item.getValue('typeLink')) == 'undefined' || item.getValue('typeLink') == 0) ? true : false,
                 typeLinkSearchSelection: (item.getValue('typeLink') == 1) ? true : false,
                 searchSelection: item.getValue('searchSelection'),
-                maxItems: item.getValue('maxItems')
-            });
+                maxItems: (typeof(item.getValue('maxItems')) == 'undefined') ? '' : item.getValue('maxItems'),
+            }, true);
+            currentItem = item;
 
             Integrated.showModal('{% trans %}Edit menu item{% endtrans %}', html);
+            Integrated.Menu.updateLinkType();
 
             bootbox.dialog({
                 title: 'Edit menu item',
@@ -343,23 +303,37 @@
                         callback: function() {
                             item.remove();
                         }
-                    },
-                    success: {
-                        label: 'Save',
-                        callback: function() {
-                            item.update({
-                                typeLink: $('input[name=typeLink]:checked').val(),
-                                name: $('#name').val(),
-                                uri:  $('#uri').val(),
-                                searchSelection: $('#searchSelection').val(),
-                                maxItems: $('#maxItems').val()
-                            });
-                        }
                     }
                 }
             });
 
-            Integrated.Menu.updateLinkType();
+        });
+
+        document.body.addEventListener('click', function(e) {
+            element = e.target.closest('[data-action="integrated-website-menu-item-remove"]');
+            if (!element) {
+                return;
+            }
+
+            currentItem.remove();
+            Integrated.hideModal();
+        });
+
+        document.body.addEventListener('click', function(e) {
+            element = e.target.closest('[data-action="integrated-website-menu-item-save"]');
+            if (!element) {
+                return;
+            }
+
+            currentItem.update({
+                typeLink: document.querySelector("[name=integrated-menu-linktype]:checked").value,
+                name:     document.getElementById('integrated-menu-name').value,
+                uri:      document.getElementById('integrated-menu-uri').value,
+                searchSelection: document.querySelector("#integrated-menu-search-selection option:checked").value,
+                maxItems: document.getElementById('integrated-menu-maxitems').value,
+            });
+
+            Integrated.hideModal();
         });
 
         Element.prototype.closestChildren = function(selector) {
@@ -379,7 +353,7 @@
             return {};
         };
 
-    }(window.jQuery, JSON);
+    }(JSON);
 
     var Integrated = Integrated || {};
 </script>
