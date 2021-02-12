@@ -292,21 +292,6 @@
 
             Integrated.showModal('{% trans %}Edit menu item{% endtrans %}', html);
             Integrated.Menu.updateLinkType();
-
-            bootbox.dialog({
-                title: 'Edit menu item',
-                message: html,
-                buttons: {
-                    danger: {
-                        label: 'Remove',
-                        className: 'btn-danger pull-left',
-                        callback: function() {
-                            item.remove();
-                        }
-                    }
-                }
-            });
-
         });
 
         document.body.addEventListener('click', function(e) {
