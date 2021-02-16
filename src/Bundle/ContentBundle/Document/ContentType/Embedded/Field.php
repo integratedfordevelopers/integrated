@@ -84,7 +84,7 @@ class Field implements ContentTypeFieldInterface
      */
     public function getLabel()
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since version 0.7.', E_USER_DEPRECATED);
+        @trigger_error('The '.__METHOD__.' method is deprecated since version 0.7.', \E_USER_DEPRECATED);
 
         return isset($this->options['label']) ? $this->options['label'] : ucfirst($this->getName());
     }

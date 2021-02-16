@@ -28,7 +28,7 @@ trait RankTrait
     /**
      * @return string|null
      */
-    public function getRank(): ? string
+    public function getRank(): ?string
     {
         return $this->rank;
     }
