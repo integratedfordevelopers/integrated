@@ -42,6 +42,58 @@
                 <source>Date created</source>
                 <target>Datum aangemaakt</target>
             </trans-unit>
+            <trans-unit id="11">
+                <source>An e-mail with a password reset link has been sent</source>
+                <target>Een e-mail met een wachtwoord reset link is verzonden</target>
+            </trans-unit>
+            <trans-unit id="12">
+                <source>A user account could with this e-mail address could not be found.</source>
+                <target>Een gebruikersaccount met dit e-mail adres kon niet worden gevonden.</target>
+            </trans-unit>
+            <trans-unit id="13">
+                <source>Password reset link is invalid or expired</source>
+                <target>Wachtwoord reset link is ongeldig of verlopen</target>
+            </trans-unit>
+            <trans-unit id="14">
+                <source>Your password has been changed</source>
+                <target>Jouw wachtwoord is gewijzigd</target>
+            </trans-unit>
+            <trans-unit id="15">
+                <source>Password reset</source>
+                <target>Wachtwoord reset</target>
+            </trans-unit>
+            <trans-unit id="16">
+                <source>E-mail address</source>
+                <target>E-mail adres</target>
+            </trans-unit>
+            <trans-unit id="17">
+                <source>Request password reset</source>
+                <target>Wachtwoord reset aanvragen</target>
+            </trans-unit>
+            <trans-unit id="18">
+                <source>This email was sent by Integrated on %domain%</source>
+                <target>Deze e-mail is gestuurd door Integrated op %domain%</target>
+            </trans-unit>
+            <trans-unit id="19">
+                <source>Click the button below to reset your Integrated password.</source>
+                <target>Klik op de knop hieronder om je Integrated wachtwoord te wijzigen.</target>
+            </trans-unit>
+            <trans-unit id="20">
+                <source>Reset password</source>
+                <target>Reset je wachtwoord</target>
+            </trans-unit>
+            <trans-unit id="21">
+                <source>Repeat password</source>
+                <target>Herhaal wachtwoord</target>
+            </trans-unit>
+            <trans-unit id="22">
+                <source>Change password</source>
+                <target>Wijzig wachtwoord</target>
+            </trans-unit>
+            <trans-unit id="23">
+                <source>The password fields must match</source>
+                <target>De wachtwoorden moeten hetzelfde zijn</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

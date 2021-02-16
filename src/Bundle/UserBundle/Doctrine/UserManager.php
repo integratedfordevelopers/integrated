@@ -17,6 +17,7 @@ use Integrated\Bundle\UserBundle\Model\ScopeInterface;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 use InvalidArgumentException;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -34,10 +35,16 @@ class UserManager implements UserManagerInterface
     private $repository;
 
     /**
-     * @param ObjectManager $om
-     * @param $class
+     * @var EncoderFactoryInterface
      */
-    public function __construct(ObjectManager $om, $class)
+    private $encoderFactory;
+
+    /**
+     * @param ObjectManager           $om
+     * @param                         $class
+     * @param EncoderFactoryInterface $encoderFactory
+     */
+    public function __construct(ObjectManager $om, $class, EncoderFactoryInterface $encoderFactory)
     {
         $this->om = $om;
         $this->repository = $this->om->getRepository($class);
@@ -45,6 +52,8 @@ class UserManager implements UserManagerInterface
         if (!is_subclass_of($this->repository->getClassName(), 'Integrated\\Bundle\\UserBundle\\Model\\UserInterface')) {
             throw new InvalidArgumentException(sprintf('The class "%s" is not subclass of Integrated\\Bundle\\UserBundle\\Model\\UserInterface', $this->repository->getClassName()));
         }
+
+        $this->encoderFactory = $encoderFactory;
     }
 
     /**
@@ -192,5 +201,29 @@ class UserManager implements UserManagerInterface
     public function createQueryBuilder()
     {
         return $this->repository->createQueryBuilder('User');
+    }
+
+    /**
+     * @param int    $id
+     * @param string $password
+     *
+     * @return bool
+     *
+     * @throws \Exception
+     */
+    public function changePassword(int $id, string $password): bool
+    {
+        if (!$user = $this->find($id)) {
+            return false;
+        }
+
+        $salt = base64_encode(random_bytes(72));
+
+        $user->setPassword($this->encoderFactory->getEncoder($user)->encodePassword($password, $salt));
+        $user->setSalt($salt);
+
+        $this->persist($user);
+
+        return true;
     }
 }

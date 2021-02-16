@@ -11,5 +11,19 @@
             <argument>%kernel.bundles%</argument>
         </service>
 
+        <service id="Integrated\Bundle\UserBundle\Service\KeyGenerator">
+            <argument type="service" id="integrated_user.user.manager" />
+        </service>
+
+        <service id="Integrated\Bundle\UserBundle\Service\Mailer">
+            <argument type="service" id="integrated_user.user.manager" />
+            <argument type="service" id="mailer" />
+            <argument type="service" id="templating" />
+            <argument type="service" id="translator" />
+            <argument type="service" id="Integrated\Bundle\UserBundle\Service\KeyGenerator" />
+            <argument>%mailer_from%</argument>
+            <argument>%mailer_name%</argument>
+        </service>
+
     </services>
 </container>

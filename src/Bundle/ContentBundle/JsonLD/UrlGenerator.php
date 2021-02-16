@@ -60,8 +60,9 @@ class UrlGenerator
         if ($channel = $content->getPrimaryChannel()) {
             $domain = $channel->getPrimaryDomain();
 
-            if (!$domain) {
-                $domain = reset($channel->getDomains());
+            if (!$domain && \count($channel->getDomains())) {
+                $channels = $channel->getDomains();
+                $domain = reset($channels);
             }
         }
 
@@ -88,8 +89,9 @@ class UrlGenerator
         if ($channel = $content->getPrimaryChannel()) {
             $domain = $channel->getPrimaryDomain();
 
-            if (!$domain) {
-                $domain = reset($channel->getDomains());
+            if (!$domain && \count($channel->getDomains())) {
+                $channels = $channel->getDomains();
+                $domain = reset($channels);
             }
         }
 
