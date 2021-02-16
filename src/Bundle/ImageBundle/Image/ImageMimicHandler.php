@@ -44,7 +44,7 @@ class ImageMimicHandler extends ImageHandler
     public function guessType()
     {
         if ($this->source instanceof File) {
-            return pathinfo($this->source->getFile(), PATHINFO_EXTENSION);
+            return pathinfo($this->source->getFile(), \PATHINFO_EXTENSION);
         }
 
         return parent::guessType();

@@ -16,7 +16,7 @@ interface RankableInterface
     /**
      * @return string|null
      */
-    public function getRank(): ? string;
+    public function getRank(): ?string;
 
     /**
      * @param string|null $rank
