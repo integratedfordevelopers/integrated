@@ -50,17 +50,18 @@
         font-weight: bold;
         line-height: 22px;
         padding: 8px 15px;
-        color: #ffffff;
+        color: #ffffff !important;
         border: 1px solid #ffffff;
         background-color: #000000;
         margin-top: 8px;
         margin-bottom: 8px;
         text-decoration: none;
+        cursor: pointer;
     }
 
     .integrated-button:link, .integrated-button:active, .integrated-button:focus, .integrated-website-toolbar-button:link, .integrated-website-toolbar-button:active, .integrated-website-toolbar-button:focus {
         text-decoration: none;
-        color: #ffffff;
+        color: #ffffff !important;
     }
 
     .integrated-button:hover, .integrated-website-toolbar-button:hover {
@@ -167,7 +168,14 @@
         background: #f5f5f5;
         margin-bottom: 20px;
         width: 100%;
-        height: 50px;
+        height: 100px;
+        outline: 3px solid black;
+    }
+
+    .integrated-website-item-dragging {
+        width: 100%;
+        height: 100px;
+        outline: 2px solid black;
     }
 
     .integrated-website-grid[data-block-type="row"] {
@@ -509,9 +517,12 @@
         margin-bottom: 10px;
     }
     .integrated-button-red {
-        background: red;
+        background: red !important;
     }
     .integrated-button-right {
         float: right;
+    }
+    #integrated-menu-maxitems {
+        max-width: 100px;
     }
 </style>

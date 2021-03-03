@@ -197,7 +197,7 @@
                     <label for="uri">{% trans %}URL{% endtrans %}</label>
                 </div>
                 <div class="integrated-form-grid-col-2" id="integrated-uri-control">
-                    <input id="integrated-menu-uri" name="uri" type="text" value="${data.uri}" class="integrated-form-control" />
+                    <input id="integrated-menu-uri" name="uri" type="text" value="${data.uri}" class="integrated-form-control" autocomplete="off" />
                 </div>
                 <div class="integrated-form-grid-col-1" id="integrated-search-selection-label">
                     <label for="uri">{% trans %}Search selection{% endtrans %}</label>
@@ -221,7 +221,7 @@
                 </div>
                 <div class="integrated-form-grid-col-2">
                     <input type="submit" data-action="integrated-website-menu-item-save" class="integrated-button" value="{% trans %}Save{% endtrans %}" />
-                    ${showRemove ? '<input type="button" data-action="integrated-website-menu-item-remove" class="integrated-button integrated-button-red integrated-button-right" value="{% trans %}Remove{% endtrans %}" />' : ''}
+                    ${showRemove ? '<input type="button" data-action="integrated-website-menu-item-remove" class="integrated-button integrated-button-red integrated-button-right" value="{% trans %}Remove menu item{% endtrans %}" />' : ''}
                 </div>
             </div>
         </form>`;
@@ -297,6 +297,10 @@
         document.body.addEventListener('click', function(e) {
             element = e.target.closest('[data-action="integrated-website-menu-item-remove"]');
             if (!element) {
+                return;
+            }
+
+            if (!confirm('{% trans %}Are you sure you want to remove this menu item?{% endtrans %}')) {
                 return;
             }
 

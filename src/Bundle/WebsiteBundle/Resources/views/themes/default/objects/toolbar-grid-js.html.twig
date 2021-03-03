@@ -398,7 +398,6 @@
             $blockTarget = null;
 
             editElement = element.parentNode.nextSibling;
-            console.log(editElement);
 
             var blockId = editElement.dataset.id;
             var url = '{{ path('integrated_block_block_edit', {'id': 'block-id', '_format':'iframe.html'}) }}'.replace('block-id', blockId);
