@@ -651,61 +651,21 @@
          */
         var initSortable = function($element) {
             new Sortable($element, {
-                group: "integrated",
-                sort: false,
+                group: "integrated-grid",
+                sort: true,
+                forceFallback: true,
+                scrollSpeed: 80,
                 draggable: ".integrated-website-sortable",
-                ghostClass: "integrated-website-item-placeholder",
-
-                // Element dragging ended
+                ghostClass: "integrated-website-item-ghost",
+                dragClass: "integrated-website-item-dragging",
+                onStart: function (/**Event*/evt) {
+                    $buttons = evt.item.previousElementSibling;
+                    $buttons.parentNode.removeChild($buttons);
+                },
                 onEnd: function (/**Event*/evt) {
-                    var itemEl = evt.item;  // dragged HTMLElement
-                    evt.to;    // target list
-                    evt.from;  // previous list
-                    evt.oldIndex;  // element's old index within old parent
-                    evt.newIndex;  // element's new index within new parent
-                    evt.oldDraggableIndex; // element's old index within old parent, only counting draggable elements
-                    evt.newDraggableIndex; // element's new index within new parent, only counting draggable elements
-                    evt.clone // the clone element
-                    evt.pullMode;  // when item is in another sortable: `"clone"` if cloning, `true` if moving
+                    $newItem = evt.item;
+                    $newItem.parentNode.insertBefore(createBlockButtons(), $newItem);
                 },
-
-                // Event when you move an item in the list or between lists
-                onMove: function (/**Event*/evt, /**Event*/originalEvent) {
-                    // Example: https://jsbin.com/nawahef/edit?js,output
-                    evt.dragged; // dragged HTMLElement
-                    evt.draggedRect; // DOMRect {left, top, right, bottom}
-                    evt.related; // HTMLElement on which have guided
-                    evt.relatedRect; // DOMRect
-                    evt.willInsertAfter; // Boolean that is true if Sortable will insert drag element after target by default
-                    originalEvent.clientY; // mouse position
-                    // return false; — for cancel
-                    // return -1; — insert before target
-                    // return 1; — insert after target
-                    // return true; — keep default insertion point based on the direction
-                    // return void; — keep default insertion point based on the direction
-                }
-            });
-
-            return;
-
-            //TODO
-            $element.sortable({
-                connectWith: '.integrated-website-droppable',
-                placeholder: 'integrated-website-item-placeholder',
-                items: '.integrated-website-sortable',
-                scroll: false,
-                opacity: 0.7,
-                cursor: 'move',
-                cursorAt: { top: 20, left: 20 },
-                tolerance: 'pointer',
-                helper: function(e, helper) {
-                    return helper.clone().css({'width': '300px'});
-                },
-                stop: function(e, ui) {
-                    var $item = $(ui.item);
-                    //buttons should always come behind
-                    $item.after($item.prev('.integrated-block-buttons'));
-                }
             });
         };
 
