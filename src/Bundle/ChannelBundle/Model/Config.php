@@ -84,7 +84,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getName(): ? string
+    public function getName(): ?string
     {
         return $this->name;
     }

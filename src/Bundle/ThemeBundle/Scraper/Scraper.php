@@ -182,7 +182,7 @@ class Scraper
      */
     protected function replaceUrls($html, $url): string
     {
-        $host = parse_url($url, PHP_URL_SCHEME).'://'.parse_url($url, PHP_URL_HOST);
+        $host = parse_url($url, \PHP_URL_SCHEME).'://'.parse_url($url, \PHP_URL_HOST);
 
         // Replace relative URL's
         $html = preg_replace('/((?:href|src) *= *[\'"](?!(http|mailto|data:|\/\/)))/i', '$1'.$host, $html);

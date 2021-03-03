@@ -1132,7 +1132,7 @@ class ContentController extends Controller
             foreach ($relation->getReferences() as $reference) {
                 $properties = [
                     'id' => $reference->getId(),
-                    'title' => method_exists($reference, 'getTitle') ? $reference->getTitle() : $reference->getId(),
+                    'title' => (string) $reference,
                 ];
 
                 if ($reference instanceof Image) {

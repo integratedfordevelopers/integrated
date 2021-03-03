@@ -25,6 +25,7 @@ use Symfony\Component\Process\Process;
  */
 class WorkerCommand extends ContainerAwareCommand
 {
+    use LockableTrait;
     /**
      * @var QueueInterface
      */
@@ -34,8 +35,6 @@ class WorkerCommand extends ContainerAwareCommand
      * @var string
      */
     private $workingDirectory;
-
-    use LockableTrait;
 
     /**
      * @param QueueInterface $queue

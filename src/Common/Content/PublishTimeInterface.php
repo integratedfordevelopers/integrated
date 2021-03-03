@@ -23,7 +23,7 @@ interface PublishTimeInterface
     /**
      * @return DateTime|null
      */
-    public function getStartDate(): ? DateTime;
+    public function getStartDate(): ?DateTime;
 
     /**
      * @param DateTime $startDate
@@ -35,7 +35,7 @@ interface PublishTimeInterface
     /**
      * @return DateTime|null
      */
-    public function getEndDate(): ? DateTime;
+    public function getEndDate(): ?DateTime;
 
     /**
      * @param DateTime $endDate

@@ -27,7 +27,7 @@ class Image extends File
     /**
      * @var StorageInterface
      * @Type\Field(type="Integrated\Bundle\StorageBundle\Form\Type\ImageDropzoneType")
-     * @Assert\File(mimeTypes="image/*")
+     * @Assert\File(mimeTypes={"image/*", "application/postscript"})
      */
     protected $file;
 }

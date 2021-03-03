@@ -32,7 +32,7 @@ class PublishTime implements PublishTimeInterface
     /**
      * {@inheritdoc}
      */
-    public function getStartDate(): ? DateTime
+    public function getStartDate(): ?DateTime
     {
         return $this->startDate;
     }
@@ -50,7 +50,7 @@ class PublishTime implements PublishTimeInterface
     /**
      * {@inheritdoc}
      */
-    public function getEndDate(): ? DateTime
+    public function getEndDate(): ?DateTime
     {
         return $this->endDate;
     }
