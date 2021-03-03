@@ -615,6 +615,22 @@
 
             Integrated.showModal(title, element.outerHTML);
 
+            //handle cancel button in iframe
+            iframe = document.querySelector('.integrated-iframe');
+
+            iframe.onload = function () {
+                cancelButton = iframe.contentWindow.document.querySelector('.integrated-cancel-button');
+                if (!cancelButton) {
+                    return;
+                }
+
+                cancelButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    Integrated.hideModal();
+                });
+            }
+
             hideLoader();
         };
 
