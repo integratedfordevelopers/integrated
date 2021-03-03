@@ -22,8 +22,6 @@
         /**
          * @type object|null
          */
-        var previousCall = null;
-
         var $blockTarget = null;
 
         /**
@@ -43,15 +41,6 @@
             $element.querySelectorAll('[data-block-type="block"]').forEach(item => {
                 item.parentNode.insertBefore(createBlockButtons(), item);
             });
-        };
-
-        /**
-         * @param Element $element
-         */
-        var initChannelBlockGrid = function($element) {
-            $element.querySelectorAll('[data-block-type="channel"]').forEach(item =>
-                item.insertBefore(createChannelBlockButtons(), item.firstChild)
-            );
         };
 
         /**
@@ -79,11 +68,7 @@
                 .then(data => {
                     $block.innerHTML = data.html;
                     if (buttons) {
-                        if ($block.dataset.blockType == 'channel') {
-                            $block.insertBefore(createChannelBlockButtons(), $block.firstChild);
-                        } else {
-                            $block.insertBefore(createBlockButtons(), $block.firstChild);
-                        }
+                        $block.insertBefore(createBlockButtons(), $block.firstChild);
                     }
                 });
         };
@@ -175,19 +160,6 @@
             return element;
         };
 
-        /**
-         * @return Element
-         */
-        var createChannelBlockButtons = function() {
-            //TODO
-            let element = document.createElement('div');
-            element.classList.add('integrated-website-block-options');
-            element.innerHTML =
-                '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-edit" title="Edit block"><span class="glyphicon glyphicon-pencil"></span></a>';
-
-            return element;
-        };
-
         var showLoader = function() {
             let element = document.createElement('div');
 
@@ -248,6 +220,10 @@
                         </div>\n
                         <div>`;
 
+            if (data.blocks.length == 0) {
+                output = output + '{% trans %}No blocks found with this search query{% endtrans %}\n';
+            }
+
             if (data.pagination.pageCount > 0) {
                 output = output + '<ul class="integrated-pagination" id="add_block_pagination">\n';
 
@@ -287,10 +263,6 @@
         function init() {
             document.querySelectorAll('.integrated-website-grid').forEach(item =>
                 initGrid(item)
-            );
-
-            document.querySelectorAll('.integrated-website-channel-block-grid').forEach(item =>
-                initChannelBlockGrid(item)
             );
 
             /**
@@ -732,12 +704,7 @@
         function refreshBlockData(form) {
             document.querySelector('#add_block_results').innerHTML = 'Loading blocks...';
 
-            if (previousCall !== null){
-                //previousCall.cancel();
-                //previousCall = null;
-            }
-
-            previousCall = fetch(form.action, {
+            fetch(form.action, {
                 method: 'post',
                 body: new URLSearchParams(new FormData(form)),
                 headers: {
@@ -751,8 +718,6 @@
                 data.channel = document.querySelector('[name="integrated_block_filter[channels][]"] option:checked').value;
 
                 document.querySelector('#add_block_results').parentElement.outerHTML = addBlockModalTemplateHTML(data);
-
-                previousCall = null;
             });
         }
     } (window.Routing);
