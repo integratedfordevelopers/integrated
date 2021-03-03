@@ -30,28 +30,19 @@
                             }
                         }
                     );
-/*
-                    element.find('.integrated-website-menu-list').sortable({
-                        tolerance: 'intersect',
-                        items: '[data-action="integrated-website-menu-item-edit"]',
-                        connectWith: '.integrated-website-menu-list',
-                        placeholder: 'integrated-website-menu-placeholder',
-                        cursor: 'move',
-                        cursorAt: { top: 5, left: 10 },
-                        scroll: false,
-                        helper: function() {
-                            return $('<div>').css('width', '20px').css('height', '10px');
-                        }
-                    });
-*/
 
-/*
-                    element.find('.dropdown').droppable({
-                        accept: '.integrated-website-menu-item',
-                        tolerance: 'fit',
-                        greedy: true
-                    });
-*/
+                    element.querySelectorAll('.integrated-website-menu-list').forEach(item => {
+                            new Sortable(item, {
+                                scroll: true,
+                                group: "integrated",
+                                sort: true,
+                                draggable: '[data-action="integrated-website-menu-item-edit"]',
+                                ghostClass: "integrated-website-item-ghost",
+                                dragClass: "integrated-website-item-dragging"
+                            });
+                        }
+                    );
+
                     if (success) {
                         success();
                     }
