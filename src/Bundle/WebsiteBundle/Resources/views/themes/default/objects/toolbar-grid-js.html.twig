@@ -15,6 +15,9 @@
         <symbol id="integrated-icon-column" viewBox="0 0 768 768">
             <path d="M511.5 160.5h160.5v415.5h-160.5v-415.5zM127.5 576v-415.5h160.5v415.5h-160.5zM319.5 576v-415.5h160.5v415.5h-160.5z"></path>
         </symbol>
+        <symbol id="integrated-icon-text" viewBox="0 0 32 32">
+            <path d="M10.063 26l1.8-6h8.274l1.8 6h3.551l-6-20h-6.976l-6 20h3.551zM14.863 10h2.274l1.8 6h-5.874l1.8-6z"></path>
+        </symbol>
     </defs>
 </svg>
 <script>
@@ -112,9 +115,15 @@
             var element = document.createElement('div');
             element.classList.add('integrated-block-buttons');
             element.innerHTML = '' +
+                '<a href="javascript:;" class="integrated-block-button integrated-website-block-column-add" data-action="integrated-website-block-add" title="{% trans %}Add block{% endtrans %}">' +
+                '   <svg class="integrated-icon integrated-icon-plus"><use xlink:href="#integrated-icon-plus"></use></svg>' +
+                '<span>{% trans %}Add block{% endtrans %}</span></a>' +
                 '<a href="javascript:;" class="integrated-block-button" data-action="integrated-website-cols-config" title="{% trans %}Configure columns{% endtrans %}">' +
                 '   <svg class="integrated-icon integrated-icon-plus"><use xlink:href="#integrated-icon-plus"></use></svg>' +
-                '<span>{% trans %}Configure columns{% endtrans %}</span></a>';
+                '<span>{% trans %}Configure columns{% endtrans %}</span></a>' +
+                '<a href="javascript:;" class="integrated-block-button integrated-website-column-remove" data-action="integrated-website-column-remove" title="{% trans %}Remove{% endtrans %}">' +
+                '   <svg class="integrated-icon integrated-icon-remove"><use xlink:href="#integrated-icon-remove"></use></svg>' +
+                '<span class="integrated-block-button-label">{% trans %}Remove column{% endtrans %}</a></span>';
 
             return element;
         };
@@ -123,14 +132,15 @@
          * @return Element
          */
         var createColumnButtons = function () {
-            //TODO
             var element = document.createElement('div');
             element.classList.add('integrated-block-buttons');
             element.innerHTML = '' +
                 '<a href="javascript:;" class="integrated-block-button" data-action="integrated-website-block-add" title="{% trans %}Add block{% endtrans %}">' +
                 '   <svg class="integrated-icon integrated-icon-plus"><use xlink:href="#integrated-icon-plus"></use></svg>' +
                 '<span>{% trans %}Add block{% endtrans %}</span></a>' +
-                //'<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-textblock-add" title="Add textblock"><span class="glyphicon glyphicon-font"></span></a>' +
+                '<a href="javascript:;" class="integrated-block-button" data-action="integrated-website-textblock-add" title="{% trans %}Add text block{% endtrans %}">' +
+                '   <svg class="integrated-icon integrated-icon-text"><use xlink:href="#integrated-icon-text"></use></svg>' +
+                '<span>{% trans %}Add text block{% endtrans %}</span></a>' +
                 '<a href="javascript:;" class="integrated-block-button" data-action="integrated-website-cols-add" title="{% trans %}Add columns{% endtrans %}">' +
                 '   <svg class="integrated-icon integrated-icon-column"><use xlink:href="#integrated-icon-column"></use></svg>' +
                 '<span>{% trans %}Add columns{% endtrans %}</span></a>';
@@ -292,6 +302,15 @@
             element.parentNode.nextSibling.classList.add('integrated-block-hover');
         }, true);
 
+        document.body.addEventListener('mouseenter', function(e) {
+            element = e.target.closest('.integrated-website-column-remove');
+            if (!element) {
+                return;
+            }
+
+            element.parentNode.parentNode.classList.add('integrated-block-hover');
+        }, true);
+
         document.body.addEventListener('mouseleave', function(e) {
             element = e.target.closest('[data-action="integrated-website-block-edit"], .integrated-website-block-remove');
             if (!element) {
@@ -299,6 +318,15 @@
             }
 
             element.parentNode.nextSibling.classList.remove('integrated-block-hover');
+        }, true);
+
+        document.body.addEventListener('mouseleave', function(e) {
+            element = e.target.closest('.integrated-website-column-remove');
+            if (!element) {
+                return;
+            }
+
+            element.parentNode.parentNode.classList.remove('integrated-block-hover');
         }, true);
 
         document.body.addEventListener('mouseenter', function(e) {
@@ -341,6 +369,9 @@
             showLoader();
 
             $blockTarget = element.parentNode;
+            if (element.classList.contains('integrated-website-block-column-add')) {
+                $blockTarget = $blockTarget.parentNode;
+            }
 
             fetch('{{ path('integrated_block_block_index', { '_format': 'json', 'limit': 10}) }}')
                 .then(response => response.json())
@@ -392,6 +423,23 @@
                 removeElement.parentNode.removeChild(removeElement);
 
                 removeElement = element.parentNode;
+                removeElement.parentNode.removeChild(removeElement);
+            }
+        });
+
+        /**
+         * Handle column remove
+         */
+        document.body.addEventListener('click', function(e) {
+            element = e.target.closest('.integrated-website-column-remove');
+            if (!element) {
+                return;
+            }
+
+            e.preventDefault();
+
+            if (confirm('Are you sure?')) {
+                removeElement = element.parentNode.parentNode;
                 removeElement.parentNode.removeChild(removeElement);
             }
         });
@@ -587,19 +635,27 @@
         /**
          * Handle new textblock button
          */
-        /*
-        $(document).on('click', '[data-action="integrated-website-textblock-add"]', function(e) {
+        document.body.addEventListener('click', function(e) {
+            element = e.target.closest('[data-action="integrated-website-textblock-add"]');
+            if (!element) {
+                return;
+            }
+
             e.preventDefault();
 
-            $blockTarget = $(this).parent();
+            showLoader();
 
-            var pageId = $('[data-action="integrated-website-page-save"]').data('id');
+            $blockTarget = element.parentNode;
+            if (element.classList.contains('integrated-website-block-column-add')) {
+                $blockTarget = $blockTarget.parentNode;
+            }
 
-            $('.modal').modal('hide');
+            var pageId = document.querySelector('[data-action="integrated-website-page-save"]').dataset.id;
 
-            createIframe(Routing.generate('integrated_block_inline_text_block_create', { 'id': pageId}), 'New block');
+            createIframe('{{ path('integrated_block_inline_text_block_create', {'id': 'page-id'}) }}'.replace('page-id', pageId), '{% trans %}New block{% endtrans %}');
+
+            hideLoader();
         });
-        */
 
         /**
          * @param url
