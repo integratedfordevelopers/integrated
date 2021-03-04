@@ -1,0 +1,339 @@
+<script>
+    !function(JSON) {
+        var Menu = function(element) {
+            this.element = element;
+        };
+
+        var currentItem = null;
+
+        Menu.prototype.load = function(data, success) {
+            var element = this.element;
+            var menu = this;
+
+            fetch('{{ path('integrated_website_menu_render') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: data
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // success
+                    element.dataOptions = data.options;
+                    element.innerHTML = data.html;
+
+                    element.querySelectorAll('.integrated-website-menu-list, .integrated-website-menu-item').forEach(item => {
+                            if (item.dataset.json) {
+                                item.data = JSON.parse(item.dataset.json);
+                                item.removeAttribute('data-json');
+                            }
+                        }
+                    );
+
+                    element.querySelectorAll('.integrated-website-menu-list').forEach(item => {
+                            new Sortable(item, {
+                                scroll: true,
+                                group: "integrated-menu",
+                                sort: true,
+                                draggable: '[data-action="integrated-website-menu-item-edit"]',
+                                ghostClass: "integrated-website-item-ghost",
+                                dragClass: "integrated-website-item-dragging"
+                            });
+                        }
+                    );
+
+                    if (success) {
+                        success();
+                    }
+                });
+        };
+
+        Menu.prototype.refresh = function(id) {
+            this.load(JSON.stringify({
+                data: this.getData(id),
+                options: this.getOptions()
+            }));
+        };
+
+        Menu.prototype.getData = function(id) {
+            let menu = this.element.closestChildren('.integrated-website-menu-list');
+            let data = menu.item(0).data;
+
+            data.children = [];
+
+            menu.item(0).closestChildren('.integrated-website-menu-item').forEach(item => {
+                var item = new Item(item);
+                var result = item.getData(id);
+
+                if (result) {
+                    data.children.push(result);
+                }
+            });
+
+            return data;
+        };
+
+        Menu.prototype.getOptions = function() {
+            return this.element.dataOptions;
+        };
+
+        var Item = function(element) {
+            this.element = element;
+            this.menu = new Menu(this.element.closest('.integrated-website-menu'));
+        };
+
+        Item.prototype.getMenu = function() {
+            return this.menu;
+        };
+
+        Item.prototype.getData = function(id, item) {
+            item = item || this.element;
+
+            var data = item.data;
+
+            if (id && data.id == id || 'integrated-website-menu-item-edit' == item.dataset.action) {
+                var items = item.closestChildren('.integrated-website-menu-item');
+
+                if (items.length) {
+                    var children = [];
+
+                    for (var i = 0; i < items.length; i++) {
+                        var result = this.getData(id, items[i]);
+
+                        if (result) {
+                            children.push(result);
+                        }
+                    }
+
+                    data.children = children;
+                }
+
+                return data;
+            }
+        };
+
+        Item.prototype.getValue = function(key) {
+            return this.element.data[key];
+        };
+
+        Item.prototype.update = function(json) {
+            var data = this.element.data;
+
+            for (const [key, value] of Object.entries(json)) {
+                data[key] = value;
+            }
+
+            this.element.data = data;
+            this.menu.refresh(data.id);
+        };
+
+        Item.prototype.remove = function() {
+            this.element.remove();
+            this.menu.refresh();
+        };
+
+        Integrated = {...Integrated, ...{
+                Menu: {
+                    create: function(element) {
+                        return new Menu(element);
+                    },
+                    updateLinkType: function() {
+                        if (document.getElementById('typeLinkUri').checked) {
+                            document.getElementById('integrated-uri-label').style.display = 'block';
+                            document.getElementById('integrated-uri-control').style.display = 'block';
+                            document.getElementById('integrated-search-selection-label').style.display = 'none';
+                            document.getElementById('integrated-search-selection-control').style.display = 'none';
+                            document.getElementById('integrated-maxitems-label').style.display = 'none';
+                            document.getElementById('integrated-maxitems-control').style.display = 'none';
+                        }
+
+                        if (document.getElementById('typeLinkSearchSelection').checked) {
+                            document.getElementById('integrated-uri-label').style.display = 'none';
+                            document.getElementById('integrated-uri-control').style.display = 'none';
+                            document.getElementById('integrated-search-selection-label').style.display = 'block';
+                            document.getElementById('integrated-search-selection-control').style.display = 'block';
+                            document.getElementById('integrated-maxitems-label').style.display = 'block';
+                            document.getElementById('integrated-maxitems-control').style.display = 'block';
+                        }
+                    }
+                }
+            }};
+
+        var editMenuModalTemplateHTML = function(data, showRemove = false) {
+            var output = `<form>
+            <div class="integrated-form-grid">
+                <div class="integrated-form-grid-col-1">
+                    <label>{% trans %}Link type{% endtrans %}</label>
+                </div>
+                <div class="integrated-form-grid-col-2">
+                    <div>
+                        <label for="typeLinkUri" class="required">
+                            <input type="radio" id="typeLinkUri" name="integrated-menu-linktype" required="required" value="0" ${data.typeLinkUri ? " checked=\"checked\"" : ""} onchange="Integrated.Menu.updateLinkType();">{% trans %}URL{% endtrans %}
+                        </label>
+                    </div>
+                    <div>
+                        <label for="typeLinkSearchSelection" class="required">
+                            <input type="radio" id="typeLinkSearchSelection" name="integrated-menu-linktype" required="required" value="1" ${data.typeLinkSearchSelection ? " checked=\"checked\"" : ""} onchange="Integrated.Menu.updateLinkType();">{% trans %}Search selection{% endtrans %}
+                        </label>
+                    </div>
+                </div>
+                <div class="integrated-form-grid-col-1">
+                    <label for="name">{% trans %}Name{% endtrans %}</label>
+                </div>
+                <div class="integrated-form-grid-col-2">
+                    <input id="integrated-menu-name" name="name" type="text" value="${data.name}" class="integrated-form-control" />
+                </div>
+                <div class="integrated-form-grid-col-1" id="integrated-uri-label">
+                    <label for="uri">{% trans %}URL{% endtrans %}</label>
+                </div>
+                <div class="integrated-form-grid-col-2" id="integrated-uri-control">
+                    <input id="integrated-menu-uri" name="uri" type="text" value="${data.uri}" class="integrated-form-control" autocomplete="off" />
+                </div>
+                <div class="integrated-form-grid-col-1" id="integrated-search-selection-label">
+                    <label for="uri">{% trans %}Search selection{% endtrans %}</label>
+                </div>
+                <div class="integrated-form-grid-col-2" id="integrated-search-selection-control">
+                    <select id="integrated-menu-search-selection" name="searchSelection" required="required" class="integrated-form-control">
+                    <option value="">{% trans %}Choose a search selection{% endtrans %}</option>
+                    {% set searchSelections = getSearchSelections() %}
+                    {% for searchSelection in searchSelections %}
+                        <option value="{{ searchSelection.id }}" ${data.searchSelection == '{{ searchSelection.id }}' ? " selected=\"selected\"" : ""}>{{ searchSelection.title }}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+                <div class="integrated-form-grid-col-1" id="integrated-maxitems-label">
+                    <label for="uri">{% trans %}Number of items{% endtrans %}</label>
+                </div>
+                <div class="integrated-form-grid-col-2" id="integrated-maxitems-control">
+                    <input id="integrated-menu-maxitems" name="maxItems" type="text" value="${data.maxItems}" class="integrated-form-control" />
+                </div>
+                <div class="integrated-form-grid-col-1">
+                </div>
+                <div class="integrated-form-grid-col-2">
+                    <input type="submit" data-action="integrated-website-menu-item-save" class="integrated-button" value="{% trans %}Save{% endtrans %}" />
+                    ${showRemove ? '<input type="button" data-action="integrated-website-menu-item-remove" class="integrated-button integrated-button-red integrated-button-right" value="{% trans %}Remove menu item{% endtrans %}" />' : ''}
+                </div>
+            </div>
+        </form>`;
+
+            return output;
+        }
+
+        function init() {
+            document.querySelectorAll('.integrated-website-menu').forEach(item => {
+                    let menu = new Menu(item);
+                    let script = item.querySelector('script[type="text/json"]');
+
+                    menu.load(script.innerHTML);
+                    script.parentNode.removeChild(script);
+                }
+            );
+        }
+
+        if (document.readyState != 'loading'){
+            init();
+        } else {
+            document.addEventListener('DOMContentLoaded', init);
+        }
+
+        document.body.addEventListener('click', function(e) {
+            element = e.target.closest('[data-action="integrated-website-menu-item-add"]');
+            if (!element) {
+                return;
+            }
+
+            e.stopPropagation();
+            e.preventDefault();
+
+            var item = new Item(element);
+            var html = editMenuModalTemplateHTML({
+                name: '',
+                uri: '',
+                typeLinkUri: true,
+                typeLinkSearchSelection: false,
+                searchSelection: null,
+                maxItems: ''
+            });
+
+            currentItem = item;
+            Integrated.showModal('{% trans %}Add menu item{% endtrans %}', html);
+            Integrated.Menu.updateLinkType();
+        });
+
+        document.body.addEventListener('click', function(e) {
+            element = e.target.closest('[data-action="integrated-website-menu-item-edit"]');
+            if (!element || e.target.closest('[data-action="integrated-website-menu-item-add"]')) {
+                return;
+            }
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            var item = new Item(element);
+            var html = editMenuModalTemplateHTML({
+                name:     item.getValue('name'),
+                uri:      item.getValue('uri'),
+                typeLinkUri: (typeof(item.getValue('typeLink')) == 'undefined' || item.getValue('typeLink') == 0) ? true : false,
+                typeLinkSearchSelection: (item.getValue('typeLink') == 1) ? true : false,
+                searchSelection: item.getValue('searchSelection'),
+                maxItems: (typeof(item.getValue('maxItems')) == 'undefined') ? '' : item.getValue('maxItems'),
+            }, true);
+            currentItem = item;
+
+            Integrated.showModal('{% trans %}Edit menu item{% endtrans %}', html);
+            Integrated.Menu.updateLinkType();
+        });
+
+        document.body.addEventListener('click', function(e) {
+            element = e.target.closest('[data-action="integrated-website-menu-item-remove"]');
+            if (!element) {
+                return;
+            }
+
+            if (!confirm('{% trans %}Are you sure you want to remove this menu item?{% endtrans %}')) {
+                return;
+            }
+
+            currentItem.remove();
+            Integrated.hideModal();
+        });
+
+        document.body.addEventListener('click', function(e) {
+            element = e.target.closest('[data-action="integrated-website-menu-item-save"]');
+            if (!element) {
+                return;
+            }
+
+            currentItem.update({
+                typeLink: document.querySelector("[name=integrated-menu-linktype]:checked").value,
+                name:     document.getElementById('integrated-menu-name').value,
+                uri:      document.getElementById('integrated-menu-uri').value,
+                searchSelection: document.querySelector("#integrated-menu-search-selection option:checked").value,
+                maxItems: document.getElementById('integrated-menu-maxitems').value,
+            });
+
+            Integrated.hideModal();
+        });
+
+        Element.prototype.closestChildren = function(selector) {
+            var children = this.querySelectorAll(':scope > '+selector);
+
+            if (children.length) {
+                return children;
+            }
+
+            return this.querySelectorAll(selector);
+            children = this.children;
+
+            if (children.length) {
+                return children.item(0).closestChildren(selector);
+            }
+
+            return {};
+        };
+
+    }(JSON);
+
+    var Integrated = Integrated || {};
+</script>

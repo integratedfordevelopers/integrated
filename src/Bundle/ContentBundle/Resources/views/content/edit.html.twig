@@ -80,7 +80,7 @@
                                 {% if content.getChannels|length > 0 %}
                                     <div class="aside-item-holder section-white">
                                         {% for channel in content.getChannels %}
-                                            {% set domain = channel.primaryDomain|default(channel.domains(0))|default("") %}
+                                            {% set domain = channel.primaryDomain|default(channel.domains|first)|default("") %}
                                             {% set url = integrated_url(content, channel.id, false) %}
                                             {% if (domain != "" and url) %}
                                                 {% if (domain != app.request.httphost) %}

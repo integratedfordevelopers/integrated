@@ -61,7 +61,11 @@ class LayoutChoiceType extends AbstractType
      */
     protected function getChoiceList($type)
     {
-        return $this->locator->getLayouts($type);
+        $layouts = $this->locator->getLayouts($type);
+
+        sort($layouts);
+
+        return $layouts;
     }
 
     /**

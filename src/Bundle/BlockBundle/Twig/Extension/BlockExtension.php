@@ -244,7 +244,19 @@ class BlockExtension extends \Twig_Extension
      */
     public function findBlockTypes()
     {
-        return $this->metadataFactory->getAllMetadata();
+        $blocks = $this->metadataFactory->getAllMetadata();
+
+        usort($blocks, function ($a, $b) {
+            if ($a->getType() === $b->getType()) {
+                return 0;
+            }
+
+            return ($a->getType() < $b->getType()) ? -1 : 1;
+        });
+
+        ksort($blocks);
+
+        return $blocks;
     }
 
     /**

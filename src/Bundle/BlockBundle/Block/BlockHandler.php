@@ -117,6 +117,7 @@ class BlockHandler implements BlockHandlerInterface
         return $this->render([
             'block' => $block,
             'document' => $this->getDocument(),
+            'options' => $options,
         ]);
     }
 
@@ -127,6 +128,9 @@ class BlockHandler implements BlockHandlerInterface
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        $resolver->setDefaults([
+            'gridLevel' => 0,
+        ]);
     }
 
     /**

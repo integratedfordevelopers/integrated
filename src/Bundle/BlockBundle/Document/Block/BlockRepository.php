@@ -48,9 +48,11 @@ class BlockRepository extends DocumentRepository
             $class = $metaData->getClass();
 
             if (\array_key_exists($class, $typeCount) && $typeCount[$class]) {
-                $typeChoices[$metaData->getType().' '.$typeCount[$class]] = $class;
+                $typeChoices[$metaData->getType().' ('.$typeCount[$class].')'] = $class;
             }
         }
+
+        ksort($typeChoices);
 
         return $typeChoices;
     }

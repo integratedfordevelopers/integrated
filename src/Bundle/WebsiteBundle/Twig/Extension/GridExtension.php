@@ -13,6 +13,7 @@ namespace Integrated\Bundle\WebsiteBundle\Twig\Extension;
 
 use Integrated\Bundle\PageBundle\Document\Page\AbstractPage;
 use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
+use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -31,13 +32,13 @@ class GridExtension extends \Twig_Extension
      */
     protected $request;
 
-    public function __construct(RequestStack $requestStack)
+    public function __construct(RequestStack $requestStack, ThemeManager $themeManager)
     {
         $this->request = $requestStack->getMasterRequest();
 
         $this->resolver = new OptionsResolver();
         $this->resolver->setDefaults([
-            'template' => 'IntegratedWebsiteBundle:page:grid.html.twig',
+            'template' => $themeManager->locateTemplate('page/grid.html.twig'),
         ]);
     }
 
