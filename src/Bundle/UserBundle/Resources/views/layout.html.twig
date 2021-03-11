@@ -11,9 +11,7 @@
     <link href='//fonts.googleapis.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css'>
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" media="screen" />
 
-    {% stylesheets "@integrated_css" %}
-        <link rel="stylesheet" href="{{ asset_url }}" />
-    {% endstylesheets %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 {% endblock style %}
 
@@ -35,10 +33,6 @@
 {% block javascript %}
     <script src="//code.jquery.com/jquery.js"></script>
     <script src="{{ asset('/js/bootstrap.js') }}"></script>
-
-    {% javascripts "@integrated_js" %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
 {% endblock javascript %}
 
 </body>

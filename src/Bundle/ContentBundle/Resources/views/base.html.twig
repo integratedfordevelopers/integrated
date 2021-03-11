@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
 {% block style %}
-    {% stylesheets "@integrated_css" %}
-        <link rel="stylesheet" href="{{ asset_url }}" />
-    {% endstylesheets %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     {{ integrated_stylesheets() }}
 
@@ -99,20 +97,6 @@
 
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
-
-    {% javascripts
-        '@IntegratedContentBundle/Resources/public/components/corejs-typeahead/dist/typeahead.bundle.js'
-        '@IntegratedContentBundle/Resources/public/components/handlebars/handlebars.js'
-        '@IntegratedContentBundle/Resources/public/components/modernizr/modernizr.js'
-        '@IntegratedContentBundle/Resources/public/components/respond/dest/respond.src.js'
-        '@IntegratedContentBundle/Resources/public/components/select2/dist/js/select2.full.js'
-        '@IntegratedContentBundle/Resources/public/components/jquery-placeholder/jquery.placeholder.js'
-        '@IntegratedContentBundle/Resources/public/components/moment/min/moment-with-locales.js'
-        '@IntegratedContentBundle/Resources/public/js/scripts.js'
-        '@integrated_js'
-    %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
 
     {% if app.request.locale %}
     <script>
