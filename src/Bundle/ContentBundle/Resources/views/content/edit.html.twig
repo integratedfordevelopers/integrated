@@ -236,20 +236,7 @@
         <script>
             var formInvalid = {{ form.vars.valid ? '0' : '1' }};
         </script>
-        {% javascripts "@IntegratedContentBundle/Resources/public/js/unlock_article.js" %}
-            <script src="{{ asset_url }}"></script>
-        {% endjavascripts %}
     {% endif %}
-{% endif %}
-
-{% javascripts "@IntegratedUserBundle/Resources/public/js/visible_user_form.js" %}
-    <script src="{{ asset_url }}"></script>
-{% endjavascripts %}
-
-{% if hasWorkflowBundle %}
-    {% javascripts '@IntegratedWorkflowBundle/Resources/public/js/workflowChangeState.js' %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
 {% endif %}
 
 {{ include('IntegratedContentBundle:content:handlebars/templates.html.twig')}}
