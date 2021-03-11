@@ -173,13 +173,6 @@
 
 {% block javascript %}
 {{ parent() }}
-{% javascripts
-    "@IntegratedContentBundle/Resources/public/components/handlebars/handlebars.min.js"
-    "@IntegratedContentBundle/Resources/public/js/handlebars.helpers.js"
-    "@IntegratedContentBundle/Resources/public/js/relation.js"
-%}
-<script src="{{ asset_url }}"></script>
-{% endjavascripts %}
 
 {% if content is defined %}
 <script>
