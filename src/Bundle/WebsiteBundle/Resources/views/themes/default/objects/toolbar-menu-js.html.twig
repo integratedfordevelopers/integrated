@@ -323,11 +323,15 @@
                 return children;
             }
 
-            return this.querySelectorAll(selector);
             children = this.children;
 
             if (children.length) {
-                return children.item(0).closestChildren(selector);
+                for (var i = 0; i < children.length; i++) {
+                    child = children[i];
+                    if (child.querySelectorAll(selector).length) {
+                        return child.closestChildren(selector);
+                    }
+                }
             }
 
             return {};
