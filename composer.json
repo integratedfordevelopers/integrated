@@ -46,7 +46,7 @@
         "sensio/framework-extra-bundle": "~5.0",
         "solarium/solarium": "~3.8",
         "swiftmailer/swiftmailer": "~6.1",
-        "twbs/bootstrap": "~3.3",
+        "twbs/bootstrap": "~3.3 || ~5.0",
         "twig/twig": ">=2.12",
         "vihuvac/recaptcha-bundle": "~2.1"
     },
