@@ -1,0 +1,56 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 push-sm-down">
+            <ul class="list-inline">
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown" role="button" id="drop_1">Options <b class="caret"></b></a>
+                    <ul aria-labelledby="drop_1" role="menu" class="dropdown-menu" id="menu_1">
+                        <li role="presentation"><a href="{{ path('integrated_user_iplist_new') }}" tabindex="-1" role="menuitem">New</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <section class="section-white section-padding section-shadow section-radius">
+
+                <table class="table table-hover">
+
+                    <colgroup>
+                        <col style="width: 3em" />
+                        <col />
+                        <col style="width: 5em" />
+                    </colgroup>
+
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Ip</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                    {% for list in lists %}
+
+                        <tr>
+                            <td>{{ list.id }}</td>
+                            <td>{{ list.ip.protocolAppropriateAddress }}</td>
+                            <td>
+                                <a href="{{ path('integrated_user_iplist_edit', {'id': list.id}) }}" title="{% trans %}Edit{% endtrans %}"><span class="glyphicon glyphicon-edit"></span></a>
+                                <a href="{{ path('integrated_user_iplist_delete', {'id': list.id}) }}" title="{% trans %}Delete{% endtrans %}"><span class="glyphicon glyphicon-remove-circle"></span></a>
+                            </td>
+                        </tr>
+
+                   {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+                {{ knp_pagination_render(lists) }}
+
+            </section>
+        </div>
+    </div>
+{% endblock %}

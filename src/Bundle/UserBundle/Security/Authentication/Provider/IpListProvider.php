@@ -14,21 +14,15 @@ namespace Integrated\Bundle\UserBundle\Security\Authentication\Provider;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-class ScopeProvider implements AuthenticationProviderInterface
+class IpListProvider implements AuthenticationProviderInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function authenticate(TokenInterface $token)
     {
         return $token;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports(TokenInterface $token)
     {
-        return false; // The firewall listener will handle it
+        return false; // All of this is just here to add a option to the firewall config.
     }
 }

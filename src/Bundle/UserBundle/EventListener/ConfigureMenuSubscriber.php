@@ -60,8 +60,9 @@ class ConfigureMenuSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($this->authorizationChecker->isGranted(self::ROLE_USER_MANAGER) ||
-            $this->authorizationChecker->isGranted(self::ROLE_ADMIN)) {
+        $admin = $this->authorizationChecker->isGranted(self::ROLE_ADMIN);
+
+        if ($admin || $this->authorizationChecker->isGranted(self::ROLE_USER_MANAGER)) {
             if (!$menuManage = $menu->getChild(self::MENU_MANAGE)) {
                 $menuManage = $menu->addChild(self::MENU_MANAGE);
             }
@@ -69,6 +70,10 @@ class ConfigureMenuSubscriber implements EventSubscriberInterface
             $menuManage->addChild('Users', ['route' => 'integrated_user_user_index']);
             $menuManage->addChild('Groups', ['route' => 'integrated_user_group_index']);
             $menuManage->addChild('User scopes', ['route' => 'integrated_user_scope_index']);
+
+            if ($admin) {
+                $menuManage->addChild('IP List', ['route' => 'integrated_user_iplist_index']);
+            }
         }
     }
 }

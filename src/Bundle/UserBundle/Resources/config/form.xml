@@ -29,6 +29,11 @@
             <tag name="form.type"/>
         </service>
 
+        <service id="integrated_user.form.ip_list.type" class="Integrated\Bundle\UserBundle\Form\Type\IpListFormType">
+            <argument type="service" id="integrated_user.ip_list.manager"/>
+            <tag name="form.type"/>
+        </service>
+
         <service id="integrated_user.form.group.choice.type" class="Integrated\Bundle\UserBundle\Form\Type\GroupType">
             <argument type="service" id="integrated_user.group.manager"/>
             <tag name="form.type"/>
