@@ -17,6 +17,13 @@
             <argument/>
         </service>
 
+        <service id="integrated_user.security.ip_list_matcher" class="Integrated\Bundle\UserBundle\Security\IpListMatcher">
+            <argument type="service" id="integrated_user.ip_list.manager"/>
+        </service>
+
+        <service id="integrated_user.security.authentication.provider.ip_list" class="Integrated\Bundle\UserBundle\Security\Authentication\Provider\IpListProvider" public="false"/>
+        <service id="integrated_user.security.authentication.listener.ip_list" class="Integrated\Bundle\UserBundle\Security\Firewall\IpListListener" public="false"/>
+
     </services>
 
 </container>

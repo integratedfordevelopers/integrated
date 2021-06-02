@@ -112,7 +112,7 @@ class ConfigureMenuSubscriberTest extends \PHPUnit\Framework\TestCase
         $this->authorizationChecker
             ->expects($this->once())
             ->method('isGranted')
-            ->with(ConfigureMenuSubscriber::ROLE_USER_MANAGER)
+            ->with(ConfigureMenuSubscriber::ROLE_ADMIN)
             ->willReturn(true)
         ;
 
@@ -151,7 +151,7 @@ class ConfigureMenuSubscriberTest extends \PHPUnit\Framework\TestCase
         $this->authorizationChecker
             ->expects($this->once())
             ->method('isGranted')
-            ->with(ConfigureMenuSubscriber::ROLE_USER_MANAGER)
+            ->with(ConfigureMenuSubscriber::ROLE_ADMIN)
             ->willReturn(true)
         ;
 

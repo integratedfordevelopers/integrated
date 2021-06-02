@@ -10,6 +10,7 @@
         <parameter key="integrated_user.group.class">Integrated\Bundle\UserBundle\Model\Group</parameter>
         <parameter key="integrated_user.role.class">Integrated\Bundle\UserBundle\Model\Role</parameter>
         <parameter key="integrated_user.scope.class">Integrated\Bundle\UserBundle\Model\Scope</parameter>
+        <parameter key="integrated_user.ip_list.class">Integrated\Bundle\UserBundle\Model\IpList</parameter>
 
     </parameters>
 
@@ -19,6 +20,7 @@
         <service id="integrated_user.group.manager" alias="integrated_user.group.manager.doctrine" public="true"/>
         <service id="integrated_user.role.manager" alias="integrated_user.role.manager.doctrine" public="true"/>
         <service id="integrated_user.scope.manager" alias="integrated_user.scope.manager.doctrine" public="true"/>
+        <service id="integrated_user.ip_list.manager" alias="integrated_user.ip_list.manager.doctrine" />
 
     </services>
 

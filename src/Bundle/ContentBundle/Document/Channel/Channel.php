@@ -78,6 +78,11 @@ class Channel implements ChannelInterface
     protected $createdAt;
 
     /**
+     * @var bool
+     */
+    protected $ipProtected = false;
+
+    /**
      * @var Scope
      */
     protected $scopeInstance = null;
@@ -323,6 +328,26 @@ class Channel implements ChannelInterface
         if (!$this->primaryDomain) {
             $this->primaryDomain = reset($this->domains);
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isIpProtected(): bool
+    {
+        return (bool) $this->ipProtected;
+    }
+
+    /**
+     * @param bool $protected
+     *
+     * @return $this
+     */
+    public function setIpProtected(bool $protected)
+    {
+        $this->ipProtected = $protected ? true : null;
+
+        return $this;
     }
 
     /**

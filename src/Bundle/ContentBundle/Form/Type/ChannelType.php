@@ -64,6 +64,14 @@ class ChannelType extends AbstractType
             ],
         ]);
 
+        $builder->add('ipProtected', CheckboxType::class, [
+            'label' => 'Protect by IP address or logged in user',
+            'required' => false,
+            'attr' => [
+                'align_with_widget' => true,
+            ],
+        ]);
+
         //validate domain names
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             $form = $event->getForm();

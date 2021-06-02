@@ -8,5 +8,5 @@
     <import resource="@IntegratedUserBundle/Resources/config/routing/user.xml" prefix="/user" />
     <import resource="@IntegratedUserBundle/Resources/config/routing/group.xml" prefix="/group" />
     <import resource="@IntegratedUserBundle/Resources/config/routing/scope.xml" prefix="/scope" />
-	<!--<import resource="@IntegratedUserBundle/Resources/config/routing/role.xml" prefix="/roles/" />-->
+	<import resource="@IntegratedUserBundle/Resources/config/routing/ip_list.xml" prefix="/ip-list" />
 </routes>

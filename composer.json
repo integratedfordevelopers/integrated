@@ -23,6 +23,7 @@
         "symfony/security-acl": "~3.0",
         "symfony/polyfill-iconv": "~1.6",
         "alcaeus/mongo-php-adapter": "~1.1",
+        "darsyn/ip": "^4.0",
         "doctrine/orm": "~2.7",
         "doctrine/doctrine-bundle": "~1.12,>=1.12.10",
         "doctrine/doctrine-fixtures-bundle": "~2.4",
