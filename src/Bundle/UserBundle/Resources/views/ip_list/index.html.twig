@@ -17,6 +17,7 @@
 
                     <colgroup>
                         <col style="width: 3em" />
+                        <col style="width: 20em" />
                         <col />
                         <col style="width: 5em" />
                     </colgroup>
@@ -25,6 +26,7 @@
                         <tr>
                             <th>#</th>
                             <th>Ip</th>
+                            <th>Description</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -36,6 +38,7 @@
                         <tr>
                             <td>{{ list.id }}</td>
                             <td>{{ list.ip.protocolAppropriateAddress }}</td>
+                            <td>{{ list.description }}</td>
                             <td>
                                 <a href="{{ path('integrated_user_iplist_edit', {'id': list.id}) }}" title="{% trans %}Edit{% endtrans %}"><span class="glyphicon glyphicon-edit"></span></a>
                                 <a href="{{ path('integrated_user_iplist_delete', {'id': list.id}) }}" title="{% trans %}Delete{% endtrans %}"><span class="glyphicon glyphicon-remove-circle"></span></a>
