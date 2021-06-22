@@ -31,7 +31,7 @@
         "doctrine/migrations": "~2.2",
         "doctrine/mongodb-odm-bundle": "~3.4",
         "doesntmattr/mongodb-migrations": "~2.0",
-        "abraham/twitteroauth": "^0.7.4",
+        "abraham/twitteroauth": "^0.7.4 || ^2.0.0",
         "braincrafted/bootstrap-bundle": "~2.2",
         "facebook/graph-sdk": "~5.0",
         "friendsofsymfony/jsrouting-bundle": "~2.0",
