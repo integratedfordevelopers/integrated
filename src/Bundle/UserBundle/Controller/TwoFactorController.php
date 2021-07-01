@@ -42,7 +42,7 @@ class TwoFactorController extends Controller
         $user = $this->manager->find($request->get('id'));
 
         if (!$user || !$user->isGoogleAuthenticatorEnabled()) {
-            return $this->redirect($this->generateUrl('integrated_user_user_index'));
+            return $this->redirectToRoute('integrated_user_user_index');
         }
 
         $form = $this->createDeleteForm($user);
@@ -51,7 +51,7 @@ class TwoFactorController extends Controller
             $form->handleRequest($request);
 
             if ($form->get('actions')->get('cancel')->isClicked()) {
-                return $this->redirect($this->generateUrl('integrated_user_user_index'));
+                return $this->redirectToRoute('integrated_user_user_index');
             }
 
             if ($form->isValid()) {
@@ -60,7 +60,7 @@ class TwoFactorController extends Controller
                 $this->manager->persist($user);
                 $this->get('braincrafted_bootstrap.flash')->success(sprintf('The two factor authenticator for user %s is removed', $user->getUsername()));
 
-                return $this->redirect($this->generateUrl('integrated_user_user_index'));
+                return $this->redirectToRoute('integrated_user_user_index');
             }
         }
 
