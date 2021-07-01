@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\UserBundle\Security\Firewall;
 
+use Scheb\TwoFactorBundle\Security\Authentication\Token\TwoFactorTokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -48,7 +49,7 @@ class ScopeListener implements ListenerInterface
     {
         $token = $this->tokenStorage->getToken();
 
-        if (!$token instanceof TokenInterface) {
+        if (!$token instanceof TokenInterface || $token instanceof TwoFactorTokenInterface) {
             return;
         }
 

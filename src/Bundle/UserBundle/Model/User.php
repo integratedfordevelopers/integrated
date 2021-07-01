@@ -80,6 +80,16 @@ class User implements UserInterface
     protected $scope;
 
     /**
+     * @var string
+     */
+    protected $googleSecret;
+
+    /**
+     * @var bool
+     */
+    protected $googleEnabled = false;
+
+    /**
      * @var \Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation
      */
     protected $relation_instance = null;
@@ -389,6 +399,35 @@ class User implements UserInterface
     public function eraseCredentials()
     {
         /* do nothing as there are no unsecured credentials, password should be encrypted */
+    }
+
+    public function isGoogleAuthenticatorEnabled(): bool
+    {
+        return $this->googleEnabled && $this->googleSecret;
+    }
+
+    public function setGoogleAuthenticatorEnabled(bool $googleAuthenticatorEnabled): void
+    {
+        $this->googleEnabled = $googleAuthenticatorEnabled ? (bool) $this->googleSecret : false;
+    }
+
+    public function getGoogleAuthenticatorUsername(): string
+    {
+        return $this->username;
+    }
+
+    public function getGoogleAuthenticatorSecret(): ?string
+    {
+        return $this->googleSecret;
+    }
+
+    public function setGoogleAuthenticatorSecret(?string $googleAuthenticatorSecret): void
+    {
+        $this->googleSecret = $googleAuthenticatorSecret ?: null;
+
+        if ($this->googleSecret === null) {
+            $this->googleEnabled = false;
+        }
     }
 
     /**
