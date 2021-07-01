@@ -1,6 +1,7 @@
 .idea/
+.php-cs-fixer.php
+.php-cs-fixer.cache
 .php_cs.cache
-.php_cs
 vendor/
 composer.lock
 composer.phar

@@ -32,4 +32,12 @@
 		<default key="_controller">IntegratedUserBundle:User:delete</default>
 	</route>
 
+    <route id="integrated_user_user_delete_authenticator" path="/{id}/authenticator/delete">
+        <default key="_controller">integrated_user.controller.two_factor:deleteAction</default>
+    </route>
+
+    <route id="integrated_user_user_delete_authenticator_rest" path="/{id}/authenticator" methods="DELETE">
+        <default key="_controller">integrated_user.controller.two_factor:deleteAction</default>
+    </route>
+
 </routes>

@@ -94,6 +94,10 @@
                 <source>The password fields must match</source>
                 <target>De wachtwoorden moeten hetzelfde zijn</target>
             </trans-unit>
+            <trans-unit id="24">
+                <source>Authentication code</source>
+                <target>Authenticatiecode</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

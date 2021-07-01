@@ -1,13 +1,12 @@
 <?php
 
-return PhpCsFixer\Config::create()
+return (new PhpCsFixer\Config())
     ->setRules([
         '@PSR2' => true,
         '@Symfony' => true,
         '@Symfony:risky' => true,
         'array_syntax' => ['syntax' => 'short'],
         'line_ending' => false,
-        'no_short_echo_tag' => true,
         'no_useless_else' => true,
         'no_useless_return' => true,
         'protected_to_private' => false,

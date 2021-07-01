@@ -12,6 +12,12 @@
 
 	<route id="integrated_user_logout" path="/logout" />
 
+    <route id="integrated_user_two_factor" path="login/authenticator">
+        <default key="_controller">scheb_two_factor.form_controller:form</default>
+    </route>
+
+    <route id="integrated_user_two_factor_check" path="login/authenticator-check" />
+
     <route id="integrated_user_password_reset" path="/login/reset-password">
         <default key="_controller">IntegratedUserBundle:Security:passwordReset</default>
     </route>

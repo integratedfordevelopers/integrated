@@ -25,6 +25,8 @@
         <field name="locked" type="boolean"/>
         <field name="enabled" type="boolean"/>
         <field name="relation" nullable="true"/>
+        <field name="googleSecret" column="authenticator_secret" nullable="true" />
+        <field name="googleEnabled" column="authenticator_enabled" type="boolean" />
 
         <many-to-one target-entity="Scope" field="scope">
             <join-columns>
