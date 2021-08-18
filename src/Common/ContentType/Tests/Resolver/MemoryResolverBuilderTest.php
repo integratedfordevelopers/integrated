@@ -60,7 +60,7 @@ class MemoryResolverBuilderTest extends \PHPUnit\Framework\TestCase
     /**
      * @param string $name
      *
-     * @return ContentTypeInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ContentTypeInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getType($name)
     {

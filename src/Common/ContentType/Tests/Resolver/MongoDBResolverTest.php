@@ -21,7 +21,7 @@ use Integrated\Common\ContentType\Resolver\MongoDBResolver;
 class MongoDBResolverTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var DocumentRepository | \PHPUnit_Framework_MockObject_MockObject
+     * @var DocumentRepository|\PHPUnit_Framework_MockObject_MockObject
      */
     private $repository;
 
@@ -135,7 +135,7 @@ class MongoDBResolverTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return ContentTypeInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ContentTypeInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getType($name = null)
     {

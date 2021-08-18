@@ -23,17 +23,17 @@ class BreadcrumbProviderTest extends TestCase
     const INVALID_MENU = 'invalid_menu';
 
     /**
-     * @var FactoryInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var FactoryInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $menuFactory;
 
     /**
-     * @var BreadcrumbMenuProvider | \PHPUnit_Framework_MockObject_MockObject
+     * @var BreadcrumbMenuProvider|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $breadcrumbMenuProvider;
 
     /**
-     * @var BreadcrumbResolver | \PHPUnit_Framework_MockObject_MockObject
+     * @var BreadcrumbResolver|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $breadcrumbResolver;
 

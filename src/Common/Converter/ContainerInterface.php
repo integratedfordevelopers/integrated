@@ -19,7 +19,7 @@ interface ContainerInterface extends \Countable, \IteratorAggregate
     /**
      * Add the value to the given container key.
      *
-     * @param null | string | float | int | bool $value
+     * @param string|float|int|bool|null $value
      *
      * @return ContainerInterface
      */
@@ -28,8 +28,8 @@ interface ContainerInterface extends \Countable, \IteratorAggregate
     /**
      * Set the value for the given container key.
      *
-     * @param string                             $key
-     * @param null | string | float | int | bool $value
+     * @param string                     $key
+     * @param string|float|int|bool|null $value
      *
      * @return ContainerInterface
      */

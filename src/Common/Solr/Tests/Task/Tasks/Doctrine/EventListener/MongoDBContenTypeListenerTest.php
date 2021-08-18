@@ -26,7 +26,7 @@ use stdClass;
 class MongoDBContenTypeListenerTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var QueueInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var QueueInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $queue;
 
@@ -79,7 +79,7 @@ class MongoDBContenTypeListenerTest extends \PHPUnit\Framework\TestCase
     /**
      * @param string $id
      *
-     * @return ContentTypeInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ContentTypeInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getContentType($id)
     {
@@ -94,7 +94,7 @@ class MongoDBContenTypeListenerTest extends \PHPUnit\Framework\TestCase
     /**
      * @param object $document
      *
-     * @return LifecycleEventArgs | \PHPUnit_Framework_MockObject_MockObject
+     * @return LifecycleEventArgs|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getEvent($document)
     {

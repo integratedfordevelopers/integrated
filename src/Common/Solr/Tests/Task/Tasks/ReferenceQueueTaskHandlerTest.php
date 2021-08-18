@@ -25,17 +25,17 @@ use stdClass;
 class ReferenceQueueTaskHandlerTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ContentProviderInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ContentProviderInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $provider;
 
     /**
-     * @var QueueInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var QueueInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $queue;
 
     /**
-     * @var JobFactory | \PHPUnit_Framework_MockObject_MockObject
+     * @var JobFactory|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $factory;
 
@@ -116,7 +116,7 @@ class ReferenceQueueTaskHandlerTest extends \PHPUnit\Framework\TestCase
     /**
      * @param string $id
      *
-     * @return ReferenceQueueTask | \PHPUnit_Framework_MockObject_MockObject
+     * @return ReferenceQueueTask|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getTask($id)
     {
@@ -129,7 +129,7 @@ class ReferenceQueueTaskHandlerTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return ContentInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ContentInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getContent()
     {

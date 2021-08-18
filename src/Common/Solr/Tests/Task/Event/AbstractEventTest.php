@@ -21,7 +21,7 @@ use Symfony\Component\EventDispatcher\Event;
 abstract class AbstractEventTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var Worker | \PHPUnit_Framework_MockObject_MockObject
+     * @var Worker|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $worker;
 

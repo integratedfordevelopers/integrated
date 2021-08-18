@@ -21,12 +21,12 @@ use Symfony\Component\Form\FormView;
 class ViewEventTest extends FormEventTest
 {
     /**
-     * @var FormView | \PHPUnit_Framework_MockObject_MockObject
+     * @var FormView|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $view;
 
     /**
-     * @var FormInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var FormInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $form;
 

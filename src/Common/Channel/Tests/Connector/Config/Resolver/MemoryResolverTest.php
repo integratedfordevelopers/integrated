@@ -109,7 +109,7 @@ class MemoryResolverTest extends \PHPUnit\Framework\TestCase
     /**
      * @param string $name
      *
-     * @return ConfigInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ConfigInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getConfig($name)
     {
@@ -124,7 +124,7 @@ class MemoryResolverTest extends \PHPUnit\Framework\TestCase
     /**
      * @param string $id
      *
-     * @return ChannelInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ChannelInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getChannel($id)
     {

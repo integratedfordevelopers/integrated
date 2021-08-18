@@ -31,7 +31,7 @@ class BuilderEvent extends FormEvent
     private $options;
 
     /**
-     * @var null | string
+     * @var string|null
      */
     private $field = null;
 

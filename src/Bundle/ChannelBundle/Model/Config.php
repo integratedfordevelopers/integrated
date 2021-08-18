@@ -130,7 +130,7 @@ class Config implements ConfigInterface
     }
 
     /**
-     * @param string[] | ChannelInterface[] $channels
+     * @param string[]|ChannelInterface[] $channels
      *
      * @return $this
      */
@@ -146,7 +146,7 @@ class Config implements ConfigInterface
     }
 
     /**
-     * @param string | ChannelInterface $channel
+     * @param string|ChannelInterface $channel
      *
      * @return $this
      */
@@ -166,7 +166,7 @@ class Config implements ConfigInterface
     }
 
     /**
-     * @param string | ChannelInterface $channel
+     * @param string|ChannelInterface $channel
      *
      * @return bool
      */
@@ -182,7 +182,7 @@ class Config implements ConfigInterface
     }
 
     /**
-     * @param string | ChannelInterface $channel
+     * @param string|ChannelInterface $channel
      *
      * @return $this
      */

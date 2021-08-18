@@ -45,7 +45,7 @@ interface ResolverInterface
      *
      * @param ChannelInterface $channel
      *
-     * @return ConfigInterface[] | Iterator
+     * @return ConfigInterface[]|Iterator
      */
     public function getConfigs(ChannelInterface $channel);
 }

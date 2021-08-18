@@ -80,7 +80,7 @@ class PriorityResolverBuilderTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return ResolverInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ResolverInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getResolver()
     {

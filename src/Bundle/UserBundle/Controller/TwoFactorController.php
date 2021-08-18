@@ -58,7 +58,9 @@ class TwoFactorController extends Controller
                 $user->setGoogleAuthenticatorSecret(null);
 
                 $this->manager->persist($user);
-                $this->get('braincrafted_bootstrap.flash')->success(sprintf('The two factor authenticator for user %s is removed', $user->getUsername()));
+
+                $translation = $this->get('translator')->trans('The two factor authenticator for user %name% is removed', ['%name%' => $user->getUsername()]);
+                $this->get('braincrafted_bootstrap.flash')->success($translation);
 
                 return $this->redirectToRoute('integrated_user_user_index');
             }

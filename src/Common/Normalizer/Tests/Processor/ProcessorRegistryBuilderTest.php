@@ -62,7 +62,7 @@ class ProcessorRegistryBuilderTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return ProcessorInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ProcessorInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getProcessor()
     {

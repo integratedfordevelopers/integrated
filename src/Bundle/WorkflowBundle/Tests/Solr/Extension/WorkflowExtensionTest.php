@@ -31,17 +31,17 @@ use stdClass;
 class WorkflowExtensionTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ResolverInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ResolverInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $resolver;
 
     /**
-     * @var ObjectRepository | \PHPUnit_Framework_MockObject_MockObject
+     * @var ObjectRepository|\PHPUnit_Framework_MockObject_MockObject
      */
     private $workflow;
 
     /**
-     * @var ObjectRepository | \PHPUnit_Framework_MockObject_MockObject
+     * @var ObjectRepository|\PHPUnit_Framework_MockObject_MockObject
      */
     private $definition;
 

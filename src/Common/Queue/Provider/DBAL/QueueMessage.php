@@ -25,17 +25,17 @@ class QueueMessage implements QueueMessageInterface
     protected $data;
 
     /**
-     * @var mixed | null
+     * @var mixed|null
      */
     private $payload = null;
 
     /**
-     * @var Closure | null
+     * @var Closure|null
      */
     private $delete;
 
     /**
-     * @var Closure | null
+     * @var Closure|null
      */
     private $release;
 

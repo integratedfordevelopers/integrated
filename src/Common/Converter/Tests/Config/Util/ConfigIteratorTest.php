@@ -21,7 +21,7 @@ use Integrated\Common\Converter\Config\Util\ConfigIterator;
 class ConfigIteratorTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ConfigInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ConfigInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $config;
 
@@ -118,7 +118,7 @@ class ConfigIteratorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return TypeConfigInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return TypeConfigInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getType()
     {

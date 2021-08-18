@@ -79,7 +79,7 @@ class RegistryBuilderPassTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return ContainerBuilder | \PHPUnit_Framework_MockObject_MockObject|ContainerBuilder
+     * @return ContainerBuilder|\PHPUnit_Framework_MockObject_MockObject|ContainerBuilder
      */
     protected function getContainer()
     {

@@ -21,7 +21,7 @@ use Integrated\Common\Converter\Config\TypeConfigInterface;
 class ConfigTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var TypeConfigInterface[] | \PHPUnit_Framework_MockObject_MockObject[]
+     * @var TypeConfigInterface[]|\PHPUnit_Framework_MockObject_MockObject[]
      */
     protected $types = [];
 
@@ -68,7 +68,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return ConfigInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ConfigInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getConfig()
     {

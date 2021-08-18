@@ -243,7 +243,7 @@ class WorkflowVoter implements VoterInterface
     /**
      * @param string $type
      *
-     * @return ContentTypeInterface | null
+     * @return ContentTypeInterface|null
      */
     protected function getContentType($type)
     {

@@ -28,13 +28,13 @@ class Resource implements ResourceInterface
     protected $type;
 
     /**
-     * @var string | null
+     * @var string|null
      */
     protected $identifier = null;
 
     /**
-     * @param string        $type
-     * @param string | null $identifier
+     * @param string      $type
+     * @param string|null $identifier
      */
     public function __construct($type, $identifier = null)
     {

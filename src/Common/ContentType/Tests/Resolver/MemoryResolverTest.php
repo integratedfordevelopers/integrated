@@ -85,7 +85,7 @@ class MemoryResolverTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return ContentTypeInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ContentTypeInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getType()
     {

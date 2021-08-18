@@ -28,12 +28,12 @@ class MenuProviderTest extends \PHPUnit\Framework\TestCase
     protected $provider;
 
     /**
-     * @var \Knp\Menu\FactoryInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var \Knp\Menu\FactoryInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $factory;
 
     /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $eventDispatcher;
 
@@ -86,7 +86,7 @@ class MenuProviderTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetFunctionTwiceWithValidMenu()
     {
-        /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject  $menu */
+        /** @var \Knp\Menu\ItemInterface|\PHPUnit_Framework_MockObject_MockObject $menu */
         $menu = $this->createMock('Knp\Menu\ItemInterface');
 
         $this->factory

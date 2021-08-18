@@ -19,7 +19,7 @@ namespace Integrated\Common\Content\Channel;
 class ChannelContext implements ChannelContextInterface
 {
     /**
-     * @var null | ChannelInterface
+     * @var ChannelInterface|null
      */
     private $channel = null;
 

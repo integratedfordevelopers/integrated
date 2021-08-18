@@ -20,7 +20,7 @@ use Integrated\Common\Form\Mapping\AttributeEditorInterface;
 class FieldEventTest extends FormEventTest
 {
     /**
-     * @var AttributeEditorInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var AttributeEditorInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $field;
 

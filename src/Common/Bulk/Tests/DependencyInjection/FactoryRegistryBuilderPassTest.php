@@ -82,7 +82,7 @@ class FactoryRegistryBuilderPassTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return ContainerBuilder | \PHPUnit_Framework_MockObject_MockObject
+     * @return ContainerBuilder|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getContainer()
     {

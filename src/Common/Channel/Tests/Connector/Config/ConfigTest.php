@@ -20,7 +20,7 @@ use Integrated\Common\Channel\Connector\Config\OptionsInterface;
 class ConfigTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var OptionsInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var OptionsInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $options;
 

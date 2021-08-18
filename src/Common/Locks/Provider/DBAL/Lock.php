@@ -36,7 +36,7 @@ class Lock implements LockInterface
     private $created;
 
     /**
-     * @var DateTime | null
+     * @var DateTime|null
      */
     private $expires;
 

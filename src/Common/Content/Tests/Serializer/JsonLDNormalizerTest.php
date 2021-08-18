@@ -23,7 +23,7 @@ use stdClass;
 class JsonLDNormalizerTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var NormalizerInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var NormalizerInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $normalizer;
 

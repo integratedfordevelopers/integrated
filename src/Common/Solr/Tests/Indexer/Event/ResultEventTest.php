@@ -20,7 +20,7 @@ use Solarium\Core\Query\Result\ResultInterface;
 class ResultEventTest extends AbstractEventTest
 {
     /**
-     * @var ResultInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ResultInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $result;
 

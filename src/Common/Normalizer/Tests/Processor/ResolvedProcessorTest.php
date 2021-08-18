@@ -26,12 +26,12 @@ use stdClass;
 class ResolvedProcessorTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ContainerFactoryInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ContainerFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $factory;
 
     /**
-     * @var ProcessorInterface[] | \PHPUnit_Framework_MockObject_MockObject[]
+     * @var ProcessorInterface[]|\PHPUnit_Framework_MockObject_MockObject[]
      */
     protected $processors = [];
 
@@ -112,7 +112,7 @@ class ResolvedProcessorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return ContainerInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ContainerInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getContainer()
     {
@@ -120,7 +120,7 @@ class ResolvedProcessorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return Context | \PHPUnit_Framework_MockObject_MockObject
+     * @return Context|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getContext()
     {

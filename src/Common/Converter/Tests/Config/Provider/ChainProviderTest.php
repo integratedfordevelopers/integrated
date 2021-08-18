@@ -146,7 +146,7 @@ class ChainProviderTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return TypeProviderInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return TypeProviderInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getProvider()
     {

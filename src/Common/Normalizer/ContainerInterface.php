@@ -22,8 +22,8 @@ interface ContainerInterface extends Countable, IteratorAggregate
     /**
      * Add the value to the given container key.
      *
-     * @param string                                     $key
-     * @param null | string | float | int | bool | array $value
+     * @param string                           $key
+     * @param string|float|int|bool|array|null $value
      *
      * @return ContainerInterface
      */
@@ -32,8 +32,8 @@ interface ContainerInterface extends Countable, IteratorAggregate
     /**
      * Set the value for the given container key.
      *
-     * @param string                                     $key
-     * @param null | string | float | int | bool | array $value
+     * @param string                           $key
+     * @param string|float|int|bool|array|null $value
      *
      * @return ContainerInterface
      */

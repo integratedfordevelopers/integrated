@@ -23,7 +23,7 @@ class GlobalVariables extends BaseGlobalVariables
     /**
      * Returns the current channel.
      *
-     * @return ChannelInterface | null
+     * @return ChannelInterface|null
      */
     public function getChannel()
     {
