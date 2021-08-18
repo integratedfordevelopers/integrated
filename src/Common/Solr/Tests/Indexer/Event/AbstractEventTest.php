@@ -21,7 +21,7 @@ use Symfony\Component\EventDispatcher\Event;
 abstract class AbstractEventTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var IndexerInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var IndexerInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $indexer;
 

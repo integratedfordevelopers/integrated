@@ -22,12 +22,12 @@ use Integrated\Common\ContentType\ResolverInterface;
 class PriorityResolverTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ContentTypeInterface[] | \PHPUnit_Framework_MockObject_MockObject[]
+     * @var ContentTypeInterface[]|\PHPUnit_Framework_MockObject_MockObject[]
      */
     protected $types = [];
 
     /**
-     * @var ResolverInterface[] | \PHPUnit_Framework_MockObject_MockObject[]
+     * @var ResolverInterface[]|\PHPUnit_Framework_MockObject_MockObject[]
      */
     protected $resolvers = [];
 
@@ -107,7 +107,7 @@ class PriorityResolverTest extends \PHPUnit\Framework\TestCase
     /**
      * @param ContentTypeInterface $type
      *
-     * @return ResolverInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ResolverInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getResolver(ContentTypeInterface $type)
     {
@@ -139,7 +139,7 @@ class PriorityResolverTest extends \PHPUnit\Framework\TestCase
     /**
      * @param string $name
      *
-     * @return ContentTypeInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ContentTypeInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getType($name)
     {

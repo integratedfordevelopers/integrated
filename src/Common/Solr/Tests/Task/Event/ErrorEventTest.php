@@ -21,12 +21,12 @@ use Integrated\Common\Solr\Task\Event\ErrorEvent;
 class ErrorEventTest extends WorkerEventTest
 {
     /**
-     * @var Exception | \PHPUnit_Framework_MockObject_MockObject
+     * @var Exception|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $exception;
 
     /**
-     * @var QueueMessageInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var QueueMessageInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $message;
 

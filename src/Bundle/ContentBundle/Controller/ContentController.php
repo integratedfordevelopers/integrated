@@ -750,8 +750,8 @@ class ContentController extends Controller
      * - user: this is the user the lock belongs to or null if the lock does
      *         not have a owner.
      *
-     * @param object     $object
-     * @param int | null $timeout
+     * @param object   $object
+     * @param int|null $timeout
      *
      * @return array
      */

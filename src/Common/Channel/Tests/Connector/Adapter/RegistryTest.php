@@ -86,7 +86,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return AdapterInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return AdapterInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getAdapter()
     {

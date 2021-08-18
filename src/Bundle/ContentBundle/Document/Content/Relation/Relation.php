@@ -42,7 +42,7 @@ abstract class Relation extends Content implements RankableInterface
     protected $description;
 
     /**
-     * @var Phonenumber[] | Collection
+     * @var Phonenumber[]|Collection
      * @Type\Field(
      *      type="Integrated\Bundle\FormTypeBundle\Form\Type\SortableCollectionType",
      *      options={

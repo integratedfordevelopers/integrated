@@ -24,7 +24,7 @@ interface PropertyInterface
     /**
      * @param array $document
      *
-     * @return string | null
+     * @return string|null
      */
     public function getFileId(array $document);
 }

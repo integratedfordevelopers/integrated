@@ -55,7 +55,7 @@ interface ConfigRepositoryInterface
     /**
      * Find the object by the given channel.
      *
-     * @param string | ChannelInterface $criteria
+     * @param string|ChannelInterface $criteria
      *
      * @return ConfigInterface[]
      */

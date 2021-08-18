@@ -46,7 +46,7 @@ class State
     private $content_class;
 
     /**
-     * @var null | ContentInterface
+     * @var ContentInterface|null
      */
     private $content_instance = null;
 
@@ -66,7 +66,7 @@ class State
     private $assigned_type = null;
 
     /**
-     * @var null | UserInterface | GroupInterface
+     * @var UserInterface|GroupInterface|null
      */
     private $assigned_instance = null;
 
@@ -76,7 +76,7 @@ class State
     private $deadline = null;
 
     /**
-     * @var Collection | Log[]
+     * @var Collection|Log[]
      */
     private $logs;
 
@@ -158,7 +158,7 @@ class State
     }
 
     /**
-     * @return GroupInterface | UserInterface
+     * @return GroupInterface|UserInterface
      */
     public function getAssigned()
     {
@@ -166,7 +166,7 @@ class State
     }
 
     /**
-     * @param GroupInterface | UserInterface $assigned
+     * @param GroupInterface|UserInterface $assigned
      *
      * @return $this
      */

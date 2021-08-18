@@ -21,12 +21,12 @@ use Solarium\QueryType\Update\Query\Command\AbstractCommand;
 class BatchOperationTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var QueueMessageInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var QueueMessageInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $message;
 
     /**
-     * @var AbstractCommand | \PHPUnit_Framework_MockObject_MockObject
+     * @var AbstractCommand|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $command;
 

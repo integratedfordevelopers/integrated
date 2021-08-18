@@ -21,7 +21,7 @@ use Integrated\Common\Form\Mapping\MetadataInterface;
 class FormEventTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ContentTypeInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ContentTypeInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $type;
 

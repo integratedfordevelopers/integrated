@@ -30,27 +30,27 @@ class BreadcrumbResolverTest extends TestCase
     const TEMPLATE = 'default';
 
     /**
-     * @var DocumentManager | \PHPUnit_Framework_MockObject_MockObject
+     * @var DocumentManager|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $documentManager;
 
     /**
-     * @var urlResolver | \PHPUnit_Framework_MockObject_MockObject
+     * @var urlResolver|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $urlResolver;
 
     /**
-     * @var ChannelContextInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ChannelContextInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $channelContext;
 
     /**
-     * @var RequestStack | \PHPUnit_Framework_MockObject_MockObject
+     * @var RequestStack|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $requestStack;
 
     /**
-     * @var Request | \PHPUnit_Framework_MockObject_MockObject
+     * @var Request|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $request;
 

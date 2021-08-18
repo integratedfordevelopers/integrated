@@ -25,17 +25,17 @@ use Integrated\Common\Converter\Type\RegistryInterface;
 class ConverterTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var RegistryInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var RegistryInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $registry;
 
     /**
-     * @var ConfigResolverInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ConfigResolverInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $resolver;
 
     /**
-     * @var ContainerFactoryInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ContainerFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $factory;
 
@@ -156,7 +156,7 @@ class ConverterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return ContainerInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ContainerInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getContainer()
     {
@@ -170,7 +170,7 @@ class ConverterTest extends \PHPUnit\Framework\TestCase
     /**
      * @param TypeConfigInterface[] $types
      *
-     * @return ConfigInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ConfigInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getConfig(array $types)
     {
@@ -195,7 +195,7 @@ class ConverterTest extends \PHPUnit\Framework\TestCase
      * @param string $name
      * @param array  $options
      *
-     * @return TypeConfigInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return TypeConfigInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getType($name, array $options = null)
     {

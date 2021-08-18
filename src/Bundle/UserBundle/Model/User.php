@@ -35,12 +35,12 @@ class User implements UserInterface
     protected $password;
 
     /**
-     * @var null | string
+     * @var string|null
      */
     protected $salt = null;
 
     /**
-     * @var null | string
+     * @var string|null
      */
     protected $email = null;
 
@@ -50,12 +50,12 @@ class User implements UserInterface
     protected $createdAt;
 
     /**
-     * @var Collection | GroupInterface[]
+     * @var Collection|GroupInterface[]
      */
     protected $groups;
 
     /**
-     * @var Collection | RoleInterface[]
+     * @var Collection|RoleInterface[]
      */
     protected $roles = [];
 

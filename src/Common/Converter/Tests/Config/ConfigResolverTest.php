@@ -23,7 +23,7 @@ class ConfigResolverTest extends \PHPUnit\Framework\TestCase
     protected $CONFIG_INTERFACE = 'Integrated\\Common\\Converter\\Config\\ConfigInterface';
 
     /**
-     * @var TypeProviderInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var TypeProviderInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $provider;
 
@@ -142,7 +142,7 @@ class ConfigResolverTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return TypeConfigInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return TypeConfigInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getType()
     {

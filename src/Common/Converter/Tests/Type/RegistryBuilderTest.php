@@ -22,7 +22,7 @@ use Integrated\Common\Converter\Type\TypeInterface;
 class RegistryBuilderTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ResolvedTypeFactoryInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ResolvedTypeFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $factory;
 
@@ -152,7 +152,7 @@ class RegistryBuilderTest extends \PHPUnit\Framework\TestCase
     /**
      * @param string $name
      *
-     * @return TypeInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return TypeInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getType($name)
     {
@@ -167,7 +167,7 @@ class RegistryBuilderTest extends \PHPUnit\Framework\TestCase
     /**
      * @param string $name
      *
-     * @return TypeExtensionInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return TypeExtensionInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getTypeExtension($name)
     {

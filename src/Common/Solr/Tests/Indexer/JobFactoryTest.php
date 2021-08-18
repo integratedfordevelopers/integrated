@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class JobFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var SerializerInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var SerializerInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $serializer;
 
@@ -146,7 +146,7 @@ class JobFactoryTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return ContentInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ContentInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getContent()
     {

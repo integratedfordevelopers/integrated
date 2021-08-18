@@ -19,7 +19,7 @@ use Integrated\Common\ContentType\Form\Custom\Type;
 class TypeTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var Type | \PHPUnit_Framework_MockObject_MockObject
+     * @var Type|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $type;
 

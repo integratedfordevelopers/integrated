@@ -34,7 +34,7 @@ class State
     protected $name;
 
     /**
-     * @var null | Definition
+     * @var Definition|null
      */
     protected $workflow = null;
 
@@ -49,12 +49,12 @@ class State
     protected $publishable = false;
 
     /**
-     * @var Collection | Permission[]
+     * @var Collection|Permission[]
      */
     protected $permissions;
 
     /**
-     * @var Collection | State[]
+     * @var Collection|State[]
      */
     protected $transitions;
 
