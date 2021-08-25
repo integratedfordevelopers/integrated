@@ -44,7 +44,7 @@ class UserController extends Controller
         $users = $queryProvider->getUsers($data);
 
         $facetFilter = $this->createForm(UserFilterType::class, null, [
-            'users' => $users,
+            'data' => $data,
         ]);
         $facetFilter->handleRequest($request);
 
