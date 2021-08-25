@@ -22,12 +22,12 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class RequestAwareChannelContextTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ChannelManagerInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ChannelManagerInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $manager;
 
     /**
-     * @var RequestStack | \PHPUnit_Framework_MockObject_MockObject
+     * @var RequestStack|\PHPUnit_Framework_MockObject_MockObject
      */
     private $stack;
 

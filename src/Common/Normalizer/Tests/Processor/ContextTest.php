@@ -22,7 +22,7 @@ use stdClass;
 class ContextTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ResolverInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ResolverInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $resolver;
 
@@ -32,7 +32,7 @@ class ContextTest extends \PHPUnit\Framework\TestCase
     private $options = [];
 
     /**
-     * @var Context | \PHPUnit_Framework_MockObject_MockObject
+     * @var Context|\PHPUnit_Framework_MockObject_MockObject
      */
     private $nesting = null;
 

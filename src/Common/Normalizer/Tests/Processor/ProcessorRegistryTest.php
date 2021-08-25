@@ -21,7 +21,7 @@ use Integrated\Common\Normalizer\Processor\RegistryInterface;
 class ProcessorRegistryTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ProcessorInterface[][] | \PHPUnit_Framework_MockObject_MockObject[][]
+     * @var ProcessorInterface[][]|\PHPUnit_Framework_MockObject_MockObject[][]
      */
     protected $processors = [];
 

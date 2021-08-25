@@ -28,17 +28,17 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class WorkerTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var Registry | \PHPUnit_Framework_MockObject_MockObject
+     * @var Registry|\PHPUnit_Framework_MockObject_MockObject
      */
     private $registry;
 
     /**
-     * @var QueueInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var QueueInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $queue;
 
     /**
-     * @var EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var EventDispatcherInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $dispatcher;
 
@@ -241,7 +241,7 @@ class WorkerTest extends \PHPUnit\Framework\TestCase
     /**
      * @param mixed $task
      *
-     * @return QueueMessageInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return QueueMessageInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getMessage($task)
     {

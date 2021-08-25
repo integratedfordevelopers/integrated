@@ -31,7 +31,7 @@ interface RegistryInterface
     /**
      * @param string $name
      *
-     * @return ExtensionInterface | null
+     * @return ExtensionInterface|null
      */
     public function getExtension($name);
 }

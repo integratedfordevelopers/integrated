@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="integrated_user.two_factor.handler_factory" class="Integrated\Bundle\UserBundle\Handler\TwoFactor\HandlerFactory">
+            <argument type="collection" />
+            <argument type="service" id="twig"/>
+            <argument type="service" id="form.factory"/>
+        </service>
+
+        <service id="integrated_user.two_factor.target_provider" class="Integrated\Bundle\UserBundle\Security\TwoFactor\Http\TargetProvider" />
+
+        <service id="integrated_user.two_factor.context_factory" class="Integrated\Bundle\UserBundle\Security\TwoFactor\Http\ContextFactory" />
+
+        <service id="integrated_user.two_factor.context_resolver" class="Integrated\Bundle\UserBundle\Security\TwoFactor\Http\ContextResolver">
+            <argument type="service" id="security.token_storage"/>
+            <argument type="service" id="security.firewall.map"/>
+            <argument type="service" id="integrated_user.two_factor.config_registry"/>
+            <argument type="service" id="integrated_user.two_factor.context_factory"/>
+        </service>
+
+        <service id="integrated_user.two_factor.context_resolver.required_only" class="Integrated\Bundle\UserBundle\Security\TwoFactor\Http\Resolver\RequiredOnlyResolverDecorator">
+            <argument type="service" id="integrated_user.two_factor.context_resolver"/>
+        </service>
+
+        <service id="integrated_user.two_factor.config_registry" class="Integrated\Bundle\UserBundle\Security\TwoFactor\ConfigRegistry" />
+
+        <service id="integrated_user.two_factor.whitelist_matcher" class="Integrated\Bundle\UserBundle\Security\TwoFactor\Http\WhitelistMatcher" />
+
+        <service id="integrated_user.two_factor.whitelist_provider" class="Integrated\Bundle\UserBundle\Security\TwoFactor\Http\WhitelistProvider">
+            <argument type="service" id="integrated_user.two_factor.whitelist_matcher"/>
+        </service>
+
+    </services>
+
+</container>

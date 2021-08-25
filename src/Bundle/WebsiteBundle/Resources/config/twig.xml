@@ -17,6 +17,7 @@
 
         <service id="integrated_website.twig.grid_extension" class="%integrated_website.twig.grid_extension.class%">
             <argument type="service" id="request_stack" />
+            <argument type="service" id="integrated_theme.templating.theme_manager" />
             <tag name="twig.extension" />
         </service>
 

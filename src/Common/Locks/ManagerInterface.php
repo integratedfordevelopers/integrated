@@ -24,7 +24,7 @@ interface ManagerInterface
      * acquired right away.
      *
      * @param RequestInterface $request
-     * @param int | null       $timeout null
+     * @param int|null         $timeout null
      *
      * @return LockInterface
      */
@@ -33,14 +33,14 @@ interface ManagerInterface
     /**
      * Release the lock on the resource.
      *
-     * @param LockInterface | string $lock lock object or a string with the lock id
+     * @param LockInterface|string $lock lock object or a string with the lock id
      */
     public function release($lock);
 
     /**
      * Refresh the timeout of the lock.
      *
-     * @param LockInterface | string $lock lock object or a string with the lock id
+     * @param LockInterface|string $lock lock object or a string with the lock id
      *
      * @return LockInterface
      */
@@ -49,7 +49,7 @@ interface ManagerInterface
     /**
      * Finds a lock by its identifier.
      *
-     * @param LockInterface | string $lock lock object or a string with the lock id
+     * @param LockInterface|string $lock lock object or a string with the lock id
      *
      * @return LockInterface
      */
@@ -86,7 +86,7 @@ interface ManagerInterface
     /**
      * Finds the locks based on the given set of filters.
      *
-     * @param Filter | Filter[] $filters
+     * @param Filter|Filter[] $filters
      *
      * @return LockInterface[]
      */

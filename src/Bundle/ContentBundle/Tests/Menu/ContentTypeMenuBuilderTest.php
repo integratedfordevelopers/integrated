@@ -23,17 +23,17 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 class ContentTypeMenuBuilderTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var FactoryInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var FactoryInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $factory;
 
     /**
-     * @var ContentTypeManager | \PHPUnit_Framework_MockObject_MockObject
+     * @var ContentTypeManager|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $contentTypeManager;
 
     /**
-     * @var AuthorizationCheckerInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var AuthorizationCheckerInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $authorizationChecker;
 
@@ -54,7 +54,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit\Framework\TestCase
     {
         $builder = $this->getInstance();
 
-        /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $menu */
+        /** @var \Knp\Menu\ItemInterface|\PHPUnit_Framework_MockObject_MockObject $menu */
         $menu = $this->createMock('Knp\Menu\ItemInterface');
 
         $this->factory
@@ -80,7 +80,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit\Framework\TestCase
     {
         $builder = $this->getInstance();
 
-        /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $menu */
+        /** @var \Knp\Menu\ItemInterface|\PHPUnit_Framework_MockObject_MockObject $menu */
         $menu = $this->createMock('Knp\Menu\ItemInterface');
 
         $this->factory
@@ -96,7 +96,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit\Framework\TestCase
             ->willReturn($this->getItemWithoutParent())
         ;
 
-        /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $child */
+        /** @var \Knp\Menu\ItemInterface|\PHPUnit_Framework_MockObject_MockObject $child */
         $child = $this->createMock('Knp\Menu\ItemInterface');
 
         $child
@@ -121,7 +121,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit\Framework\TestCase
     {
         $builder = $this->getInstance();
 
-        /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $menu */
+        /** @var \Knp\Menu\ItemInterface|\PHPUnit_Framework_MockObject_MockObject $menu */
         $menu = $this->createMock('Knp\Menu\ItemInterface');
 
         $this->factory
@@ -137,7 +137,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit\Framework\TestCase
             ->willReturn($this->getItems())
         ;
 
-        /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $child1 */
+        /** @var \Knp\Menu\ItemInterface|\PHPUnit_Framework_MockObject_MockObject $child1 */
         $child1 = $this->createMock('Knp\Menu\ItemInterface');
 
         $child1
@@ -145,7 +145,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit\Framework\TestCase
             ->method('addChild')
         ;
 
-        /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $child2 */
+        /** @var \Knp\Menu\ItemInterface|\PHPUnit_Framework_MockObject_MockObject $child2 */
         $child2 = $this->createMock('Knp\Menu\ItemInterface');
 
         $child2
@@ -175,7 +175,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit\Framework\TestCase
 
         $items = $this->getItems();
 
-        /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $menu */
+        /** @var \Knp\Menu\ItemInterface|\PHPUnit_Framework_MockObject_MockObject $menu */
         $menu = $this->createMock('Knp\Menu\ItemInterface');
 
         $this->factory
@@ -201,7 +201,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit\Framework\TestCase
             )
         ;
 
-        /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $child1 */
+        /** @var \Knp\Menu\ItemInterface|\PHPUnit_Framework_MockObject_MockObject $child1 */
         $child1 = $this->createMock('Knp\Menu\ItemInterface');
 
         $child1
@@ -209,7 +209,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit\Framework\TestCase
             ->method('addChild')
         ;
 
-        /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $child2 */
+        /** @var \Knp\Menu\ItemInterface|\PHPUnit_Framework_MockObject_MockObject $child2 */
         $child2 = $this->createMock('Knp\Menu\ItemInterface');
 
         $child2

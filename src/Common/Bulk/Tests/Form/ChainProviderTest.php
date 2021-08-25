@@ -22,12 +22,12 @@ use stdClass;
 class ChainProviderTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ConfigProviderInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ConfigProviderInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $provider1;
 
     /**
-     * @var ConfigProviderInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ConfigProviderInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $provider2;
 

@@ -30,12 +30,12 @@ class SuggestionNormalizerTest extends \PHPUnit\Framework\TestCase
     const ROUTE = 'this-is-the-route';
 
     /**
-     * @var UrlGeneratorInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var UrlGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $generator;
 
     /**
-     * @var ResolverInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ResolverInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $resolver;
 
@@ -262,9 +262,9 @@ class SuggestionNormalizerTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param object | null $query
+     * @param object|null $query
      *
-     * @return Result | \PHPUnit_Framework_MockObject_MockObject
+     * @return Result|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getQueryResult($query = null)
     {
@@ -278,9 +278,9 @@ class SuggestionNormalizerTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param string | null $query
+     * @param string|null $query
      *
-     * @return SuggestionQuery | \PHPUnit_Framework_MockObject_MockObject
+     * @return SuggestionQuery|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getQuery($query = null)
     {
@@ -297,7 +297,7 @@ class SuggestionNormalizerTest extends \PHPUnit\Framework\TestCase
     /**
      * @param array $facets
      *
-     * @return FacetSet | \PHPUnit_Framework_MockObject_MockObject
+     * @return FacetSet|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getFacetSet($facets = [])
     {
@@ -314,7 +314,7 @@ class SuggestionNormalizerTest extends \PHPUnit\Framework\TestCase
     /**
      * @param string $name
      *
-     * @return ContentTypeInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ContentTypeInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getContentType($name)
     {

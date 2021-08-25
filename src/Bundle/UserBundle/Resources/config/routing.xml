@@ -5,8 +5,9 @@
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <import resource="@IntegratedUserBundle/Resources/config/routing/profile.xml" prefix="/user/profile" />
+    <import resource="@IntegratedUserBundle/Resources/config/routing/two_factor.xml" prefix="/user/authenticator" />
     <import resource="@IntegratedUserBundle/Resources/config/routing/user.xml" prefix="/user" />
     <import resource="@IntegratedUserBundle/Resources/config/routing/group.xml" prefix="/group" />
     <import resource="@IntegratedUserBundle/Resources/config/routing/scope.xml" prefix="/scope" />
-	<!--<import resource="@IntegratedUserBundle/Resources/config/routing/role.xml" prefix="/roles/" />-->
+	<import resource="@IntegratedUserBundle/Resources/config/routing/ip_list.xml" prefix="/ip-list" />
 </routes>

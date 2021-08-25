@@ -53,7 +53,7 @@ class ChainProviderBuilderTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return ConfigProviderInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ConfigProviderInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getProvider()
     {

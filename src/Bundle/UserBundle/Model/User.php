@@ -35,12 +35,12 @@ class User implements UserInterface
     protected $password;
 
     /**
-     * @var null | string
+     * @var string|null
      */
     protected $salt = null;
 
     /**
-     * @var null | string
+     * @var string|null
      */
     protected $email = null;
 
@@ -50,12 +50,12 @@ class User implements UserInterface
     protected $createdAt;
 
     /**
-     * @var Collection | GroupInterface[]
+     * @var Collection|GroupInterface[]
      */
     protected $groups;
 
     /**
-     * @var Collection | RoleInterface[]
+     * @var Collection|RoleInterface[]
      */
     protected $roles = [];
 
@@ -78,6 +78,16 @@ class User implements UserInterface
      * @var Scope
      */
     protected $scope;
+
+    /**
+     * @var string
+     */
+    protected $googleSecret;
+
+    /**
+     * @var bool
+     */
+    protected $googleEnabled = false;
 
     /**
      * @var \Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation
@@ -389,6 +399,35 @@ class User implements UserInterface
     public function eraseCredentials()
     {
         /* do nothing as there are no unsecured credentials, password should be encrypted */
+    }
+
+    public function isGoogleAuthenticatorEnabled(): bool
+    {
+        return $this->googleEnabled && $this->googleSecret;
+    }
+
+    public function setGoogleAuthenticatorEnabled(bool $googleAuthenticatorEnabled): void
+    {
+        $this->googleEnabled = $googleAuthenticatorEnabled ? (bool) $this->googleSecret : false;
+    }
+
+    public function getGoogleAuthenticatorUsername(): string
+    {
+        return $this->username;
+    }
+
+    public function getGoogleAuthenticatorSecret(): ?string
+    {
+        return $this->googleSecret;
+    }
+
+    public function setGoogleAuthenticatorSecret(?string $googleAuthenticatorSecret): void
+    {
+        $this->googleSecret = $googleAuthenticatorSecret ?: null;
+
+        if ($this->googleSecret === null) {
+            $this->googleEnabled = false;
+        }
     }
 
     /**

@@ -26,7 +26,7 @@ use stdClass;
 class MongoDBReferencesListenerTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var QueueInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var QueueInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $queue;
 
@@ -101,7 +101,7 @@ class MongoDBReferencesListenerTest extends \PHPUnit\Framework\TestCase
     /**
      * @param string $id
      *
-     * @return ContentInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ContentInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getContent($id)
     {
@@ -116,7 +116,7 @@ class MongoDBReferencesListenerTest extends \PHPUnit\Framework\TestCase
     /**
      * @param object$document
      *
-     * @return LifecycleEventArgs | \PHPUnit_Framework_MockObject_MockObject
+     * @return LifecycleEventArgs|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getEvent($document)
     {

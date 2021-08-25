@@ -25,7 +25,7 @@ class QueueTest extends \PHPUnit\Framework\TestCase
     protected $queue;
 
     /**
-     * @var QueueProviderInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var QueueProviderInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $provider;
 

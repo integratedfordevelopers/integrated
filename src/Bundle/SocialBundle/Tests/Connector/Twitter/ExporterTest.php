@@ -26,17 +26,17 @@ use Integrated\Common\Content\ContentInterface;
 class ExporterTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var TwitterOAuth | \PHPUnit_Framework_MockObject_MockObject
+     * @var TwitterOAuth|\PHPUnit_Framework_MockObject_MockObject
      */
     private $twitter;
 
     /**
-     * @var ConfigInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ConfigInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $config;
 
     /**
-     * @var UrlResolver | \PHPUnit_Framework_MockObject_MockObject
+     * @var UrlResolver|\PHPUnit_Framework_MockObject_MockObject
      */
     private $urlResolver;
 
@@ -102,7 +102,7 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
     /**
      * @param string $id
      *
-     * @return ChannelInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ChannelInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getChannel($id)
     {

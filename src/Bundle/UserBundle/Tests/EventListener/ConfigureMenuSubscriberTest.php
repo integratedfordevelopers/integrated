@@ -27,12 +27,12 @@ class ConfigureMenuSubscriberTest extends \PHPUnit\Framework\TestCase
     protected $subscriber;
 
     /**
-     * @var AuthorizationCheckerInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var AuthorizationCheckerInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $authorizationChecker;
 
     /**
-     * @var \Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent | \PHPUnit_Framework_MockObject_MockObject
+     * @var \Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $event;
 
@@ -59,7 +59,7 @@ class ConfigureMenuSubscriberTest extends \PHPUnit\Framework\TestCase
      */
     public function testOnMenuConfigureFunctionWithInvalidMenu()
     {
-        /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $menu */
+        /** @var \Knp\Menu\ItemInterface|\PHPUnit_Framework_MockObject_MockObject $menu */
         $menu = $this->createMock('Knp\Menu\ItemInterface');
 
         $this->event
@@ -89,7 +89,7 @@ class ConfigureMenuSubscriberTest extends \PHPUnit\Framework\TestCase
     {
         $menu = $this->getValidMenu($this->event);
 
-        /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $menuContent */
+        /** @var \Knp\Menu\ItemInterface|\PHPUnit_Framework_MockObject_MockObject $menuContent */
         $menuManage = $this->createMock('Knp\Menu\ItemInterface');
 
         $menu
@@ -112,7 +112,7 @@ class ConfigureMenuSubscriberTest extends \PHPUnit\Framework\TestCase
         $this->authorizationChecker
             ->expects($this->once())
             ->method('isGranted')
-            ->with(ConfigureMenuSubscriber::ROLE_USER_MANAGER)
+            ->with(ConfigureMenuSubscriber::ROLE_ADMIN)
             ->willReturn(true)
         ;
 
@@ -126,7 +126,7 @@ class ConfigureMenuSubscriberTest extends \PHPUnit\Framework\TestCase
     {
         $menu = $this->getValidMenu($this->event);
 
-        /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $menuContent */
+        /** @var \Knp\Menu\ItemInterface|\PHPUnit_Framework_MockObject_MockObject $menuContent */
         $menuManage = $this->createMock('Knp\Menu\ItemInterface');
 
         $menu
@@ -151,7 +151,7 @@ class ConfigureMenuSubscriberTest extends \PHPUnit\Framework\TestCase
         $this->authorizationChecker
             ->expects($this->once())
             ->method('isGranted')
-            ->with(ConfigureMenuSubscriber::ROLE_USER_MANAGER)
+            ->with(ConfigureMenuSubscriber::ROLE_ADMIN)
             ->willReturn(true)
         ;
 
@@ -159,13 +159,13 @@ class ConfigureMenuSubscriberTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param \Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent | \PHPUnit_Framework_MockObject_MockObject $event
+     * @param \Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent|\PHPUnit_Framework_MockObject_MockObject $event
      *
-     * @return \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return \Knp\Menu\ItemInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getValidMenu($event = null)
     {
-        /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $menu */
+        /** @var \Knp\Menu\ItemInterface|\PHPUnit_Framework_MockObject_MockObject $menu */
         $menu = $this->createMock('Knp\Menu\ItemInterface');
 
         $menu

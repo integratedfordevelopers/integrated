@@ -4,7 +4,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="integrated_block_block_index" path="/{_format}" methods="GET">
+    <route id="integrated_block_block_index" path="/{_format}" methods="GET|POST">
         <default key="_controller">IntegratedBlockBundle:Block:index</default>
         <default key="_format">html</default>
         <requirement key="_format">html|json</requirement>
@@ -19,7 +19,6 @@
 
     <route id="integrated_block_block_new_channel_block" path="/channel-block/new/" methods="POST">
         <default key="_controller">IntegratedBlockBundle:Block:newChannelBlock</default>
-        <option key="expose">true</option>
     </route>
 
     <route id="integrated_block_block_show" path="/{id}" methods="GET">

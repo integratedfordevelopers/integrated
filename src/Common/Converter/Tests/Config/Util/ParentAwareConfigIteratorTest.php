@@ -158,7 +158,7 @@ class ParentAwareConfigIteratorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return TypeConfigInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return TypeConfigInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getType()
     {
@@ -169,7 +169,7 @@ class ParentAwareConfigIteratorTest extends \PHPUnit\Framework\TestCase
      * @param TypeConfigInterface[] $types
      * @param ConfigInterface       $parent
      *
-     * @return ConfigInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ConfigInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getConfig(array $types = [], ConfigInterface $parent = null)
     {

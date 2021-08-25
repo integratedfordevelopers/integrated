@@ -69,7 +69,7 @@ class ClickedButtonListenerTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return FormEvent | \PHPUnit_Framework_MockObject_MockObject
+     * @return FormEvent|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getEvent(FormInterface $form)
     {
@@ -82,7 +82,7 @@ class ClickedButtonListenerTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return FormInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return FormInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getForm(array $children = null)
     {
@@ -101,7 +101,7 @@ class ClickedButtonListenerTest extends \PHPUnit\Framework\TestCase
     /**
      * @param bool $clicked
      *
-     * @return ClickableInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ClickableInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getButton($clicked, $name = null)
     {

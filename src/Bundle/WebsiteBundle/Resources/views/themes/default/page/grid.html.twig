@@ -1,5 +1,12 @@
-{% spaceless %}
+{% apply spaceless %}
 {% set edit = app.request.attributes.get('integrated_block_edit') %}
+
+
+{% if level is not defined %}
+    {% set level = 0 %}
+{% endif %}
+
+{% set level = level + 1 %}
 
 {% if edit and grid.id is defined %}
     <div class="integrated-website-grid integrated-website-droppable" data-id="{{ grid.id }}">
@@ -11,10 +18,10 @@
             {% if edit|default %}<div class="integrated-website-sortable" data-block-type="block" data-id="{{ item.block.id }}">{% endif %}
                 {% if item.attributes|length %}
                     <div{% for key, value in item.attributes %} {{ key }}="{{ value }}"{% endfor %}>
-                        {{ integrated_block(item.block) }}
+                        {{ integrated_block(item.block, {'gridLevel': level}) }}
                     </div>
                 {% else %}
-                    {{ integrated_block(item.block) }}
+                    {{ integrated_block(item.block, {'gridLevel': level}) }}
                 {% endif %}
             {% if edit|default %}</div>{% endif %}
         {% endif %}
@@ -25,7 +32,7 @@
                 {% for column in item.row.columns %}
                     <div class="col-sm-{{ column.size }}{% if edit|default %} integrated-website-col integrated-website-droppable"
                          data-block-type="column" data-size="{{ column.size }}{% endif %}">
-                        {{ include('IntegratedWebsiteBundle:page:grid.html.twig', { 'grid': column }) }}
+                        {{ include(integrated_active_theme('page/grid.html.twig'), { 'grid': column }) }}
                     </div>
                 {% endfor %}
             </div>
@@ -36,4 +43,4 @@
 {% if edit and grid.id is defined %}
     </div>
 {% endif %}
-{% endspaceless %}
+{% endapply %}

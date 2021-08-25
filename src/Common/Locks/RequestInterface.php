@@ -26,7 +26,7 @@ interface RequestInterface
     /**
      * Get the owner of the request or null if none is supplied.
      *
-     * @return ResourceInterface | null
+     * @return ResourceInterface|null
      */
     public function getOwner();
 
@@ -35,7 +35,7 @@ interface RequestInterface
      * timeout if timeout is null then the lock will not expire until
      * released.
      *
-     * @return int | null
+     * @return int|null
      */
     public function getTimeout();
 }

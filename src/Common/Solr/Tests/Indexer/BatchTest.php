@@ -97,7 +97,7 @@ class BatchTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return BatchOperation | \PHPUnit_Framework_MockObject_MockObject
+     * @return BatchOperation|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getOperation()
     {

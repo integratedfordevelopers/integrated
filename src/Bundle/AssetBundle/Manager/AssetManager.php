@@ -32,9 +32,9 @@ class AssetManager
     private $hash = [];
 
     /**
-     * @param string | array $asset
-     * @param bool           $inline
-     * @param string         $mode
+     * @param string|array $asset
+     * @param bool         $inline
+     * @param string       $mode
      *
      * @throws \InvalidArgumentException
      */

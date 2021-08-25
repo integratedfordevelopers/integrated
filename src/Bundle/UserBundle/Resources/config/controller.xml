@@ -20,5 +20,31 @@
             <argument type="service" id="service_container" />
         </service>
 
+        <service id="integrated_user.controller.ip_list" class="Integrated\Bundle\UserBundle\Controller\IpListController">
+            <argument type="service" id="integrated_user.ip_list.manager" />
+            <argument type="service" id="service_container" />
+
+            <tag name="controller.service_arguments" />
+        </service>
+
+        <service id="integrated_user.controller.two_factor_google" class="Integrated\Bundle\UserBundle\Controller\TwoFactor\GoogleController">
+            <argument type="service" id="integrated_user.two_factor.context_resolver" />
+            <argument type="service" id="integrated_user.user.manager" />
+            <argument type="service" id="scheb_two_factor.security.google_authenticator" />
+            <argument type="service" id="integrated_user.two_factor.handler_factory" />
+            <argument type="service" id="integrated_user.two_factor.target_provider" />
+            <argument type="service" id="security.http_utils" />
+            <argument type="service" id="service_container" />
+
+            <tag name="controller.service_arguments" />
+        </service>
+
+        <service id="integrated_user.controller.two_factor" class="Integrated\Bundle\UserBundle\Controller\TwoFactorController">
+            <argument type="service" id="integrated_user.user.manager" />
+            <argument type="service" id="service_container" />
+
+            <tag name="controller.service_arguments" />
+        </service>
+
     </services>
 </container>

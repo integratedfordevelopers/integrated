@@ -20,7 +20,7 @@ use Integrated\Common\Content\Extension\DispatcherInterface;
 abstract class AbstractAdaptor implements AdaptorInterface
 {
     /**
-     * @var DispatcherInterface | null
+     * @var DispatcherInterface|null
      */
     protected $dispatcher = null;
 

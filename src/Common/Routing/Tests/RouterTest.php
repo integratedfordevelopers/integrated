@@ -26,12 +26,12 @@ use Symfony\Component\Routing\RouterInterface;
 class RouterTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var RouterInterface | \PHPUnit\Framework\MockObject\MockObject
+     * @var RouterInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $router;
 
     /**
-     * @var UrlGeneratorInterface | \PHPUnit\Framework\MockObject\MockObject
+     * @var UrlGeneratorInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $generator;
 
@@ -276,7 +276,7 @@ class RouterTest extends \PHPUnit\Framework\TestCase
     /**
      * @param string $path
      *
-     * @return Request | \PHPUnit\Framework\MockObject\MockObject
+     * @return Request|\PHPUnit\Framework\MockObject\MockObject
      */
     protected function getRequest($path = null)
     {

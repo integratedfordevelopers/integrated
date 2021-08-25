@@ -14,6 +14,7 @@
         <field field-name="domains" type="collection" />
         <field field-name="primaryDomain" type="string" />
         <field field-name="primaryDomainRedirect" type="boolean" />
+        <field field-name="ipProtected" type="boolean" />
         <field field-name="options" type="hash" />
         <field field-name="createdAt" type="date" />
 

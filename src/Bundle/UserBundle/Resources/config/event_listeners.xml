@@ -17,6 +17,25 @@
             <tag name="kernel.event_subscriber" />
         </service>
 
+        <service id="integrated_user.event_listener.ip_list_channel_subscriber" class="Integrated\Bundle\UserBundle\EventListener\IpListChannelListener">
+            <argument type="service" id="channel.context" />
+            <argument type="service" id="integrated_user.security.ip_list_matcher" />
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="integrated_user.event_listener.ip_list_firewall_subscriber" class="Integrated\Bundle\UserBundle\EventListener\IpListFirewallListener">
+            <argument type="service" id="security.firewall.map" />
+            <argument type="service" id="integrated_user.security.ip_list_matcher" />
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="integrated_user.event_listener.two_factor_activation_subscriber" class="Integrated\Bundle\UserBundle\EventListener\TwoFactorActivationListener">
+            <argument type="service" id="integrated_user.two_factor.context_resolver.required_only" />
+            <argument />
+            <argument type="service" id="security.http_utils" />
+            <tag name="kernel.event_subscriber" />
+        </service>
+
     </services>
 
 </container>

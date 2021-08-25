@@ -1,0 +1,28 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+
+{% block crumbs %}
+    <div class="breadcrumb-holder">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{{ path('integrated_user_user_index') }}">{% trans %}Users{% endtrans %}</a>
+                </li>
+                <li class="active">{% trans %}Delete{% endtrans %}</li>
+            </ol>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 push-sm-down">
+            <h1 class="main-title font-regular">{% trans %}Delete{% endtrans %} <small>{% trans %}two factor authenticator{% endtrans %}</small></h1>
+            <section class="section-white section-padding section-shadow section-radius">
+                <p>
+                    {% trans with {'%name%':  user.username} %}You are about to delete the two factor authenticator for the user "%name%", click the delete button below to confirm the action.{% endtrans %}
+                </p>
+                {{ form(form, { 'style': 'horizontal' }) }}
+            </section>
+        </div>
+    </div>
+{% endblock %}

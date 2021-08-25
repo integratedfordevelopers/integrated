@@ -21,7 +21,7 @@ use Integrated\Common\Converter\Type\TypeInterface;
 class ResolvedTypeTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var TypeInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var TypeInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $type;
 
@@ -110,7 +110,7 @@ class ResolvedTypeTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return TypeExtensionInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return TypeExtensionInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getTypeExtension()
     {

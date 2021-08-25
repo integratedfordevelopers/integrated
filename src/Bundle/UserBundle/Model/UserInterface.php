@@ -11,13 +11,14 @@
 
 namespace Integrated\Bundle\UserBundle\Model;
 
+use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
 use Serializable;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface UserInterface extends AdvancedUserInterface, GroupableInterface, Serializable
+interface UserInterface extends AdvancedUserInterface, GroupableInterface, TwoFactorInterface, Serializable
 {
     /**
      * @return string
@@ -63,4 +64,8 @@ interface UserInterface extends AdvancedUserInterface, GroupableInterface, Seria
      * @return ScopeInterface
      */
     public function getScope();
+
+    public function setGoogleAuthenticatorEnabled(bool $googleAuthenticatorEnabled): void;
+
+    public function setGoogleAuthenticatorSecret(?string $googleAuthenticatorSecret): void;
 }

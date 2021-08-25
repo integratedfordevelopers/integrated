@@ -20,7 +20,7 @@ use Integrated\Doctrine\ODM\MongoDB\Mapping\Locator\ClassLocatorInterface;
 class ClassTreeMapResolverTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ClassLocatorInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ClassLocatorInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $locator;
 
