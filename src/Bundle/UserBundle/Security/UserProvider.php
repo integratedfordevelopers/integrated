@@ -13,7 +13,6 @@ namespace Integrated\Bundle\UserBundle\Security;
 
 use Integrated\Bundle\UserBundle\Model\User;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
-use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -29,15 +28,12 @@ class UserProvider implements UserProviderInterface
      */
     private $manager;
 
-    private $context;
-
     /**
      * @param UserManagerInterface $manager
      */
-    public function __construct(UserManagerInterface $manager, ChannelContextInterface $context)
+    public function __construct(UserManagerInterface $manager)
     {
         $this->manager = $manager;
-        $this->context = $context;
 
         if (!is_subclass_of($this->manager->getClassName(), 'Integrated\\Bundle\\UserBundle\\Model\\UserInterface')) {
             throw new UnsupportedUserException(
@@ -63,7 +59,7 @@ class UserProvider implements UserProviderInterface
     public function loadUserByUsername($username)
     {
         /** @var User $user */
-        $user = $this->manager->findByUsernameAndScope($username, $this->context->getChannel()->getScope());
+        $user = $this->manager->findByUsernameAndScope($username);
 
         if (!$user) {
             $exception = new UsernameNotFoundException(sprintf('No user with the username "%s" exists', $username));
