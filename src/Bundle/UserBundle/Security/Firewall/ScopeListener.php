@@ -34,7 +34,7 @@ class ScopeListener implements ListenerInterface
 
     /**
      * @param TokenStorageInterface $tokenStorage
-     * @param string       $providerKey
+     * @param string                $providerKey
      */
     public function __construct(TokenStorageInterface $tokenStorage, $providerKey)
     {

@@ -454,6 +454,6 @@ class User implements UserInterface
 
     public function isEqualTo(BaseUserInterface $user)
     {
-        return ($user->getUsername() === $this->getUsername());
+        return $user->getUsername() === $this->getUsername();
     }
 }

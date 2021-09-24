@@ -51,9 +51,9 @@ class IndexerQueueCommand extends Command
     /**
      * IndexerQueueCommand constructor.
      *
-     * @param DocumentManager     $documentManager
-     * @param QueueInterface      $queue
-     * @param ResolverInterface   $resolver
+     * @param DocumentManager   $documentManager
+     * @param QueueInterface    $queue
+     * @param ResolverInterface $resolver
      */
     public function __construct(DocumentManager $documentManager, QueueInterface $queue, ResolverInterface $resolver)
     {
