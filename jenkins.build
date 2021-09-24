@@ -1,10 +1,10 @@
 set -e
 curl -sS https://getcomposer.org/installer | php
-php7.2 composer.phar update -n
-php7.2 vendor/bin/phpcs
-php7.2 vendor/bin/php-cs-fixer fix --verbose --show-progress=none --dry-run
-php7.2 vendor/bin/phpunit -c phpunit.xml.dist
-php7.2 vendor/bin/phpstan analyse --no-progress
-php7.2 composer.phar update -n --prefer-lowest
-php7.2 vendor/bin/phpunit -c phpunit.xml.dist
-php7.2 vendor/bin/phpstan analyse --no-progress
+php7.3 composer.phar update -n
+php7.3 vendor/bin/phpcs
+php7.3 vendor/bin/php-cs-fixer fix --verbose --show-progress=none --dry-run
+php7.3 vendor/bin/phpunit -c phpunit.xml.dist
+php7.3 vendor/bin/phpstan analyse --no-progress
+php7.3 composer.phar update -n --prefer-lowest
+php7.3 vendor/bin/phpunit -c phpunit.xml.dist
+php7.3 vendor/bin/phpstan analyse --no-progress
