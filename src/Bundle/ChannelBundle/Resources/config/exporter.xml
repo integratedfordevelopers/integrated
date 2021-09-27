@@ -9,7 +9,7 @@
         <service id="integrated_channel.exporter.simple" class="Integrated\Common\Channel\Exporter\Exporter">
             <argument type="service" id="integrated_channel.adapter.registry" />
             <argument type="service" id="integrated_channel.config.resolver" />
-            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
         </service>
 
         <service id="integrated_channel.exporter.queue" class="Integrated\Common\Channel\Exporter\QueueExporter">

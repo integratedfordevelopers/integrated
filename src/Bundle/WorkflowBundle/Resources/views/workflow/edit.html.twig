@@ -38,6 +38,7 @@
 
 {% block javascript %}
     {{ parent() }}
+    {# TODO: migrate to Webpack Encore
     {% javascripts
     '@IntegratedWorkflowBundle/Resources/public/js/updateTransitions.js'
     '@IntegratedWorkflowBundle/Resources/public/js/defaultSelection.js'
@@ -45,4 +46,5 @@
     %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
+     #}
 {% endblock %}

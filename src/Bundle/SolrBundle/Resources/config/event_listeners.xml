@@ -7,7 +7,7 @@
     <services>
 
         <service id="integrated_solr.event_listeners.doctrine.clear" class="Integrated\Bundle\SolrBundle\EventListener\DoctrineClearEventSubscriber">
-            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
 

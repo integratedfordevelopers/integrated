@@ -15,7 +15,7 @@ use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -23,14 +23,14 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 class WorkflowDefaultDataListener implements EventSubscriberInterface
 {
     /**
-     * @var TokenStorage
+     * @var TokenStorageInterface
      */
     private $storage;
 
     /**
-     * @param TokenStorage $storage
+     * @param TokenStorageInterface $storage
      */
-    public function __construct(TokenStorage $storage)
+    public function __construct(TokenStorageInterface $storage)
     {
         $this->storage = $storage;
     }

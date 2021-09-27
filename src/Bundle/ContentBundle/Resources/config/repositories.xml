@@ -7,7 +7,7 @@
     <services>
 
         <service id="integrated_content.content_type_repository" class="Doctrine\Common\Persistence\ObjectRepository">
-            <factory service="doctrine.odm.mongodb.document_manager" method="getRepository" />
+            <factory service="doctrine_mongodb.odm.document_manager" method="getRepository" />
             <argument>Integrated\Bundle\ContentBundle\Document\ContentType\ContentType</argument>
         </service>
 

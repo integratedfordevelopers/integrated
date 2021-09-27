@@ -13,6 +13,7 @@ namespace Integrated\Bundle\UserBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Security\Core\User\UserInterface as BaseUserInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -449,5 +450,10 @@ class User implements UserInterface
             $this->isAccountNonExpired() ? 'FALSE' : 'TRUE',
             $this->isCredentialsNonExpired() ? 'FALSE' : 'TRUE'
         );
+    }
+
+    public function isEqualTo(BaseUserInterface $user)
+    {
+        return $user->getUsername() === $this->getUsername();
     }
 }

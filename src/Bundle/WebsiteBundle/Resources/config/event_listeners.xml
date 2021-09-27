@@ -20,7 +20,7 @@
 
         <service id="integrated_website.redirect_content" class="%integrated_website.redirect_content.class%">
             <argument type="service" id="integrated_content.channel.context" />
-            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <argument type="service" id="integrated_page.services.url_resolver" />
             <argument type="service" id="router" />
             <tag name="kernel.event_subscriber" />

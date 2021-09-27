@@ -33,7 +33,7 @@
 
 		<service id="integrated_solr.indexer.serializer.normalizer.mongodb" class="Integrated\MongoDB\Serializer\Normalizer\ContainerAwareDocumentNormalizer" public="false">
 			<argument type="service" id="service_container"/>
-			<argument type="string">doctrine.odm.mongodb.document_manager</argument> <!-- should be a config option -->
+			<argument type="string">doctrine_mongodb.odm.document_manager</argument> <!-- should be a config option -->
 		</service>
 
 		<service id="integrated_solr.indexer.serializer.encoder.json" class="Symfony\Component\Serializer\Encoder\JsonEncoder" public="false" />

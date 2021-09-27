@@ -5,7 +5,7 @@
 
     <embedded-document name="Integrated\Bundle\CommentBundle\Document\Embedded\Reply">
 
-        <field field-name="id" id="true" strategy="UUID" />
+        <id field-name="id" strategy="UUID" />
         <field field-name="date" type="date" />
         <field field-name="text" type="string" />
 
