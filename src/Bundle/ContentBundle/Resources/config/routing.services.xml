@@ -6,7 +6,7 @@
 
     <services>
 
-        <service id="integrated_content.routing.router" class="Integrated\Common\Routing\Router" public="false">
+        <service id="integrated_content.routing.router" class="Integrated\Common\Routing\Router" public="true">
             <argument />
             <argument type="service" id="integrated_content.routing.generator" />
             <argument type="service" id="router.request_context" />

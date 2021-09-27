@@ -26,7 +26,7 @@
 
         <service id="integrated_content.provider.content_provider" class="Integrated\Bundle\ContentBundle\Provider\ContentProvider">
             <argument type="service" id="solarium.client" />
-            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <argument type="service" id="security.token_storage" />
             <argument type="service" id="security.authorization_checker" />
             <argument>false</argument>

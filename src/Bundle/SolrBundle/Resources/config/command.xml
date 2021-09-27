@@ -17,6 +17,14 @@
             <tag name="console.command" />
         </service>
 
+        <service id="integrated_solr.command.indexer_queue" class="Integrated\Bundle\SolrBundle\Command\IndexerQueueCommand">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="integrated_queue.solr_indexer" />
+            <argument type="service" id="integrated_content.resolver" />
+
+            <tag name="console.command" />
+        </service>
+
         <service id="integrated_solr.command.worker" class="Integrated\Bundle\SolrBundle\Command\WorkerCommand">
             <argument type="service" id="integrated_solr.worker" />
             <argument type="service" id="integrated_solr.lock.factory" />

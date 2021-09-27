@@ -12,10 +12,10 @@
 namespace Integrated\Bundle\PageBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\MongoDB\Events;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs;
+use Doctrine\ODM\MongoDB\Events;
 use Integrated\Bundle\BlockBundle\Document\Block\InlineTextBlock;
 use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
 use Integrated\Bundle\PageBundle\Document\Page\Grid\Item;

@@ -13,7 +13,7 @@
     <services>
 
         <service id="integrated_formtype.event_listener.editor_image_relation" class="%integrated_formtype.event_listener.editor_image_relation%">
-            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <tag name="integrated_content.event_subscriber" />
         </service>
 

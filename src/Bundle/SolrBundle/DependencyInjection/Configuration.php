@@ -37,7 +37,7 @@ class Configuration implements ConfigurationInterface
             ->scalarNode('port')->defaultValue(8983)->end()
             ->scalarNode('username')->defaultValue(null)->end()
             ->scalarNode('password')->defaultValue(null)->end()
-            ->scalarNode('path')->defaultValue('/solr')->end()
+            ->scalarNode('path')->defaultValue('')->end()
             ->scalarNode('core')->end()
             ->scalarNode('timeout')->defaultValue(5)->end()
             ->end()

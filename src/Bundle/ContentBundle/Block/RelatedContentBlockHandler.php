@@ -12,8 +12,8 @@
 namespace Integrated\Bundle\ContentBundle\Block;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\MongoDB\Query\Builder;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\Query\Builder;
 use Integrated\Bundle\BlockBundle\Block\BlockHandler;
 use Integrated\Bundle\ContentBundle\Document\Block\RelatedContentBlock;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;

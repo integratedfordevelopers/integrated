@@ -15,7 +15,7 @@
         <service id="integrated_menu.menu.database_menu_factory" class="%integrated_menu.menu.database_menu_factory.class%" public="true">
             <argument>%integrated_menu.document.menu.class%</argument>
             <argument>%integrated_menu.document.menu_item.class%</argument>
-            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
         </service>
 
         <service id="integrated.menu_factory.database" alias="integrated_menu.menu.database_menu_factory" />

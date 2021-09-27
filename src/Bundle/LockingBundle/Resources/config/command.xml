@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="integrated_locking.command.locking_clear" class="Integrated\Bundle\LockingBundle\Command\LockingClearCommand">
+            <argument type="service" id="integrated_locking.dbal.manager" />
+
+            <tag name="console.command" />
+        </service>
+
+        <service id="integrated_locking.command.locking_cleanup" class="Integrated\Bundle\LockingBundle\Command\LockingDBALCleanUpCommand">
+            <argument type="service" id="integrated_locking.dbal.manager" />
+
+            <tag name="console.command" />
+        </service>
+
+    </services>
+
+</container>

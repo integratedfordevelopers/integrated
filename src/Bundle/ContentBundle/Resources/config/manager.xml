@@ -14,7 +14,7 @@
 	<services>
 
 		<service id="integrated_content.channel.manager" alias="integrated_content.channel.manager.doctrine" public="true"/>
-		<service id="integrated_content.content_type.manager" alias="integrated_content.content_type.manager.doctrine" />
+		<service id="integrated_content.content_type.manager" alias="integrated_content.content_type.manager.doctrine" public="true" />
 
 	</services>
 

@@ -5,7 +5,7 @@
 
     <document name="Integrated\Bundle\CommentBundle\Document\Comment">
 
-        <field field-name="id" id="true" strategy="UUID" />
+        <id field-name="id" strategy="UUID" />
         <field field-name="date" type="date" />
         <field field-name="field" type="string" />
         <field field-name="text" type="string" />

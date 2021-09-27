@@ -13,7 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Solr\Serializer;
 
 use Integrated\Bundle\ContentBundle\Solr\Query\SuggestionQuery;
 use Integrated\Common\ContentType\ResolverInterface;
-use Solarium\QueryType\Select\Result\DocumentInterface;
+use Solarium\Core\Query\DocumentInterface;
 use Solarium\QueryType\Select\Result\Result;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;

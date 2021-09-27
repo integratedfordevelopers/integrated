@@ -56,7 +56,7 @@ class ContentTypePageController extends Controller
         $form = $this->createEditForm($page);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->documentManager->flush();
 
             $this->get('integrated_page.services.route_cache')->clear();

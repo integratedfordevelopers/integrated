@@ -35,5 +35,6 @@ class SetRouterPass implements CompilerPassInterface
         $definition->setArgument(0, new Reference((string) $id));
 
         $container->setAlias('router', 'integrated_content.routing.router');
+        $container->getAlias('router')->setPublic(true);
     }
 }
