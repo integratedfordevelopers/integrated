@@ -14,7 +14,7 @@ namespace Integrated\Bundle\PageBundle\Controller;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Bundle\PageBundle\Form\Type\ContentTypePageType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @author Johan Liefers <johan@e-active.nl>
  */
-class ContentTypePageController extends Controller
+class ContentTypePageController extends AbstractController
 {
     /**
      * @var DocumentManager
@@ -47,7 +47,7 @@ class ContentTypePageController extends Controller
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(Request $request, ContentTypePage $page)
+    public function edit(Request $request, ContentTypePage $page)
     {
         if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
