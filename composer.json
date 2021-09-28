@@ -80,7 +80,8 @@
         "phpunit/phpunit": "~8.5",
         "friendsofphp/php-cs-fixer": "^2.8",
         "phpstan/phpstan": "~0.12",
-        "phpstan/phpstan-doctrine": "~0.11"
+        "phpstan/phpstan-doctrine": "~0.11",
+        "phpstan/phpstan-deprecation-rules": "^0.12.6"
     },
     "provide": {
         "ext-mongo": "*"
@@ -100,7 +101,8 @@
             "dev-release/0.12": "0.12.x-dev",
             "dev-release/0.13": "0.13.x-dev",
             "dev-release/0.14": "0.14.x-dev",
-            "dev-release/0.15": "0.15.x-dev"
+            "dev-release/0.15": "0.15.x-dev",
+            "dev-release/0.20": "0.20.x-dev"
         }
     }
 }
