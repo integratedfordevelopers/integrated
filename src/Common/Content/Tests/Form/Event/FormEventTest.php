@@ -14,6 +14,7 @@ namespace Integrated\Common\Content\Tests\Form\Event;
 use Integrated\Common\Content\Form\Event\FormEvent;
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\Form\Mapping\MetadataInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -40,7 +41,7 @@ class FormEventTest extends \PHPUnit\Framework\TestCase
     {
         $event = $this->getInstance();
 
-        self::assertInstanceOf('Symfony\\Component\\EventDispatcher\\Event', $event);
+        self::assertInstanceOf(Event::class, $event);
         self::assertInstanceOf('Integrated\Common\Content\Form\Event\FormEvent', $event);
     }
 
