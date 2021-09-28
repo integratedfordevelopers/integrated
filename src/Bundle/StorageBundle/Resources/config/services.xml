@@ -66,12 +66,7 @@
 
         <service id="integrated_storage.file_locator" class="Integrated\Bundle\StorageBundle\Locator\StorageLocator">
             <argument type="service" id="kernel" />
-            <argument>%kernel.root_dir%/Resources</argument>
-
-            <argument type="collection" />
-
             <argument type="service" id="integrated_storage.cache_app" />
-
         </service>
     </services>
 

@@ -28,15 +28,13 @@ class StorageLocator extends FileLocator
 
     /**
      * @param KernelInterface $kernel
-     * @param string|null     $path
-     * @param array           $paths
      * @param CacheInterface  $cache
      */
-    public function __construct(KernelInterface $kernel, $path, array $paths, CacheInterface $cache)
+    public function __construct(KernelInterface $kernel, CacheInterface $cache)
     {
         $this->cache = $cache;
 
-        parent::__construct($kernel, $path, $paths);
+        parent::__construct($kernel);
     }
 
     /**

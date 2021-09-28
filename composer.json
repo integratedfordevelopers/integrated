@@ -38,7 +38,7 @@
         "jms/metadata": "~1.6",
         "knplabs/knp-gaufrette-bundle": "~0.5",
         "knplabs/knp-menu-bundle": "~2.2",
-        "knplabs/knp-paginator-bundle": "~2.7",
+        "knplabs/knp-paginator-bundle": "~5.5",
         "monolog/monolog": "~1.22",
         "nelmio/alice": "~3.1",
         "rct567/dom-query": "~0.8",
