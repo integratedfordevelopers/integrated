@@ -11,7 +11,7 @@
 
 namespace Integrated\Common\Storage\Database;
 
-use Doctrine\ODM\MongoDB\Cursor;
+use Doctrine\ODM\MongoDB\Iterator\Iterator;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -24,7 +24,7 @@ interface DatabaseInterface
     public function getRows();
 
     /**
-     * @return Cursor
+     * @return Iterator
      */
     public function getObjects();
 

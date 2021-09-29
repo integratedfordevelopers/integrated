@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\BlockBundle\Provider;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\PageBundle\Document\Page\Page;
 
@@ -21,9 +21,9 @@ use Integrated\Bundle\PageBundle\Document\Page\Page;
 class BlockUsageProvider
 {
     /**
-     * @var ManagerRegistry
+     * @var DocumentManager
      */
-    protected $mr;
+    protected $dm;
 
     /**
      * @var array|null
@@ -51,11 +51,11 @@ class BlockUsageProvider
     protected $channels = [];
 
     /**
-     * @param ManagerRegistry $mr
+     * @param DocumentManager $dm
      */
-    public function __construct(ManagerRegistry $mr)
+    public function __construct(DocumentManager $dm)
     {
-        $this->mr = $mr;
+        $this->dm = $dm;
     }
 
     /**
@@ -114,7 +114,7 @@ class BlockUsageProvider
     public function getChannel($id)
     {
         if (!\array_key_exists($id, $this->channels)) {
-            $this->channels[$id] = $this->mr->getManager()->getRepository(Channel::class)->find($id);
+            $this->channels[$id] = $this->dm->getRepository(Channel::class)->find($id);
         }
 
         return $this->channels[$id];
@@ -125,9 +125,7 @@ class BlockUsageProvider
      */
     protected function convertPages()
     {
-        $dm = $this->mr->getManager();
-
-        $pages = $dm->createQueryBuilder(Page::class)
+        $pages = $this->dm->createQueryBuilder(Page::class)
             ->hydrate(false)
             ->select(['title', 'channel', 'locked', 'grids'])
             ->getQuery()

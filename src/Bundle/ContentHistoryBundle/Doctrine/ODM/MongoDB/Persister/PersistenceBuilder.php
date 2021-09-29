@@ -66,7 +66,7 @@ class PersistenceBuilder
             } elseif (isset($mapping['association'])) {
                 if ($mapping['association'] === ClassMetadata::REFERENCE_ONE && $mapping['isOwningSide']) {
                     // @ReferenceOne
-                    $data[$mapping['name']] = \is_object($value) ? $this->dm->createDBRef($value, $mapping) : null;
+                    $data[$mapping['name']] = \is_object($value) ? $this->dm->createReference($value, $mapping) : null;
                 } elseif ($mapping['association'] === ClassMetadata::EMBED_ONE) {
                     // @EmbedOne
                     $data[$mapping['name']] = \is_object($value) ? $this->prepareData($value) : null;
@@ -86,7 +86,7 @@ class PersistenceBuilder
                         }
 
                         if ($mapping['association'] === ClassMetadata::REFERENCE_MANY) {
-                            $data[$mapping['name']][] = $this->dm->createDBRef($object, $mapping);
+                            $data[$mapping['name']][] = $this->dm->createReference($object, $mapping);
                         } else {
                             $data[$mapping['name']][] = $this->prepareData($object);
                         }

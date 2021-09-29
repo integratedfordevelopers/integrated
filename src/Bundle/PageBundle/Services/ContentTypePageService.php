@@ -60,6 +60,6 @@ class ContentTypePageService
         $contentTypePage->setControllerAction($controller['controller_actions'][0]);
 
         $this->dm->persist($contentTypePage);
-        $this->dm->flush($contentTypePage);
+        $this->dm->flush();
     }
 }
