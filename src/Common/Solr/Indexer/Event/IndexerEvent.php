@@ -12,7 +12,7 @@
 namespace Integrated\Common\Solr\Indexer\Event;
 
 use Integrated\Common\Solr\Indexer\IndexerInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

@@ -18,8 +18,8 @@ use Integrated\Bundle\BlockBundle\Form\Type\BlockFilterType;
 use Integrated\Bundle\UserBundle\Model\User;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
-use Knp\Component\Pager\Paginator;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +27,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class BlockController extends Controller
+class BlockController extends AbstractController
 {
     /**
      * @var MetadataFactoryInterface
@@ -40,19 +40,19 @@ class BlockController extends Controller
     protected $documentManager;
 
     /**
-     * @var Paginator
+     * @var PaginatorInterface
      */
     protected $paginator;
 
     /**
      * @param MetadataFactoryInterface $metadataFactory
      * @param DocumentManager          $documentManager
-     * @param Paginator                $paginator
+     * @param PaginatorInterface       $paginator
      */
     public function __construct(
         MetadataFactoryInterface $metadataFactory,
         DocumentManager $documentManager,
-        Paginator $paginator
+        PaginatorInterface $paginator
     ) {
         $this->metadataFactory = $metadataFactory;
         $this->documentManager = $documentManager;

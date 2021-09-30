@@ -82,5 +82,7 @@ class CleanCommand extends Command
         $cleanFileSystem->clean($filesystem, $directory);
 
         $output->writeln(sprintf('Cleanable files for %s have been moved to %s', $filesystem, $directory));
+
+        return 0;
     }
 }

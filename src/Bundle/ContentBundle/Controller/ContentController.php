@@ -47,7 +47,7 @@ class ContentController extends Controller
      *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function index(Request $request)
     {
         // group the types based on there class
         $types = [];
@@ -371,7 +371,7 @@ class ContentController extends Controller
      *
      * @return Response
      */
-    public function showAction(Request $request, Content $content)
+    public function show(Request $request, Content $content)
     {
         return $this->render('IntegratedContentBundle:content:show.'.$request->getRequestFormat().'.twig', [
             'document' => $content,
@@ -385,7 +385,7 @@ class ContentController extends Controller
      *
      * @return Response
      */
-    public function newAction(Request $request)
+    public function new(Request $request)
     {
         /** @var ContentTypeInterface $contentType */
         $contentType = $this->get('integrated_content.content_type.manager')->getType($request->get('type'));
@@ -471,7 +471,7 @@ class ContentController extends Controller
      *
      * @return Response
      */
-    public function editAction(Request $request, Content $content)
+    public function edit(Request $request, Content $content)
     {
         /** @var ContentTypeInterface $contentType */
         $contentType = $this->get('integrated_content.content_type.manager')->getType($content->getContentType());
@@ -620,7 +620,7 @@ class ContentController extends Controller
      *
      * @return Response
      */
-    public function deleteAction(Request $request, Content $content)
+    public function delete(Request $request, Content $content)
     {
         /** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
         $type = $this->get('integrated.form.resolver')->getType($content->getContentType());
@@ -920,7 +920,7 @@ class ContentController extends Controller
      *
      * @return Response
      */
-    public function navdropdownsAction(Request $request)
+    public function navdropdowns(Request $request)
     {
         $session = $request->getSession();
 
@@ -973,7 +973,7 @@ class ContentController extends Controller
      *
      * @return Response
      */
-    public function usedByAction(Content $content, Request $request)
+    public function usedBy(Content $content, Request $request)
     {
         /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
         $dm = $this->get('doctrine_mongodb')->getManager();

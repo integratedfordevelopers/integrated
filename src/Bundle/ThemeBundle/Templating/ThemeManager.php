@@ -198,13 +198,11 @@ class ThemeManager
 
     /**
      * @param string $name
-     * @param string $dir
-     * @param bool   $first
      *
      * @return string|array
      */
-    public function locateResource($name, $dir = null, $first = true)
+    public function locateResource($name)
     {
-        return $this->kernel->locateResource($name, $dir, $first);
+        return $this->kernel->locateResource($name);
     }
 }
