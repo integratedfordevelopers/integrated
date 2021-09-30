@@ -19,7 +19,7 @@ use Integrated\Bundle\ContentBundle\Document\Block\RelatedContentBlock;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Common\Block\BlockInterface;
-use Knp\Component\Pager\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -31,7 +31,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class RelatedContentBlockHandler extends BlockHandler
 {
     /**
-     * @var Paginator
+     * @var PaginatorInterface
      */
     private $paginator;
 
@@ -46,11 +46,11 @@ class RelatedContentBlockHandler extends BlockHandler
     private $dm;
 
     /**
-     * @param Paginator       $paginator
-     * @param RequestStack    $requestStack
-     * @param DocumentManager $dm
+     * @param PaginatorInterface $paginator
+     * @param RequestStack       $requestStack
+     * @param DocumentManager    $dm
      */
-    public function __construct(Paginator $paginator, RequestStack $requestStack, DocumentManager $dm)
+    public function __construct(PaginatorInterface $paginator, RequestStack $requestStack, DocumentManager $dm)
     {
         $this->paginator = $paginator;
         $this->requestStack = $requestStack;

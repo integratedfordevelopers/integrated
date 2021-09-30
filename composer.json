@@ -38,7 +38,7 @@
         "jms/metadata": "~1.6",
         "knplabs/knp-gaufrette-bundle": "~0.5",
         "knplabs/knp-menu-bundle": "~2.2",
-        "knplabs/knp-paginator-bundle": "~2.7",
+        "knplabs/knp-paginator-bundle": "~5.0",
         "monolog/monolog": "~1.22",
         "nelmio/alice": "~3.1",
         "rct567/dom-query": "~0.8",
@@ -80,7 +80,8 @@
         "phpunit/phpunit": "~8.5",
         "friendsofphp/php-cs-fixer": "^2.8",
         "phpstan/phpstan": "~0.12",
-        "phpstan/phpstan-doctrine": "~0.11"
+        "phpstan/phpstan-doctrine": "~0.11",
+        "phpstan/phpstan-deprecation-rules": "^0.12.6"
     },
     "provide": {
         "ext-mongo": "*"
@@ -100,7 +101,8 @@
             "dev-release/0.12": "0.12.x-dev",
             "dev-release/0.13": "0.13.x-dev",
             "dev-release/0.14": "0.14.x-dev",
-            "dev-release/0.15": "0.15.x-dev"
+            "dev-release/0.15": "0.15.x-dev",
+            "dev-release/0.20": "0.20.x-dev"
         }
     }
 }

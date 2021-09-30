@@ -13,7 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Event;
 
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Content\ContentInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class FormBlockEvent extends Event
 {

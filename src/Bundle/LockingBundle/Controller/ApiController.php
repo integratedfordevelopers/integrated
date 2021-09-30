@@ -26,7 +26,7 @@ class ApiController extends Controller
      *
      * @return JsonResponse
      */
-    public function refreshAction(Request $request)
+    public function refresh(Request $request)
     {
         if (!$this->has('integrated_locking.dbal.manager')) {
             $response = [
