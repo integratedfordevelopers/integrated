@@ -17,7 +17,7 @@ use Exception;
 use Integrated\Bundle\ContentBundle\Document\Block\ContentBlock;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
-use Knp\Component\Pager\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
 use Solarium\Client;
 use Solarium\QueryType\Select\Query\Query;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,7 +38,7 @@ class SolariumProvider
     private $dm;
 
     /**
-     * @var Paginator
+     * @var PaginatorInterface
      */
     private $paginator;
 
@@ -48,11 +48,11 @@ class SolariumProvider
     private $registry = [];
 
     /**
-     * @param Client          $client
-     * @param DocumentManager $dm
-     * @param Paginator       $paginator
+     * @param Client             $client
+     * @param DocumentManager    $dm
+     * @param PaginatorInterface $paginator
      */
-    public function __construct(Client $client, DocumentManager $dm, Paginator $paginator)
+    public function __construct(Client $client, DocumentManager $dm, PaginatorInterface $paginator)
     {
         $this->client = $client;
         $this->dm = $dm;
