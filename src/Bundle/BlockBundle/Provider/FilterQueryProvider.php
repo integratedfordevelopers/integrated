@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\BlockBundle\Provider;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
 use Integrated\Bundle\BlockBundle\Document\Block\InlineTextBlock;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
@@ -22,9 +22,9 @@ use Integrated\Bundle\UserBundle\Model\UserInterface;
 class FilterQueryProvider
 {
     /**
-     * @var ManagerRegistry
+     * @var DocumentManager
      */
-    protected $mr;
+    protected $documentManager;
 
     /**
      * @var BlockUsageProvider
@@ -37,13 +37,13 @@ class FilterQueryProvider
     private $pageBundleInstalled;
 
     /**
-     * @param ManagerRegistry    $mr
+     * @param DocumentManager    $documentManager
      * @param BlockUsageProvider $blockUsageProvider
      * @param array              $bundles
      */
-    public function __construct(ManagerRegistry $mr, BlockUsageProvider $blockUsageProvider, array $bundles)
+    public function __construct(DocumentManager $documentManager, BlockUsageProvider $blockUsageProvider, array $bundles)
     {
-        $this->mr = $mr;
+        $this->documentManager = $documentManager;
         $this->blockUsageProvider = $blockUsageProvider;
         $this->pageBundleInstalled = isset($bundles['IntegratedPageBundle']);
     }
@@ -52,13 +52,13 @@ class FilterQueryProvider
      * @param array|null  $data
      * @param object|null $groupUser
      *
-     * @return \Doctrine\MongoDB\Query\Builder
+     * @return \Doctrine\ODM\MongoDB\Query\Builder
      *
      * @throws \MongoException
      */
     public function getBlocksByChannelQueryBuilder($data, ?object $groupUser)
     {
-        $qb = $this->mr->getManager()->createQueryBuilder(Block::class);
+        $qb = $this->documentManager->createQueryBuilder(Block::class);
 
         $type = isset($data['type']) ? array_filter($data['type']) : null;
         if ($type) {
@@ -101,8 +101,8 @@ class FilterQueryProvider
     {
         $queryBuilder = $this->getBlocksByChannelQueryBuilder($data, $groupUser);
 
-        $blocks = $queryBuilder->select('_id')
-            ->hydrate(false)
+        $blocks = $queryBuilder
+            ->select('_id')
             ->getQuery()
             ->getIterator()
             ->toArray();

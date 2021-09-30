@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\UserBundle\Doctrine;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Integrated\Bundle\UserBundle\Event\ConfigureRolesEvent;
 use Integrated\Bundle\UserBundle\Model\RoleInterface;
 use Integrated\Bundle\UserBundle\Model\RoleManagerInterface;
@@ -25,9 +25,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class RoleManager implements RoleManagerInterface
 {
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
-    private $om;
+    private $entityManager;
 
     /**
      * @var ObjectRepository
@@ -52,16 +52,16 @@ class RoleManager implements RoleManagerInterface
     /**
      * RoleManager constructor.
      *
-     * @param ObjectManager            $om
+     * @param EntityManagerInterface   $entityManager
      * @param EventDispatcherInterface $eventDispatcher
      * @param string                   $class
      * @param string[]                 $roles
      */
-    public function __construct(ObjectManager $om, EventDispatcherInterface $eventDispatcher, $class, array $roles = [])
+    public function __construct(EntityManagerInterface $entityManager, EventDispatcherInterface $eventDispatcher, $class, array $roles = [])
     {
-        $this->om = $om;
+        $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
-        $this->repository = $this->om->getRepository($class);
+        $this->repository = $this->entityManager->getRepository($class);
         $this->roles = $roles;
 
         if (!is_subclass_of($this->repository->getClassName(), RoleInterface::class)) {
@@ -73,11 +73,11 @@ class RoleManager implements RoleManagerInterface
     }
 
     /**
-     * @return ObjectManager
+     * @return EntityManagerInterface
      */
-    public function getObjectManager()
+    public function getEntityManager()
     {
-        return $this->om;
+        return $this->entityManager;
     }
 
     /**
@@ -103,10 +103,10 @@ class RoleManager implements RoleManagerInterface
      */
     public function persist(roleInterface $role, $flush = true)
     {
-        $this->om->persist($role);
+        $this->entityManager->persist($role);
 
         if ($flush) {
-            $this->om->flush($role);
+            $this->entityManager->flush();
         }
     }
 
@@ -115,10 +115,10 @@ class RoleManager implements RoleManagerInterface
      */
     public function remove(roleInterface $role, $flush = true)
     {
-        $this->om->remove($role);
+        $this->entityManager->remove($role);
 
         if ($flush) {
-            $this->om->flush($role);
+            $this->entityManager->flush();
         }
     }
 
@@ -127,7 +127,7 @@ class RoleManager implements RoleManagerInterface
      */
     public function clear()
     {
-        $this->om->clear($this->repository->getClassName());
+        $this->entityManager->clear($this->repository->getClassName());
     }
 
     /**

@@ -64,8 +64,7 @@ class ReferencesToArrayTransformer implements DataTransformerInterface
             return new ArrayCollection();
         }
 
-        $references = $this->dm->getRepository(Content::class)
-            ->createQueryBuilder()
+        $references = $this->dm->createQueryBuilder(Content::class)
             ->field('id')->in($value)
             ->getQuery()
             ->getIterator()

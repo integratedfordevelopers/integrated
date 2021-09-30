@@ -7,14 +7,14 @@
     <services>
 
         <service id="integrated_sitemap.controller.default" class="Integrated\Bundle\SitemapBundle\Controller\DefaultController">
-            <argument type="service" id="doctrine_mongodb" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <argument type="service" id="integrated_content.channel.context" />
             <argument type="service" id="service_container" />
             <argument type="service" id="Integrated\Bundle\ContentBundle\Services\ContentTypeInformation"/>
         </service>
 
         <service id="integrated_sitemap.controller.news" class="Integrated\Bundle\SitemapBundle\Controller\NewsController">
-            <argument type="service" id="doctrine_mongodb" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <argument type="service" id="integrated_content.channel.context" />
             <argument type="service" id="service_container" />
         </service>

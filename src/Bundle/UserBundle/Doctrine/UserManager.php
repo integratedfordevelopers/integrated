@@ -11,8 +11,9 @@
 
 namespace Integrated\Bundle\UserBundle\Doctrine;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Integrated\Bundle\UserBundle\Model\ScopeInterface;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
@@ -25,12 +26,12 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 class UserManager implements UserManagerInterface
 {
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
-    private $om;
+    private $em;
 
     /**
-     * @var ObjectRepository
+     * @var EntityRepository
      */
     private $repository;
 
@@ -40,14 +41,14 @@ class UserManager implements UserManagerInterface
     private $encoderFactory;
 
     /**
-     * @param ObjectManager           $om
+     * @param EntityManagerInterface  $em
      * @param                         $class
      * @param EncoderFactoryInterface $encoderFactory
      */
-    public function __construct(ObjectManager $om, $class, EncoderFactoryInterface $encoderFactory)
+    public function __construct(EntityManagerInterface $em, $class, EncoderFactoryInterface $encoderFactory)
     {
-        $this->om = $om;
-        $this->repository = $this->om->getRepository($class);
+        $this->em = $em;
+        $this->repository = $this->em->getRepository($class);
 
         if (!is_subclass_of($this->repository->getClassName(), 'Integrated\\Bundle\\UserBundle\\Model\\UserInterface')) {
             throw new InvalidArgumentException(sprintf('The class "%s" is not subclass of Integrated\\Bundle\\UserBundle\\Model\\UserInterface', $this->repository->getClassName()));
@@ -57,11 +58,11 @@ class UserManager implements UserManagerInterface
     }
 
     /**
-     * @return ObjectManager
+     * @return EntityManagerInterface
      */
-    public function getObjectManager()
+    public function getEntityManager()
     {
-        return $this->om;
+        return $this->em;
     }
 
     /**
@@ -87,10 +88,10 @@ class UserManager implements UserManagerInterface
      */
     public function persist(UserInterface $user, $flush = true)
     {
-        $this->om->persist($user);
+        $this->em->persist($user);
 
         if ($flush) {
-            $this->om->flush($user);
+            $this->em->flush();
         }
     }
 
@@ -99,10 +100,10 @@ class UserManager implements UserManagerInterface
      */
     public function remove(UserInterface $user, $flush = true)
     {
-        $this->om->remove($user);
+        $this->em->remove($user);
 
         if ($flush) {
-            $this->om->flush($user);
+            $this->em->flush();
         }
     }
 
@@ -111,7 +112,7 @@ class UserManager implements UserManagerInterface
      */
     public function clear()
     {
-        $this->om->clear($this->repository->getClassName());
+        $this->em->clear($this->repository->getClassName());
     }
 
     /**

@@ -66,10 +66,6 @@ class DocumentNormalizer implements NormalizerInterface, DenormalizerInterface
     {
         $meta = $this->getDocumentManager()->getClassMetadata(\get_class($object));
 
-        if (!$meta) {
-            return null;
-        }
-
         $keys = [];
 
         foreach ($meta->getIdentifierFieldNames() as $field) {
@@ -103,7 +99,7 @@ class DocumentNormalizer implements NormalizerInterface, DenormalizerInterface
      * Check if the class is a mongodb document class registered by the
      * registered document manager.
      *
-     * @param $class
+     * @param string $class
      *
      * @return bool
      */

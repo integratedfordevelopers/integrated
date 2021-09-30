@@ -13,6 +13,7 @@ namespace Integrated\Bundle\UserBundle\Doctrine;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Integrated\Bundle\UserBundle\Model\ScopeInterface;
 use Integrated\Bundle\UserBundle\Model\ScopeManagerInterface;
 use InvalidArgumentException;
@@ -23,9 +24,9 @@ use InvalidArgumentException;
 class ScopeManager implements ScopeManagerInterface
 {
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
-    private $om;
+    private $entityManager;
 
     /**
      * @var ObjectRepository
@@ -33,13 +34,13 @@ class ScopeManager implements ScopeManagerInterface
     private $repository;
 
     /**
-     * @param ObjectManager $om
-     * @param string        $class
+     * @param EntityManagerInterface $entityManager
+     * @param string                 $class
      */
-    public function __construct(ObjectManager $om, $class)
+    public function __construct(ObjectManager $entityManager, $class)
     {
-        $this->om = $om;
-        $this->repository = $this->om->getRepository($class);
+        $this->entityManager = $entityManager;
+        $this->repository = $this->entityManager->getRepository($class);
 
         if (!is_subclass_of($this->repository->getClassName(), 'Integrated\\Bundle\\UserBundle\\Model\\ScopeInterface')) {
             throw new InvalidArgumentException(sprintf('The class "%s" is not subclass of Integrated\\Bundle\\UserBundle\\Model\\ScopeInterface', $this->repository->getClassName()));
@@ -51,7 +52,7 @@ class ScopeManager implements ScopeManagerInterface
      */
     public function getObjectManager()
     {
-        return $this->om;
+        return $this->entityManager;
     }
 
     /**
@@ -77,10 +78,10 @@ class ScopeManager implements ScopeManagerInterface
      */
     public function persist(ScopeInterface $scope, $flush = true)
     {
-        $this->om->persist($scope);
+        $this->entityManager->persist($scope);
 
         if ($flush) {
-            $this->om->flush($scope);
+            $this->entityManager->flush();
         }
     }
 
@@ -89,10 +90,10 @@ class ScopeManager implements ScopeManagerInterface
      */
     public function remove(ScopeInterface $scope, $flush = true)
     {
-        $this->om->remove($scope);
+        $this->entityManager->remove($scope);
 
         if ($flush) {
-            $this->om->flush($scope);
+            $this->entityManager->flush();
         }
     }
 
@@ -101,7 +102,7 @@ class ScopeManager implements ScopeManagerInterface
      */
     public function clear()
     {
-        $this->om->clear($this->repository->getClassName());
+        $this->entityManager->clear($this->repository->getClassName());
     }
 
     /**

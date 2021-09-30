@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ContentBundle\Services;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
-use Doctrine\ODM\MongoDB\Mapping\ClassMetadataFactory;
 use Doctrine\ODM\MongoDB\Types\Type as MongoType;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 
@@ -117,19 +116,19 @@ class SearchContentReferenced
     }
 
     /**
-     * @param mixed                $document
-     * @param ClassMetadataFactory $metadataFactory
+     * @param mixed           $document
+     * @param DocumentManager $documentManager
      *
      * @return array
      *
      * @throws \Doctrine\Common\Persistence\Mapping\MappingException
      * @throws \Exception
      */
-    public function getDeletedInfo($document, ClassMetadataFactory $metadataFactory)
+    public function getDeletedInfo($document, DocumentManager $documentManager)
     {
         $deleted = [
             'className' => \get_class($document),
-            'metadata' => $metadataFactory->getMetadataFor(\get_class($document)),
+            'metadata' => $documentManager->getClassMetadata(\get_class($document)),
         ];
 
         $deleted['idField'] = current($deleted['metadata']->getIdentifier());

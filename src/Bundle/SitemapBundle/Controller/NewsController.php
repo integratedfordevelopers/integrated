@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\SitemapBundle\Controller;
 
 use DateTime;
-use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Document\Content\News;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -26,9 +26,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class NewsController extends Controller
 {
     /**
-     * @var ManagerRegistry
+     * @var DocumentManager
      */
-    private $registry;
+    private $documentManager;
 
     /**
      * @var ChannelContextInterface
@@ -36,16 +36,16 @@ class NewsController extends Controller
     private $context;
 
     /**
-     * @param ManagerRegistry         $registry
+     * @param DocumentManager         $documentManager
      * @param ChannelContextInterface $context
      * @param ContainerInterface      $container
      */
     public function __construct(
-        ManagerRegistry $registry,
+        DocumentManager $documentManager,
         ChannelContextInterface $context,
         ContainerInterface $container
     ) {
-        $this->registry = $registry;
+        $this->documentManager = $documentManager;
         $this->context = $context;
         $this->container = $container;
     }
@@ -66,7 +66,7 @@ class NewsController extends Controller
 
         $now = new DateTime();
 
-        $queryBuilder = $this->registry->getManagerForClass(News::class)->createQueryBuilder(News::class);
+        $queryBuilder = $this->documentManager->createQueryBuilder(News::class);
         $documents = $queryBuilder
             ->select('contentType', 'slug', 'publishTime', 'title', 'relations')
             ->field('channels.$id')->equals($channel->getId())

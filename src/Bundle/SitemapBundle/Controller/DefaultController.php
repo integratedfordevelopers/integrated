@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\SitemapBundle\Controller;
 
 use DateTime;
-use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Services\ContentTypeInformation;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
@@ -27,9 +27,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class DefaultController extends Controller
 {
     /**
-     * @var ManagerRegistry
+     * @var DocumentManager
      */
-    private $registry;
+    private $documentManager;
 
     /**
      * @var ChannelContextInterface
@@ -42,18 +42,18 @@ class DefaultController extends Controller
     private $contentTypeInformation;
 
     /**
-     * @param ManagerRegistry         $registry
+     * @param DocumentManager         $documentManager
      * @param ChannelContextInterface $context
      * @param ContainerInterface      $container
      * @param ContentTypeInformation  $contentTypeInformation
      */
     public function __construct(
-        ManagerRegistry $registry,
+        DocumentManager $documentManager,
         ChannelContextInterface $context,
         ContainerInterface $container,
         ContentTypeInformation $contentTypeInformation
     ) {
-        $this->registry = $registry;
+        $this->documentManager = $documentManager;
         $this->context = $context;
         $this->container = $container;
         $this->contentTypeInformation = $contentTypeInformation;
@@ -76,8 +76,9 @@ class DefaultController extends Controller
 
         $now = new DateTime();
 
-        $queryBuilder = $this->registry->getManagerForClass(Content::class)->createQueryBuilder(Content::class);
+        $queryBuilder = $this->documentManager->createQueryBuilder(Content::class);
         $count = $queryBuilder
+            ->count()
             ->field('channels.$id')->equals($channel->getId())
             ->field('disabled')->equals(false)
             ->field('publishTime.startDate')->lte($now)
@@ -85,8 +86,7 @@ class DefaultController extends Controller
             ->field('contentType')->in($this->contentTypeInformation->getPublishingAllowedContentTypes($channel->getId()))
             ->addOr($queryBuilder->expr()->field('primaryChannel.$id')->equals($channel->getId()))
             ->addOr($queryBuilder->expr()->field('primaryChannel')->exists(false))
-            ->getQuery()
-            ->count();
+            ->getQuery();
 
         if (!$count) {
             throw new NotFoundHttpException();
@@ -122,7 +122,7 @@ class DefaultController extends Controller
 
         $now = new DateTime();
 
-        $queryBuilder = $this->registry->getManagerForClass(Content::class)->createQueryBuilder(Content::class);
+        $queryBuilder = $this->documentManager->createQueryBuilder(Content::class);
 
         $documents = $queryBuilder
             ->select('contentType', 'slug', 'createdAt', 'class')

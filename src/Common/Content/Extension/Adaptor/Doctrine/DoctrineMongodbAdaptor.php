@@ -72,7 +72,7 @@ class DoctrineMongodbAdaptor extends AbstractAdaptor implements EventSubscriber
             }
 
             foreach ($objects as $object) {
-                if ($object instanceof Proxy && !$object->__isInitialized__) {
+                if ($object instanceof Proxy && !$object->__isInitialized()) {
                     continue;
                 }
 

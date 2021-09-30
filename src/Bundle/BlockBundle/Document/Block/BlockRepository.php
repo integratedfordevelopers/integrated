@@ -27,15 +27,19 @@ class BlockRepository extends DocumentRepository
      */
     public function getTypeChoices(MetadataFactoryInterface $factory, array $ids = null)
     {
-        $qb = $this->createQueryBuilder()
-            ->group(['class' => 1], ['total' => 0])
+        $qb = $this->createAggregationBuilder()
+            ->group()
+                ->field('class')
+                ->expression(1)
+                ->field('total')
+                ->expression(0)
             ->reduce('function (curr, result ) { result.total += 1;}');
 
         if (null !== $ids) {
-            $qb->field('_id')->in($ids);
+            $qb->match()->field('_id')->in($ids);
         }
 
-        $groupCountBlock = $qb->getQuery()->getIterator();
+        $groupCountBlock = $qb->getAggregation();
 
         $typeCount = [];
         foreach ($groupCountBlock as $result) {
@@ -44,7 +48,6 @@ class BlockRepository extends DocumentRepository
 
         $typeChoices = [];
         foreach ($factory->getAllMetadata() as $metaData) {
-            /** @var $metaData \Integrated\Common\Form\Mapping\Metadata\Document */
             $class = $metaData->getClass();
 
             if (\array_key_exists($class, $typeCount) && $typeCount[$class]) {
@@ -67,8 +70,7 @@ class BlockRepository extends DocumentRepository
     public function pagesByBlockQb(Block $block)
     {
         return $this->dm
-            ->getRepository('IntegratedPageBundle:Page\Page')
-            ->createQueryBuilder()
+            ->createQueryBuilder(Page::class)
             ->where('function() {
                 var block_id = "'.$block->getId().'";
 

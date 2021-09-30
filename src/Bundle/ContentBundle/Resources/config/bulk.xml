@@ -79,7 +79,7 @@
         </service>
 
         <service id="integrated_content.bulk.form.relation_provider" class="Integrated\Bundle\ContentBundle\Bulk\RelationFormProvider" public="false">
-            <argument type="service" id="doctrine_mongodb" />
+            <argument type="service" id="integrated_user.doctrine.object_manager" />
 
             <tag name="integrated_content.bulk.form.provider" />
         </service>

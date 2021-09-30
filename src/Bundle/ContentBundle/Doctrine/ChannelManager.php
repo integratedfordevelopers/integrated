@@ -76,7 +76,7 @@ class ChannelManager implements ChannelManagerInterface
         $this->om->persist($channel);
 
         if ($flush) {
-            $this->om->flush($channel);
+            $this->om->flush();
         }
     }
 
@@ -88,7 +88,7 @@ class ChannelManager implements ChannelManagerInterface
         $this->om->remove($channel);
 
         if ($flush) {
-            $this->om->flush($channel);
+            $this->om->flush();
         }
     }
 
