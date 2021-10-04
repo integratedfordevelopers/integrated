@@ -13,6 +13,7 @@ namespace Integrated\Bundle\ThemeBundle\Templating;
 
 use Integrated\Bundle\ThemeBundle\Exception\CircularFallbackException;
 use Symfony\Component\HttpKernel\Kernel;
+use Twig\Loader\FilesystemLoader;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -40,11 +41,17 @@ class ThemeManager
     private $fallbackStack = [];
 
     /**
+     * @var FilesystemLoader
+     */
+    private $loader;
+
+    /**
      * @param Kernel $kernel
      */
-    public function __construct(Kernel $kernel)
+    public function __construct(Kernel $kernel, FilesystemLoader $loader)
     {
         $this->kernel = $kernel;
+        $this->loader = $loader;
     }
 
     /**
@@ -164,10 +171,12 @@ class ThemeManager
         $this->fallbackStack[$theme->getId()] = 1;
 
         foreach ($theme->getPaths() as $path) {
-            if (file_exists($this->locateResource($path).'/'.$template)) {
-                $this->fallbackStack = []; // reset
+            foreach ($this->locateResources($path) as $dir) {
+                if (file_exists($dir.'/'.$template)) {
+                    $this->fallbackStack = []; // reset
 
-                return $path.'/'.$template;
+                    return $path.'/'.$template;
+                }
             }
         }
 
@@ -199,10 +208,19 @@ class ThemeManager
     /**
      * @param string $name
      *
-     * @return string|array
+     * @return array
      */
-    public function locateResource($name)
+    public function locateResources($name)
     {
-        return $this->kernel->locateResource($name);
+        if (str_starts_with($name, '@')) {
+            return [$this->kernel->locateResource($name)];
+        }
+
+        $paths = [];
+        foreach ($this->loader->getPaths() as $path) {
+            $paths[] = rtrim($path.'/'.trim($name, '/'), '/');
+        }
+
+        return $paths;
     }
 }
