@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\BlockBundle\Document\Block;
 
 use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
+use Integrated\Bundle\PageBundle\Document\Page\Page;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 
 /**
@@ -63,7 +64,7 @@ class BlockRepository extends DocumentRepository
     /**
      * @param Block $block
      *
-     * @return \Doctrine\MongoDB\Query\Query
+     * @return \Doctrine\ODM\MongoDB\Query\Query
      *
      * @internal heavy query, multiple calls make page slow
      */

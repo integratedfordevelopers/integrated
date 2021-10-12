@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\ChannelBundle\Form\ChoiceList;
 
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\ChoiceList\Factory\ChoiceListFactoryInterface;
 use Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface;
