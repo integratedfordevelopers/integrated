@@ -11,7 +11,7 @@
 
 namespace Integrated\Common\Content\Extension;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

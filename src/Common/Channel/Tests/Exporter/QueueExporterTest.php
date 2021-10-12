@@ -202,7 +202,7 @@ class QueueExporterTest extends \PHPUnit\Framework\TestCase
     {
         return $this->getMockBuilder('Integrated\\Common\\Channel\\Exporter\\QueueExporter')
             ->setConstructorArgs([$this->queue, $this->serializer, $this->exporter])
-            ->setMethods($method ? [$method] : null)
+            ->onlyMethods($method ? [$method] : [])
             ->getMock();
     }
 

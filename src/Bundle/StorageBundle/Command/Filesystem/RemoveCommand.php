@@ -108,5 +108,7 @@ class RemoveCommand extends Command
         } else {
             throw new \InvalidArgumentException(sprintf('The filesystem %s does not exist', $filesystem));
         }
+
+        return 0;
     }
 }

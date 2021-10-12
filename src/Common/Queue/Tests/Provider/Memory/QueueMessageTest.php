@@ -81,7 +81,7 @@ class QueueMessageTest extends \PHPUnit\Framework\TestCase
 
     public function testRelease()
     {
-        $mock = $this->getMockBuilder('stdClass')->setMethods(['callback'])->getMock();
+        $mock = $this->getMockBuilder('stdClass')->addMethods(['callback'])->getMock();
         $mock->expects($this->once())
             ->method('callback');
 
@@ -95,7 +95,7 @@ class QueueMessageTest extends \PHPUnit\Framework\TestCase
 
     public function testDelete()
     {
-        $mock = $this->getMockBuilder('stdClass')->setMethods(['callback'])->getMock();
+        $mock = $this->getMockBuilder('stdClass')->addMethods(['callback'])->getMock();
         $mock->expects($this->never())
             ->method('callback');
 

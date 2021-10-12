@@ -11,6 +11,7 @@
 namespace Integrated\Bundle\MenuBundle\Tests\Event;
 
 use Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Test for ConfigureMenuEvent.
@@ -49,7 +50,7 @@ class ConfigureMenuEventTest extends \PHPUnit\Framework\TestCase
      */
     public function testInstanceOf()
     {
-        $this->assertInstanceOf('Symfony\Component\EventDispatcher\Event', $this->event);
+        $this->assertInstanceOf(Event::class, $this->event);
     }
 
     /**

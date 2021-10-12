@@ -74,7 +74,7 @@ class ContentTypeController extends Controller
      *
      * @return Response
      */
-    public function indexAction()
+    public function index()
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 
@@ -92,7 +92,7 @@ class ContentTypeController extends Controller
      *
      * @return Response
      */
-    public function selectAction()
+    public function select()
     {
         $documentTypes = $this->metadata->getAllMetadata();
 
@@ -108,7 +108,7 @@ class ContentTypeController extends Controller
      *
      * @return Response
      */
-    public function showAction($id)
+    public function show($id)
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 
@@ -128,7 +128,7 @@ class ContentTypeController extends Controller
      *
      * @return Response|RedirectResponse
      */
-    public function newAction(Request $request)
+    public function new(Request $request)
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 
@@ -170,7 +170,7 @@ class ContentTypeController extends Controller
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(Request $request, $id)
+    public function edit(Request $request, $id)
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 
@@ -212,7 +212,7 @@ class ContentTypeController extends Controller
      *
      * @return RedirectResponse
      */
-    public function deleteAction(Request $request, $id)
+    public function delete(Request $request, $id)
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 

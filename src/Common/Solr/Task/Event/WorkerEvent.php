@@ -12,7 +12,7 @@
 namespace Integrated\Common\Solr\Task\Event;
 
 use Integrated\Common\Solr\Task\Worker;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

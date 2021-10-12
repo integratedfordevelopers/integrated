@@ -120,7 +120,7 @@ class DiscriminatorMapMetadataSubscriberTest extends \PHPUnit\Framework\TestCase
     {
         $mock = $this->getMockBuilder('Doctrine\\ODM\\MongoDB\\Mapping\\ClassMetadataInfo')
             ->disableOriginalConstructor()
-            ->setMethods(['setDiscriminatorMap', 'getName'])
+            ->onlyMethods(['setDiscriminatorMap', 'getName'])
             ->getMock();
 
         $mock->expects($this->atLeastOnce())

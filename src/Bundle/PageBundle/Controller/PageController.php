@@ -21,7 +21,7 @@ use Integrated\Bundle\PageBundle\Form\Type\PageCopyType;
 use Integrated\Bundle\PageBundle\Form\Type\PageFilterType;
 use Integrated\Bundle\PageBundle\Form\Type\PageType;
 use Integrated\Bundle\PageBundle\Services\PageCopyService;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -32,7 +32,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class PageController extends Controller
+class PageController extends AbstractController
 {
     /**
      * @var DocumentManager
@@ -61,7 +61,7 @@ class PageController extends Controller
      *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function index(Request $request)
     {
         if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -125,7 +125,7 @@ class PageController extends Controller
      *
      * @return Response|RedirectResponse
      */
-    public function newAction(Request $request)
+    public function new(Request $request)
     {
         if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -160,7 +160,7 @@ class PageController extends Controller
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(Request $request, Page $page)
+    public function edit(Request $request, Page $page)
     {
         if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -193,7 +193,7 @@ class PageController extends Controller
      *
      * @return Response|RedirectResponse
      */
-    public function deleteAction(Request $request, Page $page)
+    public function delete(Request $request, Page $page)
     {
         if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -231,7 +231,7 @@ class PageController extends Controller
      * @throws \Doctrine\ODM\MongoDB\Mapping\MappingException
      * @throws \Doctrine\ODM\MongoDB\MongoDBException
      */
-    public function copyAction(Request $request)
+    public function copy(Request $request)
     {
         if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();

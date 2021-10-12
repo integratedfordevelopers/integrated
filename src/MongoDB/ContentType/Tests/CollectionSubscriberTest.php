@@ -52,7 +52,7 @@ class CollectionSubscriberTest extends \PHPUnit\Framework\TestCase
     public function testloadClassMetadata()
     {
         $meta = $this->getMockBuilder('Doctrine\ODM\MongoDB\Mapping\ClassMetadata')
-            ->setMethods(['setCollection'])
+            ->onlyMethods(['setCollection'])
             ->setConstructorArgs(['stdClass'])
             ->getMock();
 
@@ -72,7 +72,7 @@ class CollectionSubscriberTest extends \PHPUnit\Framework\TestCase
     {
         $class = $this->getMockClass('stdClass');
 
-        $meta = $this->getMockBuilder('Doctrine\ODM\MongoDB\Mapping\ClassMetadata')->setMethods(['setCollection'])->setConstructorArgs([$class])->getMock();
+        $meta = $this->getMockBuilder('Doctrine\ODM\MongoDB\Mapping\ClassMetadata')->onlyMethods(['setCollection'])->setConstructorArgs([$class])->getMock();
         $meta->expects($this->never())
             ->method('setCollection');
 
@@ -87,7 +87,7 @@ class CollectionSubscriberTest extends \PHPUnit\Framework\TestCase
     public function testloadClassMetadataWithInvalidClass()
     {
         $meta = $this->getMockBuilder('Doctrine\ODM\MongoDB\Mapping\ClassMetadata')
-            ->setMethods(['setCollection'])
+            ->onlyMethods(['setCollection'])
             ->setConstructorArgs(['ArrayObject'])
             ->getMock();
 

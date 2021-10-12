@@ -156,7 +156,7 @@ class XmlProviderTest extends \PHPUnit\Framework\TestCase
             $files[$index] = new SplFileInfo(__DIR__.'/../../Fixtures/'.$value, '', '');
         }
 
-        $mock = $this->getMockBuilder('Symfony\Component\Finder\Finder')->setMethods(['getIterator'])->getMock();
+        $mock = $this->getMockBuilder('Symfony\Component\Finder\Finder')->onlyMethods(['getIterator'])->getMock();
         $mock->expects($this->any())
             ->method('getIterator')
             ->willReturn(new \ArrayIterator($files));

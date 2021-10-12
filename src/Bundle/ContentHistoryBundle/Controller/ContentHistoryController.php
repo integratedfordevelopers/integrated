@@ -14,38 +14,31 @@ namespace Integrated\Bundle\ContentHistoryBundle\Controller;
 use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentHistoryBundle\Document\ContentHistory;
-use Knp\Component\Pager\Paginator;
-use Symfony\Bundle\TwigBundle\TwigEngine;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class ContentHistoryController
+class ContentHistoryController extends AbstractController
 {
-    /**
-     * @var TwigEngine
-     */
-    protected $templating;
-
     /**
      * @var DocumentRepository
      */
     protected $repository;
 
     /**
-     * @var Paginator
+     * @var PaginatorInterface
      */
     protected $paginator;
 
     /**
-     * @param TwigEngine         $templating
      * @param DocumentRepository $repository
-     * @param Paginator          $paginator
+     * @param PaginatorInterface $paginator
      */
-    public function __construct(TwigEngine $templating, DocumentRepository $repository, Paginator $paginator)
+    public function __construct(DocumentRepository $repository, PaginatorInterface $paginator)
     {
-        $this->templating = $templating;
         $this->repository = $repository;
         $this->paginator = $paginator;
     }
@@ -69,7 +62,7 @@ class ContentHistoryController
             $request->query->get('limit', 20)
         );
 
-        return $this->templating->renderResponse('IntegratedContentHistoryBundle:content_history:index.html.twig', [
+        return $this->render('IntegratedContentHistoryBundle:content_history:index.html.twig', [
             'paginator' => $paginator,
         ]);
     }
@@ -81,7 +74,7 @@ class ContentHistoryController
      */
     public function showAction(ContentHistory $contentHistory)
     {
-        return $this->templating->renderResponse('IntegratedContentHistoryBundle:content_history:show.html.twig', [
+        return $this->render('IntegratedContentHistoryBundle:content_history:show.html.twig', [
             'contentHistory' => $contentHistory,
         ]);
     }
@@ -94,7 +87,7 @@ class ContentHistoryController
      */
     public function historyAction(Content $content, $limit = 3)
     {
-        return $this->templating->renderResponse('IntegratedContentHistoryBundle:content_history:history.html.twig', [
+        return $this->render('IntegratedContentHistoryBundle:content_history:history.html.twig', [
             'content' => $content,
             'documents' => $this->repository->findBy(
                 ['contentId' => $content->getId()],
