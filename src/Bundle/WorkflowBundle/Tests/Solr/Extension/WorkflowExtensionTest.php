@@ -31,25 +31,25 @@ use stdClass;
 class WorkflowExtensionTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ResolverInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ResolverInterface|MockObject
      */
     private $resolver;
 
     /**
-     * @var ObjectRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var ObjectRepository|MockObject
      */
     private $workflow;
 
     /**
-     * @var ObjectRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var ObjectRepository|MockObject
      */
     private $definition;
 
     protected function setUp(): void
     {
         $this->resolver = $this->createMock(ResolverInterface::class);
-        $this->workflow = $this->createMock('Doctrine\\Common\\Persistence\\ObjectRepository');
-        $this->definition = $this->createMock('Doctrine\\Common\\Persistence\\ObjectRepository');
+        $this->workflow = $this->createMock('Doctrine\Persistence\ObjectRepository');
+        $this->definition = $this->createMock('Doctrine\Persistence\ObjectRepository');
     }
 
     public function testInterface()

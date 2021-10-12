@@ -13,6 +13,7 @@ namespace Integrated\MongoDB\Serializer\Tests\Normalizer;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\MongoDB\Serializer\Normalizer\DocumentNormalizer;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -20,7 +21,7 @@ use Integrated\MongoDB\Serializer\Normalizer\DocumentNormalizer;
 class DocumentNormalizerTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var DocumentManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var DocumentManager|MockObject
      */
     private $manger;
 
@@ -55,7 +56,7 @@ class DocumentNormalizerTest extends \PHPUnit\Framework\TestCase
     {
         $object = new \stdClass();
 
-        $repository = $this->createMock('Doctrine\Common\Persistence\ObjectRepository');
+        $repository = $this->createMock('Doctrine\Persistence\ObjectRepository');
         $repository->expects($this->once())->method('find')->with($this->identicalTo(['id' => 'data']))->willReturn($object);
 
         $this->manger->expects($this->once())->method('getRepository')->with($this->identicalTo('class'))->willReturn($repository);
@@ -65,7 +66,7 @@ class DocumentNormalizerTest extends \PHPUnit\Framework\TestCase
 
     public function testDenormalizeNotFound()
     {
-        $repository = $this->createMock('Doctrine\Common\Persistence\ObjectRepository');
+        $repository = $this->createMock('Doctrine\\Persistence\\ObjectRepository');
         $repository->expects($this->once())->method('find')->with($this->identicalTo(['id' => 'data']))->willReturn(null);
 
         $this->manger->expects($this->once())->method('getRepository')->with($this->identicalTo('class'))->willReturn($repository);
@@ -75,7 +76,7 @@ class DocumentNormalizerTest extends \PHPUnit\Framework\TestCase
 
     public function testDenormalizeError()
     {
-        $repository = $this->createMock('Doctrine\Common\Persistence\ObjectRepository');
+        $repository = $this->createMock('Doctrine\Persistence\ObjectRepository');
         $repository->expects($this->once())->method('find')->with($this->identicalTo(['id' => 'data']))->will($this->throwException(new \Exception()));
 
         $this->manger->expects($this->once())->method('getRepository')->with($this->identicalTo('class'))->willReturn($repository);

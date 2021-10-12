@@ -60,7 +60,7 @@ class CollectionSubscriberTest extends \PHPUnit\Framework\TestCase
             ->method('setCollection')
             ->with($this->identicalTo('collection'));
 
-        $event = $this->getMockBuilder('Doctrine\ODM\MongoDB\Event\LoadClassMetadataEventArgs')->disableOriginalConstructor()->getMock();
+        $event = $this->getMockBuilder('Doctrine\Persistence\Event\LoadClassMetadataEventArgs')->disableOriginalConstructor()->getMock();
         $event->expects($this->atLeastOnce())
             ->method('getClassMetadata')
             ->willReturn($meta);
@@ -76,7 +76,7 @@ class CollectionSubscriberTest extends \PHPUnit\Framework\TestCase
         $meta->expects($this->never())
             ->method('setCollection');
 
-        $event = $this->getMockBuilder('Doctrine\ODM\MongoDB\Event\LoadClassMetadataEventArgs')->disableOriginalConstructor()->getMock();
+        $event = $this->getMockBuilder('Doctrine\Persistence\Event\LoadClassMetadataEventArgs')->disableOriginalConstructor()->getMock();
         $event->expects($this->atLeastOnce())
             ->method('getClassMetadata')
             ->willReturn($meta);
@@ -94,7 +94,7 @@ class CollectionSubscriberTest extends \PHPUnit\Framework\TestCase
         $meta->expects($this->never())
             ->method('setCollection');
 
-        $event = $this->getMockBuilder('Doctrine\ODM\MongoDB\Event\LoadClassMetadataEventArgs')->disableOriginalConstructor()->getMock();
+        $event = $this->getMockBuilder('Doctrine\Persistence\Event\LoadClassMetadataEventArgs')->disableOriginalConstructor()->getMock();
         $event->expects($this->atLeastOnce())
             ->method('getClassMetadata')
             ->willReturn($meta);

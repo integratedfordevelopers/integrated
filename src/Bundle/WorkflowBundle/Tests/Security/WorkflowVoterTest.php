@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Tests\Security;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectRepository;
 use Integrated\Bundle\UserBundle\Model\GroupableInterface;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\Permission;
@@ -31,17 +31,17 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ManagerRegistry|\PHPUnit_Framework_MockObject_MockObject
+     * @var ManagerRegistry|MockObject
      */
     private $manager;
 
     /**
-     * @var ResolverInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ResolverInterface|MockObject
      */
     private $resolver;
 
     /**
-     * @var MetadataFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var MetadataFactoryInterface|MockObject
      */
     private $metadata;
 
@@ -65,7 +65,7 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp(): void
     {
-        $this->manager = $this->createMock('Doctrine\\Common\\Persistence\\ManagerRegistry');
+        $this->manager = $this->createMock('Doctrine\Persistence\ManagerRegistry');
         $this->resolver = $this->createMock('Integrated\\Common\\ContentType\\ResolverInterface');
         $this->metadata = $this->createMock(MetadataFactoryInterface::class);
     }
@@ -137,7 +137,7 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
     {
         $object = ($exists) ? $this->getWorkflow() : null;
 
-        $repository = $this->createMock('Doctrine\\Common\\Persistence\\ObjectRepository');
+        $repository = $this->createMock('Doctrine\Persistence\ObjectRepository');
         $repository->expects($this->once())
             ->method($this->anything())
             ->willReturn($object);
@@ -165,7 +165,7 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
                 ->willReturn($object);
         }
 
-        $repository = $this->createMock('Doctrine\\Common\\Persistence\\ObjectRepository');
+        $repository = $this->createMock('Doctrine\Persistence\ObjectRepository');
         $repository->expects($this->once())
             ->method($this->anything())
             ->willReturn($container);
@@ -576,7 +576,7 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
     /**
      * @param array $groups
      *
-     * @return GroupableInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @return GroupableInterface|MockObject
      */
     protected function getUser(array $groups = [])
     {
@@ -607,7 +607,7 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
     /**
      * @param mixed $object
      *
-     * @return TokenInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @return TokenInterface|MockObject
      */
     protected function getToken($object = null)
     {
@@ -625,7 +625,7 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return Definition|\PHPUnit_Framework_MockObject_MockObject
+     * @return Definition|MockObject
      */
     protected function getWorkflow()
     {
@@ -639,7 +639,7 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
     /**
      * @param array $permissions
      *
-     * @return State|\PHPUnit_Framework_MockObject_MockObject
+     * @return State|MockObject
      */
     protected function getState(array $permissions = [], $never = false)
     {
@@ -659,7 +659,7 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
      * @param bool   $read
      * @param bool   $write
      *
-     * @return Permission|\PHPUnit_Framework_MockObject_MockObject
+     * @return Permission|MockObject
      */
     protected function getPermission($group, $read, $write)
     {
