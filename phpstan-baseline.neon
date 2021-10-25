@@ -1,6 +1,16 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Call to deprecated method singularize\\(\\) of class Doctrine\\\\Common\\\\Inflector\\\\Inflector\\.$#"
+			count: 1
+			path: src/Bundle/AssetBundle/Twig/Extension/AbstractAssetExtension.php
+
+		-
+			message: "#^Call to method singularize\\(\\) of deprecated class Doctrine\\\\Common\\\\Inflector\\\\Inflector\\.$#"
+			count: 1
+			path: src/Bundle/AssetBundle/Twig/Extension/AbstractAssetExtension.php
+
+		-
 			message:
 				"""
 					#^Call to deprecated method group\\(\\) of class Doctrine\\\\ODM\\\\MongoDB\\\\Query\\\\Builder\\:
@@ -495,29 +505,11 @@ parameters:
 		-
 			message:
 				"""
-					#^Call to method getRealClass\\(\\) of deprecated class Doctrine\\\\Common\\\\Util\\\\ClassUtils\\:
-					The ClassUtils class is deprecated\\.$#
-				"""
-			count: 1
-			path: src/Bundle/StorageBundle/Storage/Accessor/DoctrineDocument.php
-
-		-
-			message:
-				"""
 					#^Return type of method Integrated\\\\Bundle\\\\StorageBundle\\\\Storage\\\\Database\\\\DoctrineODMDatabase\\:\\:getObjects\\(\\) has typehint with deprecated class Doctrine\\\\ODM\\\\MongoDB\\\\Cursor\\:
 					This class is deprecated and will be removed in 2\\.0\\. You should typehint against the \\{@see Iterator\\} interface instead\\.$#
 				"""
 			count: 1
 			path: src/Bundle/StorageBundle/Storage/Database/DoctrineODMDatabase.php
-
-		-
-			message:
-				"""
-					#^Call to method getRealClass\\(\\) of deprecated class Doctrine\\\\Common\\\\Util\\\\ClassUtils\\:
-					The ClassUtils class is deprecated\\.$#
-				"""
-			count: 1
-			path: src/Bundle/StorageBundle/Storage/Decision.php
 
 		-
 			message:
@@ -554,11 +546,6 @@ parameters:
 				"""
 			count: 1
 			path: src/Bundle/ThemeBundle/Scraper/ScraperPageLoader.php
-
-		-
-			message: "#^Function str_starts_with not found\\.$#"
-			count: 1
-			path: src/Bundle/ThemeBundle/Templating/ThemeManager.php
 
 		-
 			message:
@@ -1069,11 +1056,83 @@ parameters:
 		-
 			message:
 				"""
+					#^Call to deprecated method add\\(\\) of class Doctrine\\\\DBAL\\\\Query\\\\Expression\\\\CompositeExpression\\:
+					This class will be made immutable\\. Use with\\(\\) instead\\.$#
+				"""
+			count: 2
+			path: src/Common/Locks/Provider/DBAL/Manager.php
+
+		-
+			message:
+				"""
+					#^Call to deprecated method andX\\(\\) of class Doctrine\\\\DBAL\\\\Query\\\\Expression\\\\ExpressionBuilder\\:
+					Use `and\\(\\)` instead\\.$#
+				"""
+			count: 1
+			path: src/Common/Locks/Provider/DBAL/Manager.php
+
+		-
+			message:
+				"""
+					#^Call to deprecated method executeUpdate\\(\\) of class Doctrine\\\\DBAL\\\\Connection\\:
+					Use \\{@link executeStatement\\(\\)\\} instead\\.$#
+				"""
+			count: 1
+			path: src/Common/Locks/Provider/DBAL/Manager.php
+
+		-
+			message:
+				"""
+					#^Call to deprecated method fetchAll\\(\\) of class Doctrine\\\\DBAL\\\\Connection\\:
+					Use fetchAllAssociative\\(\\)$#
+				"""
+			count: 1
+			path: src/Common/Locks/Provider/DBAL/Manager.php
+
+		-
+			message:
+				"""
+					#^Call to deprecated method fetchAssoc\\(\\) of class Doctrine\\\\DBAL\\\\Connection\\:
+					Use fetchAssociative\\(\\)$#
+				"""
+			count: 2
+			path: src/Common/Locks/Provider/DBAL/Manager.php
+
+		-
+			message:
+				"""
+					#^Call to deprecated method fetchColumn\\(\\) of class Doctrine\\\\DBAL\\\\Connection\\:
+					Use fetchOne\\(\\) instead\\.$#
+				"""
+			count: 1
+			path: src/Common/Locks/Provider/DBAL/Manager.php
+
+		-
+			message:
+				"""
 					#^Call to deprecated method getGuidExpression\\(\\) of class Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:
 					Use application\\-generated UUIDs instead$#
 				"""
 			count: 1
 			path: src/Common/Locks/Provider/DBAL/Manager.php
+
+		-
+			message:
+				"""
+					#^Call to deprecated method fetchAll\\(\\) of class Doctrine\\\\DBAL\\\\Connection\\:
+					Use fetchAllAssociative\\(\\)$#
+				"""
+			count: 1
+			path: src/Common/Queue/Provider/DBAL/QueueProvider.php
+
+		-
+			message:
+				"""
+					#^Call to deprecated method fetchColumn\\(\\) of class Doctrine\\\\DBAL\\\\Connection\\:
+					Use fetchOne\\(\\) instead\\.$#
+				"""
+			count: 1
+			path: src/Common/Queue/Provider/DBAL/QueueProvider.php
 
 		-
 			message:
