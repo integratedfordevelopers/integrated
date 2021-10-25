@@ -12,7 +12,7 @@
 
     <services>
 
-        <service id="integrated_content_history.repository.content_history" class="Doctrine\Common\Persistence\ObjectRepository">
+        <service id="integrated_content_history.repository.content_history" class="Doctrine\Persistence\ObjectRepository">
             <factory service="doctrine_mongodb.odm.document_manager" method="getRepository" />
             <argument>%integrated_content_history.document.content_history.class%</argument>
         </service>

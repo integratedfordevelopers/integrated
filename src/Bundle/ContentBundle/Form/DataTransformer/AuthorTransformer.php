@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 use Symfony\Component\Form\DataTransformerInterface;

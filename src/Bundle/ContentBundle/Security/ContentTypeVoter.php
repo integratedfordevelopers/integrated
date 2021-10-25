@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Security;
 
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Common\ContentType\ContentTypeInterface;

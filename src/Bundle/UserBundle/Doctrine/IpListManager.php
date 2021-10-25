@@ -13,7 +13,7 @@ namespace Integrated\Bundle\UserBundle\Doctrine;
 
 use Darsyn\IP\Version\Multi as IP;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Integrated\Bundle\UserBundle\Model\IpList;
 use Integrated\Bundle\UserBundle\Model\IpListManagerInterface;
 

@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Tests\Security;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectRepository;
 use Integrated\Bundle\UserBundle\Model\GroupableInterface;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\Permission;
@@ -65,7 +65,7 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp(): void
     {
-        $this->manager = $this->createMock('Doctrine\\Common\\Persistence\\ManagerRegistry');
+        $this->manager = $this->createMock('Doctrine\\Persistence\\ManagerRegistry');
         $this->resolver = $this->createMock('Integrated\\Common\\ContentType\\ResolverInterface');
         $this->metadata = $this->createMock(MetadataFactoryInterface::class);
     }
@@ -137,7 +137,7 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
     {
         $object = ($exists) ? $this->getWorkflow() : null;
 
-        $repository = $this->createMock('Doctrine\\Common\\Persistence\\ObjectRepository');
+        $repository = $this->createMock('Doctrine\\Persistence\\ObjectRepository');
         $repository->expects($this->once())
             ->method($this->anything())
             ->willReturn($object);
@@ -165,7 +165,7 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
                 ->willReturn($object);
         }
 
-        $repository = $this->createMock('Doctrine\\Common\\Persistence\\ObjectRepository');
+        $repository = $this->createMock('Doctrine\\Persistence\\ObjectRepository');
         $repository->expects($this->once())
             ->method($this->anything())
             ->willReturn($container);
