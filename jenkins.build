@@ -7,4 +7,4 @@ php7.3 vendor/bin/phpunit -c phpunit.xml.dist
 php7.3 vendor/bin/phpstan analyse --no-progress
 php7.3 composer.phar update -n --prefer-lowest
 php7.3 vendor/bin/phpunit -c phpunit.xml.dist
-php7.3 vendor/bin/phpstan analyse --no-progress
+php7.3 vendor/bin/phpstan analyse --no-progress --configuration phpstan.lowest.neon

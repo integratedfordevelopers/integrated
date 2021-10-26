@@ -31,7 +31,7 @@ class RelationTypeTest extends TypeTestCase
 
     protected function createRegistryMock($name, $em)
     {
-        $registry = $this->getMockBuilder('Doctrine\Common\Persistence\ManagerRegistry')->getMock();
+        $registry = $this->getMockBuilder('Doctrine\Persistence\ManagerRegistry')->getMock();
         $registry->expects($this->any())
             ->method('getManager')
             ->with($this->equalTo($name))

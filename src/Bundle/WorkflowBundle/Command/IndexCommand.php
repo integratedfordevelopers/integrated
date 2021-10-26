@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Command;
 
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Exception;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Service\StateManager;

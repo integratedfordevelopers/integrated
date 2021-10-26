@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\WorkflowBundle\Solr\Extension;
 
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 use Integrated\Bundle\UserBundle\Model\User;
 use Integrated\Common\Content\ChannelableInterface;

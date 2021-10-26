@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\EventListener;
 
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Form\EventListener\ChannelDefaultDataListener;
 use Integrated\Bundle\ContentBundle\Form\EventListener\ChannelEnforcerListener;

@@ -146,6 +146,6 @@ class Exporter implements ExporterInterface
                 ->setExternalId($response->getExternalId()));
         }
 
-        $this->dm->flush($content);
+        $this->dm->flush();
     }
 }
