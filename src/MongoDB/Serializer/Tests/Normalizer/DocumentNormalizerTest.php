@@ -13,7 +13,6 @@ namespace Integrated\MongoDB\Serializer\Tests\Normalizer;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\MongoDB\Serializer\Normalizer\DocumentNormalizer;
-use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -21,7 +20,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 class DocumentNormalizerTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var DocumentManager|MockObject
+     * @var DocumentManager|\PHPUnit_Framework_MockObject_MockObject
      */
     private $manger;
 
@@ -66,7 +65,7 @@ class DocumentNormalizerTest extends \PHPUnit\Framework\TestCase
 
     public function testDenormalizeNotFound()
     {
-        $repository = $this->createMock('Doctrine\\Persistence\\ObjectRepository');
+        $repository = $this->createMock('Doctrine\Persistence\ObjectRepository');
         $repository->expects($this->once())->method('find')->with($this->identicalTo(['id' => 'data']))->willReturn(null);
 
         $this->manger->expects($this->once())->method('getRepository')->with($this->identicalTo('class'))->willReturn($repository);

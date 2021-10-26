@@ -53,7 +53,7 @@
             <argument>%kernel.bundles%</argument>
         </service>
 
-        <service id="integrated_block.block_repository" class="Doctrine\Common\Persistence\ObjectRepository">
+        <service id="integrated_block.block_repository" class="Doctrine\Persistence\ObjectRepository">
             <factory service="doctrine_mongodb.odm.document_manager" method="getRepository" />
             <argument>Integrated\Bundle\BlockBundle\Document\Block\Block</argument>
         </service>

@@ -6,13 +6,13 @@
 
 	<services>
 
-        <service id="integrated_workflow.repository.definition" class="Doctrine\Common\Persistence\ObjectRepository" public="true">
+        <service id="integrated_workflow.repository.definition" class="Doctrine\Persistence\ObjectRepository" public="true">
             <factory service="doctrine.orm.entity_manager" method="getRepository" />
 
             <argument type="string">Integrated\Bundle\WorkflowBundle\Entity\Definition</argument>
         </service>
 
-        <service id="integrated_workflow.repository.workflow" class="Doctrine\Common\Persistence\ObjectRepository">
+        <service id="integrated_workflow.repository.workflow" class="Doctrine\Persistence\ObjectRepository">
             <factory service="doctrine.orm.entity_manager" method="getRepository" />
 
             <argument type="string">Integrated\Bundle\WorkflowBundle\Entity\Workflow\State</argument>

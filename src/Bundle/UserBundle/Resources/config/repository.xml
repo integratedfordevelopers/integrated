@@ -6,7 +6,7 @@
 
     <services>
 
-        <service id="integrated_user.repository.group" class="Doctrine\Common\Persistence\ObjectRepository">
+        <service id="integrated_user.repository.group" class="Doctrine\Persistence\ObjectRepository">
             <factory service="doctrine" method="getRepository" />
             <argument type="string">Integrated\Bundle\UserBundle\Model\Group</argument>
         </service>
