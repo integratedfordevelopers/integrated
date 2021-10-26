@@ -18,7 +18,7 @@
 
         <service id="integrated.form.resolver" alias="integrated_content.resolver.priority" public="true" />
 
-        <service id="integrated_content.form.channel.repository" class="Doctrine\Common\Persistence\ObjectRepository">
+        <service id="integrated_content.form.channel.repository" class="Doctrine\Persistence\ObjectRepository">
             <factory service="doctrine_mongodb" method="getRepository" />
             <argument type="string">Integrated\Bundle\ContentBundle\Document\Channel\Channel</argument>
         </service>
@@ -97,7 +97,7 @@
         </service>
 
         <service id="integrated_content.form.content_type.channel.type" class="Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelType" />
-        
+
         <service id="integrated_content.form.type.channel" class="Integrated\Bundle\ContentBundle\Form\Type\ChannelType">
             <tag name="form.type" />
         </service>
@@ -122,7 +122,7 @@
 
             <tag name="form.type" />
         </service>
-        
+
         <service id="integrated_content.form.search_selection.type" class="Integrated\Bundle\ContentBundle\Form\Type\SearchSelectionType">
             <argument type="service" id="security.authorization_checker" />
             <tag name="form.type" />

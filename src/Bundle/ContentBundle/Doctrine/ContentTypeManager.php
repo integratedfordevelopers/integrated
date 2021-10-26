@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Doctrine;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\ContentType\Exception\InvalidArgumentException;
 use Integrated\Common\ContentType\Iterator;

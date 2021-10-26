@@ -6,13 +6,13 @@
 
     <services>
 
-        <service id="integrated_channel.repository.config" class="Doctrine\Common\Persistence\ObjectRepository">
+        <service id="integrated_channel.repository.config" class="Doctrine\Persistence\ObjectRepository">
             <factory service="integrated_channel.orm.doctrine" method="getRepository" />
 
             <argument type="string">Integrated\Bundle\ChannelBundle\Model\Config</argument>
         </service>
 
-        <service id="integrated_channel.repository.channel" class="Doctrine\Common\Persistence\ObjectRepository">
+        <service id="integrated_channel.repository.channel" class="Doctrine\Persistence\ObjectRepository">
             <factory service="integrated_channel.odm.doctrine" method="getRepository" />
 
             <argument type="string">Integrated\Bundle\ContentBundle\Document\Channel\Channel</argument>
