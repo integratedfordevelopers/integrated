@@ -391,6 +391,7 @@ class SluggableSubscriber implements EventSubscriber
         } elseif ($uow instanceof ORMUnitOfWork) {
             throw new \RuntimeException('Not implemented yet'); // @todo (INTEGRATED-294)
         }
+        throw new \RuntimeException('Not supported');
     }
 
     /**
