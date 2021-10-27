@@ -108,6 +108,10 @@
                         autoresize_bottom_margin: "0px",
                         convert_urls: false,
                         content_css: "{{ content_styles.content_css|merge(['/bundles/integratedformtype/css/tinymce.content.css'])|join(',') }}",
+                        integrated_browser_media_types_url: "{{ path('integrated_content_content_media_types', {'filter': '__type__'}) }}",
+                        integrated_browser_search_url: "{{ path('integrated_content_content_index', {'_format': 'json'}) }}",
+                        integrated_browser_file_url: "{{ path('integrated_storage_file', {'id': '__id__', 'ext': '__ext__'}) }}",
+                        integrated_browser_file_resize_url: "{{ path('integrated_storage_file_resize', {'id': '__id__', 'ext': '__ext__', 'width': '150', 'height': '150'}) }}",
                         style_formats: [
                             {title: 'Paragraph', format: 'p'},
                             {title: 'Heading 2', block: 'h2' },

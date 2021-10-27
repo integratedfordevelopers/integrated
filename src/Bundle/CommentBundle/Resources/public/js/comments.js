@@ -30,7 +30,7 @@ $(function () {
     var newComment = function (fieldName, position, $parent, $container) {
         $.ajax({
             type: 'GET',
-            url: Routing.generate('integrated_comment_new', {content: $('.content-form').data('content-id'), field: fieldName}),
+            url: integrated_comment_urls.new.replace('__content__', $('.content-form').data('content-id')).replace('__field__', fieldName),
             success: function(response) {
                 showModalComment(response,position, $parent,  $container);
             }
@@ -46,7 +46,7 @@ $(function () {
     var showAddedComment = function(commentId, position, $parent, $container) {
         $.ajax({
             type: 'GET',
-            url: Routing.generate('integrated_comment_get', {comment: commentId}),
+            url: integrated_comment_urls.get.replace('__comment__', commentId),
             success: function(response) {
                 showModalComment(response, position, $parent, $container);
             }
