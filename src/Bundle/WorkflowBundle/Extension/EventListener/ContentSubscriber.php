@@ -279,7 +279,7 @@ E-mail: '.$person->getEmail().'',
     /**
      * @param ContentInterface $content
      *
-     * @return State | null
+     * @return State|null
      */
     protected function getState(ContentInterface $content)
     {
@@ -293,7 +293,7 @@ E-mail: '.$person->getEmail().'',
     }
 
     /**
-     * @return UserInterface | null
+     * @return UserInterface|null
      */
     protected function getUser()
     {
@@ -317,7 +317,7 @@ E-mail: '.$person->getEmail().'',
     /**
      * @param object $object
      *
-     * @return Definition | null
+     * @return Definition|null
      */
     protected function getWorkflow($object)
     {

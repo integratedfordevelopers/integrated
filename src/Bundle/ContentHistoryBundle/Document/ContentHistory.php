@@ -57,12 +57,12 @@ class ContentHistory
     protected $changeSet = [];
 
     /**
-     * @var Request | null
+     * @var Request|null
      */
     protected $request;
 
     /**
-     * @var User | null
+     * @var User|null
      */
     protected $user;
 
@@ -148,7 +148,7 @@ class ContentHistory
     }
 
     /**
-     * @return Request | null
+     * @return Request|null
      */
     public function getRequest()
     {
@@ -156,7 +156,7 @@ class ContentHistory
     }
 
     /**
-     * @param Request | null $request
+     * @param Request|null $request
      *
      * @return $this
      */
@@ -168,7 +168,7 @@ class ContentHistory
     }
 
     /**
-     * @return User | null
+     * @return User|null
      */
     public function getUser()
     {
@@ -176,7 +176,7 @@ class ContentHistory
     }
 
     /**
-     * @param User | null $user
+     * @param User|null $user
      *
      * @return $this
      */

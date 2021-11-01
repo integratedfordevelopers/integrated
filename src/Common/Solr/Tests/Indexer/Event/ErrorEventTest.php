@@ -20,7 +20,7 @@ use Integrated\Common\Solr\Indexer\Event\ErrorEvent;
 class ErrorEventTest extends MessageEventTest
 {
     /**
-     * @var ExceptionInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ExceptionInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $exception;
 

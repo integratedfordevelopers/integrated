@@ -19,7 +19,7 @@ interface ResolverInterface
     /**
      * Get the processor for the given object or class.
      *
-     * @param object | string $object
+     * @param object|string $object
      *
      * @return ResolvedProcessorInterface
      */

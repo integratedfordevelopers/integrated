@@ -24,7 +24,7 @@ use stdClass;
 class NormalizerTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ResolverInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ResolverInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $resolver;
 

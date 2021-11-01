@@ -39,8 +39,8 @@ class TwitterFactory
     }
 
     /**
-     * @param string | null $token
-     * @param string | null $secret
+     * @param string|null $token
+     * @param string|null $secret
      *
      * @return TwitterOAuth
      */

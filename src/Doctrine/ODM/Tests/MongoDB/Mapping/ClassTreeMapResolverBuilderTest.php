@@ -21,7 +21,7 @@ use ReflectionClass;
 class ClassTreeMapResolverBuilderTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ClassLocatorInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ClassLocatorInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $locator;
 

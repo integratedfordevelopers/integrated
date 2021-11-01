@@ -27,10 +27,6 @@ class FilterQueryProvider
      */
     public function getUsers($data)
     {
-        if (!$data) {
-            return $this->userManager->findAll();
-        }
-
         $queryBuilder = $this->userManager->createQueryBuilder()->select('User');
 
         if (isset($data['groups'])) {
@@ -53,12 +49,19 @@ class FilterQueryProvider
                 ->setParameter('q', '%'.$data['q'].'%');
         }
 
-        return $queryBuilder->getQuery()->getResult();
+        return $queryBuilder->getQuery();
     }
 
     public function getGroupChoices($data)
     {
-        $sql = 'SELECT s.id, s.name, count(g.group_id) as count FROM security_groups s LEFT JOIN security_user_groups g ON s.id = g.group_id WHERE g.user_id IN (:users) GROUP BY g.group_id HAVING count > 0';
+        $sql = 'SELECT s.id, s.name, count(g.group_id) as count
+            FROM security_groups s
+            INNER JOIN security_user_groups g ON s.id = g.group_id
+            INNER JOIN security_users u ON g.user_id = u.id
+            WHERE (:scope <= 0 OR u.scope = :scope)
+            AND (:groups <= 0 OR s.id IN (:groups))
+            GROUP BY g.group_id HAVING count > 0
+        ';
 
         $query = $this->userManager->getObjectManager()->createNativeQuery($sql, $this->getMapping());
 
@@ -67,7 +70,14 @@ class FilterQueryProvider
 
     public function getScopeChoices($data)
     {
-        $sql = 'SELECT s.id, s.name, count(u.scope) as count FROM security_scopes s LEFT JOIN security_users u ON s.id = u.scope WHERE u.id IN (:users) GROUP BY u.scope';
+        $sql = 'SELECT s.id, s.name, count(u.scope) as count
+            FROM security_scopes s
+            INNER JOIN security_users u ON s.id = u.scope
+            INNER JOIN security_user_groups g ON u.id = g.user_id
+            WHERE (:scope <= 0 OR u.scope = :scope)
+            AND (:groups <= 0 OR g.group_id IN (:groups))
+            GROUP BY u.scope
+        ';
 
         $query = $this->userManager->getObjectManager()->createNativeQuery($sql, $this->getMapping());
 
@@ -86,9 +96,8 @@ class FilterQueryProvider
 
     private function formatChoices($query, $data)
     {
-        $query->setParameter('users', array_map(function ($data) {
-            return $data->getId();
-        }, $data));
+        $query->setParameter('scope', (isset($data['scope'])) ? $data['scope'] : 0);
+        $query->setParameter('groups', (isset($data['groups'])) ? array_filter($data['groups']) : 0);
 
         $choices = [];
         foreach ($query->getResult() as $result) {

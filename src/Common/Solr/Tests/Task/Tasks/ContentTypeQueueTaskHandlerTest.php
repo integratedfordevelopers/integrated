@@ -25,17 +25,17 @@ use stdClass;
 class ContentTypeQueueTaskHandlerTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ContentTypeProviderInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ContentTypeProviderInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $provider;
 
     /**
-     * @var QueueInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var QueueInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $queue;
 
     /**
-     * @var JobFactory | \PHPUnit_Framework_MockObject_MockObject
+     * @var JobFactory|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $factory;
 
@@ -116,7 +116,7 @@ class ContentTypeQueueTaskHandlerTest extends \PHPUnit\Framework\TestCase
     /**
      * @param string $id
      *
-     * @return ContentTypeQueueTask | \PHPUnit_Framework_MockObject_MockObject
+     * @return ContentTypeQueueTask|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getTask($id)
     {
@@ -129,7 +129,7 @@ class ContentTypeQueueTaskHandlerTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return ContentInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ContentInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getContent()
     {

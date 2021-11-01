@@ -27,7 +27,7 @@ use stdClass;
 class BulkHandlerTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var HandlerFactoryRegistry | \PHPUnit_Framework_MockObject_MockObject
+     * @var HandlerFactoryRegistry|\PHPUnit_Framework_MockObject_MockObject
      */
     private $registry;
 

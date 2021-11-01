@@ -25,12 +25,12 @@ class ConfigureMenuEventTest extends \PHPUnit\Framework\TestCase
     protected $event;
 
     /**
-     * @var \Knp\Menu\FactoryInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var \Knp\Menu\FactoryInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $factory;
 
     /**
-     * @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var \Knp\Menu\ItemInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $menu;
 

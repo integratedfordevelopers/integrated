@@ -253,8 +253,8 @@ class ContentType implements ContentTypeInterface
     /**
      * Set the value of the specified key.
      *
-     * @param string       $name
-     * @param null | mixed $value
+     * @param string     $name
+     * @param mixed|null $value
      *
      * @return $this
      */

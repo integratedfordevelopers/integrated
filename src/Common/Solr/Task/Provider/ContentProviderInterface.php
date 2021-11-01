@@ -24,7 +24,7 @@ interface ContentProviderInterface
      *
      * @param string $id
      *
-     * @return Iterator | ContentInterface[]
+     * @return Iterator|ContentInterface[]
      */
     public function getReferenced($id);
 }

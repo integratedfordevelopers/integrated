@@ -26,7 +26,7 @@ class Permission implements PermissionInterface
     protected $mask;
 
     /**
-     * @param string | GroupInterface $group
+     * @param string|GroupInterface $group
      *
      * @return $this
      */

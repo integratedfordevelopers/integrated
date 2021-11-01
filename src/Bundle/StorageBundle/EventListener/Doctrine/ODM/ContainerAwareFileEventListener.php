@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class ContainerAwareFileEventListener extends FileEventListener
 {
     /**
-     * @var \Closure | null
+     * @var \Closure|null
      */
     private $initializer;
 

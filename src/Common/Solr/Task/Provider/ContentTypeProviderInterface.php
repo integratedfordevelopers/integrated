@@ -24,7 +24,7 @@ interface ContentTypeProviderInterface
      *
      * @param string $id
      *
-     * @return Iterator | ContentInterface[]
+     * @return Iterator|ContentInterface[]
      */
     public function getContent($id);
 }

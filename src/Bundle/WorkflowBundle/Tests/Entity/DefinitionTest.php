@@ -19,7 +19,7 @@ use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 class DefinitionTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \Integrated\Bundle\WorkflowBundle\Entity\Definition\State | \PHPUnit_Framework_MockObject_MockObject
+     * @var \Integrated\Bundle\WorkflowBundle\Entity\Definition\State|\PHPUnit_Framework_MockObject_MockObject
      */
     private $state;
 
@@ -61,7 +61,7 @@ class DefinitionTest extends \PHPUnit\Framework\TestCase
     {
         $instance = $this->getInstance();
 
-        /** @var \Integrated\Bundle\WorkflowBundle\Entity\Definition\State | \PHPUnit_Framework_MockObject_MockObject $state */
+        /** @var \Integrated\Bundle\WorkflowBundle\Entity\Definition\State|\PHPUnit_Framework_MockObject_MockObject $state */
         $state = $this->createMock('Integrated\Bundle\WorkflowBundle\Entity\Definition\State');
 
         // First add the state and then remove it with the setDefault function

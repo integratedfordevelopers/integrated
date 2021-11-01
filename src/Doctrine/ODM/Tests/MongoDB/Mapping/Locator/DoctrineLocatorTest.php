@@ -20,7 +20,7 @@ use Integrated\Doctrine\ODM\MongoDB\Mapping\Locator\DoctrineLocator;
 class DoctrineLocatorTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var MappingDriver | \PHPUnit_Framework_MockObject_MockObject
+     * @var MappingDriver|\PHPUnit_Framework_MockObject_MockObject
      */
     private $driver;
 

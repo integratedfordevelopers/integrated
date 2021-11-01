@@ -52,7 +52,7 @@ class HandlerFactoryRegistryBuilderTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return HandlerFactoryInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return HandlerFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getFactory()
     {

@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class RequestSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var RequestStack | null
+     * @var RequestStack|null
      */
     protected $requestStack;
 

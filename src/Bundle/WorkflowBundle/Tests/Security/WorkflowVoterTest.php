@@ -31,17 +31,17 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ManagerRegistry | \PHPUnit_Framework_MockObject_MockObject
+     * @var ManagerRegistry|\PHPUnit_Framework_MockObject_MockObject
      */
     private $manager;
 
     /**
-     * @var ResolverInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ResolverInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $resolver;
 
     /**
-     * @var MetadataFactoryInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var MetadataFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $metadata;
 
@@ -576,7 +576,7 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
     /**
      * @param array $groups
      *
-     * @return GroupableInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return GroupableInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getUser(array $groups = [])
     {
@@ -607,7 +607,7 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
     /**
      * @param mixed $object
      *
-     * @return TokenInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return TokenInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getToken($object = null)
     {
@@ -625,7 +625,7 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return Definition | \PHPUnit_Framework_MockObject_MockObject
+     * @return Definition|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getWorkflow()
     {
@@ -639,7 +639,7 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
     /**
      * @param array $permissions
      *
-     * @return State | \PHPUnit_Framework_MockObject_MockObject
+     * @return State|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getState(array $permissions = [], $never = false)
     {
@@ -659,7 +659,7 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
      * @param bool   $read
      * @param bool   $write
      *
-     * @return Permission | \PHPUnit_Framework_MockObject_MockObject
+     * @return Permission|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getPermission($group, $read, $write)
     {

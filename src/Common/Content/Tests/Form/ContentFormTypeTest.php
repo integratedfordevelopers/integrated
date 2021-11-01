@@ -39,27 +39,27 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ContentFormTypeTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ContentTypeInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ContentTypeInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $type;
 
     /**
-     * @var MetadataFactoryInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var MetadataFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $metadataFactory;
 
     /**
-     * @var MetadataInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var MetadataInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $metadata;
 
     /**
-     * @var ResolverInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ResolverInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $resolver;
 
     /**
-     * @var EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var EventDispatcherInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $dispatcher;
 
@@ -497,7 +497,7 @@ class ContentFormTypeTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return FormBuilderInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return FormBuilderInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getBuilder()
     {
@@ -505,7 +505,7 @@ class ContentFormTypeTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return FormView | \PHPUnit_Framework_MockObject_MockObject
+     * @return FormView|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getView()
     {
@@ -513,7 +513,7 @@ class ContentFormTypeTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return FormInterface |  \PHPUnit_Framework_MockObject_MockObject
+     * @return FormInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getForm()
     {
@@ -521,7 +521,7 @@ class ContentFormTypeTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return OptionsResolver | \PHPUnit_Framework_MockObject_MockObject
+     * @return OptionsResolver|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getResolver()
     {
@@ -533,7 +533,7 @@ class ContentFormTypeTest extends \PHPUnit\Framework\TestCase
      * @param string $type
      * @param array  $options
      *
-     * @return AttributeInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return AttributeInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getAttribute($name, $type, array $options = [])
     {
@@ -557,7 +557,7 @@ class ContentFormTypeTest extends \PHPUnit\Framework\TestCase
      * @param string $name
      * @param array  $options
      *
-     * @return ContentTypeFieldInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ContentTypeFieldInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getField($name, array $options = [])
     {

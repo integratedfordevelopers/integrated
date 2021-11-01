@@ -30,7 +30,7 @@ class Group implements GroupInterface
     protected $name;
 
     /**
-     * @var Collection | RoleInterface[]
+     * @var Collection|RoleInterface[]
      */
     protected $roles;
 
@@ -74,7 +74,7 @@ class Group implements GroupInterface
     }
 
     /**
-     * @param RoleInterface | string $role
+     * @param RoleInterface|string $role
      */
     public function removeRole($role)
     {
@@ -91,7 +91,7 @@ class Group implements GroupInterface
     }
 
     /**
-     * @param RoleInterface | string $role
+     * @param RoleInterface|string $role
      *
      * @return bool
      */

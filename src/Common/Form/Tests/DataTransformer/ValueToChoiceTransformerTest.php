@@ -20,7 +20,7 @@ use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
 class ValueToChoiceTransformerTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ChoiceListInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ChoiceListInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $choiceList;
 

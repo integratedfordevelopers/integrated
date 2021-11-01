@@ -40,17 +40,17 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
     const TEST_STATE = 'TEST';
 
     /**
-     * @var RegistryInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var RegistryInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $registry;
 
     /**
-     * @var ResolverInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ResolverInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $resolver;
 
     /**
-     * @var DocumentManager | \PHPUnit_Framework_MockObject_MockObject
+     * @var DocumentManager|\PHPUnit_Framework_MockObject_MockObject
      */
     private $dm;
 
@@ -270,7 +270,7 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
     /**
      * @param string $id
      *
-     * @return ChannelInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ChannelInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getChannel($id)
     {
@@ -283,7 +283,7 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return ExporterInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ExporterInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getExporter()
     {
@@ -294,7 +294,7 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
      * @param string           $adaptor
      * @param OptionsInterface $options
      *
-     * @return ConfigInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ConfigInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getConfig($adaptor, OptionsInterface $options = null)
     {
@@ -313,7 +313,7 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return OptionsInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return OptionsInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getOptions()
     {
@@ -324,7 +324,7 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
      * @param ConfigInterface   $config
      * @param ExporterInterface $exporter
      *
-     * @return AdapterInterface | ExportableInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return AdapterInterface|ExportableInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getAdapter(ConfigInterface $config = null, ExporterInterface $exporter = null)
     {

@@ -28,7 +28,7 @@ class MemoryResolverBuilder
     /**
      * If the channel is null then it will match very channel.
      *
-     * @var string[][] | null
+     * @var string[][]|null
      */
     private $config_channels = [];
 
@@ -37,8 +37,8 @@ class MemoryResolverBuilder
      *
      * if $channel is left empty then every channel supplied will match.
      *
-     * @param ConfigInterface           $config
-     * @param string | ChannelInterface $channel
+     * @param ConfigInterface         $config
+     * @param string|ChannelInterface $channel
      *
      * @return self
      *
@@ -75,8 +75,8 @@ class MemoryResolverBuilder
      *
      * if $channel is left empty then every channel supplied will match.
      *
-     * @param ConfigInterface[]         $configs
-     * @param string | ChannelInterface $channel
+     * @param ConfigInterface[]       $configs
+     * @param string|ChannelInterface $channel
      *
      * @return self
      *

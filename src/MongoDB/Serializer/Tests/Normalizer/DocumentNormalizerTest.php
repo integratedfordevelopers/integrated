@@ -20,7 +20,7 @@ use Integrated\MongoDB\Serializer\Normalizer\DocumentNormalizer;
 class DocumentNormalizerTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var DocumentManager | \PHPUnit_Framework_MockObject_MockObject
+     * @var DocumentManager|\PHPUnit_Framework_MockObject_MockObject
      */
     private $manger;
 

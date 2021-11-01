@@ -51,7 +51,7 @@ class ConfigFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /** @var AdapterInterface | ConfigurableInterface $adapter */
+        /** @var AdapterInterface|ConfigurableInterface $adapter */
         $adapter = $options['adapter'];
 
         $builder->add('name', TextType::class, [

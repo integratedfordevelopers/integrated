@@ -19,7 +19,7 @@ interface ChannelContextInterface
     /**
      * Get the current channel.
      *
-     * @return ChannelInterface | null
+     * @return ChannelInterface|null
      */
     public function getChannel();
 

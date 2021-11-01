@@ -50,7 +50,7 @@ class QueueMessage implements QueueMessageInterface
     private $executeAt;
 
     /**
-     * @var Closure | null
+     * @var Closure|null
      */
     private $release = null;
 

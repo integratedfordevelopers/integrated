@@ -37,12 +37,12 @@ class UserFilterType extends AbstractType
                 'required' => false,
             ])
             ->add('groups', ChoiceType::class, [
-                'choices' => $this->filterQueryProvider->getGroupChoices($options['users']),
+                'choices' => $this->filterQueryProvider->getGroupChoices($options['data']),
                 'multiple' => true,
                 'expanded' => true,
             ])
             ->add('scope', ChoiceType::class, [
-                'choices' => $this->filterQueryProvider->getScopeChoices($options['users']),
+                'choices' => $this->filterQueryProvider->getScopeChoices($options['data']),
                 'multiple' => true,
                 'expanded' => true,
             ]);
@@ -53,8 +53,7 @@ class UserFilterType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired('users');
-        $resolver->setAllowedTypes('users', 'array');
+        $resolver->setRequired('data');
     }
 
     /**
