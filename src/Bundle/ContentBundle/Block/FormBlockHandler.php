@@ -14,6 +14,8 @@ namespace Integrated\Bundle\ContentBundle\Block;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
+use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaTrue;
 use Integrated\Bundle\BlockBundle\Block\BlockHandler;
 use Integrated\Bundle\ContentBundle\Document\Block\FormBlock;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
@@ -30,8 +32,6 @@ use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType;
-use Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue;
 
 /**
  * Form block handler.
@@ -192,11 +192,11 @@ class FormBlockHandler extends BlockHandler
         }
 
         if (null !== $block && $block->isRecaptcha()) {
-            $form->add('recaptcha', VihuvacRecaptchaType::class, [
+            $form->add('recaptcha', EWZRecaptchaType::class, [
                 'mapped' => false,
                 'label' => ' ',
                 'constraints' => [
-                    new IsTrue(),
+                    new RecaptchaTrue(),
                 ],
             ]);
         }
