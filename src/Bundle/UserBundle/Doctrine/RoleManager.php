@@ -195,8 +195,8 @@ class RoleManager implements RoleManagerInterface
     {
         if (!$this->rolesEventFired) {
             $roles = $this->eventDispatcher->dispatch(
-                ConfigureRolesEvent::CONFIGURE,
-                new ConfigureRolesEvent($this->roles)
+                new ConfigureRolesEvent($this->roles),
+                ConfigureRolesEvent::CONFIGURE
             )->getRoles();
 
             $this->roles = [];
