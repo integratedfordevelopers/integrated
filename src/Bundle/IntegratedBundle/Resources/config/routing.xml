@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing
+        https://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <import resource="@IntegratedBlockBundle/Resources/config/routing.xml" type="xml">
+    </import>
+
+    <import resource="@IntegratedChannelBundle/Resources/config/routing.xml" type="xml">
+    </import>
+
+    <import resource="@IntegratedCommentBundle/Resources/config/routing.xml" type="xml">
+    </import>
+
+    <import resource="@IntegratedContentBundle/Resources/config/routing.xml" type="xml">
+    </import>
+
+    <import resource="@IntegratedContentHistoryBundle/Resources/config/routing.xml" type="xml">
+    </import>
+
+    <import resource="@IntegratedLockingBundle/Resources/config/routing.xml" type="xml">
+    </import>
+
+    <import resource="@IntegratedPageBundle/Resources/config/routing.xml" type="xml">
+    </import>
+
+    <import resource="@IntegratedSitemapBundle/Resources/config/routing.xml" type="xml">
+    </import>
+
+    <import resource="@IntegratedStorageBundle/Resources/config/routing/storage.xml" type="xml">
+    </import>
+
+    <import resource="@IntegratedThemeBundle/Resources/config/routing.xml" type="xml">
+    </import>
+
+    <import resource="@IntegratedUserBundle/Resources/config/routing.xml" type="xml">
+    </import>
+
+    <import resource="@IntegratedWebsiteBundle/Resources/config/routing.xml" type="xml">
+    </import>
+
+    <import resource="@IntegratedWorkflowBundle/Resources/config/routing.xml" type="xml">
+    </import>
+</routes>
