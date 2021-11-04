@@ -48,6 +48,8 @@
                                                 id="{{ relation.vars.name }}"
                                                 data-multiple="{{ relation.vars.attr['data-multiple'] }}"
                                                 data-types="{{ relation.vars.attr['data-types'] }}"
+                                                data-url="{{ path('integrated_content_content_index', {'_format': 'json'}) }}"
+                                                data-url-new="{{ path('integrated_content_content_new', {'type': '__type__', 'relation': '__relation__', '_format': 'iframe.html'}) }}"
                                                 class="relation-items form-control"
                                                 style="display: none; width: 89%"
                                             >

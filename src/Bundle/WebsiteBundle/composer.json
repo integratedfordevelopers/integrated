@@ -28,7 +28,6 @@
         "integrated/theme-bundle": "~0.8",
         "integrated/menu-bundle": "~0.8",
         "integrated/channel-bundle": "~0.8",
-        "friendsofsymfony/jsrouting-bundle": "~2.0",
         "knplabs/knp-paginator-bundle": "~2.6",
         "sensio/framework-extra-bundle": "~5.0",
         "twbs/bootstrap": "~3.3"

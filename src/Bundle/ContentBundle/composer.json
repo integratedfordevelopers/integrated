@@ -35,7 +35,6 @@
         "integrated/workflow-bundle": "~0.8",
         "braincrafted/bootstrap-bundle": "~2.2",
         "gregwar/image-bundle": "~2.1",
-        "friendsofsymfony/jsrouting-bundle": "~2.0",
         "knplabs/knp-menu-bundle": "~2.1",
         "knplabs/knp-paginator-bundle": "~2.6",
         "nelmio/alice": "~3.1",
