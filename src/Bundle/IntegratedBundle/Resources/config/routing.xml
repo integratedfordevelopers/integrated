@@ -37,6 +37,9 @@
     <import resource="@IntegratedUserBundle/Resources/config/routing.xml" type="xml">
     </import>
 
+    <import resource="@IntegratedUserBundle/Resources/config/routing.security.xml" type="xml">
+    </import>
+
     <import resource="@IntegratedWebsiteBundle/Resources/config/routing.xml" type="xml">
     </import>
 
