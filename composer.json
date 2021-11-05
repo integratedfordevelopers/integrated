@@ -33,7 +33,6 @@
         "doesntmattr/mongodb-migrations": "~2.0",
         "endroid/qr-code-bundle": "^3.4",
         "facebook/graph-sdk": "~5.0",
-        "friendsofsymfony/jsrouting-bundle": "~2.0",
         "gregwar/image": ">=2.0.25",
         "gregwar/image-bundle": "~2.1",
         "jms/metadata": "~1.6",

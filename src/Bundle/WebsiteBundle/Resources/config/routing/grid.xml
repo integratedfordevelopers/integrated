@@ -7,6 +7,5 @@
     <route id="integrated_website_grid_save" path="/save" methods="POST">
         <default key="_controller">integrated_website.controller.grid:saveAction</default>
         <default key="_format">json</default>
-        <option key="expose">true</option>
     </route>
 </routes>

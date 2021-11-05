@@ -14,7 +14,6 @@
 
 	<route id="integrated_workflow_change_state" path="/change_state" methods="GET">
 		<default key="_controller">IntegratedWorkflowBundle:Workflow:changeState</default>
-		<option key="expose">true</option>
 	</route>
 
 	<route id="integrated_workflow_new_rest" path="/" methods="POST">

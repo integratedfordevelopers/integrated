@@ -119,7 +119,7 @@ class DefaultController
             $comment->setAuthor($relation);
         }
 
-        $form = $this->formFactory->create('integrated_comment', $reply, [
+        $form = $this->formFactory->create(CommentType::class, $reply, [
             'action' => $request->getUri(),
         ]);
 
