@@ -17,7 +17,7 @@ use Integrated\Bundle\UserBundle\Form\Type\PasswordChangeType;
 use Integrated\Bundle\UserBundle\Form\Type\PasswordResetType;
 use Integrated\Bundle\UserBundle\Service\KeyGenerator;
 use Integrated\Bundle\UserBundle\Service\Mailer;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,7 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class SecurityController extends Controller
+class SecurityController extends AbstractController
 {
     /**
      * @var UserManager

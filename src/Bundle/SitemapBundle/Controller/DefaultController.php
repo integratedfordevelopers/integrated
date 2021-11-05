@@ -17,14 +17,14 @@ use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Services\ContentTypeInformation;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class DefaultController extends Controller
+class DefaultController extends AbstractController
 {
     /**
      * @var ManagerRegistry

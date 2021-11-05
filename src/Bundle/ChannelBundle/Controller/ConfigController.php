@@ -23,7 +23,7 @@ use Integrated\Bundle\ChannelBundle\Model\Config;
 use Integrated\Common\Channel\Connector\Adapter\RegistryInterface;
 use Integrated\Common\Channel\Connector\AdapterInterface;
 use Integrated\Common\Channel\Connector\Config\ConfigManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +33,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ConfigController extends Controller
+class ConfigController extends AbstractController
 {
     /**
      * @var ConfigManagerInterface
@@ -75,7 +75,7 @@ class ConfigController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request)
+    public function index(Request $request)
     {
         if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -97,7 +97,7 @@ class ConfigController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function newAction(Request $request, $adapter)
+    public function new(Request $request, $adapter)
     {
         if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -164,7 +164,7 @@ class ConfigController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request, $id)
+    public function edit(Request $request, $id)
     {
         if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -232,7 +232,7 @@ class ConfigController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function externalReturnAction(Request $request)
+    public function externalReturn(Request $request)
     {
         $session = new Session();
 
@@ -251,7 +251,7 @@ class ConfigController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function deleteAction(Request $request, $id)
+    public function delete(Request $request, $id)
     {
         if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();

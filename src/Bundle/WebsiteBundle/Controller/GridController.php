@@ -13,14 +13,14 @@ namespace Integrated\Bundle\WebsiteBundle\Controller;
 
 use Integrated\Bundle\PageBundle\Document\Page\AbstractPage;
 use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class GridController extends Controller
+class GridController extends AbstractController
 {
     /**
      * @param Request $request

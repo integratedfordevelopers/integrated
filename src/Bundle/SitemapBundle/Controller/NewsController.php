@@ -16,14 +16,14 @@ use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
 use Integrated\Bundle\ContentBundle\Document\Content\News;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class NewsController extends Controller
+class NewsController extends AbstractController
 {
     /**
      * @var ManagerRegistry

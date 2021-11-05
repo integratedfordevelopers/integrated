@@ -19,7 +19,7 @@ use Integrated\Bundle\ContentBundle\Form\Type\BulkConfigureType;
 use Integrated\Bundle\ContentBundle\Form\Type\BulkSelectionType;
 use Integrated\Bundle\ContentBundle\Provider\ContentProvider;
 use Integrated\Common\Bulk\BulkHandlerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>
  */
-class BulkController extends Controller
+class BulkController extends AbstractController
 {
     /**
      * @var DocumentManager

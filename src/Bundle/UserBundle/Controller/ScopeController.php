@@ -18,7 +18,7 @@ use Integrated\Bundle\UserBundle\Form\Type\ScopeFormType;
 use Integrated\Bundle\UserBundle\Model\Scope;
 use Integrated\Bundle\UserBundle\Model\ScopeManagerInterface;
 use Integrated\Bundle\UserBundle\Model\User;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @author Michael Jongman <michael@e-active.nl>
  */
-class ScopeController extends Controller
+class ScopeController extends AbstractController
 {
     /**
      * @param Request $request

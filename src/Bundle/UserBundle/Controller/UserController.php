@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\UserBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Integrated\Bundle\UserBundle\Form\Type\DeleteFormType;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +25,7 @@ use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class UserController extends Controller
+class UserController extends AbstractController
 {
     /**
      * @param Request $request
