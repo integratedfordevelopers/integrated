@@ -24,7 +24,6 @@ use Integrated\Common\Solr\Indexer\Event\IndexerEvent;
 use Integrated\Common\Solr\Indexer\Event\MessageEvent;
 use Integrated\Common\Solr\Indexer\Event\ResultEvent;
 use Integrated\Common\Solr\Indexer\Event\SendEvent;
-use Integrated\Common\Solr\Indexer\Events;
 use Integrated\Common\Solr\Indexer\Indexer;
 use Integrated\Common\Solr\Indexer\IndexerInterface;
 use Integrated\Common\Solr\Indexer\JobInterface;
