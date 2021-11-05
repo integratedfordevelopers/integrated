@@ -27,7 +27,7 @@ class GridController extends AbstractController
      *
      * @return JsonResponse
      */
-    public function saveAction(Request $request)
+    public function save(Request $request)
     {
         if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();

@@ -33,7 +33,7 @@ class TwoFactorController extends AbstractController
         $this->setContainer($container);
     }
 
-    public function deleteAction(Request $request)
+    public function delete(Request $request)
     {
         if (!$this->isGranted('ROLE_USER_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();

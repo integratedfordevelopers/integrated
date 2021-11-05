@@ -5,21 +5,17 @@
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="integrated_storage_file" path="/storage/{id}.{ext}" methods="GET">
-        <default key="_controller">integrated_storage.controller_file:fileAction</default>
+        <default key="_controller">Integrated\Bundle\StorageBundle\Controller\FileController::file</default>
 
         <requirement key="ext">^[a-zA-Z-_0-9]+$</requirement>
     </route>
 
     <route id="integrated_storage_file_resize" path="/storage/{id}.{ext}/resize/{width}/{height}" methods="GET">
-        <default key="_controller">integrated_storage.controller_file:fileAction</default>
+        <default key="_controller">Integrated\Bundle\StorageBundle\Controller\FileController::file</default>
 
         <requirement key="ext">^[a-zA-Z-_0-9]+$</requirement>
         <requirement key="width">\d+</requirement>
         <requirement key="height">\d+</requirement>
-    </route>
-
-    <route id="integrated_storage_file_upload" path="/storage/upload" methods="POST">
-        <default key="_controller">integrated_storage.controller_file:uploadAction</default>
     </route>
 
 </routes>

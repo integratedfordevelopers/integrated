@@ -5,11 +5,11 @@
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="integrated_content_search_suggestions" path="suggestions/{query}" methods="GET">
-        <default key="_controller">integrated_content.controller.search_controller:suggestionAction</default>
+        <default key="_controller">Integrated\Bundle\ContentBundle\Controller\SearchController::suggestion</default>
     </route>
 
     <route id="integrated_content_search_suggestions_empty" path="suggestions/" methods="GET">
-        <default key="_controller">integrated_content.controller.search_controller:suggestionAction</default>
+        <default key="_controller">Integrated\Bundle\ContentBundle\Controller\SearchController::suggestion</default>
         <default key="query" />
     </route>
 

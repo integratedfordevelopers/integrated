@@ -239,10 +239,10 @@ class ConfigController extends AbstractController
         if (!$id = $session->get('externalReturnId')) {
             $this->getFlashMessage()->error('Config not found in session');
 
-            return $this->indexAction($request);
+            return $this->index($request);
         }
 
-        return $this->editAction($request, $id);
+        return $this->edit($request, $id);
     }
 
     /**

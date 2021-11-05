@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="integrated_user_profile_index" path="/">
-        <default key="_controller">integrated_user.controller.profile:indexAction</default>
+        <default key="_controller">Integrated\Bundle\UserBundle\Controller\ProfileController::index</default>
     </route>
 
 </routes>

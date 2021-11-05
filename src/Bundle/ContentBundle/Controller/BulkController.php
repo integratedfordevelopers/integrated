@@ -69,7 +69,7 @@ class BulkController extends AbstractController
      *
      * @return RedirectResponse|Response
      */
-    public function selectAction(Request $request, BulkAction $bulk = null)
+    public function select(Request $request, BulkAction $bulk = null)
     {
         // Fetch Content selection.
         $limit = 1000;
@@ -112,7 +112,7 @@ class BulkController extends AbstractController
      *
      * @return RedirectResponse|Response
      */
-    public function configureAction(Request $request, BulkAction $bulk)
+    public function configure(Request $request, BulkAction $bulk)
     {
         if ($bulk->getExecutedAt()) {
             return $this->redirectToRoute('integrated_content_content_index', $bulk->getFilters());
@@ -140,7 +140,7 @@ class BulkController extends AbstractController
      *
      * @return RedirectResponse|Response
      */
-    public function confirmAction(Request $request, BulkAction $bulk)
+    public function confirm(Request $request, BulkAction $bulk)
     {
         $this->preventTimeout();
 

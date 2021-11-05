@@ -73,7 +73,7 @@ class GoogleController extends AbstractController
         $this->setContainer($container);
     }
 
-    public function formAction(Request $request)
+    public function form(Request $request)
     {
         $context = $this->resolver->resolve($request);
 
@@ -98,7 +98,7 @@ class GoogleController extends AbstractController
         return new Response($this->factory->create($context)->render());
     }
 
-    public function checkAction(Request $request)
+    public function check(Request $request)
     {
         $context = $this->resolver->resolve($request);
 

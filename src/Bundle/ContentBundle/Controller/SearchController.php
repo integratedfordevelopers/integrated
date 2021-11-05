@@ -52,7 +52,7 @@ class SearchController extends AbstractController
      *
      * @return Response
      */
-    public function suggestionAction($query, Request $request)
+    public function suggestion($query, Request $request)
     {
         $response = ['query' => ''];
 

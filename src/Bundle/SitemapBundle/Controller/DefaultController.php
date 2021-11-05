@@ -66,7 +66,7 @@ class DefaultController extends AbstractController
      *
      * @throws \Exception
      */
-    public function indexAction()
+    public function index()
     {
         $channel = $this->context->getChannel();
 
@@ -106,7 +106,7 @@ class DefaultController extends AbstractController
      *
      * @throws \Exception
      */
-    public function listAction($page)
+    public function list($page)
     {
         $channel = $this->context->getChannel();
 

@@ -59,7 +59,7 @@ class FileController
      *
      * @return RedirectResponse
      */
-    public function fileAction(Content $document, int $width = null, int $height = null)
+    public function file(Content $document, int $width = null, int $height = null)
     {
         // Read properties in the document containing a storage object
         foreach ($this->metadata->getMetadata(\get_class($document))->getProperties() as $property) {

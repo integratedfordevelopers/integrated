@@ -41,7 +41,7 @@ class IpListController extends AbstractController
      *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function index(Request $request)
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -65,7 +65,7 @@ class IpListController extends AbstractController
      *
      * @return Response
      */
-    public function newAction(Request $request)
+    public function new(Request $request)
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -105,7 +105,7 @@ class IpListController extends AbstractController
      *
      * @return Response
      */
-    public function editAction(IpList $list, Request $request)
+    public function edit(IpList $list, Request $request)
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -144,7 +144,7 @@ class IpListController extends AbstractController
      *
      * @return Response
      */
-    public function deleteAction(IpList $list, Request $request)
+    public function delete(IpList $list, Request $request)
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();

@@ -56,7 +56,7 @@ class NewsController extends AbstractController
      *
      * @throws \Exception
      */
-    public function indexAction()
+    public function index()
     {
         $channel = $this->context->getChannel();
 

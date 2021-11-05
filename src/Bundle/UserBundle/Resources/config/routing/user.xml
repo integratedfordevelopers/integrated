@@ -33,11 +33,11 @@
 	</route>
 
     <route id="integrated_user_user_delete_authenticator" path="/{id}/authenticator/delete">
-        <default key="_controller">integrated_user.controller.two_factor:deleteAction</default>
+        <default key="_controller">Integrated\Bundle\UserBundle\Controller\TwoFactorController::delete</default>
     </route>
 
     <route id="integrated_user_user_delete_authenticator_rest" path="/{id}/authenticator" methods="DELETE">
-        <default key="_controller">integrated_user.controller.two_factor:deleteAction</default>
+        <default key="_controller">Integrated\Bundle\UserBundle\Controller\TwoFactorController::delete</default>
     </route>
 
 </routes>
