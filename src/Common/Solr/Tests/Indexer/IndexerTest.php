@@ -246,16 +246,16 @@ class IndexerTest extends \PHPUnit\Framework\TestCase
         $this->dispatcher->expects($this->exactly(8))
             ->method('dispatch')
             ->withConsecutive(
-                [$this->equalTo(Events::PRE_EXECUTE), $this->callback($callback[0])],
-                [$this->equalTo(Events::BATCHING), $this->callback($callback[1])],
-                [$this->equalTo(Events::BATCHING), $this->callback($callback[2])],
-                [$this->equalTo(Events::SENDING), $this->callback($callback[3])],
-                [$this->equalTo(Events::RESULTS), $this->callback($callback[4])],
-                [$this->equalTo(Events::PROCESSED), $this->callback($callback[5])],
-                [$this->equalTo(Events::PROCESSED), $this->callback($callback[6])],
-                [$this->equalTo(Events::POST_EXECUTE), $this->callback($callback[0])]
+                [$this->callback($callback[0])],
+                [$this->callback($callback[1])],
+                [$this->callback($callback[2])],
+                [$this->callback($callback[3])],
+                [$this->callback($callback[4])],
+                [$this->callback($callback[5])],
+                [$this->callback($callback[6])],
+                [$this->callback($callback[0])]
             )
-            ->willReturnArgument(1);
+            ->willReturnArgument(0);
 
         $instance->execute();
 
@@ -357,16 +357,16 @@ class IndexerTest extends \PHPUnit\Framework\TestCase
         $this->dispatcher->expects($this->exactly(8))
             ->method('dispatch')
             ->withConsecutive(
-                [$this->equalTo(Events::PRE_EXECUTE), $this->callback($callback[0])],
-                [$this->equalTo(Events::BATCHING), $this->callback($callback[1])],
-                [$this->equalTo(Events::BATCHING), $this->callback($callback[2])],
-                [$this->equalTo(Events::SENDING), $this->callback($callback[3])],
-                [$this->equalTo(Events::RESULTS), $this->callback($callback[4])],
-                [$this->equalTo(Events::PROCESSED), $this->callback($callback[5])],
-                [$this->equalTo(Events::PROCESSED), $this->callback($callback[6])],
-                [$this->equalTo(Events::POST_EXECUTE), $this->callback($callback[0])]
+                [$this->callback($callback[0])],
+                [$this->callback($callback[1])],
+                [$this->callback($callback[2])],
+                [$this->callback($callback[3])],
+                [$this->callback($callback[4])],
+                [$this->callback($callback[5])],
+                [$this->callback($callback[6])],
+                [$this->callback($callback[0])]
             )
-            ->willReturnArgument(1);
+            ->willReturnArgument(0);
 
         $instance->execute($client);
 
@@ -403,10 +403,10 @@ class IndexerTest extends \PHPUnit\Framework\TestCase
         $this->dispatcher->expects($this->exactly(2))
             ->method('dispatch')
             ->withConsecutive(
-                [$this->equalTo(Events::PRE_EXECUTE), $this->callback($callback[0])],
-                [$this->equalTo(Events::POST_EXECUTE), $this->callback($callback[0])]
+                [$this->callback($callback[0])],
+                [$this->callback($callback[0])]
             )
-            ->willReturnArgument(1);
+            ->willReturnArgument(0);
 
         $instance->execute();
 
@@ -473,14 +473,14 @@ class IndexerTest extends \PHPUnit\Framework\TestCase
         $this->dispatcher->expects($this->exactly(6))
             ->method('dispatch')
             ->withConsecutive(
-                [$this->equalTo(Events::PRE_EXECUTE), $this->callback($callback[0])],
-                [$this->equalTo(Events::BATCHING), $this->callback($callback[1])],
-                [$this->equalTo(Events::PROCESSED), $this->callback($callback[2])],
-                [$this->equalTo(Events::BATCHING), $this->callback($callback[3])],
-                [$this->equalTo(Events::PROCESSED), $this->callback($callback[4])],
-                [$this->equalTo(Events::POST_EXECUTE), $this->callback($callback[0])]
+                [$this->callback($callback[0])],
+                [$this->callback($callback[1])],
+                [$this->callback($callback[2])],
+                [$this->callback($callback[3])],
+                [$this->callback($callback[4])],
+                [$this->callback($callback[0])]
             )
-            ->willReturnArgument(1);
+            ->willReturnArgument(0);
 
         $instance->execute();
 
@@ -575,15 +575,15 @@ class IndexerTest extends \PHPUnit\Framework\TestCase
         $this->dispatcher->expects($this->exactly(7))
             ->method('dispatch')
             ->withConsecutive(
-                [$this->equalTo(Events::PRE_EXECUTE), $this->callback($callback[0])],
-                [$this->equalTo(Events::ERROR), $this->callback($callback[1])],
-                [$this->equalTo(Events::BATCHING), $this->callback($callback[2])],
-                [$this->equalTo(Events::SENDING), $this->callback($callback[3])],
-                [$this->equalTo(Events::RESULTS), $this->callback($callback[4])],
-                [$this->equalTo(Events::PROCESSED), $this->callback($callback[5])],
-                [$this->equalTo(Events::POST_EXECUTE), $this->callback($callback[0])]
+                [$this->callback($callback[0])],
+                [$this->callback($callback[1])],
+                [$this->callback($callback[2])],
+                [$this->callback($callback[3])],
+                [$this->callback($callback[4])],
+                [$this->callback($callback[5])],
+                [$this->callback($callback[0])]
             )
-            ->willReturnArgument(1);
+            ->willReturnArgument(0);
 
         $instance->execute();
 
@@ -681,16 +681,16 @@ class IndexerTest extends \PHPUnit\Framework\TestCase
         $this->dispatcher->expects($this->exactly(8))
             ->method('dispatch')
             ->withConsecutive(
-                [$this->equalTo(Events::PRE_EXECUTE), $this->callback($callback[0])],
-                [$this->equalTo(Events::BATCHING), $this->callback($callback[1])],
-                [$this->equalTo(Events::BATCHING), $this->callback($callback[2])],
-                [$this->equalTo(Events::PROCESSED), $this->callback($callback[3])],
-                [$this->equalTo(Events::SENDING), $this->callback($callback[4])],
-                [$this->equalTo(Events::RESULTS), $this->callback($callback[5])],
-                [$this->equalTo(Events::PROCESSED), $this->callback($callback[6])],
-                [$this->equalTo(Events::POST_EXECUTE), $this->callback($callback[0])]
+                [$this->callback($callback[0])],
+                [$this->callback($callback[1])],
+                [$this->callback($callback[2])],
+                [$this->callback($callback[3])],
+                [$this->callback($callback[4])],
+                [$this->callback($callback[5])],
+                [$this->callback($callback[6])],
+                [$this->callback($callback[0])]
             )
-            ->willReturnArgument(1);
+            ->willReturnArgument(0);
 
         $instance->execute();
 
@@ -769,13 +769,13 @@ class IndexerTest extends \PHPUnit\Framework\TestCase
         $this->dispatcher->expects($this->exactly(5))
             ->method('dispatch')
             ->withConsecutive(
-                [$this->equalTo(Events::PRE_EXECUTE), $this->callback($callback[0])],
-                [$this->equalTo(Events::BATCHING), $this->callback($callback[1])],
-                [$this->equalTo(Events::BATCHING), $this->callback($callback[2])],
-                [$this->equalTo(Events::SENDING), $this->callback($callback[3])],
-                [$this->equalTo(Events::POST_EXECUTE), $this->callback($callback[0])]
+                [$this->callback($callback[0])],
+                [$this->callback($callback[1])],
+                [$this->callback($callback[2])],
+                [$this->callback($callback[3])],
+                [$this->callback($callback[0])]
             )
-            ->willReturnArgument(1);
+            ->willReturnArgument(0);
 
         try {
             $instance->execute();
@@ -908,18 +908,18 @@ class IndexerTest extends \PHPUnit\Framework\TestCase
         $this->dispatcher->expects($this->exactly(10))
             ->method('dispatch')
             ->withConsecutive(
-                [$this->equalTo(Events::PRE_EXECUTE), $this->callback($callback[0])],
-                [$this->equalTo(Events::BATCHING), $this->callback($callback[1])],
-                [$this->equalTo(Events::SENDING), $this->callback($callback[2])],
-                [$this->equalTo(Events::RESULTS), $this->callback($callback[3])],
-                [$this->equalTo(Events::PROCESSED), $this->callback($callback[4])],
-                [$this->equalTo(Events::BATCHING), $this->callback($callback[5])],
-                [$this->equalTo(Events::SENDING), $this->callback($callback[6])],
-                [$this->equalTo(Events::RESULTS), $this->callback($callback[7])],
-                [$this->equalTo(Events::PROCESSED), $this->callback($callback[8])],
-                [$this->equalTo(Events::POST_EXECUTE), $this->callback($callback[0])]
+                [$this->callback($callback[0])],
+                [$this->callback($callback[1])],
+                [$this->callback($callback[2])],
+                [$this->callback($callback[3])],
+                [$this->callback($callback[4])],
+                [$this->callback($callback[5])],
+                [$this->callback($callback[6])],
+                [$this->callback($callback[7])],
+                [$this->callback($callback[8])],
+                [$this->callback($callback[0])]
             )
-            ->willReturnArgument(1);
+            ->willReturnArgument(0);
 
         $instance->execute();
 
