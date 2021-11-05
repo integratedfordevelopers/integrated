@@ -11,13 +11,14 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Form\Type as Form;
 use Integrated\Bundle\ContentBundle\Services\SearchContentReferenced;
 use Integrated\Common\Channel\Event\ChannelEvent;
 use Integrated\Common\Channel\Events;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +29,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ChannelController extends Controller
+class ChannelController extends AbstractController
 {
     /**
      * @var DocumentManager
@@ -135,7 +136,7 @@ class ChannelController extends Controller
             $dispatcher = $this->get('integrated_content.event_dispatcher');
             $dispatcher->dispatch(Events::CHANNEL_CREATED, new ChannelEvent($channel));
 
-            return $this->redirect($this->generateUrl('integrated_content_channel_show', ['id' => $channel->getId()]));
+            return $this->redirectToRoute('integrated_content_channel_show', ['id' => $channel->getId()]);
         }
 
         return $this->render('IntegratedContentBundle:channel:new.html.twig', [
@@ -189,7 +190,7 @@ class ChannelController extends Controller
             $dispatcher = $this->get('integrated_content.event_dispatcher');
             $dispatcher->dispatch(Events::CHANNEL_UPDATED, new ChannelEvent($channel));
 
-            return $this->redirect($this->generateUrl('integrated_content_channel_show', ['id' => $channel->getId()]));
+            return $this->redirectToRoute('integrated_content_channel_show', ['id' => $channel->getId()]);
         }
 
         return $this->render('IntegratedContentBundle:channel:edit.html.twig', [
@@ -226,7 +227,7 @@ class ChannelController extends Controller
 
             $this->get('braincrafted_bootstrap.flash')->success('Channel deleted');
 
-            return $this->redirect($this->generateUrl('integrated_content_channel_index'));
+            return $this->redirectToRoute('integrated_content_channel_index');
         }
 
         return $this->render('IntegratedContentBundle:channel:delete.html.twig', [
@@ -241,7 +242,7 @@ class ChannelController extends Controller
      *
      * @param Channel $channel
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createCreateForm(Channel $channel)
     {
@@ -264,7 +265,7 @@ class ChannelController extends Controller
      *
      * @param Channel $channel
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createEditForm(Channel $channel)
     {
@@ -284,7 +285,7 @@ class ChannelController extends Controller
      * @param mixed $id            The document id
      * @param bool  $deleteAllowed
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createDeleteForm($id, bool $deleteAllowed)
     {

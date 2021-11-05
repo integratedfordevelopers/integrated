@@ -104,7 +104,7 @@ The <info>%command.name%</info> command starts a index of the site.
      *
      * @throws InvalidArgumentException
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         //  validate the content types unless validation is ignored
 
@@ -112,7 +112,7 @@ The <info>%command.name%</info> command starts a index of the site.
             $code = $this->executeValidation($input, $output);
 
             if ($code) {
-                return $code;
+                return (int) $code;
             }
         }
 

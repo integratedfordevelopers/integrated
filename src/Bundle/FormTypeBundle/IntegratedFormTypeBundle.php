@@ -28,7 +28,7 @@ class IntegratedFormTypeBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new RegisterContentStyleParametersPass());
+        $container->addCompilerPass(new RegisterContentStyleParametersPass(), 0);
     }
 
     /**

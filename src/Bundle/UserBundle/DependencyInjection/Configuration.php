@@ -21,8 +21,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $builder = new TreeBuilder();
-        $builder->root('integrated_user')
+        $builder = new TreeBuilder('integrated_user');
+        $builder->getRootNode()
             ->children()
                 ->arrayNode('two_factor')
                     ->addDefaultsIfNotSet()

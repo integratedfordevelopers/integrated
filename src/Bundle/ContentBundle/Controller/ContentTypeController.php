@@ -11,6 +11,9 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Integrated\Common\ContentType\ContentTypeInterface;
+use Symfony\Component\Form\Form;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
@@ -21,7 +24,6 @@ use Integrated\Common\ContentType\Events;
 use Integrated\Common\Form\Mapping\MetadataFactory;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Integrated\Common\Form\Mapping\MetadataInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -33,7 +35,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ContentTypeController extends Controller
+class ContentTypeController extends AbstractController
 {
     /**
      * @var string
@@ -135,7 +137,7 @@ class ContentTypeController extends Controller
         $metadata = $this->metadata->getMetadata($request->get('class'));
 
         if (!$metadata) {
-            return $this->redirect($this->generateUrl('integrated_content_content_type_select'));
+            return $this->redirectToRoute('integrated_content_content_type_select');
         }
 
         $contentType = new ContentType();
@@ -152,9 +154,9 @@ class ContentTypeController extends Controller
 
             $this->get('braincrafted_bootstrap.flash')->success('Item created');
 
-            $this->eventDispatcher->dispatch(Events::CONTENT_TYPE_CREATED, new ContentTypeEvent($contentType));
+            $this->eventDispatcher->dispatch(new ContentTypeEvent($contentType), Events::CONTENT_TYPE_CREATED);
 
-            return $this->redirect($this->generateUrl('integrated_content_content_type_show', ['id' => $contentType->getId()]));
+            return $this->redirectToRoute('integrated_content_content_type_show', ['id' => $contentType->getId()]);
         }
 
         return $this->render('IntegratedContentBundle:content_type:new.html.twig', [
@@ -193,9 +195,9 @@ class ContentTypeController extends Controller
 
             $this->get('braincrafted_bootstrap.flash')->success('Item updated');
 
-            $this->eventDispatcher->dispatch(Events::CONTENT_TYPE_UPDATED, new ContentTypeEvent($contentType));
+            $this->eventDispatcher->dispatch(new ContentTypeEvent($contentType), Events::CONTENT_TYPE_UPDATED);
 
-            return $this->redirect($this->generateUrl('integrated_content_content_type_show', ['id' => $contentType->getId()]));
+            return $this->redirectToRoute('integrated_content_content_type_show', ['id' => $contentType->getId()]);
         }
 
         return $this->render('IntegratedContentBundle:content_type:edit.html.twig', [
@@ -236,18 +238,18 @@ class ContentTypeController extends Controller
                 // Set flash message and redirect to item page
                 $this->get('braincrafted_bootstrap.flash')->error('Unable te delete, ContentType is not empty');
 
-                return $this->redirect($this->generateUrl('integrated_content_content_type_show', ['id' => $contentType->getId()]));
+                return $this->redirectToRoute('integrated_content_content_type_show', ['id' => $contentType->getId()]);
             }
 
             $dm->remove($contentType);
             $dm->flush();
 
-            $this->eventDispatcher->dispatch(Events::CONTENT_TYPE_DELETED, new ContentTypeEvent($contentType));
+            $this->eventDispatcher->dispatch(new ContentTypeEvent($contentType), Events::CONTENT_TYPE_DELETED);
 
             // Set flash message
             $this->get('braincrafted_bootstrap.flash')->success('Item deleted');
 
-            return $this->redirect($this->generateUrl('integrated_content_content_type_index'));
+            return $this->redirectToRoute('integrated_content_content_type_index');
         }
 
         return $this->render('IntegratedContentBundle:content_type:delete.html.twig', [
@@ -259,7 +261,7 @@ class ContentTypeController extends Controller
     /**
      * @param string $id
      *
-     * @return \Integrated\Common\ContentType\ContentTypeInterface
+     * @return ContentTypeInterface
      *
      * @throws NotFoundHttpException
      */
@@ -278,7 +280,7 @@ class ContentTypeController extends Controller
      * @param ContentType       $type
      * @param MetadataInterface $metadata
      *
-     * @return \Symfony\Component\Form\Form
+     * @return Form
      */
     protected function createNewForm(ContentType $type, MetadataInterface $metadata)
     {
@@ -307,7 +309,7 @@ class ContentTypeController extends Controller
      * @param ContentType       $type
      * @param MetadataInterface $metadata
      *
-     * @return \Symfony\Component\Form\Form
+     * @return Form
      */
     protected function createEditForm(ContentType $type, MetadataInterface $metadata)
     {
@@ -335,7 +337,7 @@ class ContentTypeController extends Controller
      *
      * @param ContentType $type
      *
-     * @return \Symfony\Component\Form\Form
+     * @return Form
      */
     protected function createDeleteForm(ContentType $type)
     {

@@ -24,8 +24,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $builder = new TreeBuilder();
-        $builder->root('integrated_channel')
+        $builder = new TreeBuilder('integrated_channel');
+        $builder->getRootNode()
             ->children()
                 ->arrayNode('configs')
                     ->prototype('array')

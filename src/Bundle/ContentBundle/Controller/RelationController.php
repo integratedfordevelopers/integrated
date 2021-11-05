@@ -11,9 +11,9 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ContentBundle\Form\Type\RelationType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class RelationController extends Controller
+class RelationController extends AbstractController
 {
     /**
      * @var string
@@ -114,7 +114,7 @@ class RelationController extends Controller
 
             $this->get('braincrafted_bootstrap.flash')->success('Item created');
 
-            return $this->redirect($this->generateUrl('integrated_content_relation_index'));
+            return $this->redirectToRoute('integrated_content_relation_index');
         }
 
         return $this->render('IntegratedContentBundle:relation:new.html.twig', [
@@ -162,7 +162,7 @@ class RelationController extends Controller
 
             $this->get('braincrafted_bootstrap.flash')->success('Item updated');
 
-            return $this->redirect($this->generateUrl('integrated_content_relation_index'));
+            return $this->redirectToRoute('integrated_content_relation_index');
         }
 
         return $this->render('IntegratedContentBundle:relation:edit.html.twig', [
@@ -194,7 +194,7 @@ class RelationController extends Controller
             $this->get('braincrafted_bootstrap.flash')->success('Item deleted');
         }
 
-        return $this->redirect($this->generateUrl('integrated_content_relation_index'));
+        return $this->redirectToRoute('integrated_content_relation_index');
     }
 
     /**

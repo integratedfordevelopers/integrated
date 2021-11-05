@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\StorageBundle\Form\Type;
 
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Integrated\Bundle\AssetBundle\Manager\AssetManager;
 use Integrated\Bundle\ImageBundle\Twig\Extension\ImageExtension;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
@@ -19,7 +20,6 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>

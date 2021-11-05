@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Exception;
 use Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction;
@@ -19,7 +20,6 @@ use Integrated\Bundle\ContentBundle\Form\Type\BulkConfigureType;
 use Integrated\Bundle\ContentBundle\Form\Type\BulkSelectionType;
 use Integrated\Bundle\ContentBundle\Provider\ContentProvider;
 use Integrated\Common\Bulk\BulkHandlerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>
  */
-class BulkController extends Controller
+class BulkController extends AbstractController
 {
     /**
      * @var DocumentManager

@@ -11,8 +11,11 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Integrated\Bundle\MenuBundle\Menu\DatabaseMenuFactory;
+use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Bundle\MenuBundle\Provider\IntegratedMenuProvider;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class MenuController extends Controller
+class MenuController extends AbstractController
 {
     /**
      * @param Request $request
@@ -76,7 +79,7 @@ class MenuController extends Controller
     }
 
     /**
-     * @return \Doctrine\ODM\MongoDB\DocumentManager
+     * @return DocumentManager
      */
     protected function getDocumentManager()
     {
@@ -92,7 +95,7 @@ class MenuController extends Controller
     }
 
     /**
-     * @return \Integrated\Bundle\MenuBundle\Menu\DatabaseMenuFactory
+     * @return DatabaseMenuFactory
      */
     protected function getMenuFactory()
     {
@@ -100,7 +103,7 @@ class MenuController extends Controller
     }
 
     /**
-     * @return \Integrated\Common\Content\Channel\ChannelInterface|null
+     * @return ChannelInterface|null
      */
     protected function getChannel()
     {

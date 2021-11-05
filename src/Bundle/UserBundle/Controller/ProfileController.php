@@ -11,19 +11,20 @@
 
 namespace Integrated\Bundle\UserBundle\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Braincrafted\Bundle\BootstrapBundle\Session\FlashMessage;
 use Integrated\Bundle\UserBundle\Form\Type\ProfileFormType;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
-class ProfileController extends Controller
+class ProfileController extends AbstractController
 {
     /**
      * @var UserManagerInterface
@@ -72,7 +73,7 @@ class ProfileController extends Controller
 
         if ($form->isSubmitted()) {
             if ($form->get('actions')->get('cancel')->isClicked()) {
-                return $this->redirect($this->generateUrl('integrated_content_content_index'));
+                return $this->redirectToRoute('integrated_content_content_index');
             }
 
             if ($form->isValid()) {
@@ -84,7 +85,7 @@ class ProfileController extends Controller
                 $this->userManager->persist($user);
                 $this->flashMessage->success('Your profile have been saved');
 
-                return $this->redirect($this->generateUrl('integrated_content_content_index'));
+                return $this->redirectToRoute('integrated_content_content_index');
             }
         }
 
@@ -97,7 +98,7 @@ class ProfileController extends Controller
     /**
      * @param UserInterface $user
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createProfileForm(UserInterface $user)
     {

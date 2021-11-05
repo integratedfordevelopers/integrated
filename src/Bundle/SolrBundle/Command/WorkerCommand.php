@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\SolrBundle\Command;
 
+use Symfony\Component\Console\Command\Command;
 use Integrated\Common\Solr\Task\Worker;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -21,7 +21,7 @@ use Symfony\Component\Lock\Factory;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class WorkerCommand extends ContainerAwareCommand
+class WorkerCommand extends Command
 {
     /**
      * @var Factory
@@ -66,12 +66,12 @@ The <info>%command.name%</info> command starts a solr worker run.
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $lock = $this->factory->createLock(self::class.md5(__DIR__));
 
         if (!$lock->acquire()) {
-            return;
+            return 0;
         }
 
         try {
@@ -83,5 +83,6 @@ The <info>%command.name%</info> command starts a solr worker run.
         } finally {
             $lock->release();
         }
+        return 0;
     }
 }

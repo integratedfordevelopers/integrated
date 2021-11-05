@@ -25,6 +25,6 @@ class IntegratedStorageBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new FileLocatorOverwritePass());
+        $container->addCompilerPass(new FileLocatorOverwritePass(), 0);
     }
 }

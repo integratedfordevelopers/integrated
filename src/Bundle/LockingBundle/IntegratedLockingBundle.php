@@ -28,7 +28,7 @@ class IntegratedLockingBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new RouterResourcePass());
+        $container->addCompilerPass(new RouterResourcePass(), 0);
     }
 
     /**

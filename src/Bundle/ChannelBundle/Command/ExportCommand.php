@@ -11,9 +11,9 @@
 
 namespace Integrated\Bundle\ChannelBundle\Command;
 
+use Symfony\Component\Console\Command\Command;
 use Exception;
 use Integrated\Common\Channel\Exporter\QueueExporter;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,7 +22,7 @@ use Symfony\Component\Process\Process;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ExportCommand extends ContainerAwareCommand
+class ExportCommand extends Command
 {
     /**
      * @var QueueExporter
@@ -70,7 +70,7 @@ class ExportCommand extends ContainerAwareCommand
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($input->getOption('full') || $input->getOption('daemon')) {
             return $this->runExternal($input, $output);
@@ -113,7 +113,7 @@ class ExportCommand extends ContainerAwareCommand
 
         while (true) {
             $process = new Process(
-                'php bin/console channel:export -e '.$input->getOption('env'),
+                ['php', 'bin/console', 'channel:export', '-e', $input->getOption('env')],
                 $cwd,
                 null,
                 null,

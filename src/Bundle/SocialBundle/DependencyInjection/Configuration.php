@@ -24,8 +24,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $builder = new TreeBuilder();
-        $builder->root('integrated_social')
+        $builder = new TreeBuilder('integrated_social');
+        $builder->getRootNode()
             ->children()
                 ->arrayNode('twitter')
                     ->children()

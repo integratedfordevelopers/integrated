@@ -34,8 +34,8 @@ class IntegratedUserBundle extends Bundle
             __DIR__.'/Resources/config/mapping/doctrine/' => 'Integrated\\Bundle\\UserBundle\\Model',
         ];
 
-        $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($mapping, ['integrated_user.mapping.entity_manager'], 'integrated_user.mapping.enabled'));
-        $container->addCompilerPass(new RegisterRolesParametersPass());
+        $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($mapping, ['integrated_user.mapping.entity_manager'], 'integrated_user.mapping.enabled'), 0);
+        $container->addCompilerPass(new RegisterRolesParametersPass(), 0);
 
         $security = $container->getExtension('security');
 

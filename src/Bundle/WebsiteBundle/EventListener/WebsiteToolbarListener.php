@@ -11,11 +11,14 @@
 
 namespace Integrated\Bundle\WebsiteBundle\EventListener;
 
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\WebsiteBundle\Service\EditableChecker;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -62,9 +65,9 @@ class WebsiteToolbarListener implements EventSubscriberInterface
     }
 
     /**
-     * @param FilterResponseEvent $event
+     * @param ResponseEvent $event
      */
-    public function onKernelResponse(FilterResponseEvent $event)
+    public function onKernelResponse(ResponseEvent $event)
     {
         if (!$event->isMasterRequest()) {
             return;
@@ -78,9 +81,9 @@ class WebsiteToolbarListener implements EventSubscriberInterface
     /**
      * @param Response $response
      *
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax

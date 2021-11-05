@@ -56,9 +56,9 @@ class RequestAwareChannelContext implements ChannelContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getChannel()
+    public function getChannel(Request $request)
     {
-        $request = $this->getRequest();
+        $request = $request;
 
         if (!$request) {
             return null;
@@ -74,9 +74,9 @@ class RequestAwareChannelContext implements ChannelContextInterface
     /**
      * {@inheritdoc}
      */
-    public function setChannel(ChannelInterface $channel = null)
+    public function setChannel(ChannelInterface $channel = null, Request $request)
     {
-        $request = $this->getRequest();
+        $request = $request;
 
         if (!$request) {
             return; // no request so can not store the channel

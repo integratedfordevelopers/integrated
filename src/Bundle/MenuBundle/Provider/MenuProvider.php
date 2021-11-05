@@ -61,8 +61,8 @@ class MenuProvider implements MenuProviderInterface
         }
 
         $this->eventDispatcher->dispatch(
-            ConfigureMenuEvent::CONFIGURE,
-            new ConfigureMenuEvent($this->factory, $this->menus[$name])
+            new ConfigureMenuEvent($this->factory, $this->menus[$name]),
+            ConfigureMenuEvent::CONFIGURE
         );
 
         return $this->menus[$name];

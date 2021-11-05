@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <container xmlns="http://symfony.com/schema/dic/services"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
+<parameters>
+    
+    <parameter key="integrated_block.metadata.driver.annotation.mapping.class">Doctrine\Common\Persistence\Mapping\Driver\MappingDriver</parameter>
+    <parameter key="integrated_block.metadata.driver.annotation.class">Integrated\Common\Form\Mapping\Driver\AnnotationDriver</parameter>
+    
+    <parameter key="integrated_block.metadata.factory.event_dispatcher.class">Symfony\Contracts\EventDispatcher\EventDispatcher</parameter>
+    <parameter key="integrated_block.metadata.factory.class">Integrated\Common\Form\Mapping\MetadataFactory</parameter>
+    <parameter key="integrated_block.metadata.factory.type.class">Integrated\Common\Block\BlockInterface</parameter>
+    
+</parameters>
 
-        <parameter key="integrated_block.metadata.driver.annotation.mapping.class">Doctrine\Common\Persistence\Mapping\Driver\MappingDriver</parameter>
-        <parameter key="integrated_block.metadata.driver.annotation.class">Integrated\Common\Form\Mapping\Driver\AnnotationDriver</parameter>
-
-        <parameter key="integrated_block.metadata.factory.event_dispatcher.class">Symfony\Component\EventDispatcher\EventDispatcher</parameter>
-        <parameter key="integrated_block.metadata.factory.class">Integrated\Common\Form\Mapping\MetadataFactory</parameter>
-        <parameter key="integrated_block.metadata.factory.type.class">Integrated\Common\Block\BlockInterface</parameter>
-
-    </parameters>
-
-    <services>
-
-        <service id="integrated_block.metadata.driver.annotation.mapping" class="%integrated_block.metadata.driver.annotation.mapping.class%" public="false">
-            <factory service="doctrine_mongodb.odm.default_configuration" method="getMetadataDriverImpl" />
-        </service>
-
-        <service id="integrated_block.metadata.driver.annotation" class="%integrated_block.metadata.driver.annotation.class%">
-            <argument type="service" id="integrated_block.metadata.driver.annotation.mapping" />
-            <argument type="service" id="annotation_reader" />
-        </service>
-
-        <service id="integrated_block.metadata.driver" alias="integrated_block.metadata.driver.annotation" />
-
-        <service id="integrated_block.metadata.factory.event_dispatcher" class="%integrated_block.metadata.factory.event_dispatcher.class%" public="false" />
-
-        <service id="integrated_block.metadata.factory" class="%integrated_block.metadata.factory.class%" public="true">
-            <argument type="service" id="integrated_block.metadata.driver" />
-            <argument>%integrated_block.metadata.factory.type.class%</argument>
-
-            <call method="setEventDispatcher">
-                <argument type="service" id="integrated_block.metadata.factory.event_dispatcher" />
-            </call>
-        </service>
-
-    </services>
+<services>
+    
+    <service id="integrated_block.metadata.driver.annotation.mapping" class="%integrated_block.metadata.driver.annotation.mapping.class%" public="false">
+        <factory service="doctrine_mongodb.odm.default_configuration" method="getMetadataDriverImpl" />
+    </service>
+    
+    <service id="integrated_block.metadata.driver.annotation" class="%integrated_block.metadata.driver.annotation.class%">
+        <argument type="service" id="integrated_block.metadata.driver.annotation.mapping" />
+        <argument type="service" id="annotation_reader" />
+    </service>
+    
+    <service id="integrated_block.metadata.driver" alias="integrated_block.metadata.driver.annotation" />
+    
+    <service id="integrated_block.metadata.factory.event_dispatcher" class="%integrated_block.metadata.factory.event_dispatcher.class%" public="false" />
+    
+    <service id="integrated_block.metadata.factory" class="%integrated_block.metadata.factory.class%" public="true">
+        <argument type="service" id="integrated_block.metadata.driver" />
+        <argument>%integrated_block.metadata.factory.type.class%</argument>
+        
+        <call method="setEventDispatcher">
+            <argument type="service" id="integrated_block.metadata.factory.event_dispatcher" />
+        </call>
+    </service>
+    
+</services>
 </container>

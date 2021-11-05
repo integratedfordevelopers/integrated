@@ -78,24 +78,26 @@ class ContentFormType extends AbstractType
 
         // Allow events to change the options or add fields at the start of the form
         if ($dispatcher->hasListeners(Events::PRE_BUILD)) {
-            $options = $dispatcher->dispatch(Events::PRE_BUILD, new BuilderEvent(
+            $options = $dispatcher->dispatch(new BuilderEvent(
                 $type,
                 $metadata,
                 $builder,
                 $options
-            ))->getOptions();
+            ),
+            Events::PRE_BUILD)->getOptions();
         }
 
         foreach ($metadata->getFields() as $field) {
             // Allow events to add fields before the supplied field
             if ($dispatcher->hasListeners(Events::PRE_BUILD_FIELD)) {
-                $dispatcher->dispatch(Events::PRE_BUILD_FIELD, new BuilderEvent(
+                $dispatcher->dispatch(new BuilderEvent(
                     $type,
                     $metadata,
                     $builder,
                     $options,
                     $field->getName()
-                ));
+                ),
+                Events::PRE_BUILD_FIELD);
             }
 
             if ($type->hasField($field->getName())) {
@@ -109,7 +111,7 @@ class ContentFormType extends AbstractType
                     $event = new FieldEvent($type, $metadata, $config, $options);
                     $event->setData($builder->getData());
 
-                    if ($dispatcher->dispatch(Events::BUILD_FIELD, $event)->isIgnored()) {
+                    if ($dispatcher->dispatch($event, Events::BUILD_FIELD)->isIgnored()) {
                         $config = null;
                     }
                 }
@@ -121,19 +123,20 @@ class ContentFormType extends AbstractType
 
             // Allow events to add fields after the supplied field
             if ($dispatcher->hasListeners(Events::POST_BUILD_FIELD)) {
-                $dispatcher->dispatch(Events::POST_BUILD_FIELD, new BuilderEvent(
+                $dispatcher->dispatch(new BuilderEvent(
                     $type,
                     $metadata,
                     $builder,
                     $options,
                     $field->getName()
-                ));
+                ),
+                Events::POST_BUILD_FIELD);
             }
         }
 
         // Allow events to add fields at the end of the form
         if ($dispatcher->hasListeners(Events::POST_BUILD)) {
-            $dispatcher->dispatch(Events::POST_BUILD, new BuilderEvent($type, $metadata, $builder, $options));
+            $dispatcher->dispatch(new BuilderEvent($type, $metadata, $builder, $options), Events::POST_BUILD);
         }
     }
 
@@ -152,13 +155,14 @@ class ContentFormType extends AbstractType
         $type = $options['content_type'];
         unset($options['content_type']);
 
-        $dispatcher->dispatch(Events::PRE_VIEW, new ViewEvent(
+        $dispatcher->dispatch(new ViewEvent(
             $type,
             $this->metadataFactory->getMetadata($type->getClass()),
             $view,
             $form,
             $options
-        ));
+        ),
+        Events::PRE_VIEW);
     }
 
     /**
@@ -176,13 +180,14 @@ class ContentFormType extends AbstractType
         $type = $options['content_type'];
         unset($options['content_type']);
 
-        $dispatcher->dispatch(Events::POST_VIEW, new ViewEvent(
+        $dispatcher->dispatch(new ViewEvent(
             $type,
             $this->metadataFactory->getMetadata($type->getClass()),
             $view,
             $form,
             $options
-        ));
+        ),
+        Events::POST_VIEW);
     }
 
     /**

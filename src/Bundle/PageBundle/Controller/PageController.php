@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\PageBundle\Controller;
 
+use Doctrine\ODM\MongoDB\Mapping\MappingException;
+use Doctrine\ODM\MongoDB\MongoDBException;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
@@ -146,7 +148,7 @@ class PageController extends AbstractController
 
             $this->setLastEditPage($request->getSession(), $page);
 
-            return $this->redirect($this->generateUrl('integrated_page_page_index'));
+            return $this->redirectToRoute('integrated_page_page_index');
         }
 
         return $this->render('IntegratedPageBundle:page:new.html.twig', [
@@ -178,7 +180,7 @@ class PageController extends AbstractController
 
             $this->setLastEditPage($request->getSession(), $page);
 
-            return $this->redirect($this->generateUrl('integrated_page_page_index'));
+            return $this->redirectToRoute('integrated_page_page_index');
         }
 
         return $this->render('IntegratedPageBundle:page:edit.html.twig', [
@@ -214,7 +216,7 @@ class PageController extends AbstractController
 
             $this->get('braincrafted_bootstrap.flash')->success('Page deleted');
 
-            return $this->redirect($this->generateUrl('integrated_page_page_index'));
+            return $this->redirectToRoute('integrated_page_page_index');
         }
 
         return $this->render('IntegratedPageBundle:page:delete.html.twig', [
@@ -228,8 +230,8 @@ class PageController extends AbstractController
      *
      * @return Response
      *
-     * @throws \Doctrine\ODM\MongoDB\Mapping\MappingException
-     * @throws \Doctrine\ODM\MongoDB\MongoDBException
+     * @throws MappingException
+     * @throws MongoDBException
      */
     public function copy(Request $request)
     {
@@ -266,7 +268,7 @@ class PageController extends AbstractController
 
                 $this->get('braincrafted_bootstrap.flash')->success('Pages copied');
 
-                return $this->redirect($this->generateUrl('integrated_page_page_index'));
+                return $this->redirectToRoute('integrated_page_page_index');
             }
         }
 
@@ -345,7 +347,7 @@ class PageController extends AbstractController
     /**
      * @param Builder $builder
      *
-     * @throws \Doctrine\ODM\MongoDB\MongoDBException
+     * @throws MongoDBException
      */
     protected function displayPathErrors(Builder $builder)
     {

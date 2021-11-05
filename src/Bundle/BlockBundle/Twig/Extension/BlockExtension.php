@@ -11,13 +11,15 @@
 
 namespace Integrated\Bundle\BlockBundle\Twig\Extension;
 
+use Psr\Log\LoggerInterface;
+use Integrated\Bundle\ThemeBundle\Exception\CircularFallbackException;
+use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\BlockBundle\Provider\BlockUsageProvider;
 use Integrated\Bundle\BlockBundle\Templating\BlockManager;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
-use Symfony\Bridge\Monolog\Logger;
 
 class BlockExtension extends \Twig_Extension
 {
@@ -52,7 +54,7 @@ class BlockExtension extends \Twig_Extension
     private $channelContext;
 
     /**
-     * @var Logger
+     * @var LoggerInterface
      */
     private $logger;
 
@@ -67,7 +69,7 @@ class BlockExtension extends \Twig_Extension
      * @param BlockUsageProvider       $blockUsageProvider
      * @param MetadataFactoryInterface $metadataFactory
      * @param ChannelContextInterface  $channelContext
-     * @param Logger                   $logger
+     * @param LoggerInterface $logger
      * @param string                   $environment
      */
     public function __construct(
@@ -76,7 +78,7 @@ class BlockExtension extends \Twig_Extension
         BlockUsageProvider $blockUsageProvider,
         MetadataFactoryInterface $metadataFactory,
         ChannelContextInterface $channelContext,
-        Logger $logger,
+        LoggerInterface $logger,
         string $environment
     ) {
         $this->blockManager = $blockManager;
@@ -122,7 +124,7 @@ class BlockExtension extends \Twig_Extension
 
     /**
      * @param \Twig_Environment                              $environment
-     * @param \Integrated\Common\Block\BlockInterface|string $block
+     * @param BlockInterface|string $block
      * @param array                                          $options
      *
      * @return string|null
@@ -172,7 +174,7 @@ class BlockExtension extends \Twig_Extension
      *
      * @return string|null
      *
-     * @throws \Integrated\Bundle\ThemeBundle\Exception\CircularFallbackException
+     * @throws CircularFallbackException
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
@@ -199,9 +201,9 @@ class BlockExtension extends \Twig_Extension
     }
 
     /**
-     * @param \Integrated\Common\Block\BlockInterface $block
+     * @param BlockInterface $block
      *
-     * @return \Integrated\Bundle\ContentBundle\Document\Channel\Channel[]
+     * @return Channel[]
      */
     public function findChannels(BlockInterface $block)
     {
@@ -220,7 +222,7 @@ class BlockExtension extends \Twig_Extension
     }
 
     /**
-     * @param \Integrated\Common\Block\BlockInterface $block
+     * @param BlockInterface $block
      *
      * @return array
      */

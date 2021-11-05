@@ -25,8 +25,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('integrated_storage');
+        $treeBuilder = new TreeBuilder('integrated_storage');
+        $rootNode = $treeBuilder->getRootNode();
 
         $this->addRootConfig($rootNode);
         $this->addResolverConfig($rootNode);

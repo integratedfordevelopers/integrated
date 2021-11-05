@@ -11,6 +11,9 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Form\FormInterface;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -24,7 +27,6 @@ use Integrated\Bundle\WorkflowBundle\Form\Type\DefinitionFormType;
 use Integrated\Bundle\WorkflowBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\WorkflowBundle\Utils\StateVisibleConfig;
 use Integrated\Common\Security\PermissionInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +35,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class WorkflowController extends Controller
+class WorkflowController extends AbstractController
 {
     /**
      * Generate a list of workflow definitions.
@@ -78,7 +80,7 @@ class WorkflowController extends Controller
 
             // check for back click else its a submit
             if ($form->get('actions')->get('cancel')->isClicked()) {
-                return $this->redirect($this->generateUrl('integrated_workflow_index'));
+                return $this->redirectToRoute('integrated_workflow_index');
             }
 
             if ($form->isValid()) {
@@ -88,7 +90,7 @@ class WorkflowController extends Controller
                 $manager->persist($workflow);
                 $manager->flush();
 
-                return $this->redirect($this->generateUrl('integrated_workflow_index'));
+                return $this->redirectToRoute('integrated_workflow_index');
             }
         }
 
@@ -102,7 +104,7 @@ class WorkflowController extends Controller
      *
      * @return Response
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws NotFoundHttpException
      */
     public function editAction(Request $request)
     {
@@ -125,7 +127,7 @@ class WorkflowController extends Controller
 
             // check for back click else its a submit
             if ($form->get('actions')->get('cancel')->isClicked()) {
-                return $this->redirect($this->generateUrl('integrated_workflow_index'));
+                return $this->redirectToRoute('integrated_workflow_index');
             }
 
             if ($form->isValid()) {
@@ -134,7 +136,7 @@ class WorkflowController extends Controller
 
                 $this->get('braincrafted_bootstrap.flash')->success(sprintf('The changes to the workflow %s are saved', $workflow->getName()));
 
-                return $this->redirect($this->generateUrl('integrated_workflow_index'));
+                return $this->redirectToRoute('integrated_workflow_index');
             }
         }
 
@@ -162,7 +164,7 @@ class WorkflowController extends Controller
             ->find($request->get('id'));
 
         if (!$workflow) {
-            return $this->redirect($this->generateUrl('integrated_workflow_index')); // workflow is already gone
+            return $this->redirectToRoute('integrated_workflow_index'); // workflow is already gone
         }
 
         $form = $this->createDeleteForm($workflow);
@@ -172,7 +174,7 @@ class WorkflowController extends Controller
 
             // check for back click else its a submit
             if ($form->get('actions')->get('cancel')->isClicked()) {
-                return $this->redirect($this->generateUrl('integrated_workflow_index'));
+                return $this->redirectToRoute('integrated_workflow_index');
             }
 
             if ($form->isValid()) {
@@ -182,7 +184,7 @@ class WorkflowController extends Controller
 
                 $this->get('braincrafted_bootstrap.flash')->success(sprintf('The workflow %s is removed', $workflow->getName()));
 
-                return $this->redirect($this->generateUrl('integrated_workflow_index'));
+                return $this->redirectToRoute('integrated_workflow_index');
             }
         }
 
@@ -308,7 +310,7 @@ class WorkflowController extends Controller
     }
 
     /**
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createNewForm()
     {
@@ -334,7 +336,7 @@ class WorkflowController extends Controller
     /**
      * @param Definition $workflow
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createEditForm(Definition $workflow)
     {
@@ -360,7 +362,7 @@ class WorkflowController extends Controller
     /**
      * @param Definition $workflow
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createDeleteForm(Definition $workflow)
     {

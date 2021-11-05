@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Block;
 
+use Symfony\Component\Form\FormInterface;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\DocumentManager;
@@ -113,7 +114,7 @@ class FormBlockHandler extends BlockHandler
 
         $content = $contentType->create();
 
-        $this->eventDispatcher->dispatch(FormBlockEvent::PRE_LOAD, new FormBlockEvent($content, $block));
+        $this->eventDispatcher->dispatch(new FormBlockEvent($content, $block), FormBlockEvent::PRE_LOAD);
 
         $form = $this->createForm($content, ['method' => 'post', 'content_type' => $contentType], $block);
 
@@ -127,12 +128,12 @@ class FormBlockHandler extends BlockHandler
                     $content->addChannel($channel);
                 }
 
-                $this->eventDispatcher->dispatch(FormBlockEvent::PRE_FLUSH, new FormBlockEvent($content, $block));
+                $this->eventDispatcher->dispatch(new FormBlockEvent($content, $block), FormBlockEvent::PRE_FLUSH);
 
                 $this->documentManager->persist($content);
                 $this->documentManager->flush();
 
-                $this->eventDispatcher->dispatch(FormBlockEvent::POST_FLUSH, new FormBlockEvent($content, $block));
+                $this->eventDispatcher->dispatch(new FormBlockEvent($content, $block), FormBlockEvent::POST_FLUSH);
 
                 $data = $request->request->get($form->getName());
 
@@ -160,7 +161,7 @@ class FormBlockHandler extends BlockHandler
      * @param array     $options
      * @param FormBlock $block
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createForm($data = null, array $options = [], FormBlock $block = null)
     {

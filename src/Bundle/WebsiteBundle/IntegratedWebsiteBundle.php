@@ -27,6 +27,6 @@ class IntegratedWebsiteBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new ThemeManagerPass());
+        $container->addCompilerPass(new ThemeManagerPass(), 0);
     }
 }

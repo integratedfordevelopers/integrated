@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Command;
 
+use Symfony\Component\Console\Command\Command;
 use Doctrine\Persistence\ObjectRepository;
 use Exception;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
@@ -19,7 +20,6 @@ use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\ContentType\ResolverInterface;
 use InvalidArgumentException;
 use RuntimeException;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,7 +30,7 @@ use Symfony\Component\Lock\Lock;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class IndexCommand extends ContainerAwareCommand
+class IndexCommand extends Command
 {
     /**
      * @var StateManager
@@ -73,7 +73,7 @@ The <info>%command.name%</info> command starts a index of all the content from t
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$input->getArgument('id') && !$input->getOption('full')) {
             throw new InvalidArgumentException('You need to give one or more workflow ids or choose the --full option');
@@ -127,7 +127,7 @@ The <info>%command.name%</info> command starts a index of all the content from t
             }
 
             if (!$types) {
-                return 0; // no content type connected to the selected workflow ids.
+                return 0; 
             }
 
             $command = null;
@@ -149,6 +149,7 @@ The <info>%command.name%</info> command starts a index of all the content from t
         } finally {
             $lock->release();
         }
+        return 0;
     }
 
     /**

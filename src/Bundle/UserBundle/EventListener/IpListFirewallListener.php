@@ -11,11 +11,11 @@
 
 namespace Integrated\Bundle\UserBundle\EventListener;
 
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Integrated\Common\Security\IpListMatcherInterface;
 use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Http\FirewallMapInterface;
 
@@ -44,7 +44,7 @@ class IpListFirewallListener implements EventSubscriberInterface
         ];
     }
 
-    public function onRequest(GetResponseEvent $event)
+    public function onRequest(RequestEvent $event)
     {
         if (!$event->isMasterRequest()) {
             return;

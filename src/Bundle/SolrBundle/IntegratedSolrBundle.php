@@ -31,15 +31,15 @@ class IntegratedSolrBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new RegisterConfigFileProviderPass());
-        $container->addCompilerPass(new RegisterTypePass());
-        $container->addCompilerPass(new RegisterTaskHandlerPass());
+        $container->addCompilerPass(new RegisterConfigFileProviderPass(), 0);
+        $container->addCompilerPass(new RegisterTypePass(), 0);
+        $container->addCompilerPass(new RegisterTaskHandlerPass(), 0);
 
         $container->addCompilerPass(new RegisterListenersPass(
             'integrated_solr.event.dispatcher',
             'integrated_solr.event_listener',
             'integrated_solr.event_subscriber'
-        ));
+        ), 0);
     }
 
     /**

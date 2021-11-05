@@ -11,16 +11,16 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Integrated\Bundle\ContentBundle\Document\Block\ContentBlock;
 use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class SearchSelectionController extends Controller
+class SearchSelectionController extends AbstractController
 {
     /**
      * @Template

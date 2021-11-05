@@ -11,18 +11,18 @@
 
 namespace Integrated\Bundle\UserBundle\Controller\TwoFactor;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Integrated\Bundle\UserBundle\Handler\TwoFactor\HandlerFactoryInterface;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 use Integrated\Bundle\UserBundle\Security\TwoFactor\Http\ContextResolverInterface;
 use Integrated\Bundle\UserBundle\Security\TwoFactor\Http\TargetProvider;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticatorInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\HttpUtils;
 
-class GoogleController extends Controller
+class GoogleController extends AbstractController
 {
     /**
      * @var ContextResolverInterface

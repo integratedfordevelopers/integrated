@@ -11,9 +11,9 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Integrated\Bundle\ContentBundle\Solr\Query\SuggestionQuery;
 use Solarium\Client;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\Serializer;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class SearchController extends Controller
+class SearchController extends AbstractController
 {
     /**
      * @var Client

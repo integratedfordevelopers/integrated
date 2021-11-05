@@ -11,12 +11,14 @@
 
 namespace Integrated\Bundle\UserBundle\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Form\FormInterface;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Integrated\Bundle\UserBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\UserBundle\Form\Type\GroupFormType;
 use Integrated\Bundle\UserBundle\Model\GroupInterface;
 use Integrated\Bundle\UserBundle\Model\GroupManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class GroupController extends Controller
+class GroupController extends AbstractController
 {
     /**
      * @param Request $request
@@ -68,7 +70,7 @@ class GroupController extends Controller
 
             // check for cancel click else its a submit
             if ($form->get('actions')->get('cancel')->isClicked()) {
-                return $this->redirect($this->generateUrl('integrated_user_group_index'));
+                return $this->redirectToRoute('integrated_user_group_index');
             }
 
             if ($form->isValid()) {
@@ -77,7 +79,7 @@ class GroupController extends Controller
                 $this->getManager()->persist($user);
                 $this->get('braincrafted_bootstrap.flash')->success(sprintf('The group %s is created', $user->getName()));
 
-                return $this->redirect($this->generateUrl('integrated_user_group_index'));
+                return $this->redirectToRoute('integrated_user_group_index');
             }
         }
 
@@ -91,7 +93,7 @@ class GroupController extends Controller
      *
      * @return Response
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws NotFoundHttpException
      */
     public function editAction(Request $request)
     {
@@ -112,14 +114,14 @@ class GroupController extends Controller
 
             // check for cancel click else its a submit
             if ($form->get('actions')->get('cancel')->isClicked()) {
-                return $this->redirect($this->generateUrl('integrated_user_group_index'));
+                return $this->redirectToRoute('integrated_user_group_index');
             }
 
             if ($form->isValid()) {
                 $this->getManager()->persist($group);
                 $this->get('braincrafted_bootstrap.flash')->success(sprintf('The changes to the group %s are saved', $group->getName()));
 
-                return $this->redirect($this->generateUrl('integrated_user_group_index'));
+                return $this->redirectToRoute('integrated_user_group_index');
             }
         }
 
@@ -143,7 +145,7 @@ class GroupController extends Controller
         $group = $this->getManager()->find($request->get('id'));
 
         if (!$group) {
-            return $this->redirect($this->generateUrl('integrated_user_group_index')); // group is already gone
+            return $this->redirectToRoute('integrated_user_group_index'); // group is already gone
         }
 
         $form = $this->createDeleteForm($group);
@@ -153,14 +155,14 @@ class GroupController extends Controller
 
             // check for cancel click else its a submit
             if ($form->get('actions')->get('cancel')->isClicked()) {
-                return $this->redirect($this->generateUrl('integrated_user_group_index'));
+                return $this->redirectToRoute('integrated_user_group_index');
             }
 
             if ($form->isValid()) {
                 $this->getManager()->remove($group);
                 $this->get('braincrafted_bootstrap.flash')->success(sprintf('The group %s is removed', $group->getName()));
 
-                return $this->redirect($this->generateUrl('integrated_user_group_index'));
+                return $this->redirectToRoute('integrated_user_group_index');
             }
         }
 
@@ -171,7 +173,7 @@ class GroupController extends Controller
     }
 
     /**
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createNewForm()
     {
@@ -197,7 +199,7 @@ class GroupController extends Controller
     /**
      * @param GroupInterface $group
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createEditForm(GroupInterface $group)
     {
@@ -223,7 +225,7 @@ class GroupController extends Controller
     /**
      * @param GroupInterface $group
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createDeleteForm(GroupInterface $group)
     {

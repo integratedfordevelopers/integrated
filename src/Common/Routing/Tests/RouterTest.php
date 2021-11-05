@@ -11,6 +11,8 @@
 
 namespace Integrated\Common\Routing\Tests;
 
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 use Integrated\Common\Routing\Router;
 use stdClass;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,15 +25,15 @@ use Symfony\Component\Routing\RouterInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class RouterTest extends \PHPUnit\Framework\TestCase
+class RouterTest extends TestCase
 {
     /**
-     * @var RouterInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var RouterInterface|MockObject
      */
     protected $router;
 
     /**
-     * @var UrlGeneratorInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var UrlGeneratorInterface|MockObject
      */
     protected $generator;
 
@@ -101,7 +103,7 @@ class RouterTest extends \PHPUnit\Framework\TestCase
         self::assertSame($response[2], $router->match('path3'));
     }
 
-    public function testMatchRequest()
+    public function testMatchRequest(Request $request)
     {
         // use the symfony router as mock as that class also implements
         // the RequestMatcherInterface interface.
@@ -118,9 +120,9 @@ class RouterTest extends \PHPUnit\Framework\TestCase
         ];
 
         $request = [
-            $this->getRequest(),
-            $this->getRequest(),
-            $this->getRequest(),
+            $request,
+            $request,
+            $request,
         ];
 
         $this->router->expects($this->exactly(3))
@@ -139,7 +141,7 @@ class RouterTest extends \PHPUnit\Framework\TestCase
         self::assertSame($response[2], $router->matchRequest($request[2]));
     }
 
-    public function testMatchRequestWithOutRequestMatcherInterface()
+    public function testMatchRequestWithOutRequestMatcherInterface(Request $request)
     {
         $this->router->expects($this->atLeastOnce())
             ->method('setContext')
@@ -152,9 +154,9 @@ class RouterTest extends \PHPUnit\Framework\TestCase
         ];
 
         $request = [
-            $this->getRequest('path1'),
-            $this->getRequest('path2'),
-            $this->getRequest('path3'),
+            $request,
+            $request,
+            $request,
         ];
 
         $this->router->expects($this->exactly(3))
@@ -276,7 +278,7 @@ class RouterTest extends \PHPUnit\Framework\TestCase
     /**
      * @param string $path
      *
-     * @return Request|\PHPUnit\Framework\MockObject\MockObject
+     * @return Request|MockObject
      */
     protected function getRequest($path = null)
     {
