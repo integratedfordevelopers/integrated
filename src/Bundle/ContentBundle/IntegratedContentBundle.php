@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\ContentBundle;
 
-use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\BraincraftedFlashMessagePass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\ContentProviderPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\ContentTypeManagerPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\ExtensionRegistryBuilderPass;
@@ -54,7 +53,6 @@ class IntegratedContentBundle extends Bundle
         $container->addCompilerPass(new FactoryRegistryBuilderPass('integrated_content.bulk.handler_registry_builder', 'integrated_content.bulk.handler'));
         $container->addCompilerPass(new ConfigProviderBuilderPass('integrated_content.bulk.form.chain_provider_builder', 'integrated_content.bulk.form.provider'));
         $container->addCompilerPass(new ContentProviderPass());
-        $container->addCompilerPass(new BraincraftedFlashMessagePass());
 
         $container->addCompilerPass(new RegisterListenersPass(
             'integrated_content.event_dispatcher',

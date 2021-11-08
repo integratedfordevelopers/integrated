@@ -13,7 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Controller;
 
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ContentBundle\Form\Type\RelationType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class RelationController extends Controller
+class RelationController extends AbstractController
 {
     /**
      * @var string
@@ -112,7 +112,7 @@ class RelationController extends Controller
             $dm->persist($relation);
             $dm->flush();
 
-            $this->get('braincrafted_bootstrap.flash')->success('Item created');
+            $this->addFlash('success', 'Item created');
 
             return $this->redirect($this->generateUrl('integrated_content_relation_index'));
         }
@@ -160,7 +160,7 @@ class RelationController extends Controller
             $dm = $this->get('doctrine_mongodb')->getManager();
             $dm->flush();
 
-            $this->get('braincrafted_bootstrap.flash')->success('Item updated');
+            $this->addFlash('success', 'Item updated');
 
             return $this->redirect($this->generateUrl('integrated_content_relation_index'));
         }
@@ -191,7 +191,7 @@ class RelationController extends Controller
             $dm->remove($relation);
             $dm->flush();
 
-            $this->get('braincrafted_bootstrap.flash')->success('Item deleted');
+            $this->addFlash('success', 'Item deleted');
         }
 
         return $this->redirect($this->generateUrl('integrated_content_relation_index'));

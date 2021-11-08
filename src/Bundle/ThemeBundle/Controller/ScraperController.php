@@ -17,14 +17,14 @@ use Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\ThemeBundle\Entity\Scraper;
 use Integrated\Bundle\ThemeBundle\Form\Type\ScraperType;
 use Integrated\Bundle\ThemeBundle\Scraper\Scraper as ScraperService;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ScraperController extends Controller
+class ScraperController extends AbstractController
 {
     /**
      * @var EntityManagerInterface
@@ -83,7 +83,7 @@ class ScraperController extends Controller
 
             $this->scraper->prepare($scraper);
 
-            $this->get('braincrafted_bootstrap.flash')->success('Item created');
+            $this->addFlash('success', 'Item created');
 
             return $this->redirect($this->generateUrl('integrated_theme_scraper_edit', ['id' => $scraper->getId()]));
         }
@@ -113,7 +113,7 @@ class ScraperController extends Controller
 
             $this->scraper->prepare($scraper);
 
-            $this->get('braincrafted_bootstrap.flash')->success('Item updated');
+            $this->addFlash('success', 'Item updated');
 
             return $this->redirect($this->generateUrl('integrated_theme_scraper_index'));
         }
@@ -143,7 +143,7 @@ class ScraperController extends Controller
             $this->entityManager->flush();
 
             // Set flash message
-            $this->get('braincrafted_bootstrap.flash')->success('Item deleted');
+            $this->addFlash('success', 'Item updated');
 
             return $this->redirect($this->generateUrl('integrated_theme_scraper_index'));
         }

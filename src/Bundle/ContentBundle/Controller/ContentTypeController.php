@@ -21,7 +21,7 @@ use Integrated\Common\ContentType\Events;
 use Integrated\Common\Form\Mapping\MetadataFactory;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Integrated\Common\Form\Mapping\MetadataInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -33,7 +33,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ContentTypeController extends Controller
+class ContentTypeController extends AbstractController
 {
     /**
      * @var string
@@ -150,7 +150,7 @@ class ContentTypeController extends Controller
             $dm->persist($contentType);
             $dm->flush();
 
-            $this->get('braincrafted_bootstrap.flash')->success('Item created');
+            $this->addFlash('success', 'Item created');
 
             $this->eventDispatcher->dispatch(Events::CONTENT_TYPE_CREATED, new ContentTypeEvent($contentType));
 
@@ -191,7 +191,7 @@ class ContentTypeController extends Controller
 
             $dm->flush();
 
-            $this->get('braincrafted_bootstrap.flash')->success('Item updated');
+            $this->addFlash('success', 'Item updated');
 
             $this->eventDispatcher->dispatch(Events::CONTENT_TYPE_UPDATED, new ContentTypeEvent($contentType));
 
@@ -234,7 +234,7 @@ class ContentTypeController extends Controller
 
             if ($count > 0) {
                 // Set flash message and redirect to item page
-                $this->get('braincrafted_bootstrap.flash')->error('Unable te delete, ContentType is not empty');
+                $this->addFlash('danger', 'Unable te delete, ContentType is not empty');
 
                 return $this->redirect($this->generateUrl('integrated_content_content_type_show', ['id' => $contentType->getId()]));
             }
@@ -245,7 +245,7 @@ class ContentTypeController extends Controller
             $this->eventDispatcher->dispatch(Events::CONTENT_TYPE_DELETED, new ContentTypeEvent($contentType));
 
             // Set flash message
-            $this->get('braincrafted_bootstrap.flash')->success('Item deleted');
+            $this->addFlash('success', 'Item deleted');
 
             return $this->redirect($this->generateUrl('integrated_content_content_type_index'));
         }

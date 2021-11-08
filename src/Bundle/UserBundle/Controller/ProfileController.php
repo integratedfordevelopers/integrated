@@ -12,18 +12,17 @@
 namespace Integrated\Bundle\UserBundle\Controller;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
-use Braincrafted\Bundle\BootstrapBundle\Session\FlashMessage;
 use Integrated\Bundle\UserBundle\Form\Type\ProfileFormType;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
-class ProfileController extends Controller
+class ProfileController extends AbstractController
 {
     /**
      * @var UserManagerInterface
@@ -36,25 +35,17 @@ class ProfileController extends Controller
     protected $encoderFactory;
 
     /**
-     * @var FlashMessage
-     */
-    protected $flashMessage;
-
-    /**
      * @param UserManagerInterface    $userManager
      * @param EncoderFactoryInterface $encoderFactory
-     * @param FlashMessage            $flashMessage
      * @param ContainerInterface      $container
      */
     public function __construct(
         UserManagerInterface $userManager,
         EncoderFactoryInterface $encoderFactory,
-        FlashMessage $flashMessage,
         ContainerInterface $container
     ) {
         $this->userManager = $userManager;
         $this->encoderFactory = $encoderFactory;
-        $this->flashMessage = $flashMessage;
         $this->container = $container;
     }
 
@@ -82,7 +73,7 @@ class ProfileController extends Controller
                 $user->setSalt($salt);
 
                 $this->userManager->persist($user);
-                $this->flashMessage->success('Your profile have been saved');
+                $this->addFlash('success', 'Your profile have been saved');
 
                 return $this->redirect($this->generateUrl('integrated_content_content_index'));
             }

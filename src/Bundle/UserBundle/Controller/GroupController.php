@@ -16,7 +16,7 @@ use Integrated\Bundle\UserBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\UserBundle\Form\Type\GroupFormType;
 use Integrated\Bundle\UserBundle\Model\GroupInterface;
 use Integrated\Bundle\UserBundle\Model\GroupManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class GroupController extends Controller
+class GroupController extends AbstractController
 {
     /**
      * @param Request $request
@@ -75,7 +75,7 @@ class GroupController extends Controller
                 $user = $form->getData();
 
                 $this->getManager()->persist($user);
-                $this->get('braincrafted_bootstrap.flash')->success(sprintf('The group %s is created', $user->getName()));
+                $this->addFlash('success', sprintf('The group %s is created', $user->getName()));
 
                 return $this->redirect($this->generateUrl('integrated_user_group_index'));
             }
@@ -117,7 +117,7 @@ class GroupController extends Controller
 
             if ($form->isValid()) {
                 $this->getManager()->persist($group);
-                $this->get('braincrafted_bootstrap.flash')->success(sprintf('The changes to the group %s are saved', $group->getName()));
+                $this->addFlash('success', sprintf('The changes to the group %s are saved', $group->getName()));
 
                 return $this->redirect($this->generateUrl('integrated_user_group_index'));
             }
@@ -158,7 +158,7 @@ class GroupController extends Controller
 
             if ($form->isValid()) {
                 $this->getManager()->remove($group);
-                $this->get('braincrafted_bootstrap.flash')->success(sprintf('The group %s is removed', $group->getName()));
+                $this->addFlash('success', sprintf('The group %s is removed', $group->getName()));
 
                 return $this->redirect($this->generateUrl('integrated_user_group_index'));
             }

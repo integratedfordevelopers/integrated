@@ -23,7 +23,7 @@ use Integrated\Bundle\ChannelBundle\Model\Config;
 use Integrated\Common\Channel\Connector\Adapter\RegistryInterface;
 use Integrated\Common\Channel\Connector\AdapterInterface;
 use Integrated\Common\Channel\Connector\Config\ConfigManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +33,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ConfigController extends Controller
+class ConfigController extends AbstractController
 {
     /**
      * @var ConfigManagerInterface
@@ -136,9 +136,7 @@ class ConfigController extends Controller
             );
 
             if (!$response = $event->getResponse()) {
-                if ($message = $this->getFlashMessage()) {
-                    $message->success(sprintf('The config %s is saved', $data->getName()));
-                }
+                $this->addFlash('success', sprintf('The config %s is saved', $data->getName()));
 
                 $response = $this->redirect($this->generateUrl('integrated_channel_config_index'));
             }
@@ -205,9 +203,7 @@ class ConfigController extends Controller
             $this->manager->persist($data);
 
             if (!$response = $event->getResponse()) {
-                if ($message = $this->getFlashMessage()) {
-                    $message->success(sprintf('The changes to the config %s are saved', $data->getName()));
-                }
+                $this->addFlash('success', sprintf('The changes to the config %s are saved', $data->getName()));
 
                 $response = $this->redirect($this->generateUrl('integrated_channel_config_index'));
             }
@@ -237,7 +233,7 @@ class ConfigController extends Controller
         $session = new Session();
 
         if (!$id = $session->get('externalReturnId')) {
-            $this->getFlashMessage()->error('Config not found in session');
+            $this->addFlash('danger', 'Config not found in session');
 
             return $this->indexAction($request);
         }
@@ -284,9 +280,7 @@ class ConfigController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $this->manager->remove($data);
 
-            if ($message = $this->getFlashMessage()) {
-                $message->success(sprintf('The config %s is removed', $data->getName()));
-            }
+            $this->addFlash('success', sprintf('The config %s is removed', $data->getName()));
 
             $response = $this->redirect($this->generateUrl('integrated_channel_config_index'));
 
@@ -369,13 +363,5 @@ class ConfigController extends Controller
     protected function getPaginator()
     {
         return $this->get('knp_paginator');
-    }
-
-    /**
-     * @return \Braincrafted\Bundle\BootstrapBundle\Session\FlashMessage
-     */
-    protected function getFlashMessage()
-    {
-        return $this->get('braincrafted_bootstrap.flash');
     }
 }

@@ -16,13 +16,13 @@ use Integrated\Bundle\UserBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\UserBundle\Form\Type\IpListFormType;
 use Integrated\Bundle\UserBundle\Model\IpList;
 use Integrated\Bundle\UserBundle\Model\IpListManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class IpListController extends Controller
+class IpListController extends AbstractController
 {
     /**
      * @var IpListManagerInterface
@@ -85,7 +85,7 @@ class IpListController extends Controller
 
                 $this->manager->persist($list);
 
-                $this->get('braincrafted_bootstrap.flash')->success(sprintf(
+                $this->addFlash('success', sprintf(
                     'Added the ip %s to the whitelist',
                     $list->getIp()->getProtocolAppropriateAddress()
                 ));
@@ -123,7 +123,7 @@ class IpListController extends Controller
             if ($form->isValid()) {
                 $this->manager->persist($list);
 
-                $this->get('braincrafted_bootstrap.flash')->success(sprintf(
+                $this->addFlash('success', sprintf(
                     'The changes to the ip %s are saved',
                     $list->getIp()->getProtocolAppropriateAddress()
                 ));
@@ -162,7 +162,7 @@ class IpListController extends Controller
             if ($form->isValid()) {
                 $this->manager->remove($list);
 
-                $this->get('braincrafted_bootstrap.flash')->success(sprintf(
+                $this->addFlash('success', sprintf(
                     'The ip %s is removed from the whitelist',
                     $list->getIp()->getProtocolAppropriateAddress()
                 ));

@@ -23,7 +23,7 @@ use Integrated\Common\Content\Form\ContentFormType;
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\Locks;
 use Integrated\Common\Security\Permissions;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -35,7 +35,7 @@ use Traversable;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ContentController extends Controller
+class ContentController extends AbstractController
 {
     /**
      * @var string
@@ -445,9 +445,7 @@ class ContentController extends Controller
                 }
 
                 // Set flash message
-                $this->get('braincrafted_bootstrap.flash')->success(
-                    $this->get('translator')->trans('The document %name% has been created', ['%name%' => $contentType->getName()])
-                );
+                $this->addFlash('success', $this->get('translator')->trans('The document %name% has been created', ['%name%' => $contentType->getName()]));
 
                 return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
             }
@@ -544,9 +542,7 @@ class ContentController extends Controller
                     $dm->flush();
 
                     // Set flash message
-                    $this->get('braincrafted_bootstrap.flash')->success(
-                        $this->get('translator')->trans('The changes to %name% are saved', ['%name%' => $contentType->getName()])
-                    );
+                    $this->addFlash('success', $this->get('translator')->trans('The changes to %name% are saved', ['%name%' => $contentType->getName()]));
 
                     if ($this->has('integrated_solr.indexer')) {
                         $lock = $this->get('integrated_solr.lock.factory')->createLock(self::class);
@@ -597,7 +593,7 @@ class ContentController extends Controller
                 $text = 'The document is currently locked and can not be edited until this lock is released.';
             }
 
-            $this->get('braincrafted_bootstrap.flash')->error($text);
+            $this->addFlash('danger', $text);
         }
 
         return $this->render('IntegratedContentBundle:content:edit.html.twig', [
@@ -687,9 +683,7 @@ class ContentController extends Controller
                     $dm->flush();
 
                     // Set flash message
-                    $this->get('braincrafted_bootstrap.flash')->success(
-                        $this->get('translator')->trans('The document %name% has been deleted', ['%name%' => $type->getName()])
-                    );
+                    $this->addFlash('success', $this->get('translator')->trans('The document %name% has been deleted', ['%name%' => $type->getName()]));
 
                     if ($this->has('integrated_solr.indexer')) {
                         $indexer = $this->get('integrated_solr.indexer');
@@ -730,7 +724,7 @@ class ContentController extends Controller
                 $text = 'The document is currently locked and can not be deleted until this lock is released.';
             }
 
-            $this->get('braincrafted_bootstrap.flash')->error($text);
+            $this->addFlash('danger', $text);
         }
 
         return $this->render('IntegratedContentBundle:content:delete.html.twig', [

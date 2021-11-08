@@ -18,7 +18,7 @@ use Integrated\Bundle\UserBundle\Form\Type\ScopeFormType;
 use Integrated\Bundle\UserBundle\Model\Scope;
 use Integrated\Bundle\UserBundle\Model\ScopeManagerInterface;
 use Integrated\Bundle\UserBundle\Model\User;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @author Michael Jongman <michael@e-active.nl>
  */
-class ScopeController extends Controller
+class ScopeController extends AbstractController
 {
     /**
      * @param Request $request
@@ -78,7 +78,7 @@ class ScopeController extends Controller
                 $scope = $form->getData();
 
                 $this->getManager()->persist($scope);
-                $this->get('braincrafted_bootstrap.flash')->success(sprintf('The scope %s is created', $scope->getName()));
+                $this->addFlash('success', sprintf('The scope %s is created', $scope->getName()));
 
                 return $this->redirect($this->generateUrl('integrated_user_scope_index'));
             }
@@ -119,7 +119,7 @@ class ScopeController extends Controller
 
             if ($form->isValid()) {
                 $this->getManager()->persist($scope);
-                $this->get('braincrafted_bootstrap.flash')->success(sprintf('The changes to the scope %s are saved', $scope->getName()));
+                $this->addFlash('success', sprintf('The changes to the scope %s are saved', $scope->getName()));
 
                 return $this->redirect($this->generateUrl('integrated_user_scope_index'));
             }
@@ -179,7 +179,7 @@ class ScopeController extends Controller
 
             if (false === $hasRelations) {
                 $this->getManager()->remove($scope);
-                $this->get('braincrafted_bootstrap.flash')->success(sprintf('The scope %s is removed', $scope->getName()));
+                $this->addFlash('success', sprintf('The scope %s is removed', $scope->getName()));
 
                 return $this->redirect($this->generateUrl('integrated_user_scope_index'));
             }

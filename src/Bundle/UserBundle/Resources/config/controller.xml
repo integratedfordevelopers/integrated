@@ -16,7 +16,6 @@
         <service id="integrated_user.controller.profile" class="Integrated\Bundle\UserBundle\Controller\ProfileController" public="true">
             <argument type="service" id="integrated_user.user.manager" />
             <argument type="service" id="security.encoder_factory" />
-            <argument type="service" id="braincrafted_bootstrap.flash" />
             <argument type="service" id="service_container" />
         </service>
 

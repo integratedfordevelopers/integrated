@@ -17,7 +17,7 @@ use Integrated\Bundle\UserBundle\Form\Type\PasswordChangeType;
 use Integrated\Bundle\UserBundle\Form\Type\PasswordResetType;
 use Integrated\Bundle\UserBundle\Service\KeyGenerator;
 use Integrated\Bundle\UserBundle\Service\Mailer;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,7 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class SecurityController extends Controller
+class SecurityController extends AbstractController
 {
     /**
      * @var UserManager
@@ -94,7 +94,7 @@ class SecurityController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $this->mailer->sendPasswordResetMail($form->get('email')->getData());
 
-            $this->get('braincrafted_bootstrap.flash')->success('An e-mail with a password reset link has been sent');
+            $this->addFlash('success', 'An e-mail with a password reset link has been sent');
 
             return $this->redirectToRoute('integrated_user_login');
         }
@@ -119,7 +119,7 @@ class SecurityController extends Controller
         }
 
         if (!$this->keyGenerator->isValidKey($id, $timestamp, $key)) {
-            $this->get('braincrafted_bootstrap.flash')->error('Password reset link is invalid or expired');
+            $this->addFlash('danger', 'Password reset link is invalid or expired');
 
             return $this->redirectToRoute('integrated_user_login');
         }
@@ -134,9 +134,9 @@ class SecurityController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($this->userManager->changePassword($id, $form->get('password')->getData())) {
-                $this->get('braincrafted_bootstrap.flash')->success('Your password has been changed');
+                $this->addFlash('success', 'Your password has been changed');
             } else {
-                $this->get('braincrafted_bootstrap.flash')->error('An error occurred while changing the password');
+                $this->addFlash('danger', 'An error occurred while changing the password');
             }
 
             return $this->redirectToRoute('integrated_user_login');

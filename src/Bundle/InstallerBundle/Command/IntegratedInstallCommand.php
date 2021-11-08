@@ -126,7 +126,6 @@ class IntegratedInstallCommand extends Command
         if (\in_array('assets', $steps) || empty($steps)) {
             $io->section('Install assets');
 
-            $this->executeCommand('braincrafted:bootstrap:install', $output);
             $this->executeCommand('sp:bower:install', $output);
             $this->executeCommand('assetic:dump', $output);
             $this->executeCommand('fos:js-routing:dump', $output);

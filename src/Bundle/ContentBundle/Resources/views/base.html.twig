@@ -88,9 +88,18 @@
 <div id="wrapper-holder">
     {% block body %}
         <div class="container">
-            {% block flash %}
-                {% include 'BraincraftedBootstrapBundle::flash.html.twig' with { 'close': true } %}
-            {% endblock flash %}
+            {% for label, messages in app.flashes(['alert', 'danger', 'info', 'success', 'warning']) %}
+                {% for message in messages %}
+                    {% if label == 'alert' %}
+                        {% set label = 'warning' %}
+                    {% endif %}
+                    <div class="alert alert-{{ label }} alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        {{ message|trans }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
             {% block content %}{% endblock content %}
         </div>
     {% endblock body %}

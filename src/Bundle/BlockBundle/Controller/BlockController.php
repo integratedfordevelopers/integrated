@@ -152,7 +152,7 @@ class BlockController extends AbstractController
                 return $this->render('IntegratedBlockBundle:block:saved.iframe.html.twig', ['id' => $block->getId()]);
             }
 
-            $this->get('braincrafted_bootstrap.flash')->success('Block created');
+            $this->addFlash('success', 'Block created');
 
             return $this->redirect($this->generateUrl('integrated_block_block_index'));
         }
@@ -231,7 +231,7 @@ class BlockController extends AbstractController
                 ]);
             }
 
-            $this->get('braincrafted_bootstrap.flash')->success('Block updated');
+            $this->addFlash('success', 'Block updated');
 
             return $this->redirect($this->generateUrl('integrated_block_block_index'));
         }
@@ -274,7 +274,7 @@ class BlockController extends AbstractController
             $this->documentManager->remove($block);
             $this->documentManager->flush();
 
-            $this->get('braincrafted_bootstrap.flash')->success('Block deleted');
+            $this->addFlash('success', 'Block deleted');
 
             return $this->redirect($this->generateUrl('integrated_block_block_index'));
         }

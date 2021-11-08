@@ -132,7 +132,7 @@ class WorkflowController extends Controller
                 $manager = $this->getDoctrine()->getManager();
                 $manager->flush();
 
-                $this->get('braincrafted_bootstrap.flash')->success(sprintf('The changes to the workflow %s are saved', $workflow->getName()));
+                $this->addFlash('success', sprintf('The changes to the workflow %s are saved', $workflow->getName()));
 
                 return $this->redirect($this->generateUrl('integrated_workflow_index'));
             }
@@ -180,7 +180,7 @@ class WorkflowController extends Controller
                 $manager->remove($workflow);
                 $manager->flush();
 
-                $this->get('braincrafted_bootstrap.flash')->success(sprintf('The workflow %s is removed', $workflow->getName()));
+                $this->addFlash('success', sprintf('The workflow %s is removed', $workflow->getName()));
 
                 return $this->redirect($this->generateUrl('integrated_workflow_index'));
             }

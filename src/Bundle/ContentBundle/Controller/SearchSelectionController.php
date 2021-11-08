@@ -14,7 +14,7 @@ namespace Integrated\Bundle\ContentBundle\Controller;
 use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
 use Integrated\Bundle\ContentBundle\Form\Type\SearchSelectionType;
 use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -25,7 +25,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class SearchSelectionController extends Controller
+class SearchSelectionController extends AbstractController
 {
     /**
      * Lists all the SearchSelection documents.
@@ -66,7 +66,7 @@ class SearchSelectionController extends Controller
             $this->getDocumentManager()->persist($searchSelection);
             $this->getDocumentManager()->flush();
 
-            $this->get('braincrafted_bootstrap.flash')->success('Item created');
+            $this->addFlash('success', 'Item created');
 
             return $this->redirect($this->generateUrl('integrated_content_search_selection_index'));
         }
@@ -98,7 +98,7 @@ class SearchSelectionController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDocumentManager()->flush();
 
-            $this->get('braincrafted_bootstrap.flash')->success('Item updated');
+            $this->addFlash('success', 'Item updated');
 
             return $this->redirect($this->generateUrl('integrated_content_search_selection_index'));
         }
@@ -134,7 +134,7 @@ class SearchSelectionController extends Controller
             $this->getDocumentManager()->remove($searchSelection);
             $this->getDocumentManager()->flush();
 
-            $this->get('braincrafted_bootstrap.flash')->success('Item deleted');
+            $this->addFlash('success', 'Item deleted');
 
             return $this->redirect($this->generateUrl('integrated_content_search_selection_index'));
         }

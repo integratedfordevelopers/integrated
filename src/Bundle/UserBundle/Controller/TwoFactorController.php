@@ -15,12 +15,12 @@ use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Integrated\Bundle\UserBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 
-class TwoFactorController extends Controller
+class TwoFactorController extends AbstractController
 {
     /**
      * @var UserManagerInterface
@@ -60,7 +60,7 @@ class TwoFactorController extends Controller
                 $this->manager->persist($user);
 
                 $translation = $this->get('translator')->trans('The two factor authenticator for user %name% is removed', ['%name%' => $user->getUsername()]);
-                $this->get('braincrafted_bootstrap.flash')->success($translation);
+                $this->addFlash('success', $translation);
 
                 return $this->redirectToRoute('integrated_user_user_index');
             }

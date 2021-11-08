@@ -17,7 +17,7 @@ use Integrated\Bundle\ContentBundle\Form\Type as Form;
 use Integrated\Bundle\ContentBundle\Services\SearchContentReferenced;
 use Integrated\Common\Channel\Event\ChannelEvent;
 use Integrated\Common\Channel\Events;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ChannelController extends Controller
+class ChannelController extends AbstractController
 {
     /**
      * @var DocumentManager
@@ -130,7 +130,7 @@ class ChannelController extends Controller
             $this->documentManager->persist($channel);
             $this->documentManager->flush();
 
-            $this->get('braincrafted_bootstrap.flash')->success('Item created');
+            $this->addFlash('success', 'Item created');
 
             $dispatcher = $this->get('integrated_content.event_dispatcher');
             $dispatcher->dispatch(Events::CHANNEL_CREATED, new ChannelEvent($channel));
@@ -184,7 +184,7 @@ class ChannelController extends Controller
         if ($form->isValid()) {
             $this->documentManager->flush();
 
-            $this->get('braincrafted_bootstrap.flash')->success('Item updated');
+            $this->addFlash('success', 'Item updated');
 
             $dispatcher = $this->get('integrated_content.event_dispatcher');
             $dispatcher->dispatch(Events::CHANNEL_UPDATED, new ChannelEvent($channel));
@@ -224,7 +224,7 @@ class ChannelController extends Controller
             $dispatcher = $this->get('integrated_content.event_dispatcher');
             $dispatcher->dispatch(Events::CHANNEL_DELETED, new ChannelEvent($channel));
 
-            $this->get('braincrafted_bootstrap.flash')->success('Channel deleted');
+            $this->addFlash('success', 'Channel deleted');
 
             return $this->redirect($this->generateUrl('integrated_content_channel_index'));
         }
