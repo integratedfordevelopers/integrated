@@ -126,7 +126,7 @@ class MetadataFactory implements MetadataFactoryInterface
 
         if ($metadata->isTypeOf($this->type)) {
             $this->driver->loadMetadataForClass($class, $metadata);
-            $this->getEventDispatcher()->dispatch(Events::METADATA, new MetadataEvent($metadata));
+            $this->getEventDispatcher()->dispatch(new MetadataEvent($metadata), Events::METADATA);
         }
 
         return $metadata;

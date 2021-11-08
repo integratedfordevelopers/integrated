@@ -114,7 +114,7 @@ class ConfigController extends Controller
 
         $event = new GetResponseConfigEvent($data, $request);
 
-        if ($this->dispatcher->dispatch(IntegratedChannelEvents::CONFIG_CREATE_REQUEST, $event)->getResponse()) {
+        if ($this->dispatcher->dispatch($event, IntegratedChannelEvents::CONFIG_CREATE_REQUEST)->getResponse()) {
             return $event->getResponse();
         }
 
@@ -131,8 +131,8 @@ class ConfigController extends Controller
             $this->manager->persist($data);
 
             $event = $this->dispatcher->dispatch(
-                IntegratedChannelEvents::CONFIG_CREATE_SUBMITTED,
-                new FormConfigEvent($data, $request, $form)
+                new FormConfigEvent($data, $request, $form),
+                IntegratedChannelEvents::CONFIG_CREATE_SUBMITTED
             );
 
             if (!$response = $event->getResponse()) {
@@ -144,8 +144,8 @@ class ConfigController extends Controller
             }
 
             $this->dispatcher->dispatch(
-                IntegratedChannelEvents::CONFIG_CREATE_RESPONSE,
-                new FilterResponseConfigEvent($data, $request, $response)
+                new FilterResponseConfigEvent($data, $request, $response),
+                IntegratedChannelEvents::CONFIG_CREATE_RESPONSE
             );
 
             return $response;
@@ -185,7 +185,7 @@ class ConfigController extends Controller
 
         $event = new GetResponseConfigEvent($data, $request);
 
-        if ($this->dispatcher->dispatch(IntegratedChannelEvents::CONFIG_EDIT_REQUEST, $event)->getResponse()) {
+        if ($this->dispatcher->dispatch($event, IntegratedChannelEvents::CONFIG_EDIT_REQUEST)->getResponse()) {
             return $event->getResponse();
         }
 
@@ -198,8 +198,8 @@ class ConfigController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $event = $this->dispatcher->dispatch(
-                IntegratedChannelEvents::CONFIG_EDIT_SUBMITTED,
-                new FormConfigEvent($data, $request, $form)
+                new FormConfigEvent($data, $request, $form),
+                IntegratedChannelEvents::CONFIG_EDIT_SUBMITTED
             );
 
             $this->manager->persist($data);
@@ -213,8 +213,8 @@ class ConfigController extends Controller
             }
 
             $this->dispatcher->dispatch(
-                IntegratedChannelEvents::CONFIG_EDIT_RESPONSE,
-                new FilterResponseConfigEvent($data, $request, $response)
+                new FilterResponseConfigEvent($data, $request, $response),
+                IntegratedChannelEvents::CONFIG_EDIT_RESPONSE
             );
 
             return $response;
@@ -270,7 +270,7 @@ class ConfigController extends Controller
 
         $event = new GetResponseConfigEvent($data, $request);
 
-        if ($this->dispatcher->dispatch(IntegratedChannelEvents::CONFIG_DELETE_REQUEST, $event)->getResponse()) {
+        if ($this->dispatcher->dispatch($event, IntegratedChannelEvents::CONFIG_DELETE_REQUEST)->getResponse()) {
             return $event->getResponse();
         }
 
@@ -291,8 +291,8 @@ class ConfigController extends Controller
             $response = $this->redirect($this->generateUrl('integrated_channel_config_index'));
 
             $this->dispatcher->dispatch(
-                IntegratedChannelEvents::CONFIG_DELETE_RESPONSE,
-                new FilterResponseConfigEvent($data, $request, $response)
+                new FilterResponseConfigEvent($data, $request, $response),
+                IntegratedChannelEvents::CONFIG_DELETE_RESPONSE
             );
 
             return $response;

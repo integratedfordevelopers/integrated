@@ -191,15 +191,15 @@ class ContentFormTypeTest extends \PHPUnit\Framework\TestCase
         $this->dispatcher->expects($this->exactly(7))
             ->method('dispatch')
             ->withConsecutive(
-                [$this->equalTo(Events::PRE_BUILD), $this->callback($callback[0])],
-                [$this->equalTo(Events::PRE_BUILD_FIELD), $this->callback($callback[1])],
-                [$this->equalTo(Events::BUILD_FIELD), $this->callback($callback[2])],
-                [$this->equalTo(Events::POST_BUILD_FIELD), $this->callback($callback[1])],
-                [$this->equalTo(Events::PRE_BUILD_FIELD), $this->callback($callback[1])],
-                [$this->equalTo(Events::POST_BUILD_FIELD), $this->callback($callback[1])],
-                [$this->equalTo(Events::POST_BUILD), $this->callback($callback[0])]
+                [$this->callback($callback[0])],
+                [$this->callback($callback[1])],
+                [$this->callback($callback[2])],
+                [$this->callback($callback[1])],
+                [$this->callback($callback[1])],
+                [$this->callback($callback[1])],
+                [$this->callback($callback[0])]
             )
-            ->willReturnArgument(1);
+            ->willReturnArgument(0);
 
         $this->metadata->expects($this->once())
             ->method('getFields')
@@ -267,10 +267,10 @@ class ContentFormTypeTest extends \PHPUnit\Framework\TestCase
         $this->dispatcher->expects($this->exactly(2))
             ->method('dispatch')
             ->withConsecutive(
-                [$this->equalTo(Events::PRE_BUILD), $this->callback($callback)],
-                [$this->equalTo(Events::POST_BUILD), $this->callback($callback)]
+                [$this->callback($callback)],
+                [$this->callback($callback)]
             )
-            ->willReturnArgument(1);
+            ->willReturnArgument(0);
 
         $this->metadata->expects($this->once())
             ->method('getFields')
@@ -293,8 +293,8 @@ class ContentFormTypeTest extends \PHPUnit\Framework\TestCase
 
         $this->dispatcher->expects($this->once())
             ->method('dispatch')
-            ->with($this->equalTo(Events::BUILD_FIELD), $this->callback($callback))
-            ->willReturnArgument(1);
+            ->with($this->callback($callback))
+            ->willReturnArgument(0);
 
         $this->metadata->expects($this->once())
             ->method('getFields')
@@ -329,8 +329,8 @@ class ContentFormTypeTest extends \PHPUnit\Framework\TestCase
 
         $this->dispatcher->expects($this->once())
             ->method('dispatch')
-            ->with($this->equalTo(Events::BUILD_FIELD), $this->callback($callback))
-            ->willReturnArgument(1);
+            ->with($this->callback($callback))
+            ->willReturnArgument(0);
 
         $this->metadata->expects($this->once())
             ->method('getFields')
@@ -393,7 +393,7 @@ class ContentFormTypeTest extends \PHPUnit\Framework\TestCase
 
         $this->dispatcher->expects($this->once())
             ->method('dispatch')
-            ->with($this->equalTo(Events::PRE_VIEW), $this->callback($callback));
+            ->with($this->callback($callback));
 
         $this->getInstance()->buildView($view, $form, ['content_type' => $this->type]);
     }
@@ -439,7 +439,7 @@ class ContentFormTypeTest extends \PHPUnit\Framework\TestCase
 
         $this->dispatcher->expects($this->once())
             ->method('dispatch')
-            ->with($this->equalTo(Events::POST_VIEW), $this->callback($callback));
+            ->with($this->callback($callback));
 
         $this->getInstance()->finishView($view, $form, ['content_type' => $this->type]);
     }

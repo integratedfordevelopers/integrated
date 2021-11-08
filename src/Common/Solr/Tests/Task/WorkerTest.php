@@ -16,7 +16,6 @@ use Integrated\Common\Queue\QueueInterface;
 use Integrated\Common\Queue\QueueMessageInterface;
 use Integrated\Common\Solr\Task\Event\ErrorEvent;
 use Integrated\Common\Solr\Task\Event\WorkerEvent;
-use Integrated\Common\Solr\Task\Events;
 use Integrated\Common\Solr\Task\Registry;
 use Integrated\Common\Solr\Task\Worker;
 use stdClass;
@@ -110,8 +109,8 @@ class WorkerTest extends \PHPUnit\Framework\TestCase
         $this->dispatcher->expects($this->exactly(2))
             ->method('dispatch')
             ->withConsecutive(
-                [$this->equalTo(Events::PRE_EXECUTE), $this->callback($callback)],
-                [$this->equalTo(Events::POST_EXECUTE), $this->callback($callback)]
+                [$this->callback($callback)],
+                [$this->callback($callback)]
             )
             ->willReturnArgument(1);
 
@@ -138,8 +137,8 @@ class WorkerTest extends \PHPUnit\Framework\TestCase
         $this->dispatcher->expects($this->exactly(2))
             ->method('dispatch')
             ->withConsecutive(
-                [$this->equalTo(Events::PRE_EXECUTE), $this->callback($callback)],
-                [$this->equalTo(Events::POST_EXECUTE), $this->callback($callback)]
+                [$this->callback($callback)],
+                [$this->callback($callback)]
             )
             ->willReturnArgument(1);
 
@@ -185,9 +184,9 @@ class WorkerTest extends \PHPUnit\Framework\TestCase
         $this->dispatcher->expects($this->exactly(3))
             ->method('dispatch')
             ->withConsecutive(
-                [$this->equalTo(Events::PRE_EXECUTE), $this->callback($callback[0])],
-                [$this->equalTo(Events::ERROR), $this->callback($callback[1])],
-                [$this->equalTo(Events::POST_EXECUTE), $this->callback($callback[0])]
+                [$this->callback($callback[0])],
+                [$this->callback($callback[1])],
+                [$this->callback($callback[0])]
             )
             ->willReturnArgument(1);
 

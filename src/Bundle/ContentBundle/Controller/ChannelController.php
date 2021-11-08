@@ -133,7 +133,7 @@ class ChannelController extends Controller
             $this->get('braincrafted_bootstrap.flash')->success('Item created');
 
             $dispatcher = $this->get('integrated_content.event_dispatcher');
-            $dispatcher->dispatch(Events::CHANNEL_CREATED, new ChannelEvent($channel));
+            $dispatcher->dispatch(new ChannelEvent($channel), Events::CHANNEL_CREATED);
 
             return $this->redirect($this->generateUrl('integrated_content_channel_show', ['id' => $channel->getId()]));
         }
@@ -187,7 +187,7 @@ class ChannelController extends Controller
             $this->get('braincrafted_bootstrap.flash')->success('Item updated');
 
             $dispatcher = $this->get('integrated_content.event_dispatcher');
-            $dispatcher->dispatch(Events::CHANNEL_UPDATED, new ChannelEvent($channel));
+            $dispatcher->dispatch(new ChannelEvent($channel), Events::CHANNEL_UPDATED);
 
             return $this->redirect($this->generateUrl('integrated_content_channel_show', ['id' => $channel->getId()]));
         }
@@ -222,7 +222,7 @@ class ChannelController extends Controller
             $this->documentManager->flush();
 
             $dispatcher = $this->get('integrated_content.event_dispatcher');
-            $dispatcher->dispatch(Events::CHANNEL_DELETED, new ChannelEvent($channel));
+            $dispatcher->dispatch(new ChannelEvent($channel), Events::CHANNEL_DELETED);
 
             $this->get('braincrafted_bootstrap.flash')->success('Channel deleted');
 
