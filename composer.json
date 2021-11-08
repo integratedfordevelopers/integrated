@@ -50,7 +50,6 @@
         "symfony/polyfill-iconv": "~1.6",
         "symfony/polyfill-php80": "^1.23.1",
         "symfony/symfony": "4.4.*",
-        "twbs/bootstrap": "~3.3",
         "twig/twig": ">=2.12",
         "psr/simple-cache": "^1.0",
         "excelwebzone/recaptcha-bundle": "^1.5"
