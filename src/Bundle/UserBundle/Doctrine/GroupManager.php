@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\UserBundle\Doctrine;
 
-use Doctrine\Common\Persistence\ObjectRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectRepository;
 use Integrated\Bundle\UserBundle\Model\GroupInterface;
 use Integrated\Bundle\UserBundle\Model\GroupManagerInterface;
 use InvalidArgumentException;
@@ -23,19 +23,19 @@ use InvalidArgumentException;
 class GroupManager implements GroupManagerInterface
 {
     /**
-     * @var EntityManagerInterface
+     * @var ObjectManager
      */
-    private $entityManager;
+    private $om;
 
     /**
      * @var ObjectRepository
      */
     private $repository;
 
-    public function __construct(EntityManagerInterface $entityManager, $class)
+    public function __construct(ObjectManager $om, $class)
     {
-        $this->entityManager = $entityManager;
-        $this->repository = $this->entityManager->getRepository($class);
+        $this->om = $om;
+        $this->repository = $this->om->getRepository($class);
 
         if (!is_subclass_of($this->repository->getClassName(), 'Integrated\\Bundle\\UserBundle\\Model\\GroupInterface')) {
             throw new InvalidArgumentException(sprintf('The class "%s" is not subclass of Integrated\\Bundle\\UserBundle\\Model\\GroupInterface', $this->repository->getClassName()));
@@ -43,11 +43,11 @@ class GroupManager implements GroupManagerInterface
     }
 
     /**
-     * @return EntityManagerInterface
+     * @return ObjectManager
      */
-    public function getEntityManager()
+    public function getObjectManager()
     {
-        return $this->entityManager;
+        return $this->om;
     }
 
     /**
@@ -73,10 +73,10 @@ class GroupManager implements GroupManagerInterface
      */
     public function persist(GroupInterface $group, $flush = true)
     {
-        $this->entityManager->persist($group);
+        $this->om->persist($group);
 
         if ($flush) {
-            $this->entityManager->flush();
+            $this->om->flush();
         }
     }
 
@@ -85,10 +85,10 @@ class GroupManager implements GroupManagerInterface
      */
     public function remove(GroupInterface $group, $flush = true)
     {
-        $this->entityManager->remove($group);
+        $this->om->remove($group);
 
         if ($flush) {
-            $this->entityManager->flush();
+            $this->om->flush();
         }
     }
 
@@ -97,7 +97,7 @@ class GroupManager implements GroupManagerInterface
      */
     public function clear()
     {
-        $this->entityManager->clear($this->repository->getClassName());
+        $this->om->clear($this->repository->getClassName());
     }
 
     /**

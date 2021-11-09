@@ -11,8 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Bulk;
 
-use Doctrine\MongoDB\Query\Builder;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ContentBundle\Form\Type\BulkActionRelationType;
 use Integrated\Common\Bulk\Form\Config;
@@ -24,16 +23,16 @@ use Integrated\Common\Bulk\Form\ConfigProviderInterface;
 class RelationFormProvider implements ConfigProviderInterface
 {
     /**
-     * @var EntityManagerInterface
+     * @var ManagerRegistry
      */
-    private $entityManager;
+    private $manager;
 
     /**
-     * @param EntityManagerInterface $entityManager
+     * @param ManagerRegistry $manager
      */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(ManagerRegistry $manager)
     {
-        $this->entityManager = $entityManager;
+        $this->manager = $manager;
     }
 
     /**
@@ -47,8 +46,7 @@ class RelationFormProvider implements ConfigProviderInterface
             $types[$item->getContentType()] = $item->getContentType();
         }
 
-        /** @var Builder $builder */
-        $builder = $this->entityManager->getRepository(Relation::class)->createQueryBuilder('r');
+        $builder = $this->manager->getRepository(Relation::class)->createQueryBuilder('r');
         $builder->field('r.sources.$id')->in($types);
 
         $config = [];

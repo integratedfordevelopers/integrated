@@ -53,7 +53,7 @@ class SearchContentReferenced
     public function getReferenced($document)
     {
         $metadataFactory = $this->dm->getMetadataFactory();
-        $deleted = $this->getDeletedInfo($document, $metadataFactory);
+        $deleted = $this->getDeletedInfo($document, $this->dm);
         $allMetadata = $metadataFactory->getAllMetadata();
 
         $referenced = [];

@@ -63,7 +63,7 @@ class FilterQueryProvider
             GROUP BY g.group_id HAVING count > 0
         ';
 
-        $query = $this->userManager->getEntityManager()->createNativeQuery($sql, $this->getMapping());
+        $query = $this->userManager->getObjectManager()->createNativeQuery($sql, $this->getMapping());
 
         return $this->formatChoices($query, $data);
     }
@@ -79,7 +79,7 @@ class FilterQueryProvider
             GROUP BY u.scope
         ';
 
-        $query = $this->userManager->getEntityManager()->createNativeQuery($sql, $this->getMapping());
+        $query = $this->userManager->getObjectManager()->createNativeQuery($sql, $this->getMapping());
 
         return $this->formatChoices($query, $data);
     }

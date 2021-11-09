@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\SitemapBundle\Controller;
 
 use DateTime;
-use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Services\ContentTypeInformation;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
@@ -27,9 +27,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class DefaultController extends Controller
 {
     /**
-     * @var DocumentManager
+     * @var ManagerRegistry
      */
-    private $documentManager;
+    private $register;
 
     /**
      * @var ChannelContextInterface
@@ -42,18 +42,18 @@ class DefaultController extends Controller
     private $contentTypeInformation;
 
     /**
-     * @param DocumentManager         $documentManager
+     * @param ManagerRegistry         $register
      * @param ChannelContextInterface $context
      * @param ContainerInterface      $container
      * @param ContentTypeInformation  $contentTypeInformation
      */
     public function __construct(
-        DocumentManager $documentManager,
+        ManagerRegistry $register,
         ChannelContextInterface $context,
         ContainerInterface $container,
         ContentTypeInformation $contentTypeInformation
     ) {
-        $this->documentManager = $documentManager;
+        $this->register = $register;
         $this->context = $context;
         $this->container = $container;
         $this->contentTypeInformation = $contentTypeInformation;
@@ -76,7 +76,7 @@ class DefaultController extends Controller
 
         $now = new DateTime();
 
-        $queryBuilder = $this->documentManager->createQueryBuilder(Content::class);
+        $queryBuilder = $this->register->getManagerForClass(Content::class)->createQueryBuilder(Content::class);
         $count = $queryBuilder
             ->count()
             ->field('channels.$id')->equals($channel->getId())
@@ -122,7 +122,7 @@ class DefaultController extends Controller
 
         $now = new DateTime();
 
-        $queryBuilder = $this->documentManager->createQueryBuilder(Content::class);
+        $queryBuilder = $this->register->getManagerForClass(Content::class)->createQueryBuilder(Content::class);
 
         $documents = $queryBuilder
             ->select('contentType', 'slug', 'createdAt', 'class')

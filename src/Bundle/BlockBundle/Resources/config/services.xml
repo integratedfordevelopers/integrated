@@ -44,11 +44,11 @@
         </service>
 
         <service id="integrated_block.provider.block_usage" class="%integrated_block.provider.block_usage.class%">
-            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="doctrine_mongodb" />
         </service>
 
         <service id="integrated_block.provider.filter_query" class="%integrated_block.provider.filter_query.class%" public="true">
-            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="doctrine_mongodb" />
             <argument type="service" id="integrated_block.provider.block_usage" />
             <argument>%kernel.bundles%</argument>
         </service>

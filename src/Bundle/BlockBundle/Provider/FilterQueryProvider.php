@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\BlockBundle\Provider;
 
-use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\Persistence\ManagerRegistry;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
 use Integrated\Bundle\BlockBundle\Document\Block\InlineTextBlock;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
@@ -22,9 +22,9 @@ use Integrated\Bundle\UserBundle\Model\UserInterface;
 class FilterQueryProvider
 {
     /**
-     * @var DocumentManager
+     * @var ManagerRegistry
      */
-    protected $documentManager;
+    protected $mr;
 
     /**
      * @var BlockUsageProvider
@@ -37,13 +37,13 @@ class FilterQueryProvider
     private $pageBundleInstalled;
 
     /**
-     * @param DocumentManager    $documentManager
+     * @param ManagerRegistry    $mr
      * @param BlockUsageProvider $blockUsageProvider
      * @param array              $bundles
      */
-    public function __construct(DocumentManager $documentManager, BlockUsageProvider $blockUsageProvider, array $bundles)
+    public function __construct(ManagerRegistry $mr, BlockUsageProvider $blockUsageProvider, array $bundles)
     {
-        $this->documentManager = $documentManager;
+        $this->mr = $mr;
         $this->blockUsageProvider = $blockUsageProvider;
         $this->pageBundleInstalled = isset($bundles['IntegratedPageBundle']);
     }
@@ -58,7 +58,7 @@ class FilterQueryProvider
      */
     public function getBlocksByChannelQueryBuilder($data, ?object $groupUser)
     {
-        $qb = $this->documentManager->createQueryBuilder(Block::class);
+        $qb = $this->mr->getManager()->createQueryBuilder(Block::class);
 
         $type = isset($data['type']) ? array_filter($data['type']) : null;
         if ($type) {
@@ -102,6 +102,7 @@ class FilterQueryProvider
         $queryBuilder = $this->getBlocksByChannelQueryBuilder($data, $groupUser);
 
         $blocks = $queryBuilder
+            ->hydrate(false)
             ->select('_id')
             ->getQuery()
             ->getIterator()

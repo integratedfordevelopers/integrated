@@ -12,17 +12,17 @@
 namespace Integrated\Bundle\UserBundle\Doctrine;
 
 use Darsyn\IP\Version\Multi as IP;
-use Doctrine\Common\Persistence\ObjectRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectRepository;
 use Integrated\Bundle\UserBundle\Model\IpList;
 use Integrated\Bundle\UserBundle\Model\IpListManagerInterface;
 
 class IpListManager implements IpListManagerInterface
 {
     /**
-     * @var EntityManagerInterface
+     * @var ObjectManager
      */
-    private $entityManager;
+    private $om;
 
     /**
      * @var ObjectRepository
@@ -30,13 +30,13 @@ class IpListManager implements IpListManagerInterface
     private $repository;
 
     /**
-     * @param EntityManagerInterface $entityManager
-     * @param string                 $class
+     * @param ObjectManager $om
+     * @param string        $class
      */
-    public function __construct(EntityManagerInterface $entityManager, $class)
+    public function __construct(ObjectManager $om, $class)
     {
-        $this->entityManager = $entityManager;
-        $this->repository = $this->entityManager->getRepository($class);
+        $this->om = $om;
+        $this->repository = $this->om->getRepository($class);
 
         if (!is_a($this->repository->getClassName(), IpList::class, true)) {
             throw new \InvalidArgumentException(sprintf('The class "%s" is not a instance of %s', $this->repository->getClassName(), IpList::class));
@@ -44,11 +44,11 @@ class IpListManager implements IpListManagerInterface
     }
 
     /**
-     * @return EntityManagerInterface
+     * @return ObjectManager
      */
-    public function getEntityManager()
+    public function getObjectManager()
     {
-        return $this->entityManager;
+        return $this->om;
     }
 
     /**
@@ -71,10 +71,10 @@ class IpListManager implements IpListManagerInterface
      */
     public function persist(IpList $list, $flush = true)
     {
-        $this->entityManager->persist($list);
+        $this->om->persist($list);
 
         if ($flush) {
-            $this->entityManager->flush();
+            $this->om->flush($list);
         }
     }
 
@@ -83,10 +83,10 @@ class IpListManager implements IpListManagerInterface
      */
     public function remove(IpList $list, $flush = true)
     {
-        $this->entityManager->remove($list);
+        $this->om->remove($list);
 
         if ($flush) {
-            $this->entityManager->flush();
+            $this->om->flush($list);
         }
     }
 
@@ -95,7 +95,7 @@ class IpListManager implements IpListManagerInterface
      */
     public function clear()
     {
-        $this->entityManager->clear($this->repository->getClassName());
+        $this->om->clear($this->repository->getClassName());
     }
 
     /**

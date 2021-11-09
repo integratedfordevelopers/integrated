@@ -24,7 +24,7 @@
         "alcaeus/mongo-php-adapter": "~1.1",
         "darsyn/ip": "^4.0",
         "doctrine/data-fixtures": ">= 1.5.1",
-        "doctrine/doctrine-bundle": "~1.12",
+        "doctrine/doctrine-bundle": "^1.12.8",
         "doctrine/doctrine-fixtures-bundle": "^3.4.0",
         "doctrine/migrations": "~2.2",
         "doctrine/orm": "^2.7.5",
