@@ -21,6 +21,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\UnitOfWork as ORMUnitOfWork;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectRepository;
 use Integrated\Bundle\SlugBundle\Mapping\Metadata\PropertyMetadata;
 use Integrated\Bundle\SlugBundle\Slugger\SluggerInterface;
 use Metadata\MetadataFactoryInterface;
@@ -322,7 +323,7 @@ class SluggableSubscriber implements EventSubscriber
     }
 
     /**
-     * @param Objectmanager|DocumentManager|EntityManager $om
+     * @param ObjectManager|DocumentManager|EntityManager $om
      * @param string                                      $class
      * @param string                                      $field
      * @param string                                      $slug
@@ -330,7 +331,7 @@ class SluggableSubscriber implements EventSubscriber
      *
      * @return array
      */
-    protected function findSimilarSlugs(Objectmanager $om, $class, $field, $slug, $separator = '-')
+    protected function findSimilarSlugs(ObjectManager $om, $class, $field, $slug, $separator = '-')
     {
         $objects = $this->getScheduledObjects($om);
         $uow = $om->getUnitOfWork();
@@ -347,11 +348,11 @@ class SluggableSubscriber implements EventSubscriber
     }
 
     /**
-     * @param Objectmanager|EntityManagerInterface|DocumentManager $om
+     * @param ObjectManager|EntityManagerInterface|DocumentManager $om
      *
      * @return array
      */
-    protected function getScheduledObjects(Objectmanager $om)
+    protected function getScheduledObjects(ObjectManager $om)
     {
         $uow = $om->getUnitOfWork();
 
@@ -366,7 +367,7 @@ class SluggableSubscriber implements EventSubscriber
      * @param ObjectManager|DocumentManager|EntityManager $om
      * @param string                                      $class
      *
-     * @return DocumentRepository|EntityRepository
+     * @return ObjectRepository|DocumentRepository|EntityRepository
      */
     protected function getRepository(ObjectManager $om, $class)
     {
@@ -396,10 +397,10 @@ class SluggableSubscriber implements EventSubscriber
     }
 
     /**
-     * @param Objectmanager|DocumentManager|EntityManager $om
+     * @param ObjectManager|DocumentManager|EntityManager $om
      * @param object                                      $object
      */
-    protected function recomputeSingleObjectChangeSet(Objectmanager $om, $object)
+    protected function recomputeSingleObjectChangeSet(ObjectManager $om, $object)
     {
         if ($om->contains($object)) {
             $classMetadata = $om->getClassMetadata(\get_class($object));

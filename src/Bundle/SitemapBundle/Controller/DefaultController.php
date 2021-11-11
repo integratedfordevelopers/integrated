@@ -29,7 +29,7 @@ class DefaultController extends Controller
     /**
      * @var ManagerRegistry
      */
-    private $register;
+    private $registry;
 
     /**
      * @var ChannelContextInterface
@@ -42,18 +42,18 @@ class DefaultController extends Controller
     private $contentTypeInformation;
 
     /**
-     * @param ManagerRegistry         $register
+     * @param ManagerRegistry         $registry
      * @param ChannelContextInterface $context
      * @param ContainerInterface      $container
      * @param ContentTypeInformation  $contentTypeInformation
      */
     public function __construct(
-        ManagerRegistry $register,
+        ManagerRegistry $registry,
         ChannelContextInterface $context,
         ContainerInterface $container,
         ContentTypeInformation $contentTypeInformation
     ) {
-        $this->register = $register;
+        $this->registry = $registry;
         $this->context = $context;
         $this->container = $container;
         $this->contentTypeInformation = $contentTypeInformation;
@@ -76,7 +76,7 @@ class DefaultController extends Controller
 
         $now = new DateTime();
 
-        $queryBuilder = $this->register->getManagerForClass(Content::class)->createQueryBuilder(Content::class);
+        $queryBuilder = $this->registry->getManagerForClass(Content::class)->createQueryBuilder(Content::class);
         $count = $queryBuilder
             ->count()
             ->field('channels.$id')->equals($channel->getId())
@@ -122,7 +122,7 @@ class DefaultController extends Controller
 
         $now = new DateTime();
 
-        $queryBuilder = $this->register->getManagerForClass(Content::class)->createQueryBuilder(Content::class);
+        $queryBuilder = $this->registry->getManagerForClass(Content::class)->createQueryBuilder(Content::class);
 
         $documents = $queryBuilder
             ->select('contentType', 'slug', 'createdAt', 'class')

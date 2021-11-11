@@ -28,7 +28,7 @@ class NewsController extends Controller
     /**
      * @var ManagerRegistry
      */
-    private $register;
+    private $registry;
 
     /**
      * @var ChannelContextInterface
@@ -36,16 +36,16 @@ class NewsController extends Controller
     private $context;
 
     /**
-     * @param ManagerRegistry         $register
+     * @param ManagerRegistry         $registry
      * @param ChannelContextInterface $context
      * @param ContainerInterface      $container
      */
     public function __construct(
-        ManagerRegistry $register,
+        ManagerRegistry $registry,
         ChannelContextInterface $context,
         ContainerInterface $container
     ) {
-        $this->register = $register;
+        $this->registry = $registry;
         $this->context = $context;
         $this->container = $container;
     }
@@ -66,7 +66,7 @@ class NewsController extends Controller
 
         $now = new DateTime();
 
-        $queryBuilder = $this->register->getManagerForClass(News::class)->createQueryBuilder(News::class);
+        $queryBuilder = $this->registry->getManagerForClass(News::class)->createQueryBuilder(News::class);
         $documents = $queryBuilder
             ->select('contentType', 'slug', 'publishTime', 'title', 'relations')
             ->field('channels.$id')->equals($channel->getId())
