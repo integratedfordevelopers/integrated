@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\AssetBundle\Twig\Extension;
 
-use Doctrine\Common\Inflector\Inflector;
 use Integrated\Bundle\AssetBundle\Manager\AssetManager;
 use Integrated\Bundle\AssetBundle\Twig\TokenParser\AssetTokenParser;
 
@@ -70,7 +69,7 @@ abstract class AbstractAssetExtension extends \Twig_Extension
         $html = [];
 
         foreach ($this->manager->getAssets() as $asset) {
-            $block = Inflector::singularize($this->getTag()).($asset->isInline() ? '_inline' : '');
+            $block = substr($this->getTag(), 0, -1).($asset->isInline() ? '_inline' : '');
 
             $html[] = $template->renderBlock($block, [
                 $asset->isInline() ? 'asset_content' : 'asset_url' => $asset->getContent(),
