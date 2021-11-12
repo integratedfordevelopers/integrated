@@ -12,15 +12,16 @@
 namespace Integrated\Bundle\SlugBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Persistence\ObjectRepository;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Doctrine\ODM\MongoDB\UnitOfWork as ODMUnitOfWork;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\UnitOfWork as ORMUnitOfWork;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectRepository;
 use Integrated\Bundle\SlugBundle\Mapping\Metadata\PropertyMetadata;
 use Integrated\Bundle\SlugBundle\Slugger\SluggerInterface;
 use Metadata\MetadataFactoryInterface;
@@ -109,6 +110,10 @@ class SluggableSubscriber implements EventSubscriber
         $om = $args->getObjectManager();
         $class = \get_class($object);
 
+        if (!$om instanceof DocumentManager && !$om instanceof EntityManagerInterface) {
+            return;
+        }
+
         $classMetadata = $this->metadataFactory->getMetadataForClass($class);
         $classMetadataInfo = $om->getClassMetadata($class);
 
@@ -129,10 +134,11 @@ class SluggableSubscriber implements EventSubscriber
                 $slug = null;
 
                 if ($event == 'preUpdate') {
-                    if ($args->hasChangedField($propertyMetadata->name)) {
+                    $uow = $om->getUnitOfWork();
+                    if (\array_key_exists($propertyMetadata->name, $uow->getEntityChangeSet($object))) {
                         // generate custom slug
                         $slug = $this->slugger->slugify(
-                            $args->getNewValue($propertyMetadata->name),
+                            $uow->getEntityChangeSet($object)[$propertyMetadata->name],
                             $propertyMetadata->slugSeparator
                         );
                     } elseif (null !== $propertyMetadata->getValue($object)) {
@@ -342,7 +348,7 @@ class SluggableSubscriber implements EventSubscriber
     }
 
     /**
-     * @param ObjectManager $om
+     * @param ObjectManager|EntityManagerInterface|DocumentManager $om
      *
      * @return array
      */
@@ -387,6 +393,7 @@ class SluggableSubscriber implements EventSubscriber
         } elseif ($uow instanceof ORMUnitOfWork) {
             throw new \RuntimeException('Not implemented yet'); // @todo (INTEGRATED-294)
         }
+        throw new \RuntimeException('Not supported');
     }
 
     /**

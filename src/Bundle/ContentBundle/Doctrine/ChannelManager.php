@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Doctrine;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Common\Content\Channel\ChannelManagerInterface;
@@ -76,7 +76,7 @@ class ChannelManager implements ChannelManagerInterface
         $this->om->persist($channel);
 
         if ($flush) {
-            $this->om->flush($channel);
+            $this->om->flush();
         }
     }
 
@@ -88,7 +88,7 @@ class ChannelManager implements ChannelManagerInterface
         $this->om->remove($channel);
 
         if ($flush) {
-            $this->om->flush($channel);
+            $this->om->flush();
         }
     }
 

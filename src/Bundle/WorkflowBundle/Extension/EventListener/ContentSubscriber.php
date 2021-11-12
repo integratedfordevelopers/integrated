@@ -198,7 +198,7 @@ class ContentSubscriber implements ContentSubscriberInterface
             $state->setState($data['state']);
 
             $dispatcher = $this->container->get('integrated_workflow.event_dispatcher');
-            $dispatcher->dispatch(WorkflowEvents::STATE_CHANGED, new WorkflowStateChangedEvent($state, $content));
+            $dispatcher->dispatch(new WorkflowStateChangedEvent($state, $content), WorkflowEvents::STATE_CHANGED);
 
             $persist = true;
         }
@@ -250,7 +250,7 @@ E-mail: '.$person->getEmail().'',
             $state->addLog($log);
         }
 
-        $this->getManager()->flush($state);
+        $this->getManager()->flush();
     }
 
     /**

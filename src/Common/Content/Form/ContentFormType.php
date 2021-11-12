@@ -83,8 +83,7 @@ class ContentFormType extends AbstractType
                 $metadata,
                 $builder,
                 $options
-            ),
-            Events::PRE_BUILD)->getOptions();
+            ), Events::PRE_BUILD)->getOptions();
         }
 
         foreach ($metadata->getFields() as $field) {
@@ -96,8 +95,7 @@ class ContentFormType extends AbstractType
                     $builder,
                     $options,
                     $field->getName()
-                ),
-                Events::PRE_BUILD_FIELD);
+                ), Events::PRE_BUILD_FIELD);
             }
 
             if ($type->hasField($field->getName())) {
@@ -129,8 +127,7 @@ class ContentFormType extends AbstractType
                     $builder,
                     $options,
                     $field->getName()
-                ),
-                Events::POST_BUILD_FIELD);
+                ), Events::POST_BUILD_FIELD);
             }
         }
 
@@ -161,8 +158,7 @@ class ContentFormType extends AbstractType
             $view,
             $form,
             $options
-        ),
-        Events::PRE_VIEW);
+        ), Events::PRE_VIEW);
     }
 
     /**
@@ -186,8 +182,7 @@ class ContentFormType extends AbstractType
             $view,
             $form,
             $options
-        ),
-        Events::POST_VIEW);
+        ), Events::POST_VIEW);
     }
 
     /**

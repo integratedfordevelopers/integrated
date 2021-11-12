@@ -3,7 +3,7 @@
 namespace Integrated\Bundle\InstallerBundle\Migrations\MongoDB;
 
 use AntiMattr\MongoDB\Migrations\AbstractMigration;
-use Doctrine\MongoDB\Database;
+use MongoDB\Database;
 
 final class Version20201214122713 extends AbstractMigration
 {
@@ -16,11 +16,15 @@ final class Version20201214122713 extends AbstractMigration
     }
 
     /**
-     * @param Database $db
+     * {@inheritDoc}
      */
     public function up(Database $db)
     {
-        $db->selectCollection('page')->ensureIndex(['channel.$id' => 1, 'contentType.$id' => 1, 'class' => 1]);
+        $db->selectCollection('page')->createIndexes([
+            ['key' => ['channel.$id' => 1]],
+            ['key' => ['contentType.$id' => 1]],
+            ['key' => ['class' => 1]],
+        ]);
     }
 
     /**
@@ -28,6 +32,10 @@ final class Version20201214122713 extends AbstractMigration
      */
     public function down(Database $db)
     {
-        $db->selectCollection('page')->deleteIndex(['channel.$id' => 1, 'contentType.$id' => 1, 'class' => 1]);
+        $db->selectCollection('page')->dropIndexes([
+            ['key' => ['channel.$id' => 1]],
+            ['key' => ['contentType.$id' => 1]],
+            ['key' => ['class' => 1]],
+        ]);
     }
 }

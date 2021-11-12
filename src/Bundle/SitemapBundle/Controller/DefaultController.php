@@ -78,6 +78,7 @@ class DefaultController extends AbstractController
 
         $queryBuilder = $this->registry->getManagerForClass(Content::class)->createQueryBuilder(Content::class);
         $count = $queryBuilder
+            ->count()
             ->field('channels.$id')->equals($channel->getId())
             ->field('disabled')->equals(false)
             ->field('publishTime.startDate')->lte($now)
@@ -85,8 +86,7 @@ class DefaultController extends AbstractController
             ->field('contentType')->in($this->contentTypeInformation->getPublishingAllowedContentTypes($channel->getId()))
             ->addOr($queryBuilder->expr()->field('primaryChannel.$id')->equals($channel->getId()))
             ->addOr($queryBuilder->expr()->field('primaryChannel')->exists(false))
-            ->getQuery()
-            ->count();
+            ->getQuery();
 
         if (!$count) {
             throw new NotFoundHttpException();
