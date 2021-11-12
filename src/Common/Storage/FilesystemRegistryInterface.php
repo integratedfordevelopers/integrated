@@ -29,7 +29,7 @@ interface FilesystemRegistryInterface
     public function keys();
 
     /**
-     * @param $key
+     * @param string $key
      *
      * @return bool
      */

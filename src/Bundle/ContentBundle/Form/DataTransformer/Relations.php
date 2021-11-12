@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation as EmbeddedRelation;
 use Integrated\Common\Content\Relation\RelationInterface;
 use Symfony\Component\Form\DataTransformerInterface;

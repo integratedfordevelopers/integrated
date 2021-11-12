@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\SolrBundle\Decorator;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Integrated\Bundle\SolrBundle\Iterator\DetachIterator;
 use Integrated\Common\Solr\Task\Provider\ContentProviderInterface;
 

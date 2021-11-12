@@ -173,7 +173,7 @@ class RelatedContentBlockHandler extends BlockHandler
      * @param Content             $document
      * @param RelatedContentBlock $block
      *
-     * @return \Doctrine\MongoDB\Query\Builder
+     * @return \Doctrine\ODM\MongoDB\Query\Builder
      */
     protected function getLinkedByQuery(Content $document, RelatedContentBlock $block)
     {
@@ -183,8 +183,7 @@ class RelatedContentBlockHandler extends BlockHandler
             $ids[$content->getId()] = $content->getId();
         }
 
-        return $this->dm->getRepository(Content::class)
-            ->createQueryBuilder()
+        return $this->dm->createQueryBuilder(Content::class)
             ->field('_id')->in($ids);
     }
 

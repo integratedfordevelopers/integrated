@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Doctrine;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\ContentType\Exception\InvalidArgumentException;

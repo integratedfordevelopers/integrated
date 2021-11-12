@@ -11,8 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Bulk;
 
-use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
-use Doctrine\MongoDB\Query\Builder;
+use Doctrine\Persistence\ManagerRegistry;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ContentBundle\Form\Type\BulkActionRelationType;
 use Integrated\Common\Bulk\Form\Config;
@@ -47,9 +46,8 @@ class RelationFormProvider implements ConfigProviderInterface
             $types[$item->getContentType()] = $item->getContentType();
         }
 
-        /** @var Builder $builder */
-        $builder = $this->manager->getRepository(Relation::class)->createQueryBuilder();
-        $builder->field('sources.$id')->in($types);
+        $builder = $this->manager->getRepository(Relation::class)->createQueryBuilder('r');
+        $builder->field('r.sources.$id')->in($types);
 
         $config = [];
 

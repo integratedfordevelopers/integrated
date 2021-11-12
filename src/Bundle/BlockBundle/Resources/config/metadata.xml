@@ -6,7 +6,7 @@
 
     <parameters>
 
-        <parameter key="integrated_block.metadata.driver.annotation.mapping.class">Doctrine\Common\Persistence\Mapping\Driver\MappingDriver</parameter>
+        <parameter key="integrated_block.metadata.driver.annotation.mapping.class">Doctrine\Persistence\Mapping\Driver\MappingDriver</parameter>
         <parameter key="integrated_block.metadata.driver.annotation.class">Integrated\Common\Form\Mapping\Driver\AnnotationDriver</parameter>
 
         <parameter key="integrated_block.metadata.factory.event_dispatcher.class">Symfony\Component\EventDispatcher\EventDispatcher</parameter>

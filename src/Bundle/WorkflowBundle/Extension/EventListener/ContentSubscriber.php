@@ -250,7 +250,7 @@ E-mail: '.$person->getEmail().'',
             $state->addLog($log);
         }
 
-        $this->getManager()->flush($state);
+        $this->getManager()->flush();
     }
 
     /**

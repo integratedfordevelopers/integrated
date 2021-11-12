@@ -12,7 +12,7 @@
 namespace Integrated\Common\Content\Extension\Adaptor\Doctrine;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\Proxy;
+use Doctrine\Persistence\Proxy;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreFlushEventArgs;
 use Integrated\Common\Content\Extension\Adaptor\AbstractAdaptor;
@@ -72,7 +72,7 @@ class DoctrineOrmAdaptor extends AbstractAdaptor implements EventSubscriber
             }
 
             foreach ($objects as $object) {
-                if ($object instanceof Proxy && !$object->__isInitialized__) {
+                if ($object instanceof Proxy && !$object->__isInitialized()) {
                     continue;
                 }
 

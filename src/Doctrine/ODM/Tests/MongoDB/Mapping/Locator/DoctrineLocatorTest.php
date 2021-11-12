@@ -11,8 +11,9 @@
 
 namespace Integrated\Doctrine\ODM\Tests\MongoDB\Mapping\Locator;
 
-use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
+use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use Integrated\Doctrine\ODM\MongoDB\Mapping\Locator\DoctrineLocator;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -20,13 +21,13 @@ use Integrated\Doctrine\ODM\MongoDB\Mapping\Locator\DoctrineLocator;
 class DoctrineLocatorTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var MappingDriver|\PHPUnit_Framework_MockObject_MockObject
+     * @var MappingDriver|MockObject
      */
     private $driver;
 
     protected function setUp(): void
     {
-        $this->driver = $this->createMock('Doctrine\\Common\\Persistence\\Mapping\\Driver\\MappingDriver');
+        $this->driver = $this->createMock('Doctrine\Persistence\Mapping\Driver\MappingDriver');
     }
 
     public function testInterface()

@@ -12,7 +12,7 @@
 namespace Integrated\Common\Form\Mapping\Driver;
 
 use Doctrine\Common\Annotations\Reader;
-use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
+use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use Integrated\Common\Form\Mapping\Annotations\Document;
 use Integrated\Common\Form\Mapping\Annotations\Field;
 use Integrated\Common\Form\Mapping\DriverInterface;

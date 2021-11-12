@@ -68,7 +68,7 @@ class Registry
     /**
      * @param string $task
      *
-     * @return callable
+     * @return callable|null
      */
     protected function findHandler($task)
     {
