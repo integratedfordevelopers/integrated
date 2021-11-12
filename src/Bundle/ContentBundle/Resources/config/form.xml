@@ -170,6 +170,16 @@
             <tag name="doctrine_mongodb.odm.event_listener" event="postLoad" />
         </service>
 
+        <service id="integrated_bundle_content.form.type.bulk_action_relation" class="Integrated\Bundle\ContentBundle\Form\Type\BulkActionRelationType">
+            <argument type="service" id="router" />
+            <argument type="string">integrated_content_content_index</argument>
+            <argument type="collection">
+                <argument type="string" key="_format">json</argument>
+            </argument>
+
+            <tag name="form.type" />
+        </service>
+
         <service id="integrated_bundle_content.form.type.bulk_action_relation_references" class="Integrated\Bundle\ContentBundle\Form\Type\BulkActionRelationReferencesType">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
 

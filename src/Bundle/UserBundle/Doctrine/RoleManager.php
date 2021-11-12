@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\UserBundle\Doctrine;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
 use Integrated\Bundle\UserBundle\Event\ConfigureRolesEvent;
 use Integrated\Bundle\UserBundle\Model\RoleInterface;
@@ -195,8 +195,8 @@ class RoleManager implements RoleManagerInterface
     {
         if (!$this->rolesEventFired) {
             $roles = $this->eventDispatcher->dispatch(
-                ConfigureRolesEvent::CONFIGURE,
-                new ConfigureRolesEvent($this->roles)
+                new ConfigureRolesEvent($this->roles),
+                ConfigureRolesEvent::CONFIGURE
             )->getRoles();
 
             $this->roles = [];

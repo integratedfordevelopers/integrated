@@ -16,12 +16,13 @@ $(function() {
 
         $assigned.attr('disabled','disabled');
         $.ajax({
-            url: Routing.generate('integrated_workflow_change_state', {
+            url: $('.workflow').data('workflow-state-change'),
+            data: {
                 'workflow':workflowId,
                 'state':status,
                 'contentType':contentType,
                 '_format':'json'
-            }),
+            },
             dataType: 'json',
             success: function(response) {
                 var selected = $('option:selected', $assigned).val();

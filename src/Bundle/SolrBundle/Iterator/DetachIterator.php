@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\SolrBundle\Iterator;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Iterator;
 
 /**

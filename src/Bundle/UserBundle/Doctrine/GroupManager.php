@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\UserBundle\Doctrine;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
 use Integrated\Bundle\UserBundle\Model\GroupInterface;
 use Integrated\Bundle\UserBundle\Model\GroupManagerInterface;
@@ -76,7 +76,7 @@ class GroupManager implements GroupManagerInterface
         $this->om->persist($group);
 
         if ($flush) {
-            $this->om->flush($group);
+            $this->om->flush();
         }
     }
 
@@ -88,7 +88,7 @@ class GroupManager implements GroupManagerInterface
         $this->om->remove($group);
 
         if ($flush) {
-            $this->om->flush($group);
+            $this->om->flush();
         }
     }
 

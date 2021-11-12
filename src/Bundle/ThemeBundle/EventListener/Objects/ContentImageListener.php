@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\ThemeBundle\EventListener\Objects;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Event\ContentEvent;
 use Integrated\Bundle\SlugBundle\Slugger\SluggerInterface;

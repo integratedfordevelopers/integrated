@@ -19,7 +19,7 @@ $(".relation-items").each(function() {
         placeholder: '',
         ajax: {
             type: 'GET',
-            url: Routing.generate("integrated_content_content_index", {'_format': 'json'}),
+            url: $relation.data('url'),
             dataType: 'json',
             data: function(param) {
                 return {
@@ -88,7 +88,7 @@ $(".relation-items").each(function() {
     $.each($relation.data('types'), function() {
         contentRelation.push({
             'name': this.name,
-            'href': Routing.generate('integrated_content_content_new', {type: this.type, relation: relation_id, '_format': 'iframe.html'})
+            'href': $relation.data('url-new').replace('__type__', this.type).replace('__relation__', relation_id)
         });
     });
 

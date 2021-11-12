@@ -7,12 +7,10 @@
     <route id="integrated_website_menu_render" path="/render" methods="POST">
         <default key="_controller">IntegratedWebsiteBundle:Menu:render</default>
         <default key="_format">json</default>
-        <option key="expose">true</option>
     </route>
 
     <route id="integrated_website_menu_save" path="/save" methods="POST">
         <default key="_controller">IntegratedWebsiteBundle:Menu:save</default>
         <default key="_format">json</default>
-        <option key="expose">true</option>
     </route>
 </routes>

@@ -47,8 +47,8 @@ class IntegratedHttpRequestHandler extends HttpFoundationRequestHandler
     {
         // Post an event
         $this->dispatcher->dispatch(
-            IntegratedHttpRequestHandlerEvents::PRE_HANDLE,
-            new HandleRequestEvent($form)
+            new HandleRequestEvent($form),
+            IntegratedHttpRequestHandlerEvents::PRE_HANDLE
         );
 
         // Let the parent workout the details
@@ -56,8 +56,8 @@ class IntegratedHttpRequestHandler extends HttpFoundationRequestHandler
 
         // This is the event where some hacking might occur
         $this->dispatcher->dispatch(
-            IntegratedHttpRequestHandlerEvents::POST_HANDLE,
-            new HandleRequestEvent($form)
+            new HandleRequestEvent($form),
+            IntegratedHttpRequestHandlerEvents::POST_HANDLE
         );
     }
 }

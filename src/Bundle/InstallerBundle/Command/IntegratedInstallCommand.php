@@ -98,12 +98,6 @@ class IntegratedInstallCommand extends Command
         if (\in_array('tests', $steps) || empty($steps)) {
             $io->section('Test environment');
 
-            $this->entityManager->getConnection()->connect();
-            $io->success('MySQL connection successful');
-
-            $this->documentManager->getConnection()->connect();
-            $io->success('MongoDB connection successful');
-
             $this->solrClient->execute(new Query());
             $io->success('Solr connection successful');
 

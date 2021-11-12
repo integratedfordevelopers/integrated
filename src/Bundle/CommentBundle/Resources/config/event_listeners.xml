@@ -14,6 +14,7 @@
 
         <service id="integrated_comment.event_listener.comment_form_field_subscriber" class="%integrated_comment.event_listener.comment_form_field_subscriber.class%">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="router" />
             <argument type="service" id="integrated_asset.manager.stylesheet_manager" />
             <argument type="service" id="integrated_asset.manager.javascript_manager" />
             <argument type="service" id="request_stack" />

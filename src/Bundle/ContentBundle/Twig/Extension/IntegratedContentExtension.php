@@ -51,7 +51,7 @@ class IntegratedContentExtension extends \Twig_Extension
     public function integratedContent($content)
     {
         $contentEvent = new ContentEvent($content);
-        $this->eventDispatcher->dispatch(ContentEvent::NAME, $contentEvent);
+        $this->eventDispatcher->dispatch($contentEvent, ContentEvent::NAME);
 
         return $contentEvent->getContent();
     }

@@ -8,7 +8,6 @@
         <default key="_controller">IntegratedBlockBundle:Block:index</default>
         <default key="_format">html</default>
         <requirement key="_format">html|json</requirement>
-        <option key="expose">true</option>
     </route>
 
     <route id="integrated_block_block_new" path="/new/{_format}" methods="GET|PUT">
@@ -23,7 +22,6 @@
 
     <route id="integrated_block_block_show" path="/{id}" methods="GET">
         <default key="_controller">IntegratedBlockBundle:Block:show</default>
-        <option key="expose">true</option>
         <default key="_format">json</default>
     </route>
 
@@ -31,7 +29,6 @@
         <default key="_controller">IntegratedBlockBundle:Block:edit</default>
         <default key="_format">html</default>
         <requirement key="_format">html|iframe.html</requirement>
-        <option key="expose">true</option>
     </route>
 
     <route id="integrated_block_block_delete" path="/{id}/delete" methods="GET|DELETE">
@@ -40,6 +37,5 @@
 
     <route id="integrated_block_inline_text_block_create" path="/inline-text/new/{id}" methods="GET|PUT">
         <default key="_controller">IntegratedBlockBundle:InlineTextBlock:create</default>
-        <option key="expose">true</option>
     </route>
 </routes>

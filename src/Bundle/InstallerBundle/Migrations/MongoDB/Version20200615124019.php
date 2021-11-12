@@ -3,7 +3,7 @@
 namespace Integrated\Bundle\InstallerBundle\Migrations\MongoDB;
 
 use AntiMattr\MongoDB\Migrations\AbstractMigration;
-use Doctrine\MongoDB\Database;
+use MongoDB\Database;
 
 final class Version20200615124019 extends AbstractMigration
 {
@@ -20,17 +20,17 @@ final class Version20200615124019 extends AbstractMigration
      */
     public function up(Database $db)
     {
-        $db->selectCollection('block')->ensureIndex(['class' => 1]);
+        $db->selectCollection('block')->createIndex(['class' => 1]);
 
-        $db->selectCollection('content')->ensureIndex(['class' => 1]);
-        $db->selectCollection('content')->ensureIndex(['relations.references.$id' => 1, 'class' => 1]);
-        $db->selectCollection('content')->ensureIndex(['slug' => 1], ['unique' => true, 'sparse' => true]);
-        $db->selectCollection('content')->ensureIndex(['contentType' => 1]);
-        $db->selectCollection('content')->ensureIndex(['relations.relationId' => 1]);
-        $db->selectCollection('content')->ensureIndex(['relations.relationType' => 1]);
+        $db->selectCollection('content')->createIndex(['class' => 1]);
+        $db->selectCollection('content')->createIndex(['relations.references.$id' => 1, 'class' => 1]);
+        $db->selectCollection('content')->createIndex(['slug' => 1], ['unique' => true, 'sparse' => true]);
+        $db->selectCollection('content')->createIndex(['contentType' => 1]);
+        $db->selectCollection('content')->createIndex(['relations.relationId' => 1]);
+        $db->selectCollection('content')->createIndex(['relations.relationType' => 1]);
 
-        $db->selectCollection('content_history')->ensureIndex(['contentId' => 1, 'date' => 1]);
-        $db->selectCollection('content_history')->ensureIndex(['user.id' => 1]);
+        $db->selectCollection('content_history')->createIndex(['contentId' => 1, 'date' => 1]);
+        $db->selectCollection('content_history')->createIndex(['user.id' => 1]);
     }
 
     /**
@@ -38,16 +38,16 @@ final class Version20200615124019 extends AbstractMigration
      */
     public function down(Database $db)
     {
-        $db->selectCollection('block')->deleteIndex(['class' => 1]);
+        $db->selectCollection('block')->dropIndexes(['class' => 1]);
 
-        $db->selectCollection('content')->deleteIndex(['class' => 1]);
-        $db->selectCollection('content')->deleteIndex(['relations.references.$id' => 1, 'class' => 1]);
-        $db->selectCollection('content')->deleteIndex(['slug' => 1]);
-        $db->selectCollection('content')->deleteIndex(['contentType' => 1]);
-        $db->selectCollection('content')->deleteIndex(['relations.relationId' => 1]);
-        $db->selectCollection('content')->deleteIndex(['relations.relationType' => 1]);
+        $db->selectCollection('content')->dropIndexes(['class' => 1]);
+        $db->selectCollection('content')->dropIndexes(['relations.references.$id' => 1, 'class' => 1]);
+        $db->selectCollection('content')->dropIndexes(['slug' => 1]);
+        $db->selectCollection('content')->dropIndexes(['contentType' => 1]);
+        $db->selectCollection('content')->dropIndexes(['relations.relationId' => 1]);
+        $db->selectCollection('content')->dropIndexes(['relations.relationType' => 1]);
 
-        $db->selectCollection('content_history')->deleteIndex(['contentId' => 1, 'date' => 1]);
-        $db->selectCollection('content_history')->deleteIndex(['user.id' => 1]);
+        $db->selectCollection('content_history')->dropIndexes(['contentId' => 1, 'date' => 1]);
+        $db->selectCollection('content_history')->dropIndexes(['user.id' => 1]);
     }
 }

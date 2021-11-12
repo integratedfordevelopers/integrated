@@ -11,7 +11,7 @@
 
 namespace Integrated\Doctrine\ODM\MongoDB\Mapping\Locator;
 
-use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
+use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

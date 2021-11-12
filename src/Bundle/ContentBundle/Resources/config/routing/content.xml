@@ -8,14 +8,12 @@
 		<default key="_controller">Integrated\Bundle\ContentBundle\Controller\ContentController::index</default>
 		<default key="_format">html</default>
 		<requirement key="_format">html|json</requirement>
-        <option key="expose">true</option>
 	</route>
 
 	<route id="integrated_content_content_new" path="/new/{_format}">
 		<default key="_controller">Integrated\Bundle\ContentBundle\Controller\ContentController::new</default>
 		<default key="_format">html</default>
 		<requirement key="_format">html|iframe.html</requirement>
-		<option key="expose">true</option>
 	</route>
 
 	<route id="integrated_content_content_new_rest" path="/" methods="POST">
@@ -25,7 +23,6 @@
 	<route id="integrated_content_content_media_types" path="/media_types/{filter}"  methods="GET">
 		<default key="_controller">Integrated\Bundle\ContentBundle\Controller\ContentController::mediaTypes</default>
 		<default key="filter">null</default>
-		<option key="expose">true</option>
 	</route>
 
 	<route id="integrated_content_content_edit" path="/{id}"  methods="GET">

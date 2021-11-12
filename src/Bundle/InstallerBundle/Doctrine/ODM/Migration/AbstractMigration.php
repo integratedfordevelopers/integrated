@@ -42,6 +42,6 @@ abstract class AbstractMigration extends Migrations\AbstractMigration implements
      */
     protected function getDocumentManager()
     {
-        return $this->container->get('doctrine.odm.mongodb.document_manager');
+        return $this->container->get('doctrine_mongodb.odm.document_manager');
     }
 }

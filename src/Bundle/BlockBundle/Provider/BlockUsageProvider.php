@@ -114,7 +114,7 @@ class BlockUsageProvider
     public function getChannel($id)
     {
         if (!\array_key_exists($id, $this->channels)) {
-            $this->channels[$id] = $this->mr->getManager()->getRepository(Channel::class)->find($id);
+            $this->channels[$id] = $this->mr->getRepository(Channel::class)->find($id);
         }
 
         return $this->channels[$id];
@@ -125,9 +125,7 @@ class BlockUsageProvider
      */
     protected function convertPages()
     {
-        $dm = $this->mr->getManager();
-
-        $pages = $dm->createQueryBuilder(Page::class)
+        $pages = $this->mr->getManager()->createQueryBuilder(Page::class)
             ->hydrate(false)
             ->select(['title', 'channel', 'locked', 'grids'])
             ->getQuery()
