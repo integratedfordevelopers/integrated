@@ -33,7 +33,7 @@
     </route>
 
     <route id="integrated_channel_config_external_return" path="/external/return" methods="GET">
-        <default key="_controller">Integrated\Bundle\ChannelBundle\Controller\ConfigController::externalReturnIntegrated\Bundle\ChannelBundle\Controller\ConfigController</default>
+        <default key="_controller">Integrated\Bundle\ChannelBundle\Controller\ConfigController::externalReturn</default>
     </route>
 
 </routes>
