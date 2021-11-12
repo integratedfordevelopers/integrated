@@ -69,7 +69,7 @@ class BlockExtension extends \Twig_Extension
      * @param BlockUsageProvider       $blockUsageProvider
      * @param MetadataFactoryInterface $metadataFactory
      * @param ChannelContextInterface  $channelContext
-     * @param LoggerInterface $logger
+     * @param LoggerInterface          $logger
      * @param string                   $environment
      */
     public function __construct(
@@ -123,9 +123,9 @@ class BlockExtension extends \Twig_Extension
     }
 
     /**
-     * @param \Twig_Environment                              $environment
+     * @param \Twig_Environment     $environment
      * @param BlockInterface|string $block
-     * @param array                                          $options
+     * @param array                 $options
      *
      * @return string|null
      *

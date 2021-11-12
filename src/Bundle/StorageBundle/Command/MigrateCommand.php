@@ -179,6 +179,7 @@ class MigrateCommand extends Command
 
         // Release the output
         $progress->finish();
+
         return 0;
     }
 

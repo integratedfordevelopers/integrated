@@ -42,6 +42,7 @@ class ScraperRunCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->scraper->run();
+
         return 0;
     }
 }

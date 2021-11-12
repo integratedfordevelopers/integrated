@@ -11,8 +11,6 @@
 
 namespace Integrated\Common\Content\Extension;
 
-use Symfony\Component\EventDispatcher\Event as BaseEvent;
-
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */

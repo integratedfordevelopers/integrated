@@ -83,6 +83,7 @@ The <info>%command.name%</info> command starts a solr worker run.
         } finally {
             $lock->release();
         }
+
         return 0;
     }
 }

@@ -127,7 +127,7 @@ The <info>%command.name%</info> command starts a index of all the content from t
             }
 
             if (!$types) {
-                return 0; 
+                return 0;
             }
 
             $command = null;
@@ -149,6 +149,7 @@ The <info>%command.name%</info> command starts a index of all the content from t
         } finally {
             $lock->release();
         }
+
         return 0;
     }
 

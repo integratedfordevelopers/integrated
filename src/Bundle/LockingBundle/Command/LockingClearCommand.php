@@ -60,6 +60,7 @@ EOF
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->manager->clear();
+
         return 0;
     }
 }

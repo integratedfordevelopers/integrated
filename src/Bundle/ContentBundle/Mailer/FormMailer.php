@@ -68,7 +68,7 @@ class FormMailer
      * @param ChannelContextInterface $channelContext
      * @param TwigEngine              $twigEngine
      * @param ThemeManager            $themeManager
-     * @param TranslatorInterface $translator
+     * @param TranslatorInterface     $translator
      * @param string                  $from
      * @param string                  $name
      */

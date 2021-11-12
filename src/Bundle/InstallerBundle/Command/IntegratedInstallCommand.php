@@ -133,6 +133,7 @@ class IntegratedInstallCommand extends Command
             $this->migrations->execute();
             $this->mongoDBMigrations->execute();
         }
+
         return 0;
     }
 
