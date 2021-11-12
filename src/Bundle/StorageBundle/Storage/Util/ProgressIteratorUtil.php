@@ -13,7 +13,6 @@ namespace Integrated\Bundle\StorageBundle\Storage\Util;
 
 use ArrayIterator;
 use Iterator;
-use Doctrine\ODM\MongoDB\Iterator\Iterator as DoctrineIterator;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -40,10 +39,10 @@ class ProgressIteratorUtil
     private $output;
 
     /**
-     * @param DoctrineIterator $iterator
-     * @param OutputInterface  $output
+     * @param Iterator        $iterator
+     * @param OutputInterface $output
      */
-    public function __construct(DoctrineIterator $iterator, OutputInterface $output)
+    public function __construct(Iterator $iterator, OutputInterface $output)
     {
         $this->iterator = $iterator;
         $this->output = $output;
