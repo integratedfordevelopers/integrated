@@ -46,9 +46,9 @@ class MongoDBMigrations
     {
         $directory = realpath(__DIR__.self::DOCTRINE_MIGRATIONS_DIRECTORY);
 
-        $configuration = new Configuration($this->documentManager->getConnection());
+        $configuration = new Configuration($this->documentManager->getClient());
         $configuration->setMigrationsCollectionName(self::DOCTRINE_MIGRATIONS_COLLECTION);
-        $configuration->setMigrationsDatabaseName($this->documentManager->getDocumentDatabase(Content::class)->getName());
+        $configuration->setMigrationsDatabaseName($this->documentManager->getDocumentDatabase(Content::class)->getDatabaseName());
         $configuration->setMigrationsDirectory($directory);
         $configuration->setMigrationsNamespace(self::DOCTRINE_MIGRATIONS_NAMESPACE);
         $configuration->setName(self::DOCTRINE_MIGRATIONS_NAME);

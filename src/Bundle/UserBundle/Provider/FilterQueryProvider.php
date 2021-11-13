@@ -49,7 +49,7 @@ class FilterQueryProvider
                 ->setParameter('q', '%'.$data['q'].'%');
         }
 
-        return $queryBuilder->getQuery();
+        return $queryBuilder->getQuery()->execute();
     }
 
     public function getGroupChoices($data)

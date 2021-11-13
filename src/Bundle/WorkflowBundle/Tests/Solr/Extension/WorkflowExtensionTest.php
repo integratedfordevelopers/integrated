@@ -48,8 +48,8 @@ class WorkflowExtensionTest extends \PHPUnit\Framework\TestCase
     protected function setUp(): void
     {
         $this->resolver = $this->createMock(ResolverInterface::class);
-        $this->workflow = $this->createMock('Doctrine\\Persistence\\ObjectRepository');
-        $this->definition = $this->createMock('Doctrine\\Persistence\\ObjectRepository');
+        $this->workflow = $this->createMock('Doctrine\Persistence\ObjectRepository');
+        $this->definition = $this->createMock('Doctrine\Persistence\ObjectRepository');
     }
 
     public function testInterface()

@@ -52,7 +52,7 @@ class FilterQueryProvider
      * @param array|null  $data
      * @param object|null $groupUser
      *
-     * @return \Doctrine\MongoDB\Query\Builder
+     * @return \Doctrine\ODM\MongoDB\Query\Builder
      *
      * @throws \MongoException
      */
@@ -101,8 +101,9 @@ class FilterQueryProvider
     {
         $queryBuilder = $this->getBlocksByChannelQueryBuilder($data, $groupUser);
 
-        $blocks = $queryBuilder->select('_id')
+        $blocks = $queryBuilder
             ->hydrate(false)
+            ->select('_id')
             ->getQuery()
             ->getIterator()
             ->toArray();

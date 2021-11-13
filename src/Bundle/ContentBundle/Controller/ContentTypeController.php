@@ -152,7 +152,7 @@ class ContentTypeController extends AbstractController
 
             $this->addFlash('success', 'Item created');
 
-            $this->eventDispatcher->dispatch(Events::CONTENT_TYPE_CREATED, new ContentTypeEvent($contentType));
+            $this->eventDispatcher->dispatch(new ContentTypeEvent($contentType), Events::CONTENT_TYPE_CREATED);
 
             return $this->redirect($this->generateUrl('integrated_content_content_type_show', ['id' => $contentType->getId()]));
         }
@@ -193,7 +193,7 @@ class ContentTypeController extends AbstractController
 
             $this->addFlash('success', 'Item updated');
 
-            $this->eventDispatcher->dispatch(Events::CONTENT_TYPE_UPDATED, new ContentTypeEvent($contentType));
+            $this->eventDispatcher->dispatch(new ContentTypeEvent($contentType), Events::CONTENT_TYPE_UPDATED);
 
             return $this->redirect($this->generateUrl('integrated_content_content_type_show', ['id' => $contentType->getId()]));
         }
@@ -242,7 +242,7 @@ class ContentTypeController extends AbstractController
             $dm->remove($contentType);
             $dm->flush();
 
-            $this->eventDispatcher->dispatch(Events::CONTENT_TYPE_DELETED, new ContentTypeEvent($contentType));
+            $this->eventDispatcher->dispatch(new ContentTypeEvent($contentType), Events::CONTENT_TYPE_DELETED);
 
             // Set flash message
             $this->addFlash('success', 'Item deleted');

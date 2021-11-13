@@ -24,8 +24,8 @@ interface ResolverInterface
      * Gives you an absolute path to the storage.
      * A preference can be given. When the preference is not able to serve the file another filesystem will be used.
      *
-     * @param StorageInterface $storage
-     * @param ArrayCollection  $filesystem
+     * @param StorageInterface     $storage
+     * @param ArrayCollection|null $filesystem
      *
      * @return string absolute path
      */

@@ -91,7 +91,7 @@ class ContentTypeHandler implements HandlerInterface
             }
 
             //update class of content, directly on the database because the documentManager doesn't support class updates
-            $this->documentManager->getDocumentCollection($contentTypeOld->getClass())->getMongoCollection()->update(['_id' => $content->getId()], ['$set' => ['class' => $contentType->getClass()]]);
+            $this->documentManager->getDocumentCollection($contentTypeOld->getClass())->updateOne(['_id' => $content->getId()], ['$set' => ['class' => $contentType->getClass()]]);
 
             $content = $this->documentManager->getRepository($contentType->getClass())->find($content->getId());
         }
