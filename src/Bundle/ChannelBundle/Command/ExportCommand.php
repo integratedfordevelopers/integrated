@@ -17,6 +17,7 @@ use Integrated\Common\Channel\Exporter\QueueExporter;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\Process;
 
 /**
@@ -30,13 +31,28 @@ class ExportCommand extends Command
     private $exporter;
 
     /**
+     * @var KernelInterface
+     */
+    protected $kernel;
+
+    /**
+     * @var string
+     */
+    protected $workingDirectory;
+
+    /**
      * Constructor.
      *
      * @param QueueExporter $exporter
      */
-    public function __construct(QueueExporter $exporter)
-    {
+    public function __construct(
+        QueueExporter $exporter,
+        KernelInterface $kernel,
+        $workingDirectory
+    ) {
         $this->exporter = $exporter;
+        $this->workingDirectory = $workingDirectory;
+        $this->kernel = $kernel;
 
         parent::__construct();
     }
@@ -109,12 +125,10 @@ class ExportCommand extends Command
         $wait = (int) $input->getOption('wait');
         $wait = $wait * 1000; // convert from milli to micro
 
-        $cwd = realpath($this->getContainer()->get('kernel')->getRootDir().'/..');
-
         while (true) {
             $process = new Process(
-                ['php', 'bin/console', 'channel:export', '-e', $input->getOption('env')],
-                $cwd,
+                ['php', 'bin/console', 'channel:export', '-e', $this->kernel->getEnvironment()],
+                $this->workingDirectory,
                 null,
                 null,
                 null

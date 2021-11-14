@@ -100,7 +100,7 @@ class LoginFormType extends AbstractType
 
         $builder->add('login', SubmitType::class);
 
-        if ($request = $request) {
+        if ($request = $this->getRequest($options)) {
             $builder->addEventSubscriber(new SecurityLoginListener($request, $this->getTranslator($options), $this->getTranslationDomain($options)));
         }
     }

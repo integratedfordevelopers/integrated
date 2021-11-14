@@ -32,7 +32,8 @@ class IntegratedContentHistoryBundle extends Bundle
                 'integrated_content_history.event_dispatcher',
                 'integrated.content_history.event_listener',
                 'integrated.content_history.event_subscriber'
-            ), 0
+            ),
+            0
         );
     }
 }

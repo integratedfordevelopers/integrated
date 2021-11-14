@@ -58,9 +58,9 @@ class SecurityLoginListener implements EventSubscriberInterface
     /**
      * @param FormEvent $event
      */
-    public function preSetData(FormEvent $event, Request $request)
+    public function preSetData(FormEvent $event)
     {
-        $request = $request;
+        $request = $this->getRequest();
         $session = $this->getSession();
 
         $error = null;

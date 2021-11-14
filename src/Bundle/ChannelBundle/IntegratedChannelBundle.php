@@ -33,7 +33,8 @@ class IntegratedChannelBundle extends Bundle
         $container->addCompilerPass(
             DoctrineOrmMappingsPass::createXmlMappingDriver(
                 [__DIR__.'/Resources/config/model' => 'Integrated\Bundle\ChannelBundle\Model']
-            ), 0
+            ),
+            0
         );
 
         $container->addCompilerPass(new RegisterConfigPass(), 0);

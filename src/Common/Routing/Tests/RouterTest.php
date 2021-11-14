@@ -103,7 +103,7 @@ class RouterTest extends TestCase
         self::assertSame($response[2], $router->match('path3'));
     }
 
-    public function testMatchRequest(Request $request)
+    public function testMatchRequest()
     {
         // use the symfony router as mock as that class also implements
         // the RequestMatcherInterface interface.
@@ -120,9 +120,9 @@ class RouterTest extends TestCase
         ];
 
         $request = [
-            $request,
-            $request,
-            $request,
+            $this->getRequest(),
+            $this->getRequest(),
+            $this->getRequest(),
         ];
 
         $this->router->expects($this->exactly(3))
@@ -141,7 +141,7 @@ class RouterTest extends TestCase
         self::assertSame($response[2], $router->matchRequest($request[2]));
     }
 
-    public function testMatchRequestWithOutRequestMatcherInterface(Request $request)
+    public function testMatchRequestWithOutRequestMatcherInterface()
     {
         $this->router->expects($this->atLeastOnce())
             ->method('setContext')
@@ -154,9 +154,9 @@ class RouterTest extends TestCase
         ];
 
         $request = [
-            $request,
-            $request,
-            $request,
+            $this->getRequest('path1'),
+            $this->getRequest('path2'),
+            $this->getRequest('path3'),
         ];
 
         $this->router->expects($this->exactly(3))
