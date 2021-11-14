@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Form\Type;
 
-use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
+use Integrated\Bundle\FormTypeBundle\Form\Type\BootstrapCollectionType;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Form\EventListener\ExtractDefaultStateFromCollectionListener;
 use Integrated\Bundle\WorkflowBundle\Form\EventListener\ExtractTransitionsFromCollectionListener;

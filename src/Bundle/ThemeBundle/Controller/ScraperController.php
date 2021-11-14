@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\ThemeBundle\Controller;
 
-use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
+use Integrated\Bundle\FormTypeBundle\Form\Type\FormActionsType;
 use Doctrine\ORM\EntityManagerInterface;
 use Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\ThemeBundle\Entity\Scraper;

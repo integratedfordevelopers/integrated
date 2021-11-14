@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\UserBundle\Controller;
 
-use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
+use Integrated\Bundle\FormTypeBundle\Form\Type\FormActionsType;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\UserBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\UserBundle\Form\Type\ScopeFormType;

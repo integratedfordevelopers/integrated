@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Controller;
 
-use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
+use Integrated\Bundle\FormTypeBundle\Form\Type\FormActionsType;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;

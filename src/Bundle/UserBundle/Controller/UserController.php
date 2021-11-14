@@ -13,7 +13,7 @@ namespace Integrated\Bundle\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Integrated\Bundle\UserBundle\Form\Type\DeleteFormType;
-use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
+use Integrated\Bundle\FormTypeBundle\Form\Type\FormActionsType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

@@ -73,6 +73,6 @@ class ActionsType extends AbstractType
      */
     public function getParent()
     {
-        return 'Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType';
+        return 'Integrated\Bundle\FormTypeBundle\Form\Type\FormActionsType';
     }
 }

@@ -79,7 +79,7 @@ class ContentBlock extends Block
     /**
      * @var array
      * @Type\Field(
-     *      type="Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType",
+     *      type="Integrated\Bundle\FormTypeBundle\Form\Type\BootstrapCollectionType",
      *      options={
      *          "allow_add"=true,
      *          "allow_delete"=true,

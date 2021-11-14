@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\FormTypeBundle\Form\Type;
 
-use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;

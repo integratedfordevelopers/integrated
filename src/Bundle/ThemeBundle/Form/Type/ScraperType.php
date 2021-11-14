@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\ThemeBundle\Form\Type;
 
-use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Integrated\Bundle\ChannelBundle\Form\Type\ChannelChoiceType;
 use Integrated\Bundle\FormTypeBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\AbstractType;
@@ -35,7 +34,7 @@ class ScraperType extends AbstractType
             'entry_type' => ScraperBlockType::class,
         ]);
 
-        $builder->add('actions', FormActionsType::class, [
+        $builder->add('actions', \Integrated\Bundle\FormTypeBundle\Form\Type\FormActionsType::class, [
             'buttons' => [
                 'submit' => ['type' => SubmitType::class, 'options' => ['label' => 'Save']],
             ],

@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
-use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
+use Integrated\Bundle\FormTypeBundle\Form\Type\FormActionsType;
 use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\ContentBundle\Form\Type\ContentTypeFormType;

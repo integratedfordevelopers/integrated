@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Block;
 
-use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
+use Integrated\Bundle\FormTypeBundle\Form\Type\FormActionsType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
