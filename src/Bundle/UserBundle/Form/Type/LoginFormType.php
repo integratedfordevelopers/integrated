@@ -69,7 +69,7 @@ class LoginFormType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options, Request $request)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('_username', TextType::class);
         $builder->add('_password', PasswordType::class);

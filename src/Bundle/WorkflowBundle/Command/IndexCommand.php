@@ -38,15 +38,33 @@ class IndexCommand extends Command
     private $stateManager;
 
     /**
+     * @var ResolverInterface
+     */
+    private $resolver;
+
+    /**
+     * @var ObjectRepository
+     */
+    private $workflowRepository;
+
+    /**
+     * @var Factory
+     */
+    private $lockFactory;
+
+    /**
      * IndexCommand constructor.
      *
      * @param StateManager $stateManager
      */
-    public function __construct(StateManager $stateManager)
+    public function __construct(StateManager $stateManager, ResolverInterface $resolver, ObjectRepository $workflowRepository, Factory $lockFactory)
     {
-        parent::__construct();
-
         $this->stateManager = $stateManager;
+        $this->resolver = $resolver;
+        $this->workflowRepository = $workflowRepository;
+        $this->lockFactory = $lockFactory;
+
+        parent::__construct();
     }
 
     /**
@@ -161,10 +179,10 @@ The <info>%command.name%</info> command starts a index of all the content from t
     protected function findDefinition(array $ids = null)
     {
         if (null === $ids) {
-            return $this->getRepository()->findAll();
+            return $this->workflowRepository->findAll();
         }
 
-        return $this->getRepository()->findBy(['id' => $ids]);
+        return $this->workflowRepository->findBy(['id' => $ids]);
     }
 
     /**
@@ -176,7 +194,7 @@ The <info>%command.name%</info> command starts a index of all the content from t
     {
         $result = [];
 
-        foreach ($this->getResolver()->getTypes() as $type) {
+        foreach ($this->resolver->getTypes() as $type) {
             if ($type->hasOption('workflow') && isset($ids[$type->getOption('workflow')])) {
                 $result[] = $type;
             }
@@ -186,26 +204,10 @@ The <info>%command.name%</info> command starts a index of all the content from t
     }
 
     /**
-     * @return ResolverInterface
-     */
-    protected function getResolver()
-    {
-        return $this->getContainer()->get('integrated_content.resolver');
-    }
-
-    /**
-     * @return ObjectRepository
-     */
-    protected function getRepository()
-    {
-        return $this->getContainer()->get('integrated_workflow.repository.definition');
-    }
-
-    /**
      * @return Lock
      */
     protected function getLock()
     {
-        return $this->getContainer()->get('integrated_workflow.lock.factory')->createLock(self::class.md5(__DIR__));
+        return $this->lockFactory->createLock(self::class.md5(__DIR__));
     }
 }
