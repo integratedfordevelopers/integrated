@@ -20,7 +20,6 @@
         "ext-intl": "*",
         "ext-json": "*",
         "abraham/twitteroauth": "^0.7.4",
-        "braincrafted/bootstrap-bundle": "dev-develop",
         "darsyn/ip": "^4.0",
         "doctrine/cache": "^1.11",
         "doctrine/data-fixtures": ">= 1.5.1",
