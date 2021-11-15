@@ -11,12 +11,12 @@
 
 namespace Integrated\Bundle\UserBundle\Security\Firewall;
 
-use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Scheb\TwoFactorBundle\Security\Authentication\Token\TwoFactorTokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Firewall\ListenerInterface;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Integrated\Bundle\UserBundle\Model\Scope;
 
@@ -43,9 +43,9 @@ class ScopeListener implements ListenerInterface
     }
 
     /**
-     * @param RequestEvent $event
+     * @param GetResponseEvent $event
      */
-    public function handle(RequestEvent $event)
+    public function handle(GetResponseEvent $event)
     {
         $token = $this->tokenStorage->getToken();
 
