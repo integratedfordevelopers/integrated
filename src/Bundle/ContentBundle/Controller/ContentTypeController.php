@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Symfony\Component\Form\Form;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
@@ -24,6 +23,7 @@ use Integrated\Common\ContentType\Events;
 use Integrated\Common\Form\Mapping\MetadataFactory;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Integrated\Common\Form\Mapping\MetadataInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;

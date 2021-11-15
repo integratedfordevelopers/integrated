@@ -67,7 +67,7 @@ class BlockController extends AbstractController
      *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function index(Request $request)
     {
         $user = null;
         if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
@@ -104,7 +104,7 @@ class BlockController extends AbstractController
      *
      * @return Response
      */
-    public function showAction(Request $request, Block $block)
+    public function show(Request $request, Block $block)
     {
         if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -122,7 +122,7 @@ class BlockController extends AbstractController
      *
      * @return RedirectResponse|Response
      */
-    public function newAction(Request $request)
+    public function new(Request $request)
     {
         if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -170,7 +170,7 @@ class BlockController extends AbstractController
      *
      * @return Response
      */
-    public function newChannelBlockAction(Request $request)
+    public function newChannelBlock(Request $request)
     {
         $csrfToken = $request->request->get('csrf_token');
 
@@ -205,7 +205,7 @@ class BlockController extends AbstractController
      *
      * @return array|RedirectResponse|Response
      */
-    public function editAction(Request $request, Block $block)
+    public function edit(Request $request, Block $block)
     {
         if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             $user = $this->getUser();
@@ -253,7 +253,7 @@ class BlockController extends AbstractController
      *
      * @return RedirectResponse|Response
      */
-    public function deleteAction(Request $request, Block $block)
+    public function delete(Request $request, Block $block)
     {
         if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();

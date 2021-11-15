@@ -11,11 +11,11 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\MenuBundle\Menu\DatabaseMenuFactory;
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Bundle\MenuBundle\Provider\IntegratedMenuProvider;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

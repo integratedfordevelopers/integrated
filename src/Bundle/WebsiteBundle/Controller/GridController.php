@@ -11,9 +11,9 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Integrated\Bundle\PageBundle\Document\Page\AbstractPage;
 use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -27,7 +27,7 @@ class GridController extends AbstractController
      *
      * @return JsonResponse
      */
-    public function saveAction(Request $request)
+    public function save(Request $request)
     {
         if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();

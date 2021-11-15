@@ -11,12 +11,12 @@
 
 namespace Integrated\Bundle\UserBundle\Controller\TwoFactor;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Integrated\Bundle\UserBundle\Handler\TwoFactor\HandlerFactoryInterface;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 use Integrated\Bundle\UserBundle\Security\TwoFactor\Http\ContextResolverInterface;
 use Integrated\Bundle\UserBundle\Security\TwoFactor\Http\TargetProvider;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -73,7 +73,7 @@ class GoogleController extends AbstractController
         $this->setContainer($container);
     }
 
-    public function formAction(Request $request)
+    public function form(Request $request)
     {
         $context = $this->resolver->resolve($request);
 
@@ -98,7 +98,7 @@ class GoogleController extends AbstractController
         return new Response($this->factory->create($context)->render());
     }
 
-    public function checkAction(Request $request)
+    public function check(Request $request)
     {
         $context = $this->resolver->resolve($request);
 

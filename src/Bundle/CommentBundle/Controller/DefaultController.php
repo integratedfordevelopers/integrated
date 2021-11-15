@@ -74,7 +74,7 @@ class DefaultController
      *
      * @return \Symfony\Component\HttpFoundation\Response|JsonResponse
      */
-    public function newAction(Request $request, Content $content, $field)
+    public function new(Request $request, Content $content, $field)
     {
         $comment = new Comment();
         $comment->setContent($content);
@@ -109,7 +109,7 @@ class DefaultController
      *
      * @return JsonResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function getAction(Request $request, Comment $comment)
+    public function get(Request $request, Comment $comment)
     {
         $reply = new Reply();
         $reply->setDate(new \DateTime());
@@ -143,7 +143,7 @@ class DefaultController
      *
      * @return JsonResponse
      */
-    public function deleteAction(Comment $comment)
+    public function delete(Comment $comment)
     {
         $this->dm->remove($comment);
         $this->dm->flush();

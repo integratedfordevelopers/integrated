@@ -11,13 +11,13 @@
 
 namespace Integrated\Bundle\ThemeBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Doctrine\ORM\EntityManagerInterface;
 use Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\ThemeBundle\Entity\Scraper;
 use Integrated\Bundle\ThemeBundle\Form\Type\ScraperType;
 use Integrated\Bundle\ThemeBundle\Scraper\Scraper as ScraperService;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;

@@ -11,13 +11,13 @@
 
 namespace Integrated\Bundle\UserBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Braincrafted\Bundle\BootstrapBundle\Session\FlashMessage;
 use Integrated\Bundle\UserBundle\Form\Type\ProfileFormType;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -64,7 +64,7 @@ class ProfileController extends AbstractController
      *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function index(Request $request)
     {
         $user = $this->getUser();
 

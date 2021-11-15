@@ -11,9 +11,9 @@
 
 namespace Integrated\Bundle\LockingBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Integrated\Common\Locks\Resource;
 use Integrated\Common\Locks;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 

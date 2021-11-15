@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\ChannelBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormInterface;
 use Knp\Component\Pager\Paginator;
@@ -28,6 +27,7 @@ use Integrated\Bundle\ChannelBundle\Model\Config;
 use Integrated\Common\Channel\Connector\Adapter\RegistryInterface;
 use Integrated\Common\Channel\Connector\AdapterInterface;
 use Integrated\Common\Channel\Connector\Config\ConfigManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -79,7 +79,7 @@ class ConfigController extends AbstractController
      *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function index(Request $request)
     {
         if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -101,7 +101,7 @@ class ConfigController extends AbstractController
      *
      * @return Response
      */
-    public function newAction(Request $request, $adapter)
+    public function new(Request $request, $adapter)
     {
         if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -168,7 +168,7 @@ class ConfigController extends AbstractController
      *
      * @return Response
      */
-    public function editAction(Request $request, $id)
+    public function edit(Request $request, $id)
     {
         if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -236,17 +236,17 @@ class ConfigController extends AbstractController
      *
      * @return Response
      */
-    public function externalReturnAction(Request $request)
+    public function externalReturn(Request $request)
     {
         $session = new Session();
 
         if (!$id = $session->get('externalReturnId')) {
             $this->getFlashMessage()->error('Config not found in session');
 
-            return $this->indexAction($request);
+            return $this->index($request);
         }
 
-        return $this->editAction($request, $id);
+        return $this->edit($request, $id);
     }
 
     /**
@@ -255,7 +255,7 @@ class ConfigController extends AbstractController
      *
      * @return Response
      */
-    public function deleteAction(Request $request, $id)
+    public function delete(Request $request, $id)
     {
         if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();

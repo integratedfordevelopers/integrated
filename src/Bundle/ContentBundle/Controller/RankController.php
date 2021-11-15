@@ -11,13 +11,13 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction;
 use Integrated\Bundle\ContentBundle\Provider\ContentProvider;
 use Integrated\Common\Bulk\BulkHandlerInterface;
 use Integrated\Common\Content\RankableInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

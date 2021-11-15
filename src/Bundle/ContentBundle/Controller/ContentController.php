@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Integrated\Common\Locks\Resource;
 use Integrated\Common\Locks\Filter;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
@@ -26,6 +25,7 @@ use Integrated\Common\Content\Form\ContentFormType;
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\Locks;
 use Integrated\Common\Security\Permissions;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

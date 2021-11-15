@@ -11,12 +11,12 @@
 
 namespace Integrated\Bundle\SitemapBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use DateTime;
 use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
 use Integrated\Bundle\ContentBundle\Document\Content\News;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -56,7 +56,7 @@ class NewsController extends AbstractController
      *
      * @throws \Exception
      */
-    public function indexAction()
+    public function index()
     {
         $channel = $this->context->getChannel();
 

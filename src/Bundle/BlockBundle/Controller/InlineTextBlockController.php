@@ -27,7 +27,7 @@ class InlineTextBlockController extends BlockController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function createAction(Request $request, AbstractPage $page)
+    public function create(Request $request, AbstractPage $page)
     {
         if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();

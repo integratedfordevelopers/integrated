@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\UserBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Form\FormInterface;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
@@ -21,6 +20,7 @@ use Integrated\Bundle\UserBundle\Form\Type\ScopeFormType;
 use Integrated\Bundle\UserBundle\Model\Scope;
 use Integrated\Bundle\UserBundle\Model\ScopeManagerInterface;
 use Integrated\Bundle\UserBundle\Model\User;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;

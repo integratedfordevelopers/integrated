@@ -11,13 +11,13 @@
 
 namespace Integrated\Bundle\UserBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Integrated\Bundle\UserBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\UserBundle\Form\Type\IpListFormType;
 use Integrated\Bundle\UserBundle\Model\IpList;
 use Integrated\Bundle\UserBundle\Model\IpListManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,7 +42,7 @@ class IpListController extends AbstractController
      *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function index(Request $request)
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -66,7 +66,7 @@ class IpListController extends AbstractController
      *
      * @return Response
      */
-    public function newAction(Request $request)
+    public function new(Request $request)
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -106,7 +106,7 @@ class IpListController extends AbstractController
      *
      * @return Response
      */
-    public function editAction(IpList $list, Request $request)
+    public function edit(IpList $list, Request $request)
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -145,7 +145,7 @@ class IpListController extends AbstractController
      *
      * @return Response
      */
-    public function deleteAction(IpList $list, Request $request)
+    public function delete(IpList $list, Request $request)
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();

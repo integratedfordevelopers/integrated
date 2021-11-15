@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\UserBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Twig\Error\Error;
 use Integrated\Bundle\UserBundle\Doctrine\UserManager;
 use Integrated\Bundle\UserBundle\Form\Type\LoginFormType;
@@ -19,6 +18,7 @@ use Integrated\Bundle\UserBundle\Form\Type\PasswordChangeType;
 use Integrated\Bundle\UserBundle\Form\Type\PasswordResetType;
 use Integrated\Bundle\UserBundle\Service\KeyGenerator;
 use Integrated\Bundle\UserBundle\Service\Mailer;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

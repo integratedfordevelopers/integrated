@@ -5,37 +5,37 @@
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="integrated_block_block_index" path="/{_format}" methods="GET|POST">
-        <default key="_controller">IntegratedBlockBundle:Block:index</default>
+        <default key="_controller">Integrated\Bundle\BlockBundle\Controller\BlockController::index</default>
         <default key="_format">html</default>
         <requirement key="_format">html|json</requirement>
     </route>
 
     <route id="integrated_block_block_new" path="/new/{_format}" methods="GET|PUT">
-        <default key="_controller">IntegratedBlockBundle:Block:new</default>
+        <default key="_controller">Integrated\Bundle\BlockBundle\Controller\BlockController::new</default>
         <default key="_format">html</default>
         <requirement key="_format">html|iframe.html</requirement>
     </route>
 
     <route id="integrated_block_block_new_channel_block" path="/channel-block/new/" methods="POST">
-        <default key="_controller">IntegratedBlockBundle:Block:newChannelBlock</default>
+        <default key="_controller">Integrated\Bundle\BlockBundle\Controller\BlockController::newChannelBlock</default>
     </route>
 
     <route id="integrated_block_block_show" path="/{id}" methods="GET">
-        <default key="_controller">IntegratedBlockBundle:Block:show</default>
+        <default key="_controller">Integrated\Bundle\BlockBundle\Controller\BlockController::show</default>
         <default key="_format">json</default>
     </route>
 
     <route id="integrated_block_block_edit" path="/{id}/edit/{_format}" methods="GET|POST">
-        <default key="_controller">IntegratedBlockBundle:Block:edit</default>
+        <default key="_controller">Integrated\Bundle\BlockBundle\Controller\BlockController::edit</default>
         <default key="_format">html</default>
         <requirement key="_format">html|iframe.html</requirement>
     </route>
 
     <route id="integrated_block_block_delete" path="/{id}/delete" methods="GET|DELETE">
-        <default key="_controller">IntegratedBlockBundle:Block:delete</default>
+        <default key="_controller">Integrated\Bundle\BlockBundle\Controller\BlockController::delete</default>
     </route>
 
     <route id="integrated_block_inline_text_block_create" path="/inline-text/new/{id}" methods="GET|PUT">
-        <default key="_controller">IntegratedBlockBundle:InlineTextBlock:create</default>
+        <default key="_controller">Integrated\Bundle\BlockBundle\Controller\InlineTextBlockController::create</default>
     </route>
 </routes>
