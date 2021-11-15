@@ -4,8 +4,6 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="integrated_website_grid_save" path="/save" methods="POST">
-        <default key="_controller">Integrated\Bundle\WebsiteBundle\Controller\GridController::save</default>
-        <default key="_format">json</default>
-    </route>
+    <import resource="@IntegratedStorageBundle/Resources/config/routing/storage.xml" />
+
 </routes>

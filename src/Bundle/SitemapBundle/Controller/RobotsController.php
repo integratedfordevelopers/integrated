@@ -22,7 +22,7 @@ class RobotsController
      * @return array
      * @Template
      */
-    public function indexAction()
+    public function index()
     {
         return [];
     }

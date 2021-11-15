@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\WebsiteBundle\Controller;
 
 use Integrated\Bundle\MenuBundle\Provider\IntegratedMenuProvider;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class MenuController extends Controller
+class MenuController extends AbstractController
 {
     /**
      * @param Request $request

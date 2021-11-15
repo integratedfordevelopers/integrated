@@ -5,31 +5,31 @@
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="integrated_sitemap_index" path="/sitemap.xml">
-        <default key="_controller">integrated_sitemap.controller.default:indexAction</default>
+        <default key="_controller">Integrated\Bundle\SitemapBundle\Controller\DefaultController::index</default>
         <default key="_format">xml</default>
     </route>
 
     <route id="integrated_sitemap_list" path="/sitemap{page}.xml">
-        <default key="_controller">integrated_sitemap.controller.default:listAction</default>
+        <default key="_controller">Integrated\Bundle\SitemapBundle\Controller\DefaultController::list</default>
         <default key="_format">xml</default>
 
         <requirement key="page">\d+</requirement>
     </route>
 
     <route id="integrated_sitemap_news_index" path="/news-sitemap.xml">
-        <default key="_controller">integrated_sitemap.controller.news:indexAction</default>
+        <default key="_controller">Integrated\Bundle\SitemapBundle\Controller\NewsController::index</default>
         <default key="_format">xml</default>
     </route>
 
     <route id="integrated_sitemap_news_list" path="/news-sitemap{page}.xml">
-        <default key="_controller">integrated_sitemap.controller.news:listAction</default>
+        <default key="_controller">Integrated\Bundle\SitemapBundle\Controller\NewsController::list</default>
         <default key="_format">xml</default>
 
         <requirement key="page">\d+</requirement>
     </route>
 
     <route id="integrated_sitemap_robots" path="/robots.txt">
-        <default key="_controller">integrated_sitemap.controller.robots:indexAction</default>
+        <default key="_controller">Integrated\Bundle\SitemapBundle\Controller\RobotsController::index</default>
         <default key="_format">txt</default>
     </route>
 

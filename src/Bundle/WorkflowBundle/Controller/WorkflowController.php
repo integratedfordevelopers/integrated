@@ -24,7 +24,7 @@ use Integrated\Bundle\WorkflowBundle\Form\Type\DefinitionFormType;
 use Integrated\Bundle\WorkflowBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\WorkflowBundle\Utils\StateVisibleConfig;
 use Integrated\Common\Security\PermissionInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +33,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class WorkflowController extends Controller
+class WorkflowController extends AbstractController
 {
     /**
      * Generate a list of workflow definitions.

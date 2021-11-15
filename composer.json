@@ -22,6 +22,7 @@
         "abraham/twitteroauth": "^0.7.4",
         "braincrafted/bootstrap-bundle": "dev-develop",
         "darsyn/ip": "^4.0",
+        "doctrine/cache": "^1.11",
         "doctrine/data-fixtures": ">= 1.5.1",
         "doctrine/doctrine-bundle": "^2.4.3",
         "doctrine/doctrine-fixtures-bundle": "^3.4.0",

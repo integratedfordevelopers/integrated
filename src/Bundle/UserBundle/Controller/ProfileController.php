@@ -54,7 +54,7 @@ class ProfileController extends AbstractController
      *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function index(Request $request)
     {
         $user = $this->getUser();
 

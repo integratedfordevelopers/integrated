@@ -5,31 +5,31 @@
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="integrated_user_iplist_index" path="/" methods="GET">
-        <default key="_controller">integrated_user.controller.ip_list:indexAction</default>
+        <default key="_controller">Integrated\Bundle\UserBundle\Controller\IpListController::index</default>
     </route>
 
     <route id="integrated_user_iplist_new" path="/new">
-        <default key="_controller">integrated_user.controller.ip_list:newAction</default>
+        <default key="_controller">Integrated\Bundle\UserBundle\Controller\IpListController::new</default>
     </route>
 
     <route id="integrated_user_iplist_new_rest" path="/" methods="POST">
-        <default key="_controller">integrated_user.controller.ip_list:newAction</default>
+        <default key="_controller">Integrated\Bundle\UserBundle\Controller\IpListController::new</default>
     </route>
 
     <route id="integrated_user_iplist_edit" path="/{id}" methods="GET">
-        <default key="_controller">integrated_user.controller.ip_list:editAction</default>
+        <default key="_controller">Integrated\Bundle\UserBundle\Controller\IpListController:edit</default>
     </route>
 
     <route id="integrated_user_iplist_edit_rest" path="/{id}" methods="PUT">
-        <default key="_controller">integrated_user.controller.ip_list:editAction</default>
+        <default key="_controller">Integrated\Bundle\UserBundle\Controller\IpListController::edit</default>
     </route>
 
     <route id="integrated_user_iplist_delete" path="/{id}/delete">
-        <default key="_controller">integrated_user.controller.ip_list:deleteAction</default>
+        <default key="_controller">Integrated\Bundle\UserBundle\Controller\IpListController::delete</default>
     </route>
 
     <route id="integrated_user_iplist_delete_rest" path="/{id}" methods="DELETE">
-        <default key="_controller">integrated_user.controller.ip_list:deleteAction</default>
+        <default key="_controller">Integrated\Bundle\UserBundle\Controller\IpListController::delete</default>
     </route>
 
 </routes>

@@ -75,7 +75,7 @@ class ConfigController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request)
+    public function index(Request $request)
     {
         if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -97,7 +97,7 @@ class ConfigController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function newAction(Request $request, $adapter)
+    public function new(Request $request, $adapter)
     {
         if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -162,7 +162,7 @@ class ConfigController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request, $id)
+    public function edit(Request $request, $id)
     {
         if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -228,17 +228,17 @@ class ConfigController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function externalReturnAction(Request $request)
+    public function externalReturn(Request $request)
     {
         $session = new Session();
 
         if (!$id = $session->get('externalReturnId')) {
             $this->addFlash('danger', 'Config not found in session');
 
-            return $this->indexAction($request);
+            return $this->index($request);
         }
 
-        return $this->editAction($request, $id);
+        return $this->edit($request, $id);
     }
 
     /**
@@ -247,7 +247,7 @@ class ConfigController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function deleteAction(Request $request, $id)
+    public function delete(Request $request, $id)
     {
         if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
