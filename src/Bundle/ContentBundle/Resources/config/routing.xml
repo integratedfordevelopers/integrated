@@ -13,7 +13,6 @@
     <import resource="@IntegratedContentBundle/Resources/config/routing/search.xml" />
     <import resource="@IntegratedContentBundle/Resources/config/routing/bulk.xml"  prefix="/bulk/"/>
 
-    <import resource="@FOSJsRoutingBundle/Resources/config/routing/routing.xml" />
     <import resource="@IntegratedBlockBundle/Resources/config/routing.xml" />
 
 </routes>

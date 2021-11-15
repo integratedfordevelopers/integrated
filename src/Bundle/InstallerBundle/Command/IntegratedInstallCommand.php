@@ -123,7 +123,6 @@ class IntegratedInstallCommand extends Command
             $this->executeCommand('braincrafted:bootstrap:install', $output);
             $this->executeCommand('sp:bower:install', $output);
             $this->executeCommand('assetic:dump', $output);
-            $this->executeCommand('fos:js-routing:dump', $output);
             $this->executeCommand('assets:install', $output);
         }
 
