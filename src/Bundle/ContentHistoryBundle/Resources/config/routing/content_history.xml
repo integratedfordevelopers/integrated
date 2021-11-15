@@ -5,11 +5,11 @@
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="integrated_content_history_index" path="/{id}" methods="GET">
-        <default key="_controller">integrated_content_history.controller.content_history:indexAction</default>
+        <default key="_controller">Integrated\Bundle\ContentHistoryBundle\Controller\ContentHistoryController::index</default>
     </route>
 
     <route id="integrated_content_history_show" path="/{id}/show" methods="GET">
-        <default key="_controller">integrated_content_history.controller.content_history:showAction</default>
+        <default key="_controller">Integrated\Bundle\ContentHistoryBundle\Controller\ContentHistoryController::show</default>
     </route>
 
 </routes>

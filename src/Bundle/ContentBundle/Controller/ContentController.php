@@ -23,7 +23,7 @@ use Integrated\Common\Content\Form\ContentFormType;
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\Locks;
 use Integrated\Common\Security\Permissions;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -35,7 +35,7 @@ use Traversable;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ContentController extends Controller
+class ContentController extends AbstractController
 {
     /**
      * @var string

@@ -5,35 +5,35 @@
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="integrated_channel_config_index" path="/" methods="GET">
-        <default key="_controller">integrated_channel.controller.config:indexAction</default>
+        <default key="_controller">Integrated\Bundle\ChannelBundle\Controller\ConfigController::index</default>
     </route>
 
     <route id="integrated_channel_config_new" path="/new/{adapter}">
-        <default key="_controller">integrated_channel.controller.config:newAction</default>
+        <default key="_controller">Integrated\Bundle\ChannelBundle\Controller\ConfigController::new</default>
     </route>
 
     <route id="integrated_channel_config_new_rest" path="/{adapter}" methods="POST">
-        <default key="_controller">integrated_channel.controller.config:newAction</default>
+        <default key="_controller">Integrated\Bundle\ChannelBundle\Controller\ConfigController::new</default>
     </route>
 
     <route id="integrated_channel_config_edit" path="/{id}"  methods="GET">
-        <default key="_controller">integrated_channel.controller.config:editAction</default>
+        <default key="_controller">Integrated\Bundle\ChannelBundle\Controller\ConfigController::edit</default>
     </route>
 
     <route id="integrated_channel_config_edit_rest" path="/{id}" methods="PUT">
-        <default key="_controller">integrated_channel.controller.config:editAction</default>
+        <default key="_controller">Integrated\Bundle\ChannelBundle\Controller\ConfigController::edit</default>
     </route>
 
     <route id="integrated_channel_config_delete" path="/{id}/delete">
-        <default key="_controller">integrated_channel.controller.config:deleteAction</default>
+        <default key="_controller">Integrated\Bundle\ChannelBundle\Controller\ConfigController::delete</default>
     </route>
 
     <route id="integrated_channel_config_delete_rest" path="/{id}" methods="DELETE">
-        <default key="_controller">integrated_channel.controller.config:deleteAction</default>
+        <default key="_controller">Integrated\Bundle\ChannelBundle\Controller\ConfigController::delete</default>
     </route>
 
     <route id="integrated_channel_config_external_return" path="/external/return" methods="GET">
-        <default key="_controller">integrated_channel.controller.config:externalReturnAction</default>
+        <default key="_controller">Integrated\Bundle\ChannelBundle\Controller\ConfigController::externalReturn</default>
     </route>
 
 </routes>
