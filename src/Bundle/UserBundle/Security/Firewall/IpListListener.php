@@ -11,12 +11,12 @@
 
 namespace Integrated\Bundle\UserBundle\Security\Firewall;
 
-use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Http\Firewall\ListenerInterface;
 
 class IpListListener implements ListenerInterface
 {
-    public function handle(RequestEvent $event)
+    public function handle(GetResponseEvent $event)
     {
         // All of this is just here to add a option to the firewall config.
     }
