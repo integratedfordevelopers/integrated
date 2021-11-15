@@ -25,8 +25,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Lock\Factory;
 use Symfony\Component\Lock\Lock;
+use Symfony\Component\Lock\LockFactory;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -49,7 +49,7 @@ class IndexCommand extends Command
     private $workflowRepository;
 
     /**
-     * @var Factory
+     * @var LockFactory
      */
     private $lockFactory;
 
@@ -58,7 +58,7 @@ class IndexCommand extends Command
      *
      * @param StateManager $stateManager
      */
-    public function __construct(StateManager $stateManager, ResolverInterface $resolver, ObjectRepository $workflowRepository, Factory $lockFactory)
+    public function __construct(StateManager $stateManager, ResolverInterface $resolver, ObjectRepository $workflowRepository, LockFactory $lockFactory)
     {
         $this->stateManager = $stateManager;
         $this->resolver = $resolver;
