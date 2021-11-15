@@ -183,6 +183,7 @@ class UserManager implements UserManagerInterface
             ->select('User')
             ->leftJoin('User.scope', 'Scope')
             ->where('User.username = :username')
+            ->andWhere('User.enabled = true')
             ->setParameter('username', $username);
 
         if ($scope) {
