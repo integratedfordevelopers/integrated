@@ -28,7 +28,7 @@
     <import resource="@IntegratedSitemapBundle/Resources/config/routing.xml" type="xml">
     </import>
 
-    <import resource="@IntegratedStorageBundle/Resources/config/routing/storage.xml" type="xml">
+    <import resource="@IntegratedStorageBundle/Resources/config/routing.xml" type="xml">
     </import>
 
     <import resource="@IntegratedThemeBundle/Resources/config/routing.xml" type="xml">
