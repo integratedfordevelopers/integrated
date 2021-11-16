@@ -50,7 +50,7 @@ class ScraperController extends AbstractController
      *
      * @return Response
      */
-    public function indexAction(): Response
+    public function index(): Response
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 
@@ -68,7 +68,7 @@ class ScraperController extends AbstractController
      *
      * @return Response|RedirectResponse
      */
-    public function newAction(Request $request): Response
+    public function new(Request $request): Response
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 
@@ -101,7 +101,7 @@ class ScraperController extends AbstractController
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(Scraper $scraper, Request $request): Response
+    public function edit(Scraper $scraper, Request $request): Response
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 

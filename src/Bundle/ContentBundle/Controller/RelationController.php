@@ -37,7 +37,7 @@ class RelationController extends AbstractController
      *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function index(Request $request)
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 
@@ -62,7 +62,7 @@ class RelationController extends AbstractController
      *
      * @return Response
      */
-    public function showAction(Relation $relation)
+    public function show(Relation $relation)
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 
@@ -79,7 +79,7 @@ class RelationController extends AbstractController
      *
      * @return Response
      */
-    public function newAction()
+    public function new()
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 
@@ -97,7 +97,7 @@ class RelationController extends AbstractController
      *
      * @return Response|RedirectResponse
      */
-    public function createAction(Request $request)
+    public function create(Request $request)
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 
@@ -129,7 +129,7 @@ class RelationController extends AbstractController
      *
      * @return Response
      */
-    public function editAction(Relation $relation)
+    public function edit(Relation $relation)
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 
@@ -148,7 +148,7 @@ class RelationController extends AbstractController
      *
      * @return Response|RedirectResponse
      */
-    public function updateAction(Request $request, Relation $relation)
+    public function update(Request $request, Relation $relation)
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 
@@ -178,7 +178,7 @@ class RelationController extends AbstractController
      *
      * @return RedirectResponse
      */
-    public function deleteAction(Request $request, Relation $relation)
+    public function delete(Request $request, Relation $relation)
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 

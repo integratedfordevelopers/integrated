@@ -5,31 +5,31 @@
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="integrated_content_relation_index" path="/" methods="GET">
-        <default key="_controller">IntegratedContentBundle:Relation:index</default>
+        <default key="_controller">Integrated\Bundle\ContentBundle\Controller\RelationController::index</default>
     </route>
 
     <route id="integrated_content_relation_new" path="/new" methods="GET">
-        <default key="_controller">IntegratedContentBundle:Relation:new</default>
+        <default key="_controller">Integrated\Bundle\ContentBundle\Controller\RelationController::new</default>
     </route>
 
     <route id="integrated_content_relation_create" path="/" methods="POST">
-        <default key="_controller">IntegratedContentBundle:Relation:create</default>
+        <default key="_controller">Integrated\Bundle\ContentBundle\Controller\RelationController::create</default>
     </route>
 
     <route id="integrated_content_relation_edit" path="/{id}/edit" methods="GET">
-        <default key="_controller">IntegratedContentBundle:Relation:edit</default>
+        <default key="_controller">Integrated\Bundle\ContentBundle\Controller\RelationController::edit</default>
     </route>
 
     <route id="integrated_content_relation_update" path="/{id}" methods="PUT">
-        <default key="_controller">IntegratedContentBundle:Relation:update</default>
+        <default key="_controller">Integrated\Bundle\ContentBundle\Controller\RelationController::update</default>
     </route>
 
     <route id="integrated_content_relation_delete" path="/{id}" methods="DELETE">
-        <default key="_controller">IntegratedContentBundle:Relation:delete</default>
+        <default key="_controller">Integrated\Bundle\ContentBundle\Controller\RelationController::delete</default>
     </route>
 
     <route id="integrated_content_relation_show" path="/{id}" methods="GET">
-        <default key="_controller">IntegratedContentBundle:Relation:show</default>
+        <default key="_controller">Integrated\Bundle\ContentBundle\Controller\RelationController::show</default>
     </route>
 
 </routes>

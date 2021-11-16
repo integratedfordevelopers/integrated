@@ -12,15 +12,16 @@
 namespace Integrated\Bundle\UserBundle\Security\Firewall;
 
 use Scheb\TwoFactorBundle\Security\Authentication\Token\TwoFactorTokenInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Http\Firewall\ListenerInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\Security\Http\Firewall\AbstractListener;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Integrated\Bundle\UserBundle\Model\Scope;
 
-class ScopeListener implements ListenerInterface
+class ScopeListener extends AbstractListener
 {
     /**
      * @var TokenStorageInterface
@@ -42,23 +43,18 @@ class ScopeListener implements ListenerInterface
         $this->providerKey = $providerKey;
     }
 
-    /**
-     * @param GetResponseEvent $event
-     */
-    public function handle(GetResponseEvent $event)
+    public function supports(Request $request): ?bool
     {
         $token = $this->tokenStorage->getToken();
-
-        if (!$token instanceof TokenInterface || $token instanceof TwoFactorTokenInterface) {
-            return;
-        }
-
         $user = $token->getUser();
 
-        if (!$user instanceof UserInterface) {
-            return;
-        }
+        return !(!$token instanceof TokenInterface || $token instanceof TwoFactorTokenInterface) && $user instanceof UserInterface;
+    }
 
+    public function authenticate(RequestEvent $event)
+    {
+        $token = $this->tokenStorage->getToken();
+        $user = $token->getUser();
         $scope = $user->getScope();
 
         if (!$scope instanceof Scope || !$scope->isAdmin()) {

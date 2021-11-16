@@ -42,7 +42,7 @@ class WorkflowController extends AbstractController
      *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function index(Request $request)
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 
@@ -67,7 +67,7 @@ class WorkflowController extends AbstractController
      *
      * @return Response
      */
-    public function newAction(Request $request)
+    public function new(Request $request)
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 
@@ -104,7 +104,7 @@ class WorkflowController extends AbstractController
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    public function editAction(Request $request)
+    public function edit(Request $request)
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 
@@ -151,7 +151,7 @@ class WorkflowController extends AbstractController
      *
      * @return Response
      */
-    public function deleteAction(Request $request)
+    public function delete(Request $request)
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 
@@ -197,7 +197,7 @@ class WorkflowController extends AbstractController
      *
      * @return JsonResponse
      */
-    public function changeStateAction(Request $request)
+    public function changeState(Request $request)
     {
         $stateId = $request->get('state');
 

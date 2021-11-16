@@ -14,6 +14,7 @@ namespace Integrated\Bundle\WebsiteBundle\EventListener\Objects;
 use Integrated\Bundle\ContentBundle\Event\ContentEvent;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Twig\Environment;
 
 /**
  * @author Marijn Otte <marijn@e-active.nl>
@@ -26,7 +27,7 @@ class ContentYoutubeListener
     protected $themeManager;
 
     /**
-     * @var EngineInterface
+     * @var Environment
      */
     protected $templating;
 
@@ -37,12 +38,12 @@ class ContentYoutubeListener
 
     /**
      * @param ThemeManager    $themeManager
-     * @param EngineInterface $templating
+     * @param Environment     $templating
      * @param string          $env
      */
     public function __construct(
         ThemeManager $themeManager,
-        EngineInterface $templating,
+        Environment $templating,
         $env
     ) {
         $this->themeManager = $themeManager;
@@ -85,9 +86,9 @@ class ContentYoutubeListener
     {
         $template = $this->themeManager->locateTemplate('objects/youtube/default.html.twig');
 
-        return $this->templating->renderResponse(
+        return $this->templating->render(
             $template,
             ['youtubeId' => $youtubeId]
-        )->getContent();
+        );
     }
 }

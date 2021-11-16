@@ -34,7 +34,7 @@ class SearchSelectionController extends AbstractController
      *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function index(Request $request)
     {
         /** @var $paginator \Knp\Component\Pager\Paginator */
         $paginator = $this->get('knp_paginator');
@@ -52,7 +52,7 @@ class SearchSelectionController extends AbstractController
      *
      * @return Response|RedirectResponse
      */
-    public function newAction(Request $request)
+    public function new(Request $request)
     {
         $searchSelection = new SearchSelection();
 
@@ -84,7 +84,7 @@ class SearchSelectionController extends AbstractController
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(Request $request, SearchSelection $searchSelection)
+    public function edit(Request $request, SearchSelection $searchSelection)
     {
         // TODO: security check
 
@@ -116,7 +116,7 @@ class SearchSelectionController extends AbstractController
      *
      * @return Response|RedirectResponse
      */
-    public function deleteAction(Request $request, SearchSelection $searchSelection)
+    public function delete(Request $request, SearchSelection $searchSelection)
     {
         // TODO: security check
 
@@ -151,7 +151,7 @@ class SearchSelectionController extends AbstractController
      *
      * @return Response
      */
-    public function menuAction()
+    public function menu()
     {
         /** @var Request $request */
         $request = $this->get('request_stack')->getMasterRequest();

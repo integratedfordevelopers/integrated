@@ -27,7 +27,7 @@ class MenuController extends AbstractController
      *
      * @return Response
      */
-    public function renderAction(Request $request)
+    public function render(Request $request)
     {
         $data = (array) json_decode($request->getContent(), true);
         $menu = null;
@@ -47,7 +47,7 @@ class MenuController extends AbstractController
      *
      * @return JsonResponse
      */
-    public function saveAction(Request $request)
+    public function save(Request $request)
     {
         if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();

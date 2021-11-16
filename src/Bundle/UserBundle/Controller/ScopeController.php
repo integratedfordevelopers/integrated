@@ -34,7 +34,7 @@ class ScopeController extends AbstractController
      *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function index(Request $request)
     {
         if (!$this->isGranted('ROLE_USER_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -58,7 +58,7 @@ class ScopeController extends AbstractController
      *
      * @return Response
      */
-    public function newAction(Request $request)
+    public function new(Request $request)
     {
         if (!$this->isGranted('ROLE_USER_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -97,7 +97,7 @@ class ScopeController extends AbstractController
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    public function editAction(Scope $scope, Request $request)
+    public function edit(Scope $scope, Request $request)
     {
         if (!$this->isGranted('ROLE_USER_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -137,7 +137,7 @@ class ScopeController extends AbstractController
      *
      * @return Response
      */
-    public function deleteAction(Scope $scope, Request $request)
+    public function delete(Scope $scope, Request $request)
     {
         if (!$this->isGranted('ROLE_USER_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();

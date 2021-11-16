@@ -57,7 +57,7 @@ class ChannelController extends AbstractController
      *
      * @return Response
      */
-    public function indexAction()
+    public function index()
     {
         if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -77,7 +77,7 @@ class ChannelController extends AbstractController
      *
      * @return Response
      */
-    public function showAction(Channel $channel)
+    public function show(Channel $channel)
     {
         if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -93,7 +93,7 @@ class ChannelController extends AbstractController
      *
      * @return Response
      */
-    public function newAction()
+    public function new()
     {
         if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -115,7 +115,7 @@ class ChannelController extends AbstractController
      *
      * @return Response|RedirectResponse
      */
-    public function createAction(Request $request)
+    public function create(Request $request)
     {
         if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -150,7 +150,7 @@ class ChannelController extends AbstractController
      *
      * @return Response
      */
-    public function editAction(Channel $channel)
+    public function edit(Channel $channel)
     {
         if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -172,7 +172,7 @@ class ChannelController extends AbstractController
      *
      * @return Response|RedirectResponse
      */
-    public function updateAction(Request $request, Channel $channel)
+    public function update(Request $request, Channel $channel)
     {
         if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -206,7 +206,7 @@ class ChannelController extends AbstractController
      *
      * @return RedirectResponse
      */
-    public function deleteAction(Request $request, Channel $channel)
+    public function delete(Request $request, Channel $channel)
     {
         if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
