@@ -8,6 +8,9 @@
 
         <service id="Integrated\Bundle\WorkflowBundle\Command\IndexCommand">
             <argument type="service" id="Integrated\Bundle\WorkflowBundle\Service\StateManager"/>
+            <argument type="service" id="integrated_content.resolver"/>
+            <argument type="service" id="integrated_workflow.repository.definition"/>
+            <argument type="service" id="integrated_workflow.lock.factory"/>
             <tag name="console.command"/>
         </service>
 

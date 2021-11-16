@@ -73,7 +73,7 @@ class CleanCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $filesystem = $input->getArgument('filesystem');
         $directory = $input->getArgument('directory');

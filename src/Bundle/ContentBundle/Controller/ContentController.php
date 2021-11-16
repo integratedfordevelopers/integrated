@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
+use Integrated\Common\Locks\Resource;
+use Integrated\Common\Locks\Filter;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Content\Image;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
@@ -403,7 +405,7 @@ class ContentController extends AbstractController
 
             // check for back click else its a submit
             if ($form->get('actions')->getData() == 'cancel') {
-                return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
+                return $this->redirectToRoute('integrated_content_content_index', ['remember' => 1]);
             }
 
             if ($form->isValid()) {
@@ -449,7 +451,7 @@ class ContentController extends AbstractController
                     $this->get('translator')->trans('The document %name% has been created', ['%name%' => $contentType->getName()])
                 );
 
-                return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
+                return $this->redirectToRoute('integrated_content_content_index', ['remember' => 1]);
             }
         }
 
@@ -497,7 +499,7 @@ class ContentController extends AbstractController
                         'lock' => $locking['lock']->getId(),
                     ]);
 
-                    return $this->redirect($this->generateUrl('integrated_content_content_edit', $parameters));
+                    return $this->redirectToRoute('integrated_content_content_edit', $parameters);
                 }
 
                 $locking['locked'] = false;
@@ -526,7 +528,7 @@ class ContentController extends AbstractController
             }
 
             if ($form->get('actions')->getData() == 'reload') {
-                return $this->redirect($this->generateUrl('integrated_content_content_edit', ['id' => $content->getId()]));
+                return $this->redirectToRoute('integrated_content_content_edit', ['id' => $content->getId()]);
             }
 
             // this is not rest compatible since a button click is required to save
@@ -565,7 +567,7 @@ class ContentController extends AbstractController
                         $locking['release']();
                     }
 
-                    return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
+                    return $this->redirectToRoute('integrated_content_content_index', ['remember' => 1]);
                 }
             }
 
@@ -641,7 +643,7 @@ class ContentController extends AbstractController
 
             if ($locking['new']) {
                 if ($request->isMethod('get')) {
-                    return $this->redirect($this->generateUrl('integrated_content_content_delete', ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]));
+                    return $this->redirectToRoute('integrated_content_content_delete', ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]);
                 }
 
                 $locking['locked'] = false;
@@ -663,11 +665,11 @@ class ContentController extends AbstractController
                     $locking['release']();
                 }
 
-                return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
+                return $this->redirectToRoute('integrated_content_content_index', ['remember' => 1]);
             }
 
             if ($form->get('actions')->getData() == 'reload') {
-                return $this->redirect($this->generateUrl('integrated_content_content_delete', ['id' => $content->getId()]));
+                return $this->redirectToRoute('integrated_content_content_delete', ['id' => $content->getId()]);
             }
 
             // this is not rest compatible since a button click is required to save
@@ -701,7 +703,7 @@ class ContentController extends AbstractController
                         $locking['release']();
                     }
 
-                    return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
+                    return $this->redirectToRoute('integrated_content_content_index', ['remember' => 1]);
                 }
             }
         }
@@ -774,11 +776,11 @@ class ContentController extends AbstractController
         // Remove expired locks
         $service->clean();
 
-        $object = Locks\Resource::fromObject($object);
+        $object = Resource::fromObject($object);
         $owner = null;
 
         if ($user = $this->getUser()) {
-            $owner = Locks\Resource::fromAccount($user);
+            $owner = Resource::fromAccount($user);
         }
 
         if ($owner) {
@@ -862,10 +864,10 @@ class ContentController extends AbstractController
             return $results;
         }
 
-        $filter = new Locks\Filter();
+        $filter = new Filter();
 
         foreach ($iterator as $data) {
-            $filter->resources[] = new Locks\Resource($data['type_class'], $data['type_id']);
+            $filter->resources[] = new Resource($data['type_class'], $data['type_id']);
         }
 
         if (!$filter->resources) {

@@ -11,10 +11,10 @@
 
 namespace Integrated\Bundle\UserBundle\EventListener;
 
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Integrated\Bundle\UserBundle\Security\TwoFactor\Http\ContextResolverInterface;
 use Integrated\Bundle\UserBundle\Security\TwoFactor\Http\WhitelistProviderInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Http\HttpUtils;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
@@ -52,7 +52,7 @@ class TwoFactorActivationListener implements EventSubscriberInterface
         ];
     }
 
-    public function onRequest(GetResponseEvent $event)
+    public function onRequest(RequestEvent $event)
     {
         if (!$event->isMasterRequest()) {
             return;

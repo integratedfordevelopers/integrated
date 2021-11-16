@@ -11,10 +11,12 @@
 
 namespace Integrated\Bundle\ContentBundle\Mailer;
 
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Integrated\Bundle\ThemeBundle\Exception\CircularFallbackException;
+use Twig\Error\Error;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Symfony\Bridge\Twig\TwigEngine;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -86,8 +88,8 @@ class FormMailer
      * @param array       $emailAddresses
      * @param string|null $title
      *
-     * @throws \Integrated\Bundle\ThemeBundle\Exception\CircularFallbackException
-     * @throws \Twig\Error\Error
+     * @throws CircularFallbackException
+     * @throws Error
      */
     public function send(array $data, array $emailAddresses = [], ?string $title = null)
     {

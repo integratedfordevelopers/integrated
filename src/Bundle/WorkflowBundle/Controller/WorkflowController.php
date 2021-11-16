@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Form\FormInterface;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -78,7 +80,7 @@ class WorkflowController extends AbstractController
 
             // check for back click else its a submit
             if ($form->get('actions')->get('cancel')->isClicked()) {
-                return $this->redirect($this->generateUrl('integrated_workflow_index'));
+                return $this->redirectToRoute('integrated_workflow_index');
             }
 
             if ($form->isValid()) {
@@ -88,7 +90,7 @@ class WorkflowController extends AbstractController
                 $manager->persist($workflow);
                 $manager->flush();
 
-                return $this->redirect($this->generateUrl('integrated_workflow_index'));
+                return $this->redirectToRoute('integrated_workflow_index');
             }
         }
 
@@ -102,7 +104,7 @@ class WorkflowController extends AbstractController
      *
      * @return Response
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws NotFoundHttpException
      */
     public function edit(Request $request)
     {
@@ -125,7 +127,7 @@ class WorkflowController extends AbstractController
 
             // check for back click else its a submit
             if ($form->get('actions')->get('cancel')->isClicked()) {
-                return $this->redirect($this->generateUrl('integrated_workflow_index'));
+                return $this->redirectToRoute('integrated_workflow_index');
             }
 
             if ($form->isValid()) {
@@ -134,7 +136,7 @@ class WorkflowController extends AbstractController
 
                 $this->get('braincrafted_bootstrap.flash')->success(sprintf('The changes to the workflow %s are saved', $workflow->getName()));
 
-                return $this->redirect($this->generateUrl('integrated_workflow_index'));
+                return $this->redirectToRoute('integrated_workflow_index');
             }
         }
 
@@ -162,7 +164,7 @@ class WorkflowController extends AbstractController
             ->find($request->get('id'));
 
         if (!$workflow) {
-            return $this->redirect($this->generateUrl('integrated_workflow_index')); // workflow is already gone
+            return $this->redirectToRoute('integrated_workflow_index'); // workflow is already gone
         }
 
         $form = $this->createDeleteForm($workflow);
@@ -172,7 +174,7 @@ class WorkflowController extends AbstractController
 
             // check for back click else its a submit
             if ($form->get('actions')->get('cancel')->isClicked()) {
-                return $this->redirect($this->generateUrl('integrated_workflow_index'));
+                return $this->redirectToRoute('integrated_workflow_index');
             }
 
             if ($form->isValid()) {
@@ -182,7 +184,7 @@ class WorkflowController extends AbstractController
 
                 $this->get('braincrafted_bootstrap.flash')->success(sprintf('The workflow %s is removed', $workflow->getName()));
 
-                return $this->redirect($this->generateUrl('integrated_workflow_index'));
+                return $this->redirectToRoute('integrated_workflow_index');
             }
         }
 
@@ -308,7 +310,7 @@ class WorkflowController extends AbstractController
     }
 
     /**
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createNewForm()
     {
@@ -334,7 +336,7 @@ class WorkflowController extends AbstractController
     /**
      * @param Definition $workflow
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createEditForm(Definition $workflow)
     {
@@ -360,7 +362,7 @@ class WorkflowController extends AbstractController
     /**
      * @param Definition $workflow
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createDeleteForm(Definition $workflow)
     {

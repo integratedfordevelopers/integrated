@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Block;
 
+use Symfony\Component\Form\FormInterface;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\DocumentManager;
@@ -160,7 +161,7 @@ class FormBlockHandler extends BlockHandler
      * @param array     $options
      * @param FormBlock $block
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createForm($data = null, array $options = [], FormBlock $block = null)
     {

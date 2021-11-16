@@ -1,45 +1,45 @@
 <?xml version="1.0" ?>
 
 <container xmlns="http://symfony.com/schema/dic/services"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="integrated_content_history.event_listener.content_history_subscriber.class">Integrated\Bundle\ContentHistoryBundle\EventListener\ContentHistorySubscriber</parameter>
+<parameters>
+    <parameter key="integrated_content_history.event_listener.content_history_subscriber.class">Integrated\Bundle\ContentHistoryBundle\EventListener\ContentHistorySubscriber</parameter>
+    
+    <parameter key="integrated_content_history.event_listener.content_subscriber.class">Integrated\Bundle\ContentHistoryBundle\EventListener\ContentSubscriber</parameter>
+    <parameter key="integrated_content_history.event_listener.request_subscriber.class">Integrated\Bundle\ContentHistoryBundle\EventListener\RequestSubscriber</parameter>
+    <parameter key="integrated_content_history.event_listener.user_subscriber.class">Integrated\Bundle\ContentHistoryBundle\EventListener\UserSubscriber</parameter>
+    <parameter key="integrated_content_history.event_listener.workflow_subscriber.class">Integrated\Bundle\ContentHistoryBundle\EventListener\WorkflowSubscriber</parameter>
+    
+</parameters>
 
-        <parameter key="integrated_content_history.event_listener.content_subscriber.class">Integrated\Bundle\ContentHistoryBundle\EventListener\ContentSubscriber</parameter>
-        <parameter key="integrated_content_history.event_listener.request_subscriber.class">Integrated\Bundle\ContentHistoryBundle\EventListener\RequestSubscriber</parameter>
-        <parameter key="integrated_content_history.event_listener.user_subscriber.class">Integrated\Bundle\ContentHistoryBundle\EventListener\UserSubscriber</parameter>
-        <parameter key="integrated_content_history.event_listener.workflow_subscriber.class">Integrated\Bundle\ContentHistoryBundle\EventListener\WorkflowSubscriber</parameter>
-
-    </parameters>
-
-    <services>
-
-        <service id="integrated_content_history.event_dispatcher" class="Symfony\Component\EventDispatcher\EventDispatcher">
-            <argument type="service" id="service_container" />
-        </service>
-
-        <service id="integrated_content_history.event_listener.content_history_subscriber" class="%integrated_content_history.event_listener.content_history_subscriber.class%">
-            <argument type="service" id="integrated_content_history.event_dispatcher" />
-            <argument>%integrated_content_history.document.content_history.class%</argument>
-            <tag name="doctrine_mongodb.odm.event_subscriber" />
-        </service>
-
-        <service id="integrated_content_history.event_listener.content_subscriber" class="%integrated_content_history.event_listener.content_subscriber.class%">
-            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
-            <tag name="integrated.content_history.event_subscriber" />
-        </service>
-
-        <service id="integrated_content_history.event_listener.request_subscriber" class="%integrated_content_history.event_listener.request_subscriber.class%">
-            <argument type="service" id="request_stack" />
-            <tag name="integrated.content_history.event_subscriber" />
-        </service>
-
-        <service id="integrated_content_history.event_listener.user_subscriber" class="%integrated_content_history.event_listener.user_subscriber.class%">
-            <argument type="service" id="security.token_storage" />
-            <tag name="integrated.content_history.event_subscriber" />
-        </service>
-
-    </services>
+<services>
+    
+    <service id="integrated_content_history.event_dispatcher" class="Symfony\Contracts\EventDispatcher\EventDispatcher">
+        <argument type="service" id="service_container" />
+    </service>
+    
+    <service id="integrated_content_history.event_listener.content_history_subscriber" class="%integrated_content_history.event_listener.content_history_subscriber.class%">
+        <argument type="service" id="integrated_content_history.event_dispatcher" />
+        <argument>%integrated_content_history.document.content_history.class%</argument>
+        <tag name="doctrine_mongodb.odm.event_subscriber" />
+    </service>
+    
+    <service id="integrated_content_history.event_listener.content_subscriber" class="%integrated_content_history.event_listener.content_subscriber.class%">
+        <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+        <tag name="integrated.content_history.event_subscriber" />
+    </service>
+    
+    <service id="integrated_content_history.event_listener.request_subscriber" class="%integrated_content_history.event_listener.request_subscriber.class%">
+        <argument type="service" id="request_stack" />
+        <tag name="integrated.content_history.event_subscriber" />
+    </service>
+    
+    <service id="integrated_content_history.event_listener.user_subscriber" class="%integrated_content_history.event_listener.user_subscriber.class%">
+        <argument type="service" id="security.token_storage" />
+        <tag name="integrated.content_history.event_subscriber" />
+    </service>
+    
+</services>
 </container>

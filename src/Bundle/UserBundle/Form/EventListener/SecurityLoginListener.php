@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\UserBundle\Form\EventListener;
 
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
@@ -18,7 +19,6 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

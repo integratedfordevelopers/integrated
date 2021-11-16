@@ -11,11 +11,11 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>

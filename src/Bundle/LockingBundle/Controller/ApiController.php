@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\LockingBundle\Controller;
 
+use Integrated\Common\Locks\Resource;
 use Integrated\Common\Locks;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -46,7 +47,7 @@ class ApiController extends AbstractController
             return new JsonResponse($response, $response['code']);
         }
 
-        $owner = Locks\Resource::fromAccount($owner);
+        $owner = Resource::fromAccount($owner);
 
         // get the lock and check if the lock is set by the current use else do nothing
 

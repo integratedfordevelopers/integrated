@@ -85,7 +85,7 @@ class ScraperController extends AbstractController
 
             $this->get('braincrafted_bootstrap.flash')->success('Item created');
 
-            return $this->redirect($this->generateUrl('integrated_theme_scraper_edit', ['id' => $scraper->getId()]));
+            return $this->redirectToRoute('integrated_theme_scraper_edit', ['id' => $scraper->getId()]);
         }
 
         return $this->render('IntegratedThemeBundle:scraper:new.html.twig', [
@@ -115,7 +115,7 @@ class ScraperController extends AbstractController
 
             $this->get('braincrafted_bootstrap.flash')->success('Item updated');
 
-            return $this->redirect($this->generateUrl('integrated_theme_scraper_index'));
+            return $this->redirectToRoute('integrated_theme_scraper_index');
         }
 
         return $this->render('IntegratedThemeBundle:scraper:edit.html.twig', [
@@ -145,7 +145,7 @@ class ScraperController extends AbstractController
             // Set flash message
             $this->get('braincrafted_bootstrap.flash')->success('Item deleted');
 
-            return $this->redirect($this->generateUrl('integrated_theme_scraper_index'));
+            return $this->redirectToRoute('integrated_theme_scraper_index');
         }
 
         return $this->render('IntegratedThemeBundle:scraper:delete.html.twig', [

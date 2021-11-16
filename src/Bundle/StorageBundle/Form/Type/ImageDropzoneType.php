@@ -11,13 +11,13 @@
 
 namespace Integrated\Bundle\StorageBundle\Form\Type;
 
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Integrated\Bundle\AssetBundle\Manager\AssetManager;
 use Integrated\Bundle\ImageBundle\Converter\Container;
 use Integrated\Bundle\ImageBundle\Converter\Format\WebFormat;
 use Integrated\Bundle\ImageBundle\Twig\Extension\ImageExtension;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
