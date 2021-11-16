@@ -13,7 +13,6 @@ namespace Integrated\Bundle\WebsiteBundle\EventListener\Objects;
 
 use Integrated\Bundle\ContentBundle\Event\ContentEvent;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Twig\Environment;
 
 /**
@@ -37,9 +36,9 @@ class ContentYoutubeListener
     protected $env;
 
     /**
-     * @param ThemeManager    $themeManager
-     * @param Environment     $templating
-     * @param string          $env
+     * @param ThemeManager $themeManager
+     * @param Environment  $templating
+     * @param string       $env
      */
     public function __construct(
         ThemeManager $themeManager,
