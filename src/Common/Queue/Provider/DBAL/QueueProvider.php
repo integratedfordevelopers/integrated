@@ -148,7 +148,7 @@ class QueueProvider implements QueueProviderInterface
             $query = sprintf('%s WHERE %s', $query, implode(' AND ', $where));
         }
 
-        return $this->connection->fetchColumn($query, [$channel]);
+        return $this->connection->fetchOne($query, [$channel]);
     }
 
     /**

@@ -13,14 +13,14 @@ namespace Integrated\Bundle\WebsiteBundle\Controller;
 
 use Integrated\Bundle\ThemeBundle\Exception\CircularFallbackException;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
-use Symfony\Bundle\TwigBundle\Controller\ExceptionController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Controller\ErrorController as BaseErrorController;
 use Twig\Environment;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class ErrorController extends ExceptionController
+class ErrorController extends BaseErrorController
 {
     /**
      * @var ThemeManager

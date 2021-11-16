@@ -78,7 +78,7 @@ class Manager implements ManagerInterface
         try {
             // have the server created a uuid for this lock
 
-            $data = $this->connection->fetchColumn('SELECT '.$this->platform->getGuidExpression());
+            $data = $this->connection->fetchOne('SELECT '.$this->platform->getGuidExpression());
             $data = [
                 'id' => $data,
                 'resource' => Resource::serialize($request->getResource()),
@@ -89,7 +89,7 @@ class Manager implements ManagerInterface
             ];
 
             $this->connection->insert($this->options['lock_table_name'], $data);
-        } catch (DBALException $e) {
+        } catch (\Exception $e) {
             return null; // expected to be a dup key error
         }
 
@@ -111,7 +111,7 @@ class Manager implements ManagerInterface
 
         try {
             $this->connection->delete($this->options['lock_table_name'], ['id' => $lock]);
-        } catch (DBALException $e) {
+        } catch (\Exception $e) {
             // could not be removed ...
         }
     }
@@ -136,7 +136,7 @@ class Manager implements ManagerInterface
                 ->from($this->options['lock_table_name'], 'l')
                 ->where('l.id = '.$builder->createPositionalParameter($lock));
 
-            if ($data = $this->connection->fetchAssoc($builder->getSQL().' '.$this->platform->getForUpdateSQL(), array_values($builder->getParameters()))) {
+            if ($data = $this->connection->fetchAssociative($builder->getSQL().' '.$this->platform->getForUpdateSQL(), array_values($builder->getParameters()))) {
                 if ($data['timeout'] !== null) {
                     $data['expires'] = time() + $data['timeout'];
 
@@ -145,7 +145,7 @@ class Manager implements ManagerInterface
             }
 
             $this->connection->commit();
-        } catch (DBALException $e) {
+        } catch (\Exception $e) {
             $this->connection->rollBack();
 
             return null; // probably should raise a error
@@ -179,7 +179,7 @@ class Manager implements ManagerInterface
             if ($data = $this->connection->fetchAssoc($builder->getSQL(), array_values($builder->getParameters()))) {
                 return Lock::factory($data);
             }
-        } catch (DBALException $e) {
+        } catch (\Exception $e) {
             return null; // probably should raise a error
         }
 
@@ -270,10 +270,10 @@ class Manager implements ManagerInterface
         $results = [];
 
         try {
-            foreach ($this->connection->fetchAll($builder->getSQL(), array_values($builder->getParameters())) as $data) {
+            foreach ($this->connection->fetchAllAssociative($builder->getSQL(), array_values($builder->getParameters())) as $data) {
                 $results[] = Lock::factory($data);
             }
-        } catch (DBALException $e) {
+        } catch (\Exception $e) {
             return null; // probably should raise a error
         }
 
@@ -291,7 +291,7 @@ class Manager implements ManagerInterface
             // auto id could have.
 
             $this->connection->executeUpdate($this->platform->getTruncateTableSQL($this->options['lock_table_name']));
-        } catch (DBALException $e) {
+        } catch (\Exception $e) {
             // probably should raise a error
         }
     }
@@ -308,7 +308,7 @@ class Manager implements ManagerInterface
                 ->where('expires IS NOT NULL AND expires < '.$builder->createPositionalParameter(time()));
 
             $builder->execute();
-        } catch (DBALException $e) {
+        } catch (\Exception $e) {
             // probably should raise a error
         }
     }
