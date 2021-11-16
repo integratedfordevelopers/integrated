@@ -27,6 +27,6 @@ class IntegratedPageBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new ContentTypeControllersPass(), 0);
+        $container->addCompilerPass(new ContentTypeControllersPass());
     }
 }

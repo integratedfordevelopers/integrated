@@ -43,30 +43,30 @@ class IntegratedContentBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new SetRouterPass(), 0);
-        $container->addCompilerPass(new ExtensionRegistryBuilderPass(), 0);
-        $container->addCompilerPass(new FormFactoryEventDispatcherPass(), 0);
-        $container->addCompilerPass(new MetadataEventDispatcherPass(), 0);
-        $container->addCompilerPass(new PriorityResolverBuilderPass(), 0);
-        $container->addCompilerPass(new ContentTypeManagerPass(), 0);
-        $container->addCompilerPass(new ThemeManagerPass(), 0);
-        $container->addCompilerPass(new RegistryBuilderPass('integrated_content.json_ld.registry_builder', 'integrated_content.json_ld.processor'), 0);
-        $container->addCompilerPass(new FactoryRegistryBuilderPass('integrated_content.bulk.handler_registry_builder', 'integrated_content.bulk.handler'), 0);
-        $container->addCompilerPass(new ConfigProviderBuilderPass('integrated_content.bulk.form.chain_provider_builder', 'integrated_content.bulk.form.provider'), 0);
-        $container->addCompilerPass(new ContentProviderPass(), 0);
-        $container->addCompilerPass(new BraincraftedFlashMessagePass(), 0);
+        $container->addCompilerPass(new SetRouterPass());
+        $container->addCompilerPass(new ExtensionRegistryBuilderPass());
+        $container->addCompilerPass(new FormFactoryEventDispatcherPass());
+        $container->addCompilerPass(new MetadataEventDispatcherPass());
+        $container->addCompilerPass(new PriorityResolverBuilderPass());
+        $container->addCompilerPass(new ContentTypeManagerPass());
+        $container->addCompilerPass(new ThemeManagerPass());
+        $container->addCompilerPass(new RegistryBuilderPass('integrated_content.json_ld.registry_builder', 'integrated_content.json_ld.processor'));
+        $container->addCompilerPass(new FactoryRegistryBuilderPass('integrated_content.bulk.handler_registry_builder', 'integrated_content.bulk.handler'));
+        $container->addCompilerPass(new ConfigProviderBuilderPass('integrated_content.bulk.form.chain_provider_builder', 'integrated_content.bulk.form.provider'));
+        $container->addCompilerPass(new ContentProviderPass());
+        $container->addCompilerPass(new BraincraftedFlashMessagePass());
 
         $container->addCompilerPass(new RegisterListenersPass(
             'integrated_content.event_dispatcher',
             'integrated_content.event_listener',
             'integrated_content.event_subscriber'
-        ), 0);
+        ));
 
         $container->addCompilerPass(new RegisterListenersPass(
             'integrated_content.form_block.event_dispatcher',
             'integrated_content.form_block.event_listener',
             'integrated_content.form_block.event_subscriber'
-        ), 0);
+        ));
     }
 
     /**

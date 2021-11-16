@@ -25,6 +25,6 @@ class IntegratedImageBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new ImageConverterCompilerPass(), 0);
+        $container->addCompilerPass(new ImageConverterCompilerPass());
     }
 }

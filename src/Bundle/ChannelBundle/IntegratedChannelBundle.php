@@ -33,19 +33,18 @@ class IntegratedChannelBundle extends Bundle
         $container->addCompilerPass(
             DoctrineOrmMappingsPass::createXmlMappingDriver(
                 [__DIR__.'/Resources/config/model' => 'Integrated\Bundle\ChannelBundle\Model']
-            ),
-            0
+            )
         );
 
-        $container->addCompilerPass(new RegisterConfigPass(), 0);
-        $container->addCompilerPass(new RegisterConfigResolverPass(), 0);
-        $container->addCompilerPass(new RegisterAdapterPass(), 0);
+        $container->addCompilerPass(new RegisterConfigPass());
+        $container->addCompilerPass(new RegisterConfigResolverPass());
+        $container->addCompilerPass(new RegisterAdapterPass());
 
         $container->addCompilerPass(new RegisterListenersPass(
             'event_dispatcher',
             'integrated_channel.event_listener',
             'integrated_channel.event_subscriber'
-        ), 0);
+        ));
     }
 
     /**

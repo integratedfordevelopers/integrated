@@ -28,7 +28,7 @@ class IntegratedBlockBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new BlockHandlerRegistryPass(), 0);
-        $container->addCompilerPass(new ThemeManagerPass(), 0);
+        $container->addCompilerPass(new BlockHandlerRegistryPass());
+        $container->addCompilerPass(new ThemeManagerPass());
     }
 }
