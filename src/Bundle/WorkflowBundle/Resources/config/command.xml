@@ -13,7 +13,7 @@
 
         <service id="Integrated\Bundle\WorkflowBundle\Command\WorkerCommand">
             <argument type="service" id="integrated_queue.workflow"/>
-            <argument>%kernel.root_dir%/..</argument>
+            <argument>%kernel.project_dir%</argument>
             <tag name="console.command"/>
         </service>
 

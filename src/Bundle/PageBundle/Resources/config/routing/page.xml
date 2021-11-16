@@ -5,22 +5,22 @@
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="integrated_page_page_index" path="/" methods="GET">
-        <default key="_controller">IntegratedPageBundle:Page:index</default>
+        <default key="_controller">Integrated\Bundle\PageBundle\Controller\PageController::index</default>
     </route>
 
     <route id="integrated_page_page_new" path="/new" methods="GET|POST">
-        <default key="_controller">IntegratedPageBundle:Page:new</default>
+        <default key="_controller">Integrated\Bundle\PageBundle\Controller\PageController::new</default>
     </route>
 
     <route id="integrated_page_page_edit" path="/{id}/edit" methods="GET|PUT">
-        <default key="_controller">IntegratedPageBundle:Page:edit</default>
+        <default key="_controller">Integrated\Bundle\PageBundle\Controller\PageController::edit</default>
     </route>
 
     <route id="integrated_page_page_delete" path="/{id}/delete" methods="GET|DELETE">
-        <default key="_controller">IntegratedPageBundle:Page:delete</default>
+        <default key="_controller">Integrated\Bundle\PageBundle\Controller\PageController::delete</default>
     </route>
 
     <route id="integrated_page_page_copy" path="/copy" methods="GET|POST">
-        <default key="_controller">IntegratedPageBundle:Page:copy</default>
+        <default key="_controller">Integrated\Bundle\PageBundle\Controller\PageController::copy</default>
     </route>
 </routes>

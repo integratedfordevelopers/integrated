@@ -8,8 +8,8 @@
         <id field-name="id" strategy="NONE" />
         <field field-name="name" type="string" index="true" />
         <field field-name="type" type="string" />
-        <field field-name="multiple" type="boolean" />
-        <field field-name="required" type="boolean" />
+        <field field-name="multiple" type="bool" />
+        <field field-name="required" type="bool" />
         <field field-name="createdAt" type="date" />
 
         <reference-many

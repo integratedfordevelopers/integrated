@@ -11,7 +11,7 @@
         <field field-name="locale" type="string" />
         <field field-name="price" type="float" />
         <field field-name="stockQuantity" type="integer" />
-        <field field-name="orderable" type="boolean" />
+        <field field-name="orderable" type="bool" />
         <field field-name="description" type="string" />
         <field field-name="content" type="string" />
 
