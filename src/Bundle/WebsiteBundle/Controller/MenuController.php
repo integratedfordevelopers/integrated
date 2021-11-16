@@ -27,7 +27,7 @@ class MenuController extends AbstractController
      *
      * @return Response
      */
-    public function render(Request $request)
+    public function renderMenu(Request $request)
     {
         $data = (array) json_decode($request->getContent(), true);
         $menu = null;

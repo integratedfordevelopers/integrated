@@ -5,7 +5,7 @@
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="integrated_website_menu_render" path="/render" methods="POST">
-        <default key="_controller">Integrated\Bundle\WebsiteBundle\Controller\MenuController::render</default>
+        <default key="_controller">Integrated\Bundle\WebsiteBundle\Controller\MenuController::renderMenu</default>
         <default key="_format">json</default>
     </route>
 
