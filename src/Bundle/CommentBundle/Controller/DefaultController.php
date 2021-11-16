@@ -101,7 +101,7 @@ class DefaultController extends AbstractController
      *
      * @return JsonResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function get(Request $request, Comment $comment)
+    public function getComment(Request $request, Comment $comment)
     {
         $reply = new Reply();
         $reply->setDate(new \DateTime());
