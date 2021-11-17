@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\UserBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Form\FormInterface;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\UserBundle\Form\Type\DeleteFormType;
@@ -71,7 +73,7 @@ class ScopeController extends AbstractController
 
             // check for cancel click else its a submit
             if ($form->get('actions')->get('cancel')->isClicked()) {
-                return $this->redirect($this->generateUrl('integrated_user_scope_index'));
+                return $this->redirectToRoute('integrated_user_scope_index');
             }
 
             if ($form->isValid()) {
@@ -80,7 +82,7 @@ class ScopeController extends AbstractController
                 $this->getManager()->persist($scope);
                 $this->get('braincrafted_bootstrap.flash')->success(sprintf('The scope %s is created', $scope->getName()));
 
-                return $this->redirect($this->generateUrl('integrated_user_scope_index'));
+                return $this->redirectToRoute('integrated_user_scope_index');
             }
         }
 
@@ -95,7 +97,7 @@ class ScopeController extends AbstractController
      *
      * @return Response
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws NotFoundHttpException
      */
     public function editAction(Scope $scope, Request $request)
     {
@@ -114,14 +116,14 @@ class ScopeController extends AbstractController
 
             // check for cancel click else its a submit
             if ($form->get('actions')->get('cancel')->isClicked()) {
-                return $this->redirect($this->generateUrl('integrated_user_scope_index'));
+                return $this->redirectToRoute('integrated_user_scope_index');
             }
 
             if ($form->isValid()) {
                 $this->getManager()->persist($scope);
                 $this->get('braincrafted_bootstrap.flash')->success(sprintf('The changes to the scope %s are saved', $scope->getName()));
 
-                return $this->redirect($this->generateUrl('integrated_user_scope_index'));
+                return $this->redirectToRoute('integrated_user_scope_index');
             }
         }
 
@@ -144,7 +146,7 @@ class ScopeController extends AbstractController
         }
 
         if (!$scope || $scope->isAdmin()) {
-            return $this->redirect($this->generateUrl('integrated_user_scope_index'));
+            return $this->redirectToRoute('integrated_user_scope_index');
         }
 
         $form = $this->createDeleteForm($scope);
@@ -154,7 +156,7 @@ class ScopeController extends AbstractController
 
             // check for cancel click else its a submit
             if ($form->get('actions')->get('cancel')->isClicked()) {
-                return $this->redirect($this->generateUrl('integrated_user_scope_index'));
+                return $this->redirectToRoute('integrated_user_scope_index');
             }
 
             $hasRelations = false;
@@ -181,7 +183,7 @@ class ScopeController extends AbstractController
                 $this->getManager()->remove($scope);
                 $this->get('braincrafted_bootstrap.flash')->success(sprintf('The scope %s is removed', $scope->getName()));
 
-                return $this->redirect($this->generateUrl('integrated_user_scope_index'));
+                return $this->redirectToRoute('integrated_user_scope_index');
             }
         }
 
@@ -192,7 +194,7 @@ class ScopeController extends AbstractController
     }
 
     /**
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createNewForm()
     {
@@ -218,7 +220,7 @@ class ScopeController extends AbstractController
     /**
      * @param Scope $scope
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createEditForm(Scope $scope)
     {
@@ -244,7 +246,7 @@ class ScopeController extends AbstractController
     /**
      * @param Scope $scope
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createDeleteForm(Scope $scope)
     {

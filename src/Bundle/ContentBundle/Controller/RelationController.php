@@ -114,7 +114,7 @@ class RelationController extends AbstractController
 
             $this->get('braincrafted_bootstrap.flash')->success('Item created');
 
-            return $this->redirect($this->generateUrl('integrated_content_relation_index'));
+            return $this->redirectToRoute('integrated_content_relation_index');
         }
 
         return $this->render('IntegratedContentBundle:relation:new.html.twig', [
@@ -162,7 +162,7 @@ class RelationController extends AbstractController
 
             $this->get('braincrafted_bootstrap.flash')->success('Item updated');
 
-            return $this->redirect($this->generateUrl('integrated_content_relation_index'));
+            return $this->redirectToRoute('integrated_content_relation_index');
         }
 
         return $this->render('IntegratedContentBundle:relation:edit.html.twig', [
@@ -194,7 +194,7 @@ class RelationController extends AbstractController
             $this->get('braincrafted_bootstrap.flash')->success('Item deleted');
         }
 
-        return $this->redirect($this->generateUrl('integrated_content_relation_index'));
+        return $this->redirectToRoute('integrated_content_relation_index');
     }
 
     /**

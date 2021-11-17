@@ -137,7 +137,7 @@ The <info>%command.name%</info> command starts a indexer run.
      *
      * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($argument = $input->getArgument('processes')) {
             return $this->runProcess(new ArgumentProcess($argument), $input, $output);
@@ -192,7 +192,7 @@ The <info>%command.name%</info> command starts a indexer run.
         while (true) {
             // Run a external process
             $process = new Process(
-                sprintf('php bin/console solr:indexer:run -e %s', $this->kernel->getEnvironment()),
+                ['php', 'bin/console', 'solr:indexer:run', '-e', $this->kernel->getEnvironment()],
                 $this->workingDirectory
             );
 

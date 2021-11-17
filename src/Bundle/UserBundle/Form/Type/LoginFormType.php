@@ -11,6 +11,11 @@
 
 namespace Integrated\Bundle\UserBundle\Form\Type;
 
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Integrated\Bundle\UserBundle\Form\EventListener\SecurityLoginListener;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
@@ -22,7 +27,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\IdentityTranslator;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -67,13 +71,13 @@ class LoginFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('_username', Type\TextType::class);
-        $builder->add('_password', Type\PasswordType::class);
+        $builder->add('_username', TextType::class);
+        $builder->add('_password', PasswordType::class);
 
         if ($options['auth_remember']) {
             $builder->add(
                 '_remember_me',
-                Type\CheckboxType::class,
+                CheckboxType::class,
                 [
                     'required' => false,
                     'attr' => [
@@ -94,7 +98,7 @@ class LoginFormType extends AbstractType
             $builder->add('_target_path', HiddenType::class, $config);
         }
 
-        $builder->add('login', Type\SubmitType::class);
+        $builder->add('login', SubmitType::class);
 
         if ($request = $this->getRequest($options)) {
             $builder->addEventSubscriber(new SecurityLoginListener($request, $this->getTranslator($options), $this->getTranslationDomain($options)));

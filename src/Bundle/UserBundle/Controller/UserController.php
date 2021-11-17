@@ -12,6 +12,9 @@
 namespace Integrated\Bundle\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Form\FormInterface;
+use Knp\Component\Pager\Paginator;
 use Integrated\Bundle\UserBundle\Form\Type\DeleteFormType;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Symfony\Component\HttpFoundation\Request;
@@ -78,7 +81,7 @@ class UserController extends AbstractController
 
             // check for back click else its a submit
             if ($form->get('actions')->get('cancel')->isClicked()) {
-                return $this->redirect($this->generateUrl('integrated_user_user_index'));
+                return $this->redirectToRoute('integrated_user_user_index');
             }
 
             if ($form->isValid()) {
@@ -87,7 +90,7 @@ class UserController extends AbstractController
                 $this->getManager()->persist($user);
                 $this->get('braincrafted_bootstrap.flash')->success(sprintf('The user %s is created', $user->getUsername()));
 
-                return $this->redirect($this->generateUrl('integrated_user_user_index'));
+                return $this->redirectToRoute('integrated_user_user_index');
             }
         }
 
@@ -101,7 +104,7 @@ class UserController extends AbstractController
      *
      * @return Response
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws NotFoundHttpException
      */
     public function editAction(Request $request)
     {
@@ -122,14 +125,14 @@ class UserController extends AbstractController
 
             // check for back click else its a submit
             if ($form->get('actions')->get('cancel')->isClicked()) {
-                return $this->redirect($this->generateUrl('integrated_user_user_index'));
+                return $this->redirectToRoute('integrated_user_user_index');
             }
 
             if ($form->isValid()) {
                 $this->getManager()->persist($user);
                 $this->get('braincrafted_bootstrap.flash')->success(sprintf('The changes to the user %s are saved', $user->getUsername()));
 
-                return $this->redirect($this->generateUrl('integrated_user_user_index'));
+                return $this->redirectToRoute('integrated_user_user_index');
             }
         }
 
@@ -153,7 +156,7 @@ class UserController extends AbstractController
         $user = $this->getManager()->find($request->get('id'));
 
         if (!$user) {
-            return $this->redirect($this->generateUrl('integrated_user_user_index')); // user is already gone
+            return $this->redirectToRoute('integrated_user_user_index'); // user is already gone
         }
 
         $form = $this->createDeleteForm($user);
@@ -163,14 +166,14 @@ class UserController extends AbstractController
 
             // check for back click else its a submit
             if ($form->get('actions')->get('cancel')->isClicked()) {
-                return $this->redirect($this->generateUrl('integrated_user_user_index'));
+                return $this->redirectToRoute('integrated_user_user_index');
             }
 
             if ($form->isValid()) {
                 $this->getManager()->remove($user);
                 $this->get('braincrafted_bootstrap.flash')->success(sprintf('The user %s is removed', $user->getUsername()));
 
-                return $this->redirect($this->generateUrl('integrated_user_user_index'));
+                return $this->redirectToRoute('integrated_user_user_index');
             }
         }
 
@@ -181,7 +184,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createNewForm()
     {
@@ -211,7 +214,7 @@ class UserController extends AbstractController
     /**
      * @param UserInterface $user
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createEditForm(UserInterface $user)
     {
@@ -241,7 +244,7 @@ class UserController extends AbstractController
     /**
      * @param UserInterface $user
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createDeleteForm(UserInterface $user)
     {
@@ -283,7 +286,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @return \Knp\Component\Pager\Paginator
+     * @return Paginator
      */
     protected function getPaginator()
     {

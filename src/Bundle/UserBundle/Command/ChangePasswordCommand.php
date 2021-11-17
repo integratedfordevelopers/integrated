@@ -83,7 +83,7 @@ The <info>%command.name%</info> command replaces the password of the user
     /**
      * @see Command::execute()
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $username = $input->getArgument('username'); // @todo validate input
         $password = $input->getArgument('password'); // @todo validate input

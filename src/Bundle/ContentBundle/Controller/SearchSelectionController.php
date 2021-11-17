@@ -11,6 +11,9 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
+use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelectionRepository;
+use Doctrine\ODM\MongoDB\Query\Builder;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
 use Integrated\Bundle\ContentBundle\Form\Type\SearchSelectionType;
 use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
@@ -68,7 +71,7 @@ class SearchSelectionController extends AbstractController
 
             $this->get('braincrafted_bootstrap.flash')->success('Item created');
 
-            return $this->redirect($this->generateUrl('integrated_content_search_selection_index'));
+            return $this->redirectToRoute('integrated_content_search_selection_index');
         }
 
         return $this->render('IntegratedContentBundle:search_selection:new.html.twig', [
@@ -100,7 +103,7 @@ class SearchSelectionController extends AbstractController
 
             $this->get('braincrafted_bootstrap.flash')->success('Item updated');
 
-            return $this->redirect($this->generateUrl('integrated_content_search_selection_index'));
+            return $this->redirectToRoute('integrated_content_search_selection_index');
         }
 
         return $this->render('IntegratedContentBundle:search_selection:edit.html.twig', [
@@ -136,7 +139,7 @@ class SearchSelectionController extends AbstractController
 
             $this->get('braincrafted_bootstrap.flash')->success('Item deleted');
 
-            return $this->redirect($this->generateUrl('integrated_content_search_selection_index'));
+            return $this->redirectToRoute('integrated_content_search_selection_index');
         }
 
         return $this->render('IntegratedContentBundle:search_selection:delete.html.twig', [
@@ -156,7 +159,7 @@ class SearchSelectionController extends AbstractController
         /** @var Request $request */
         $request = $this->get('request_stack')->getMasterRequest();
 
-        /** @var \Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelectionRepository $repo */
+        /** @var SearchSelectionRepository $repo */
         $repo = $this->getDocumentManager()->getRepository(SearchSelection::class);
 
         $user = $this->getUser();
@@ -245,7 +248,7 @@ class SearchSelectionController extends AbstractController
     }
 
     /**
-     * @return \Doctrine\ODM\MongoDB\Query\Builder
+     * @return Builder
      */
     protected function getQueryBuilder()
     {
@@ -259,7 +262,7 @@ class SearchSelectionController extends AbstractController
     }
 
     /**
-     * @return \Doctrine\ODM\MongoDB\DocumentManager
+     * @return DocumentManager
      */
     protected function getDocumentManager()
     {

@@ -10,10 +10,11 @@
 
 namespace Integrated\Bundle\UserBundle\Service;
 
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Error\Error;
 use Integrated\Bundle\UserBundle\Doctrine\UserManager;
 use Integrated\Bundle\UserBundle\Model\ScopeInterface;
 use Symfony\Bridge\Twig\TwigEngine;
-use Symfony\Component\Translation\TranslatorInterface;
 
 class Mailer
 {
@@ -80,7 +81,7 @@ class Mailer
      *
      * @return bool
      *
-     * @throws \Twig\Error\Error
+     * @throws Error
      */
     public function sendPasswordResetMail(string $email, ScopeInterface $scope = null): bool
     {
