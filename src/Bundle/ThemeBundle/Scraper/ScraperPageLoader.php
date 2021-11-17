@@ -71,8 +71,8 @@ class ScraperPageLoader implements LoaderInterface
         $this->cache = new ApcuAdapter('integrated.theme');
         $this->entityManager = $entityManager;
         $this->channelContext = $channelContext;
-        $this->pageList = $this->cache->get($this->cachekeyPagelist);
-        $this->lastUpdate = $this->cache->get($this->cachekeyLastupdate);
+        $this->pageList = $this->cache->get($this->cachekeyPagelist, function () { return null; });
+        $this->lastUpdate = $this->cache->get($this->cachekeyLastupdate, function () { return null; });
     }
 
     /**
