@@ -1,13 +1,13 @@
 {% block integrated_stylesheet %}
-{% spaceless %}
+{% apply spaceless %}
 <link rel="stylesheet" type="text/css" href="{{ asset(asset_url) }}" />
-{% endspaceless %}
+{% endapply %}
 {% endblock %}
 
 {% block integrated_stylesheet_inline %}
-{% spaceless %}
+{% apply spaceless %}
 <style type="text/css">
     {{ asset_content|raw -}}
 </style>
-{% endspaceless %}
+{% endapply %}
 {% endblock %}

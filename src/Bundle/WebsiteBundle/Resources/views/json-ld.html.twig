@@ -1,6 +1,6 @@
-{% spaceless %}
+{% apply spaceless %}
 {% set json_ld = content|json_ld %}
 {% if json_ld %}
     <script type="application/ld+json">{{ json_ld|raw }}</script>
 {% endif %}
-{% endspaceless %}
+{% endapply %}

@@ -13,6 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Mailer;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Integrated\Bundle\ThemeBundle\Exception\CircularFallbackException;
+use Twig\Environment;
 use Twig\Error\Error;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
@@ -39,9 +40,9 @@ class FormMailer
     private $channelContext;
 
     /**
-     * @var TwigEngine
+     * @var Environment
      */
-    protected $twigEngine;
+    protected $twig;
 
     /**
      * @var ThemeManager
@@ -66,16 +67,16 @@ class FormMailer
     /**
      * @param \Swift_Mailer           $mailer
      * @param ChannelContextInterface $channelContext
-     * @param TwigEngine              $twigEngine
+     * @param Environment             $twig
      * @param ThemeManager            $themeManager
      * @param TranslatorInterface     $translator
      * @param string                  $from
      * @param string                  $name
      */
-    public function __construct(\Swift_Mailer $mailer, ChannelContextInterface $channelContext, TwigEngine $twigEngine, ThemeManager $themeManager, TranslatorInterface $translator, $from, $name)
+    public function __construct(\Swift_Mailer $mailer, ChannelContextInterface $channelContext, Environment $twig, ThemeManager $themeManager, TranslatorInterface $translator, $from, $name)
     {
         $this->mailer = $mailer;
-        $this->twigEngine = $twigEngine;
+        $this->twig = $twig;
         $this->channelContext = $channelContext;
         $this->themeManager = $themeManager;
         $this->translator = $translator;
@@ -105,7 +106,7 @@ class FormMailer
             $subject .= ' - '.$title;
         }
 
-        $body = $this->twigEngine->render($this->themeManager->locateTemplate($this->template), ['data' => $data]);
+        $body = $this->twig->render($this->themeManager->locateTemplate($this->template), ['data' => $data]);
 
         $message = (new \Swift_Message($subject))
             ->setBcc($emailAddresses)

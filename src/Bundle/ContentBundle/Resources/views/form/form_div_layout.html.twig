@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block integrated_content_type_default_fields_widget %}
-{% spaceless %}
+{% apply spaceless %}
     <table class="table table-hover">
         <thead>
         <tr>
@@ -29,12 +29,12 @@
         {% endfor %}
         </tbody>
     </table>
-{% endspaceless %}
+{% endapply %}
 {% endblock %}
 
 
 {% block translatable_text_widget %}
-{% spaceless %}
+{% apply spaceless %}
     {% for field in form %}
         <div class="input-group" style="margin-bottom: 15px">
             <span class="input-group-addon">
@@ -43,11 +43,11 @@
             {{ form_widget(field) }}
         </div>
     {% endfor %}
-{% endspaceless %}
+{% endapply %}
 {%  endblock %}
 
 {% block translatable_textarea_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% for field in form %}
             <div class="input-group" style="margin-bottom: 15px">
             <span class="input-group-addon">
@@ -56,11 +56,11 @@
                 {{ form_widget(field) }}
             </div>
         {% endfor %}
-    {% endspaceless %}
+    {% endapply %}
 {%  endblock %}
 
 {% block content_type_checkbox_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         <div class="checkbox">
             {% if element.vars.label is not same as(false) %}
                 <label for="{{ element.vars.id }}">
@@ -71,11 +71,11 @@
                 {{ form_widget(field) }}
             {% endif %}
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block content_type_radio_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         <div class="radio">
             {% if element.vars.label is not same as(false) %}
                 <label for="{{ element.vars.id }}">
@@ -86,7 +86,7 @@
                 {{ form_widget(field) }}
             {% endif %}
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block integrated_content_relations_row %}
@@ -96,7 +96,7 @@
 {% endblock %}
 
 {% block integrated_file_row %}
-    {% spaceless %}
+    {% apply spaceless %}
         <div class="form-group{% if not form.vars.valid %} has-error{% endif %}">
             {{ form_label(form) }}
             <div class="col-sm-8">
@@ -113,11 +113,11 @@
                 {{ form_errors(form.file) }}
             </div>
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block integrated_image_row %}
-    {% spaceless %}
+    {% apply spaceless %}
         <div class="form-group{% if not form.vars.valid %} has-error{% endif %}">
             {{ form_label(form) }}
             <div class="col-sm-8">
@@ -132,7 +132,7 @@
                 {{ form_errors(form.file) }}
             </div>
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block integrated_content_type_channels_widget  %}
@@ -143,7 +143,7 @@
 {% endblock %}
 
 {% block integrated_content_type_channel_collection_widget %}
-{% spaceless %}
+{% apply spaceless %}
     <table class="table table-hover">
         <colgroup>
             <col style="width:40%" />
@@ -179,7 +179,7 @@
         {% endfor %}
         </tbody>
     </table>
-{% endspaceless %}
+{% endapply %}
 {% endblock %}
 
 {% block integrated_author_widget  %}
@@ -293,7 +293,7 @@
 {% endblock %}
 
 {% block integrated_publishtime_widget  %}
-{% spaceless %}
+{% apply spaceless %}
     <div class="col-sm-6">
         <div class="form-group">
             {{ form_widget(form.startDate) }}
@@ -308,11 +308,11 @@
 
     {{ form_errors(form.startDate) }}
     {{ form_errors(form.endDate) }}
-{% endspaceless %}
+{% endapply %}
 {% endblock %}
 
 {% block integrated_image_choice_widget  %}
-{% spaceless %}
+{% apply spaceless %}
     {{ form(form) }}
 
     <script type="text/javascript">
@@ -353,27 +353,27 @@
             });
         });
     </script>
-{% endspaceless %}
+{% endapply %}
 {% endblock %}
 
 {% block _channel_domains_entry_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set attr = attr|merge({ 'class': (attr.class|default('') ~ ' form-control')|trim }) %}
         <input type="text" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
         <label>
             <input class="primary-domain-radio" type="radio" name="check_primary_domain" disabled> {{ 'Primary domain'|trans }}
         </label>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block integrated_content_actions_row %}
-    {% spaceless %}
+    {% apply spaceless %}
         <section class="section-white prefooter-holder">
             <div class="container text-center">
                 {{ form_widget(form) }}
             </div><!-- container -->
         </section>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block integrated_primary_channel_row %}
@@ -399,7 +399,7 @@
 {% endblock %}
 
 {% block integrated_content_bulk_action_row %}
-{% spaceless %}
+{% apply spaceless %}
     <div class="form-group">
 
         <div class="col-sm-3" data-action-toggle="1">
@@ -411,11 +411,11 @@
         </div>
 
     </div>
-{% endspaceless %}
+{% endapply %}
 {% endblock %}
 
 {% block integrated_content_bulk_action_readonly_row %}
-{% spaceless %}
+{% apply spaceless %}
     <div class="form-group">
         {{ form_label(form.active) }}
 
@@ -423,17 +423,17 @@
             {{ form_widget(form.action) }}
         </div>
     </div>
-{% endspaceless %}
+{% endapply %}
 {% endblock %}
 
 {% block integrated_content_bulk_action_relation_widget %}
-{% spaceless %}
+{% apply spaceless %}
     {{ form_widget(form.references, {'attr': {'data-value': form.references.vars.value|json_encode}}) }}
-{% endspaceless %}
+{% endapply %}
 {% endblock %}
 
 {% block integrated_permissions_row %}
-{% spaceless %}
+{% apply spaceless %}
     {{ block('form_rows') }}
-{% endspaceless %}
+{% endapply %}
 {% endblock %}

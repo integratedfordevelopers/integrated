@@ -1,5 +1,5 @@
 {% block integrated_file_dropzone_row %}
-    {% spaceless %}
+    {% apply spaceless %}
         <div class="form-group{% if not form.vars.valid %} has-error{% endif %}">
             {{ form_label(form) }}
             <div class="col-sm-8">
@@ -25,7 +25,7 @@
                 {{ form_errors(form.file) }}
             </div>
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block integrated_image_dropzone_row %}
