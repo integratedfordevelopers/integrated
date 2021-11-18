@@ -45,7 +45,10 @@ class ScopeListener extends AbstractListener
 
     public function supports(Request $request): ?bool
     {
-        $token = $this->tokenStorage->getToken();
+        if (!$token = $this->tokenStorage->getToken()) {
+            return false;
+        }
+
         $user = $token->getUser();
 
         return !(!$token instanceof TokenInterface || $token instanceof TwoFactorTokenInterface) && $user instanceof UserInterface;

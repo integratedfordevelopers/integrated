@@ -16,6 +16,7 @@ use Integrated\Bundle\ThemeBundle\Entity\Scraper as ScraperEntity;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Psr\SimpleCache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\ApcuAdapter;
+use Symfony\Component\Cache\CacheItem;
 use Symfony\Contracts\Cache\CacheInterface;
 use Twig\Error\LoaderError;
 use Twig\Loader\LoaderInterface;
@@ -71,8 +72,8 @@ class ScraperPageLoader implements LoaderInterface
         $this->cache = new ApcuAdapter('integrated.theme');
         $this->entityManager = $entityManager;
         $this->channelContext = $channelContext;
-        $this->pageList = $this->cache->get($this->cachekeyPagelist, function () { return null; });
-        $this->lastUpdate = $this->cache->get($this->cachekeyLastupdate, function () { return null; });
+        $this->pageList = $this->cache->getItem($this->cachekeyPagelist)->get();
+        $this->lastUpdate = $this->cache->getItem($this->cachekeyLastupdate)->get();
     }
 
     /**
@@ -172,7 +173,7 @@ class ScraperPageLoader implements LoaderInterface
 
         $this->lastUpdate = time();
 
-        $this->cache->set($this->cachekeyPagelist, $this->pageList);
-        $this->cache->set($this->cachekeyLastupdate, $this->lastUpdate);
+        $this->cache->save($this->cache->getItem($this->cachekeyPagelist)->set($this->pageList));
+        $this->cache->save($this->cache->getItem($this->cachekeyLastupdate)->set($this->lastUpdate));
     }
 }
