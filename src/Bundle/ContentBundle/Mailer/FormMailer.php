@@ -17,7 +17,6 @@ use Twig\Environment;
 use Twig\Error\Error;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
-use Symfony\Bridge\Twig\TwigEngine;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

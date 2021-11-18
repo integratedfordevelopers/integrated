@@ -12,7 +12,6 @@
 namespace Integrated\Common\Locks\Provider\DBAL;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Integrated\Common\Locks\Exception\InvalidArgumentException;
 use Integrated\Common\Locks\Exception\UnexpectedTypeException;

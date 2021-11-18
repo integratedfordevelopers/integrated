@@ -34,7 +34,6 @@
         </service>
 
         <service id="integrated_website.controller.page" class="%integrated_website.controller.page.class%">
-            <argument type="service" id="templating" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
         </service>
 
