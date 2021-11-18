@@ -12,11 +12,13 @@
 namespace Integrated\Bundle\CommentBundle\Twig\Extension;
 
 use Integrated\Bundle\CommentBundle\Util\StripTagsUtil;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
  */
-class CommentExtension extends \Twig_Extension
+class CommentExtension extends AbstractExtension
 {
     /**
      * {@inheritdoc}
@@ -24,7 +26,7 @@ class CommentExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('remove_comments', [$this, 'escape'], ['is_safe' => ['html']]),
+            new TwigFilter('remove_comments', [$this, 'escape'], ['is_safe' => ['html']]),
         ];
     }
 

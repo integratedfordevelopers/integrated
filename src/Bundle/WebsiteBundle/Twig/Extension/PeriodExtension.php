@@ -11,10 +11,14 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Twig\Extension;
 
+use Twig\Environment;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
+
 /**
  * @author Koen Prins <koen@e-active.nl>
  */
-class PeriodExtension extends \Twig_Extension
+class PeriodExtension extends AbstractExtension
 {
     /**
      * @return array
@@ -22,7 +26,7 @@ class PeriodExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'integrated_period_formatter',
                 [$this, 'periodFilter'],
                 ['needs_environment' => true]
@@ -31,13 +35,13 @@ class PeriodExtension extends \Twig_Extension
     }
 
     /**
-     * @param \Twig_Environment $twig
+     * @param Environment       $twig
      * @param \DateTime         $startDate
      * @param \DateTime         $endDate
      *
      * @return string
      */
-    public function periodFilter(\Twig_Environment $twig, $startDate, $endDate)
+    public function periodFilter(Environment $twig, $startDate, $endDate)
     {
         $filter = $twig->getFilter('localizeddate');
 

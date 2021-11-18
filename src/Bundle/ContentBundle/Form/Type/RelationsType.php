@@ -60,7 +60,7 @@ class RelationsType extends AbstractType
 
             foreach ($relation->getTargets() as $contentType) {
                 $contentTypes[] = [
-                    'type' => $contentType->getType(),
+                    'type' => $contentType->getId(),
                     'name' => $contentType->getName(),
                 ];
             }

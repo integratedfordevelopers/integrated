@@ -11,10 +11,13 @@
 
 namespace Integrated\Bundle\ContentBundle\Twig\Extension;
 
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class ArrayExtension extends \Twig_Extension
+class ArrayExtension extends AbstractExtension
 {
     /**
      * {@inheritdoc}
@@ -22,7 +25,7 @@ class ArrayExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('unset_value', [$this, 'unsetValue']),
+            new TwigFilter('unset_value', [$this, 'unsetValue']),
         ];
     }
 

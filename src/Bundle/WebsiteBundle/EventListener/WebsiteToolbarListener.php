@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\WebsiteBundle\EventListener;
 
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -47,10 +48,10 @@ class WebsiteToolbarListener implements EventSubscriberInterface
     protected $contentItem = null;
 
     /**
-     * @param \Twig_Environment $twig
+     * @param Environment       $twig
      * @param EditableChecker   $websiteEditableChecker
      */
-    public function __construct(\Twig_Environment $twig, EditableChecker $websiteEditableChecker)
+    public function __construct(Environment $twig, EditableChecker $websiteEditableChecker)
     {
         $this->twig = $twig;
         $this->websiteEditableChecker = $websiteEditableChecker;

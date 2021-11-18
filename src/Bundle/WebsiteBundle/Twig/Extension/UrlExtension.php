@@ -14,11 +14,13 @@ namespace Integrated\Bundle\WebsiteBundle\Twig\Extension;
 use Integrated\Bundle\PageBundle\Services\SolrUrlExtractor;
 use Integrated\Bundle\PageBundle\Services\UrlResolver;
 use Integrated\Common\Content\ContentInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
  */
-class UrlExtension extends \Twig_Extension
+class UrlExtension extends AbstractExtension
 {
     /**
      * @var UrlResolver
@@ -46,7 +48,7 @@ class UrlExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('integrated_url', [$this, 'getUrl']),
+            new TwigFunction('integrated_url', [$this, 'getUrl']),
         ];
     }
 

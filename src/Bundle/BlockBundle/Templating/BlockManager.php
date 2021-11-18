@@ -22,6 +22,7 @@ use Integrated\Common\Block\BlockHandlerRegistryInterface;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Content\ContentInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig\Environment;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -57,9 +58,9 @@ class BlockManager
      * @param BlockHandlerRegistryInterface $blockRegistry
      * @param ThemeManager                  $themeManager
      * @param DocumentManager               $dm
-     * @param \Twig_Environment             $twig
+     * @param Environment                   $twig
      */
-    public function __construct(BlockHandlerRegistryInterface $blockRegistry, ThemeManager $themeManager, DocumentManager $dm, \Twig_Environment $twig)
+    public function __construct(BlockHandlerRegistryInterface $blockRegistry, ThemeManager $themeManager, DocumentManager $dm, Environment $twig)
     {
         $this->blockRegistry = $blockRegistry;
         $this->themeManager = $themeManager;

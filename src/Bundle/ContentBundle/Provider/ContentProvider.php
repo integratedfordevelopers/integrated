@@ -95,7 +95,7 @@ class ContentProvider
             /** @var Relation $relation */
             if ($relation = $this->dm->getRepository(Relation::class)->find($relation)) {
                 foreach ($relation->getTargets() as $target) {
-                    $contentType[] = $target->getType();
+                    $contentType[] = $target->getId();
                 }
             }
         } else {

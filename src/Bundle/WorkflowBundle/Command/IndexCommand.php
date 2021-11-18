@@ -140,8 +140,8 @@ The <info>%command.name%</info> command starts a index of all the content from t
             $types = [];
 
             foreach ($this->findTypes($workflow) as $row) {
-                $this->stateManager->ensureWorkflowState($row->getType());
-                $types[] = $row->getType();
+                $this->stateManager->ensureWorkflowState($row->getId());
+                $types[] = $row->getId();
             }
 
             if (!$types) {

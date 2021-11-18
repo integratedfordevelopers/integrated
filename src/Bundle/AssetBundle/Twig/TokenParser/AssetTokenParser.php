@@ -60,7 +60,7 @@ class AssetTokenParser extends AbstractTokenParser
                 // inline=true
                 $stream->next();
                 $stream->expect(Token::OPERATOR_TYPE, '=');
-                $inline = 'true' === $stream->expect(\Twig_Token::NAME_TYPE, ['true', 'false'])->getValue();
+                $inline = 'true' === $stream->expect(Token::NAME_TYPE, ['true', 'false'])->getValue();
             } elseif ($stream->test(Token::NAME_TYPE, 'mode')) {
                 // mode='prepend'
                 $stream->next();
@@ -73,7 +73,7 @@ class AssetTokenParser extends AbstractTokenParser
 
         $body = $this->parser->subparse([$this, 'testEndTag'], true);
 
-        $stream->expect(\Twig_Token::BLOCK_END_TYPE);
+        $stream->expect(Token::BLOCK_END_TYPE);
 
         return new AssetNode(
             ['body' => $body],
