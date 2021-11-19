@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\UserBundle\Controller;
 
 use Integrated\Bundle\FormTypeBundle\Form\Type\FormActionsType;
+use Symfony\Component\Form\FormInterface;
 use Integrated\Bundle\UserBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\UserBundle\Form\Type\IpListFormType;
 use Integrated\Bundle\UserBundle\Model\IpList;
@@ -77,7 +78,7 @@ class IpListController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->get('actions')->get('cancel')->isClicked()) {
-                return $this->redirect($this->generateUrl('integrated_user_iplist_index'));
+                return $this->redirectToRoute('integrated_user_iplist_index');
             }
 
             if ($form->isValid()) {
@@ -90,7 +91,7 @@ class IpListController extends AbstractController
                     $list->getIp()->getProtocolAppropriateAddress()
                 ));
 
-                return $this->redirect($this->generateUrl('integrated_user_iplist_index'));
+                return $this->redirectToRoute('integrated_user_iplist_index');
             }
         }
 
@@ -117,7 +118,7 @@ class IpListController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->get('actions')->get('cancel')->isClicked()) {
-                return $this->redirect($this->generateUrl('integrated_user_iplist_index'));
+                return $this->redirectToRoute('integrated_user_iplist_index');
             }
 
             if ($form->isValid()) {
@@ -128,7 +129,7 @@ class IpListController extends AbstractController
                     $list->getIp()->getProtocolAppropriateAddress()
                 ));
 
-                return $this->redirect($this->generateUrl('integrated_user_iplist_index'));
+                return $this->redirectToRoute('integrated_user_iplist_index');
             }
         }
 
@@ -156,7 +157,7 @@ class IpListController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->get('actions')->get('cancel')->isClicked()) {
-                return $this->redirect($this->generateUrl('integrated_user_iplist_index'));
+                return $this->redirectToRoute('integrated_user_iplist_index');
             }
 
             if ($form->isValid()) {
@@ -167,7 +168,7 @@ class IpListController extends AbstractController
                     $list->getIp()->getProtocolAppropriateAddress()
                 ));
 
-                return $this->redirect($this->generateUrl('integrated_user_iplist_index'));
+                return $this->redirectToRoute('integrated_user_iplist_index');
             }
         }
 
@@ -178,7 +179,7 @@ class IpListController extends AbstractController
     }
 
     /**
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createNewForm()
     {
@@ -204,7 +205,7 @@ class IpListController extends AbstractController
     /**
      * @param IpList $list
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createEditForm(IpList $list)
     {
@@ -230,7 +231,7 @@ class IpListController extends AbstractController
     /**
      * @param IpList $list
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createDeleteForm(IpList $list)
     {

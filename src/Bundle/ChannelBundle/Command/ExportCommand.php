@@ -11,18 +11,19 @@
 
 namespace Integrated\Bundle\ChannelBundle\Command;
 
+use Symfony\Component\Console\Command\Command;
 use Exception;
 use Integrated\Common\Channel\Exporter\QueueExporter;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\Process;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ExportCommand extends ContainerAwareCommand
+class ExportCommand extends Command
 {
     /**
      * @var QueueExporter
@@ -30,13 +31,28 @@ class ExportCommand extends ContainerAwareCommand
     private $exporter;
 
     /**
+     * @var KernelInterface
+     */
+    protected $kernel;
+
+    /**
+     * @var string
+     */
+    protected $workingDirectory;
+
+    /**
      * Constructor.
      *
      * @param QueueExporter $exporter
      */
-    public function __construct(QueueExporter $exporter)
-    {
+    public function __construct(
+        QueueExporter $exporter,
+        KernelInterface $kernel,
+        $workingDirectory
+    ) {
         $this->exporter = $exporter;
+        $this->workingDirectory = $workingDirectory;
+        $this->kernel = $kernel;
 
         parent::__construct();
     }
@@ -70,7 +86,7 @@ class ExportCommand extends ContainerAwareCommand
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($input->getOption('full') || $input->getOption('daemon')) {
             return $this->runExternal($input, $output);
@@ -109,12 +125,10 @@ class ExportCommand extends ContainerAwareCommand
         $wait = (int) $input->getOption('wait');
         $wait = $wait * 1000; // convert from milli to micro
 
-        $cwd = realpath($this->getContainer()->get('kernel')->getRootDir().'/..');
-
         while (true) {
             $process = new Process(
-                'php bin/console channel:export -e '.$input->getOption('env'),
-                $cwd,
+                ['php', 'bin/console', 'channel:export', '-e', $this->kernel->getEnvironment()],
+                $this->workingDirectory,
                 null,
                 null,
                 null

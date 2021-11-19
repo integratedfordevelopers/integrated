@@ -11,12 +11,10 @@
 
 namespace Integrated\Common\Content\Extension;
 
-use Symfony\Component\EventDispatcher\Event as BaseEvent;
-
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class Event extends BaseEvent
+class Event extends \Symfony\Contracts\EventDispatcher\Event
 {
     const CONTENT = 'extension.event.content';
 

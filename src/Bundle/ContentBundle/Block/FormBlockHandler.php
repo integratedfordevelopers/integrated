@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Block;
 
 use Integrated\Bundle\FormTypeBundle\Form\Type\FormActionsType;
+use Symfony\Component\Form\FormInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
@@ -160,7 +161,7 @@ class FormBlockHandler extends BlockHandler
      * @param array     $options
      * @param FormBlock $block
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createForm($data = null, array $options = [], FormBlock $block = null)
     {

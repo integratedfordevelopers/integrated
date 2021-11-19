@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\BlockBundle\EventListener;
 
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Integrated\Bundle\BlockBundle\Templating\BlockManager;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -33,9 +33,9 @@ class ShortCodeListener
     }
 
     /**
-     * @param FilterResponseEvent $event
+     * @param ResponseEvent $event
      */
-    public function onKernelResponse(FilterResponseEvent $event)
+    public function onKernelResponse(ResponseEvent $event)
     {
         $response = $event->getResponse();
 

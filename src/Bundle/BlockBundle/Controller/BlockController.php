@@ -11,6 +11,9 @@
 
 namespace Integrated\Bundle\BlockBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Form\FormInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
 use Integrated\Bundle\BlockBundle\Form\Type\BlockEditType;
@@ -62,7 +65,7 @@ class BlockController extends AbstractController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function index(Request $request)
     {
@@ -99,7 +102,7 @@ class BlockController extends AbstractController
      * @param Request $request
      * @param Block   $block
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function show(Request $request, Block $block)
     {
@@ -117,7 +120,7 @@ class BlockController extends AbstractController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function new(Request $request)
     {
@@ -154,7 +157,7 @@ class BlockController extends AbstractController
 
             $this->addFlash('success', 'Block created');
 
-            return $this->redirect($this->generateUrl('integrated_block_block_index'));
+            return $this->redirectToRoute('integrated_block_block_index');
         }
 
         return $this->render(sprintf('IntegratedBlockBundle:block:new.%s.twig', $request->getRequestFormat()), [
@@ -165,7 +168,7 @@ class BlockController extends AbstractController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function newChannelBlock(Request $request)
     {
@@ -200,7 +203,7 @@ class BlockController extends AbstractController
      * @param Request $request
      * @param Block   $block
      *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return array|RedirectResponse|Response
      */
     public function edit(Request $request, Block $block)
     {
@@ -233,7 +236,7 @@ class BlockController extends AbstractController
 
             $this->addFlash('success', 'Block updated');
 
-            return $this->redirect($this->generateUrl('integrated_block_block_index'));
+            return $this->redirectToRoute('integrated_block_block_index');
         }
 
         $metadata = $this->metadataFactory->getMetadata(\get_class($block));
@@ -248,7 +251,7 @@ class BlockController extends AbstractController
      * @param Request $request
      * @param Block   $block
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function delete(Request $request, Block $block)
     {
@@ -276,7 +279,7 @@ class BlockController extends AbstractController
 
             $this->addFlash('success', 'Block deleted');
 
-            return $this->redirect($this->generateUrl('integrated_block_block_index'));
+            return $this->redirectToRoute('integrated_block_block_index');
         }
 
         return $this->render('IntegratedBlockBundle:block:delete.html.twig', [
@@ -288,7 +291,7 @@ class BlockController extends AbstractController
     /**
      * @param $id
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createDeleteForm($id)
     {

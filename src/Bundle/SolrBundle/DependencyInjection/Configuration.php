@@ -26,8 +26,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $builder = new TreeBuilder();
-        $builder->root('integrated_solr')
+        $builder = new TreeBuilder('integrated_solr');
+        $builder->getRootNode()
             ->children()
             ->arrayNode('endpoints')
             ->prototype('array')

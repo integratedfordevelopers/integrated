@@ -90,7 +90,7 @@ class IntegratedInstallCommand extends Command
      *
      * @return int|void|null
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $steps = $input->getOption('step');
         $io = new SymfonyStyle($input, $output);
@@ -131,6 +131,8 @@ class IntegratedInstallCommand extends Command
             $this->migrations->execute();
             $this->mongoDBMigrations->execute();
         }
+
+        return 0;
     }
 
     /**
@@ -144,7 +146,7 @@ class IntegratedInstallCommand extends Command
 
         $output->writeln(sprintf('Execute %s %s %s', $php, $console, $command), OutputInterface::VERBOSITY_VERY_VERBOSE);
 
-        $process = new Process(sprintf('%s %s %s', $php, $console, $command));
+        $process = new Process([$php, $console, $command]);
 
         $process->setTimeout(0);
         $process->run(function ($type, $buffer) use ($output) {

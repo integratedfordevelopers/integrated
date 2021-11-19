@@ -84,7 +84,7 @@ class ContentHistorySubscriber implements EventSubscriber
             $history = new $this->className($document, $action);
             $originalData = $this->getOriginalData($dm, $document, $action);
 
-            $this->eventDispatcher->dispatch($action, new ContentHistoryEvent($history, $document, $originalData));
+            $this->eventDispatcher->dispatch(new ContentHistoryEvent($history, $document, $originalData), $action);
 
             $dm->persist($history);
             $dm->getUnitOfWork()->recomputeSingleDocumentChangeSet($classMetadata, $history);

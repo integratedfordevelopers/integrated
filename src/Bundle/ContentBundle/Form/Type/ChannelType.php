@@ -119,12 +119,4 @@ class ChannelType extends AbstractType
             'required' => false,
         ]);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'channel';
-    }
 }

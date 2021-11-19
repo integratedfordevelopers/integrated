@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\UserBundle\Controller;
 
+use Symfony\Component\Form\FormInterface;
 use Integrated\Bundle\FormTypeBundle\Form\Type\FormActionsType;
 use Integrated\Bundle\UserBundle\Form\Type\ProfileFormType;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
@@ -63,7 +64,7 @@ class ProfileController extends AbstractController
 
         if ($form->isSubmitted()) {
             if ($form->get('actions')->get('cancel')->isClicked()) {
-                return $this->redirect($this->generateUrl('integrated_content_content_index'));
+                return $this->redirectToRoute('integrated_content_content_index');
             }
 
             if ($form->isValid()) {
@@ -75,7 +76,7 @@ class ProfileController extends AbstractController
                 $this->userManager->persist($user);
                 $this->addFlash('success', 'Your profile have been saved');
 
-                return $this->redirect($this->generateUrl('integrated_content_content_index'));
+                return $this->redirectToRoute('integrated_content_content_index');
             }
         }
 
@@ -88,7 +89,7 @@ class ProfileController extends AbstractController
     /**
      * @param UserInterface $user
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createProfileForm(UserInterface $user)
     {

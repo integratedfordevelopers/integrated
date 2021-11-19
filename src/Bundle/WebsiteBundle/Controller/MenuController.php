@@ -11,6 +11,9 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Controller;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Integrated\Bundle\MenuBundle\Menu\DatabaseMenuFactory;
+use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Bundle\MenuBundle\Provider\IntegratedMenuProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -76,7 +79,7 @@ class MenuController extends AbstractController
     }
 
     /**
-     * @return \Doctrine\ODM\MongoDB\DocumentManager
+     * @return DocumentManager
      */
     protected function getDocumentManager()
     {
@@ -92,7 +95,7 @@ class MenuController extends AbstractController
     }
 
     /**
-     * @return \Integrated\Bundle\MenuBundle\Menu\DatabaseMenuFactory
+     * @return DatabaseMenuFactory
      */
     protected function getMenuFactory()
     {
@@ -100,7 +103,7 @@ class MenuController extends AbstractController
     }
 
     /**
-     * @return \Integrated\Common\Content\Channel\ChannelInterface|null
+     * @return ChannelInterface|null
      */
     protected function getChannel()
     {

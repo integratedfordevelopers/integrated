@@ -19,6 +19,7 @@ use Integrated\Common\Channel\Event\ChannelEvent;
 use Integrated\Common\Channel\Events;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -135,7 +136,7 @@ class ChannelController extends AbstractController
             $dispatcher = $this->get('integrated_content.event_dispatcher');
             $dispatcher->dispatch(new ChannelEvent($channel), Events::CHANNEL_CREATED);
 
-            return $this->redirect($this->generateUrl('integrated_content_channel_show', ['id' => $channel->getId()]));
+            return $this->redirectToRoute('integrated_content_channel_show', ['id' => $channel->getId()]);
         }
 
         return $this->render('IntegratedContentBundle:channel:new.html.twig', [
@@ -189,7 +190,7 @@ class ChannelController extends AbstractController
             $dispatcher = $this->get('integrated_content.event_dispatcher');
             $dispatcher->dispatch(new ChannelEvent($channel), Events::CHANNEL_UPDATED);
 
-            return $this->redirect($this->generateUrl('integrated_content_channel_show', ['id' => $channel->getId()]));
+            return $this->redirectToRoute('integrated_content_channel_show', ['id' => $channel->getId()]);
         }
 
         return $this->render('IntegratedContentBundle:channel:edit.html.twig', [
@@ -226,7 +227,7 @@ class ChannelController extends AbstractController
 
             $this->addFlash('success', 'Channel deleted');
 
-            return $this->redirect($this->generateUrl('integrated_content_channel_index'));
+            return $this->redirectToRoute('integrated_content_channel_index');
         }
 
         return $this->render('IntegratedContentBundle:channel:delete.html.twig', [
@@ -241,7 +242,7 @@ class ChannelController extends AbstractController
      *
      * @param Channel $channel
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createCreateForm(Channel $channel)
     {
@@ -264,7 +265,7 @@ class ChannelController extends AbstractController
      *
      * @param Channel $channel
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createEditForm(Channel $channel)
     {
@@ -284,7 +285,7 @@ class ChannelController extends AbstractController
      * @param mixed $id            The document id
      * @param bool  $deleteAllowed
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createDeleteForm($id, bool $deleteAllowed)
     {

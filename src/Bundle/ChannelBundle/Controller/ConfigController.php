@@ -11,6 +11,9 @@
 
 namespace Integrated\Bundle\ChannelBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\FormInterface;
+use Knp\Component\Pager\Paginator;
 use Exception;
 use Integrated\Bundle\ChannelBundle\Event\FilterResponseConfigEvent;
 use Integrated\Bundle\ChannelBundle\Event\FormConfigEvent;
@@ -73,7 +76,7 @@ class ConfigController extends AbstractController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function index(Request $request)
     {
@@ -95,7 +98,7 @@ class ConfigController extends AbstractController
      * @param Request $request
      * @param string  $adapter
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function new(Request $request, $adapter)
     {
@@ -122,7 +125,7 @@ class ConfigController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->get('actions')->getData() == 'cancel') {
-            return $this->redirect($this->generateUrl('integrated_channel_config_index'));
+            return $this->redirectToRoute('integrated_channel_config_index');
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -138,7 +141,7 @@ class ConfigController extends AbstractController
             if (!$response = $event->getResponse()) {
                 $this->addFlash('success', sprintf('The config %s is saved', $data->getName()));
 
-                $response = $this->redirect($this->generateUrl('integrated_channel_config_index'));
+                $response = $this->redirectToRoute('integrated_channel_config_index');
             }
 
             $this->dispatcher->dispatch(
@@ -160,7 +163,7 @@ class ConfigController extends AbstractController
      * @param Request $request
      * @param string  $id
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function edit(Request $request, $id)
     {
@@ -191,7 +194,7 @@ class ConfigController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->get('actions')->getData() == 'cancel') {
-            return $this->redirect($this->generateUrl('integrated_channel_config_index'));
+            return $this->redirectToRoute('integrated_channel_config_index');
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -205,7 +208,7 @@ class ConfigController extends AbstractController
             if (!$response = $event->getResponse()) {
                 $this->addFlash('success', sprintf('The changes to the config %s are saved', $data->getName()));
 
-                $response = $this->redirect($this->generateUrl('integrated_channel_config_index'));
+                $response = $this->redirectToRoute('integrated_channel_config_index');
             }
 
             $this->dispatcher->dispatch(
@@ -226,7 +229,7 @@ class ConfigController extends AbstractController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function externalReturn(Request $request)
     {
@@ -245,7 +248,7 @@ class ConfigController extends AbstractController
      * @param Request $request
      * @param string  $id
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function delete(Request $request, $id)
     {
@@ -261,7 +264,7 @@ class ConfigController extends AbstractController
         // not found exception when the adaptor does not exist.
 
         if (!$data) {
-            return $this->redirect($this->generateUrl('integrated_channel_config_index')); // data is already gone
+            return $this->redirectToRoute('integrated_channel_config_index'); // data is already gone
         }
 
         $event = new GetResponseConfigEvent($data, $request);
@@ -274,7 +277,7 @@ class ConfigController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->get('actions')->getData() == 'cancel') {
-            return $this->redirect($this->generateUrl('integrated_channel_config_index'));
+            return $this->redirectToRoute('integrated_channel_config_index');
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -282,7 +285,7 @@ class ConfigController extends AbstractController
 
             $this->addFlash('success', sprintf('The config %s is removed', $data->getName()));
 
-            $response = $this->redirect($this->generateUrl('integrated_channel_config_index'));
+            $response = $this->redirectToRoute('integrated_channel_config_index');
 
             $this->dispatcher->dispatch(
                 new FilterResponseConfigEvent($data, $request, $response),
@@ -303,7 +306,7 @@ class ConfigController extends AbstractController
      * @param Config           $data
      * @param AdapterInterface $adapter
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createNewForm(Config $data, AdapterInterface $adapter)
     {
@@ -325,7 +328,7 @@ class ConfigController extends AbstractController
      * @param Config           $data
      * @param AdapterInterface $adapter
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createEditForm(Config $data, AdapterInterface $adapter)
     {
@@ -343,7 +346,7 @@ class ConfigController extends AbstractController
     /**
      * @param Config $data
      *
-     * @return \Symfony\Component\Form\FormInterface
+     * @return FormInterface
      */
     protected function createDeleteForm(Config $data)
     {
@@ -358,7 +361,7 @@ class ConfigController extends AbstractController
     }
 
     /**
-     * @return \Knp\Component\Pager\Paginator
+     * @return Paginator
      */
     protected function getPaginator()
     {

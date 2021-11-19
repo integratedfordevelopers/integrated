@@ -100,7 +100,7 @@ class MigrateCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // Fetch all data from database
         $data = $this->database->getRows();
@@ -179,6 +179,8 @@ class MigrateCommand extends Command
 
         // Release the output
         $progress->finish();
+
+        return 0;
     }
 
     /**

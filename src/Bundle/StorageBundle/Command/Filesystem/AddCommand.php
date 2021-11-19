@@ -101,7 +101,7 @@ class AddCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $filesystem = $input->getArgument('filesystem');
 
@@ -120,5 +120,7 @@ class AddCommand extends Command
         } else {
             throw new \InvalidArgumentException(sprintf('The filesystem %s does not exist', $filesystem));
         }
+
+        return 0;
     }
 }

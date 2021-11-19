@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\UserBundle\Controller;
 
+use Twig\Error\Error;
 use Integrated\Bundle\UserBundle\Doctrine\UserManager;
 use Integrated\Bundle\UserBundle\Form\Type\LoginFormType;
 use Integrated\Bundle\UserBundle\Form\Type\PasswordChangeType;
@@ -110,7 +111,7 @@ class SecurityController extends AbstractController
      *
      * @return RedirectResponse|Response
      *
-     * @throws \Twig\Error\Error
+     * @throws Error
      */
     public function passwordChangeAction(Request $request, int $id, int $timestamp, string $key)
     {
