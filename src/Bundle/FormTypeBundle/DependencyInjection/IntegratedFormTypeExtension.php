@@ -30,5 +30,6 @@ class IntegratedFormTypeExtension extends Extension
 
         $loader->load('event_listener.xml');
         $loader->load('services.xml');
+        $loader->load('twig.xml');
     }
 }
