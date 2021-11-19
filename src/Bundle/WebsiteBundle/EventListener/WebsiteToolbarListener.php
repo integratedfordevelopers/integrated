@@ -48,8 +48,8 @@ class WebsiteToolbarListener implements EventSubscriberInterface
     protected $contentItem = null;
 
     /**
-     * @param Environment       $twig
-     * @param EditableChecker   $websiteEditableChecker
+     * @param Environment     $twig
+     * @param EditableChecker $websiteEditableChecker
      */
     public function __construct(Environment $twig, EditableChecker $websiteEditableChecker)
     {

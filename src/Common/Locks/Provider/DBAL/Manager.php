@@ -175,7 +175,7 @@ class Manager implements ManagerInterface
                 ->from($this->options['lock_table_name'], 'l')
                 ->where('l.id = '.$builder->createPositionalParameter($lock));
 
-            if ($data = $this->connection->fetchAssoc($builder->getSQL(), array_values($builder->getParameters()))) {
+            if ($data = $this->connection->fetchAssociative($builder->getSQL(), array_values($builder->getParameters()))) {
                 return Lock::factory($data);
             }
         } catch (\Exception $e) {
@@ -233,7 +233,7 @@ class Manager implements ManagerInterface
         $builder->from($this->options['lock_table_name'], 'l');
 
         foreach ($filters as $filter) {
-            $where = $builder->expr()->andX();
+            $where = $builder->expr()->and();
 
             if (!$filter instanceof Filter) {
                 throw new UnexpectedTypeException($filter, 'Integrated\Common\Locks\Filter');
@@ -246,7 +246,7 @@ class Manager implements ManagerInterface
                 $resources = array_map(['Integrated\\Common\\Locks\\Provider\\DBAL\\Resource', 'serialize'], $resources);
                 $resources = array_map([$builder->getConnection(), 'quote'], $resources);
 
-                $where->add($builder->expr()->in('l.resource', $resources));
+                $where->with($builder->expr()->in('l.resource', $resources));
             }
 
             $owners = \is_array($filter->owners) ? $filter->owners : [$filter->owners];
@@ -256,7 +256,7 @@ class Manager implements ManagerInterface
                 $owners = array_map(['Integrated\\Common\\Locks\\Provider\\DBAL\\Resource', 'serialize'], $owners);
                 $owners = array_map([$builder->getConnection(), 'quote'], $owners);
 
-                $where->add($builder->expr()->in('l.resource_owner', $owners));
+                $where->with($builder->expr()->in('l.resource_owner', $owners));
             }
 
             if ($where->count()) {
@@ -289,7 +289,7 @@ class Manager implements ManagerInterface
             // unique so there should be no issues with reusing the same key that
             // auto id could have.
 
-            $this->connection->executeUpdate($this->platform->getTruncateTableSQL($this->options['lock_table_name']));
+            $this->connection->executeStatement($this->platform->getTruncateTableSQL($this->options['lock_table_name']));
         } catch (\Exception $e) {
             // probably should raise a error
         }

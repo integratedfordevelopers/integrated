@@ -35,9 +35,9 @@ class PeriodExtension extends AbstractExtension
     }
 
     /**
-     * @param Environment       $twig
-     * @param \DateTime         $startDate
-     * @param \DateTime         $endDate
+     * @param Environment $twig
+     * @param \DateTime   $startDate
+     * @param \DateTime   $endDate
      *
      * @return string
      */

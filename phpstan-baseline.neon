@@ -13,15 +13,6 @@ parameters:
 		-
 			message:
 				"""
-					#^Parameter \\$twigEngine of method Integrated\\\\Bundle\\\\ContentBundle\\\\Mailer\\\\FormMailer\\:\\:__construct\\(\\) has typehint with deprecated class Symfony\\\\Bridge\\\\Twig\\\\TwigEngine\\:
-					since version 4\\.3, to be removed in 5\\.0; use Twig instead\\.$#
-				"""
-			count: 1
-			path: src/Bundle/ContentBundle/Mailer/FormMailer.php
-
-		-
-			message:
-				"""
 					#^Class Integrated\\\\Bundle\\\\ContentBundle\\\\Templating\\\\GlobalVariables extends deprecated class Symfony\\\\Bundle\\\\FrameworkBundle\\\\Templating\\\\GlobalVariables\\:
 					since version 4\\.3, to be removed in 5\\.0; use Twig instead\\.$#
 				"""
@@ -52,48 +43,6 @@ parameters:
 			message: "#^Method Integrated\\\\Bundle\\\\MenuBundle\\\\Provider\\\\IntegratedMenuProvider\\:\\:get\\(\\) should return Knp\\\\Menu\\\\ItemInterface but return statement is missing\\.$#"
 			count: 1
 			path: src/Bundle/MenuBundle/Provider/IntegratedMenuProvider.php
-
-		-
-			message: "#^Method Integrated\\\\Bundle\\\\SlugBundle\\\\EventListener\\\\SluggableSubscriber\\:\\:findSimilarSlugs\\(\\) should return array but return statement is missing\\.$#"
-			count: 1
-			path: src/Bundle/SlugBundle/EventListener/SluggableSubscriber.php
-
-		-
-			message: "#^Method Integrated\\\\Bundle\\\\SlugBundle\\\\EventListener\\\\SluggableSubscriber\\:\\:getScheduledObjects\\(\\) should return array but return statement is missing\\.$#"
-			count: 1
-			path: src/Bundle/SlugBundle/EventListener/SluggableSubscriber.php
-
-		-
-			message: "#^Method Integrated\\\\Bundle\\\\SlugBundle\\\\EventListener\\\\SluggableSubscriber\\:\\:isUniqueSlug\\(\\) should return bool but return statement is missing\\.$#"
-			count: 1
-			path: src/Bundle/SlugBundle/EventListener/SluggableSubscriber.php
-
-		-
-			message:
-				"""
-					#^Parameter \\$lockFactory of method Integrated\\\\Bundle\\\\SolrBundle\\\\Command\\\\IndexerRunCommand\\:\\:__construct\\(\\) has typehint with deprecated class Symfony\\\\Component\\\\Lock\\\\Factory\\:
-					"Symfony\\\\Component\\\\Lock\\\\Factory" is deprecated since Symfony 4\\.4 and will be removed in 5\\.0 use "Symfony\\\\Component\\\\Lock\\\\LockFactory" instead$#
-				"""
-			count: 1
-			path: src/Bundle/SolrBundle/Command/IndexerRunCommand.php
-
-		-
-			message:
-				"""
-					#^Parameter \\$factory of method Integrated\\\\Bundle\\\\SolrBundle\\\\Command\\\\WorkerCommand\\:\\:__construct\\(\\) has typehint with deprecated class Symfony\\\\Component\\\\Lock\\\\Factory\\:
-					"Symfony\\\\Component\\\\Lock\\\\Factory" is deprecated since Symfony 4\\.4 and will be removed in 5\\.0 use "Symfony\\\\Component\\\\Lock\\\\LockFactory" instead$#
-				"""
-			count: 1
-			path: src/Bundle/SolrBundle/Command/WorkerCommand.php
-
-		-
-			message:
-				"""
-					#^Parameter \\$templating of method Integrated\\\\Bundle\\\\ThemeBundle\\\\EventListener\\\\Objects\\\\ContentImageListener\\:\\:__construct\\(\\) has typehint with deprecated interface Symfony\\\\Bundle\\\\FrameworkBundle\\\\Templating\\\\EngineInterface\\:
-					since version 4\\.3, to be removed in 5\\.0; use Twig instead\\.$#
-				"""
-			count: 1
-			path: src/Bundle/ThemeBundle/EventListener/Objects/ContentImageListener.php
 
 		-
 			message:
@@ -132,42 +81,9 @@ parameters:
 			path: src/Bundle/UserBundle/Security/Firewall/IpListListener.php
 
 		-
-			message:
-				"""
-					#^Parameter \\$templating of method Integrated\\\\Bundle\\\\UserBundle\\\\Service\\\\Mailer\\:\\:__construct\\(\\) has typehint with deprecated class Symfony\\\\Bridge\\\\Twig\\\\TwigEngine\\:
-					since version 4\\.3, to be removed in 5\\.0; use Twig instead\\.$#
-				"""
-			count: 1
-			path: src/Bundle/UserBundle/Service/Mailer.php
-
-		-
-			message: "#^Call to an undefined static method Symfony\\\\Component\\\\HttpKernel\\\\Controller\\\\ErrorController\\:\\:findTemplate\\(\\)\\.$#"
-			count: 1
-			path: src/Bundle/WebsiteBundle/Controller/ErrorController.php
-
-		-
-			message: "#^Method Symfony\\\\Component\\\\HttpKernel\\\\Controller\\\\ErrorController\\:\\:__construct\\(\\) invoked with 2 parameters, 3 required\\.$#"
-			count: 1
-			path: src/Bundle/WebsiteBundle/Controller/ErrorController.php
-
-		-
-			message:
-				"""
-					#^Parameter \\$templating of method Integrated\\\\Bundle\\\\WebsiteBundle\\\\Controller\\\\PageController\\:\\:__construct\\(\\) has typehint with deprecated class Symfony\\\\Bundle\\\\TwigBundle\\\\TwigEngine\\:
-					since version 4\\.3, to be removed in 5\\.0; use Twig instead\\.$#
-				"""
-			count: 1
-			path: src/Bundle/WebsiteBundle/Controller/PageController.php
-
-		-
 			message: "#^Method Integrated\\\\Bundle\\\\WebsiteBundle\\\\Routing\\\\PageLoader\\:\\:getResolver\\(\\) should return Symfony\\\\Component\\\\Config\\\\Loader\\\\LoaderResolverInterface but return statement is missing\\.$#"
 			count: 1
 			path: src/Bundle/WebsiteBundle/Routing/PageLoader.php
-
-		-
-			message: "#^Method Integrated\\\\Bundle\\\\WebsiteBundle\\\\Service\\\\ContentService\\:\\:prepare\\(\\) should return Symfony\\\\Component\\\\HttpFoundation\\\\Response but return statement is missing\\.$#"
-			count: 1
-			path: src/Bundle/WebsiteBundle/Service/ContentService.php
 
 		-
 			message: "#^Method Integrated\\\\Common\\\\Block\\\\BlockHandlerRegistry\\:\\:getHandler\\(\\) should return Integrated\\\\Common\\\\Block\\\\BlockHandlerInterface but return statement is missing\\.$#"
@@ -182,54 +98,9 @@ parameters:
 		-
 			message:
 				"""
-					#^Call to deprecated method add\\(\\) of class Doctrine\\\\DBAL\\\\Query\\\\Expression\\\\CompositeExpression\\:
-					This class will be made immutable\\. Use with\\(\\) instead\\.$#
-				"""
-			count: 2
-			path: src/Common/Locks/Provider/DBAL/Manager.php
-
-		-
-			message:
-				"""
-					#^Call to deprecated method andX\\(\\) of class Doctrine\\\\DBAL\\\\Query\\\\Expression\\\\ExpressionBuilder\\:
-					Use `and\\(\\)` instead\\.$#
-				"""
-			count: 1
-			path: src/Common/Locks/Provider/DBAL/Manager.php
-
-		-
-			message:
-				"""
-					#^Call to deprecated method executeUpdate\\(\\) of class Doctrine\\\\DBAL\\\\Connection\\:
-					Use \\{@link executeStatement\\(\\)\\} instead\\.$#
-				"""
-			count: 1
-			path: src/Common/Locks/Provider/DBAL/Manager.php
-
-		-
-			message:
-				"""
-					#^Call to deprecated method fetchAssoc\\(\\) of class Doctrine\\\\DBAL\\\\Connection\\:
-					Use fetchAssociative\\(\\)$#
-				"""
-			count: 1
-			path: src/Common/Locks/Provider/DBAL/Manager.php
-
-		-
-			message:
-				"""
 					#^Call to deprecated method getGuidExpression\\(\\) of class Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:
 					Use application\\-generated UUIDs instead$#
 				"""
 			count: 1
 			path: src/Common/Locks/Provider/DBAL/Manager.php
-
-		-
-			message:
-				"""
-					#^Call to deprecated method fetchAll\\(\\) of class Doctrine\\\\DBAL\\\\Connection\\:
-					Use fetchAllAssociative\\(\\)$#
-				"""
-			count: 1
-			path: src/Common/Queue/Provider/DBAL/QueueProvider.php
 
