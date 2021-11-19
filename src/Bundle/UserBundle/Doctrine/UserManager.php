@@ -177,7 +177,7 @@ class UserManager implements UserManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function findByUsernameAndScope($username, ?ScopeInterface $scope = null)
+    public function findEnabledByUsernameAndScope($username, ?ScopeInterface $scope = null)
     {
         $builder = $this->createQueryBuilder()
             ->select('User')
