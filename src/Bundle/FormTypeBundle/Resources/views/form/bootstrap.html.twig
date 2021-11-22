@@ -3,17 +3,17 @@
 {# Widgets #}
 
 {% block form_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if compound %}
             {{ block('form_widget_compound') }}
         {% else %}
             {{ block('form_widget_simple') }}
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock form_widget %}
 
 {% block form_widget_simple %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set style = style|default(bootstrap_get_style()) %}
         {% set col_size = col_size|default(bootstrap_get_col_size()) %}
 
@@ -54,11 +54,11 @@
         {% if simple_col is defined %}
             </div>
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock form_widget_simple %}
 
 {% block form_widget_compound %}
-    {% spaceless %}
+    {% apply spaceless %}
         <div {{ block('widget_container_attributes') }}>
             {% if form.parent is empty %}
                 {{ block('global_form_errors') }}
@@ -66,20 +66,20 @@
             {{ block('form_rows') }}
             {{ form_rest(form) }}
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock form_widget_compound %}
 
 {% block collection_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if prototype is defined %}
             {% set attr = attr|merge({'data-prototype': form_row(prototype) }) %}
         {% endif %}
         {{ block('form_widget') }}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock collection_widget %}
 
 {% block bootstrap_collection_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set delete_button_text = form.vars.delete_button_text %}
         {% set add_button_text = form.vars.add_button_text %}
         {% if translation_domain is not same as (false) %}
@@ -122,11 +122,11 @@
                 <a href="#" class="{{ form.vars.add_button_class }}" data-addfield="collection" data-collection="{{ form.vars.id }}" data-prototype-name="{{ prototype_name }}">{{ add_button_text|parse_icons|raw }}</a>
             {% endif %}
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock bootstrap_collection_widget %}
 
 {% block textarea_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set col_size = col_size|default(bootstrap_get_col_size()) %}
 
         {% if attr.simple_col is defined and attr.simple_col is not empty %}
@@ -147,11 +147,11 @@
         {% if simple_col is defined %}
             </div>
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock textarea_widget %}
 
 {% block file_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set col_size = col_size|default(bootstrap_get_col_size()) %}
 
         {% if attr.simple_col is defined and attr.simple_col is not empty %}
@@ -171,21 +171,21 @@
         {% if simple_col is defined %}
             </div>
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock file_widget %}
 
 {% block choice_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if expanded %}
             {{ block('choice_widget_expanded') }}
         {% else %}
             {{ block('choice_widget_collapsed') }}
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock choice_widget %}
 
 {% block choice_widget_expanded %}
-    {% spaceless %}
+    {% apply spaceless %}
         <div {{ block('widget_container_attributes') }}>
             {% for child in form %}
                 {% if multiple %}
@@ -195,11 +195,11 @@
                 {% endif %}
             {% endfor %}
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock choice_widget_expanded %}
 
 {% block choice_widget_collapsed %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set attr = attr|merge({ 'class': (attr.class|default('') ~ ' form-control')|trim }) %}
 
         <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
@@ -216,11 +216,11 @@
             {% set options = choices %}
             {{ block('choice_widget_options') }}
         </select>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock choice_widget_collapsed %}
 
 {% block choice_widget_options %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% for group_label, choice in options %}
             {% if choice is iterable %}
                 <optgroup label="{{ choice_translation_domain is defined ? (choice_translation_domain is same as (false) ? group_label : group_label|trans({}, choice_translation_domain)) : group_label|trans({}, translation_domain) }}">
@@ -237,11 +237,11 @@
                 </option>
             {% endif %}
         {% endfor %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock choice_widget_options %}
 
 {% block checkbox_row %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set style = style|default(bootstrap_get_style()) %}
         {% set col_size = col_size|default(bootstrap_get_col_size()) %}
 
@@ -309,11 +309,11 @@
         {% endif %}
 
         {% if style == 'inline' %}&nbsp;{% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock checkbox_row %}
 
 {% block radio_row %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set class = '' %}
 
         {% set col_size = col_size|default(bootstrap_get_col_size()) %}
@@ -376,23 +376,23 @@
         {% elseif no_form_group is not defined or no_form_group == false %}
             </div>
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock radio_row %}
 
 {% block checkbox_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
-    {% endspaceless %}
+    {% endapply %}
 {% endblock checkbox_widget %}
 
 {% block radio_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         <input type="radio" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
-    {% endspaceless %}
+    {% endapply %}
 {% endblock radio_widget %}
 
 {% block datetime_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if widget == 'single_text' %}
             {{ block('form_widget_simple') }}
         {% else %}
@@ -404,11 +404,11 @@
                 {{ form_errors(form.time) }}
             </div>
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock datetime_widget %}
 
 {% block date_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if widget == 'single_text' %}
             {{ block('form_widget_simple') }}
         {% else %}
@@ -421,11 +421,11 @@
                 })|raw }}
             </div>
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock date_widget %}
 
 {% block time_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if widget == 'single_text' %}
             {{ block('form_widget_simple') }}
         {% else %}
@@ -437,26 +437,26 @@
                 {% if with_seconds %}:{{ form_widget(form.second, vars) }}{% endif %}
             </div>
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock time_widget %}
 
 {% block number_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {# type="number" doesn't work with floats #}
         {% set type = type|default('text') %}
         {{ block('form_widget_simple') }}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock number_widget %}
 
 {% block integer_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set type = type|default('number') %}
         {{ block('form_widget_simple') }}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock integer_widget %}
 
 {% block money_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         <div class="input-group">
             {{ money_pattern|replace({
                 '{{ widget }}': block('form_widget_simple'),
@@ -464,56 +464,56 @@
                 '{{ tag_end }}': '</span>'
             })|raw }}
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock money_widget %}
 
 {% block url_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set type = type|default('url') %}
         {{ block('form_widget_simple') }}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock url_widget %}
 
 {% block search_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set type = type|default('search') %}
         {{ block('form_widget_simple') }}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock search_widget %}
 
 {% block percent_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set type = type|default('text') %}
         <div class="input-group">
             {{ block('form_widget_simple') }}
             <span class="input-group-addon">%</span>
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock percent_widget %}
 
 {% block password_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set type = type|default('password') %}
         {{ block('form_widget_simple') }}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock password_widget %}
 
 {% block hidden_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set type = type|default('hidden') %}
         {{ block('form_widget_simple') }}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock hidden_widget %}
 
 {% block email_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set type = type|default('email') %}
         {{ block('form_widget_simple') }}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock email_widget %}
 
 {% block button_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if label is empty and label is not same as (false) %}
             {% set label = name|humanize %}
         {% endif %}
@@ -530,21 +530,21 @@
         {% else %}
             <button type="{{ type|default('button') }}" {{ block('button_attributes') }}>{% if attr.icon is defined and attr.icon != '' %}{{ icon(attr.icon) }}{% endif %}{{ label }}</button>
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock button_widget %}
 
 {% block submit_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set type = type|default('submit') %}
         {{ block('button_widget') }}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock submit_widget %}
 
 {% block reset_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set type = type|default('reset') %}
         {{ block('button_widget') }}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock reset_widget %}
 
 {% block form_actions_widget %}
@@ -561,7 +561,7 @@
 {# Labels #}
 
 {% block form_label %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set col_size = col_size|default(bootstrap_get_col_size()) %}
 
         {% if attr.label_col is defined and attr.label_col is not empty %}
@@ -603,7 +603,7 @@
             {% endif %}
             <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|raw }}</label>
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock form_label %}
 
 {% block button_label %}{% endblock %}
@@ -611,17 +611,17 @@
 {# Rows #}
 
 {% block repeated_row %}
-    {% spaceless %}
+    {% apply spaceless %}
         {#
         No need to render the errors here, as all errors are mapped
         to the first child (see RepeatedTypeValidatorExtension).
         #}
         {{ block('form_rows') }}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock repeated_row %}
 
 {% block form_row %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set style = style|default(bootstrap_get_style()) %}
         {% set col_size = col_size|default(bootstrap_get_col_size()) %}
 
@@ -661,11 +661,11 @@
         </div>
 
         {% if style == 'inline' %}&nbsp;{% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock form_row %}
 
 {% block form_input_group %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if attr.input_group is defined and attr.input_group is not empty %}
             {% set input_group = attr.input_group %}
         {% endif %}
@@ -696,11 +696,11 @@
         {% else %}
             {{ form_widget(form) }}
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock form_input_group %}
 
 {% block form_help %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if attr.help_text is defined and attr.help_text is not empty %}
             {% set help_text = attr.help_text %}
         {% endif %}
@@ -708,11 +708,11 @@
         {% if help_text is not empty %}
             <span class="help-block">{{ help_text|trans({}, translation_domain) }}</span>
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock form_help %}
 
 {% block button_row %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set style = style|default(bootstrap_get_style()) %}
         {% set col_size = col_size|default(bootstrap_get_col_size()) %}
 
@@ -743,7 +743,7 @@
             </div>
             {% endif %}
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock button_row %}
 
 {% block hidden_row %}
@@ -757,15 +757,15 @@
 {# Misc #}
 
 {% block form %}
-    {% spaceless %}
+    {% apply spaceless %}
         {{ form_start(form) }}
         {{ form_widget(form) }}
         {{ form_end(form) }}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock form %}
 
 {% block form_start %}
-    {% spaceless %}
+    {% apply spaceless %}
         {{ bootstrap_backup_form_settings() }}
         {% set method = method|upper %}
         {% if method in ["GET", "POST"] %}
@@ -807,11 +807,11 @@
         {% if form_method != method %}
             <input type="hidden" name="_method" value="{{ method }}" />
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock form_start %}
 
 {% block form_end %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if not render_rest is defined or render_rest %}
             {{ form_rest(form) }}
         {% endif %}
@@ -832,13 +832,13 @@
             {{ bootstrap_set_simple_col(false) }}
         {% endif %}
         {{ bootstrap_restore_form_settings() }}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock form_end %}
 
 {% block form_enctype %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if multipart %}enctype="multipart/form-data"{% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock form_enctype %}
 
 {% block global_form_errors %}
@@ -849,7 +849,7 @@
 {% endblock global_form_errors %}
 
 {% block form_errors %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set global_errors = global_errors|default(false) %}
         {% set style = style|default(bootstrap_get_style()) %}
 
@@ -870,23 +870,23 @@
                 </div>
             {% endif %}
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock form_errors %}
 
 {% block form_rest %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% for child in form %}
             {% if not child.rendered %}
                 {{ form_row(child) }}
             {% endif %}
         {% endfor %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock form_rest %}
 
 {# Support #}
 
 {% block form_rows %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% for child in form %}
             {% set childAttr = {} %}
             {% if attr.col_size is defined %}
@@ -906,25 +906,25 @@
             {% endif %}
             {{ form_row(child, childAttr) }}
         {% endfor %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock form_rows %}
 
 {% block widget_attributes %}
-    {% spaceless %}
+    {% apply spaceless %}
         id="{{ id }}" name="{{ full_name }}" {% if disabled %} disabled="disabled"{% endif %}{% if required %} required="required"{% endif %}
         {% for attrname, attrvalue in attr %}{% if attrname in ['placeholder', 'title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% elseif attrname in ['input_group'] %}{% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endfor %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock widget_attributes %}
 
 {% block widget_container_attributes %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if attr.style is defined and (attr.style == 'inline' or attr.style == 'horizontal') %}
             {% set attr = attr|merge({ 'class': ('form-'~attr.style~' '~attr.class|default(''))|trim }) %}
             {% set attr = attr|merge({ 'style': null }) %}
         {% endif %}
         {% if id is not empty %}id="{{ id }}" {% endif %}
         {% for attrname, attrvalue in attr %}{% if attrvalue is not null and (attrvalue is not iterable) %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endfor %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock widget_container_attributes %}
 
 {% block button_attributes -%}
