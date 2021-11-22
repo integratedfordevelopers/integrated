@@ -32,11 +32,6 @@ class FilterQueryProvider
     protected $blockUsageProvider;
 
     /**
-     * @var bool
-     */
-    private $pageBundleInstalled;
-
-    /**
      * @param ManagerRegistry    $mr
      * @param BlockUsageProvider $blockUsageProvider
      * @param array              $bundles
@@ -45,7 +40,6 @@ class FilterQueryProvider
     {
         $this->mr = $mr;
         $this->blockUsageProvider = $blockUsageProvider;
-        $this->pageBundleInstalled = isset($bundles['IntegratedPageBundle']);
     }
 
     /**
@@ -72,7 +66,7 @@ class FilterQueryProvider
         }
 
         $channels = isset($data['channels']) ? array_filter($data['channels']) : null;
-        if ($this->pageBundleInstalled && $channels) {
+        if ($channels) {
             $availableBlockIds = [];
 
             foreach ($channels as $channel) {

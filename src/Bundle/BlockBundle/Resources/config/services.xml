@@ -50,7 +50,6 @@
         <service id="integrated_block.provider.filter_query" class="%integrated_block.provider.filter_query.class%" public="true">
             <argument type="service" id="doctrine_mongodb" />
             <argument type="service" id="integrated_block.provider.block_usage" />
-            <argument>%kernel.bundles%</argument>
         </service>
 
         <service id="integrated_block.block_repository" class="Doctrine\Persistence\ObjectRepository">

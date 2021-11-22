@@ -54,11 +54,9 @@
                         {{ form_row(facetFilter.type) }}
                     </div>
 
-                    {% if pageBundleInstalled %}
-                        <div class="aside-item-holder{% if facetFilter.channels.vars.choices|length == 0 %} hidden{% endif %}">
-                            {{ form_row(facetFilter.channels) }}
-                        </div>
-                    {% endif %}
+                    <div class="aside-item-holder{% if facetFilter.channels.vars.choices|length == 0 %} hidden{% endif %}">
+                        {{ form_row(facetFilter.channels) }}
+                    </div>
 
                     {{ form_end(facetFilter) }}
                 </div>
