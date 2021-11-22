@@ -15,6 +15,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
 use Integrated\Bundle\BlockBundle\Document\Block\InlineTextBlock;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
+use MongoDB\BSON\Regex;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
@@ -62,7 +63,7 @@ class FilterQueryProvider
         }
 
         if (isset($data['q'])) {
-            $qb->field('title')->equals(new \MongoRegex('/'.$data['q'].'/i'));
+            $qb->field('title')->equals(new Regex('/'.$data['q'].'/i'));
         }
 
         $channels = isset($data['channels']) ? array_filter($data['channels']) : null;
@@ -95,6 +96,7 @@ class FilterQueryProvider
     {
         $queryBuilder = $this->getBlocksByChannelQueryBuilder($data, $groupUser);
 
+        $blockIds = [];
         $blocks = $queryBuilder
             ->hydrate(false)
             ->select('_id')
@@ -102,7 +104,11 @@ class FilterQueryProvider
             ->getIterator()
             ->toArray();
 
-        return array_keys($blocks);
+        foreach ($blocks as $block) {
+            $blockIds[] = $block['_id'];
+        }
+
+        return $blockIds;
     }
 
     /**

@@ -25,6 +25,7 @@ use Doctrine\Persistence\ObjectRepository;
 use Integrated\Bundle\SlugBundle\Mapping\Metadata\PropertyMetadata;
 use Integrated\Bundle\SlugBundle\Slugger\SluggerInterface;
 use Metadata\MetadataFactoryInterface;
+use MongoDB\BSON\Regex;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
@@ -338,7 +339,7 @@ class SluggableSubscriber implements EventSubscriber
 
         if ($uow instanceof ODMUnitOfWork) {
             return array_merge($objects, $this->getRepository($om, $class)->findBy([
-                $field => new \MongoRegex(
+                $field => new Regex(
                     '/^'.preg_quote($slug, '/').'('.preg_quote($separator, '/').'\d+)?$/'
                 ), // counter is optional
             ]));
