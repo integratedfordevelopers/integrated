@@ -27,7 +27,7 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
     /**
      * @var string
      */
-    protected $formTemplate = '@IntegratedContentBundle/form/form_div_layout.html.twig';
+    protected $formTemplate = '@IntegratedContent/form/form_div_layout.html.twig';
 
     /**
      * Load the configuration.

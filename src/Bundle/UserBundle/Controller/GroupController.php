@@ -47,7 +47,7 @@ class GroupController extends AbstractController
             15
         );
 
-        return $this->render('IntegratedUserBundle:group:index.html.twig', [
+        return $this->render('@IntegratedUser/group/index.html.twig', [
             'groups' => $paginator,
         ]);
     }
@@ -83,7 +83,7 @@ class GroupController extends AbstractController
             }
         }
 
-        return $this->render('IntegratedUserBundle:group:new.html.twig', [
+        return $this->render('@IntegratedUser/group/new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -125,7 +125,7 @@ class GroupController extends AbstractController
             }
         }
 
-        return $this->render('IntegratedUserBundle:group:edit.html.twig', [
+        return $this->render('@IntegratedUser/group/edit.html.twig', [
             'group' => $group,
             'form' => $form->createView(),
         ]);
@@ -166,7 +166,7 @@ class GroupController extends AbstractController
             }
         }
 
-        return $this->render('IntegratedUserBundle:group:delete.html.twig', [
+        return $this->render('@IntegratedUser/group/delete.html.twig', [
             'group' => $group,
             'form' => $form->createView(),
         ]);

@@ -72,7 +72,7 @@ class SecurityController extends AbstractController
             ['action' => $this->generateUrl('integrated_user_check')]
         );
 
-        return $this->render('IntegratedUserBundle:security:login.html.twig', ['form' => $form->createView()]);
+        return $this->render('@IntegratedUser/security/login.html.twig', ['form' => $form->createView()]);
     }
 
     /**
