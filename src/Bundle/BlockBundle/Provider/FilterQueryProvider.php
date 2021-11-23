@@ -35,9 +35,8 @@ class FilterQueryProvider
     /**
      * @param ManagerRegistry    $mr
      * @param BlockUsageProvider $blockUsageProvider
-     * @param array              $bundles
      */
-    public function __construct(ManagerRegistry $mr, BlockUsageProvider $blockUsageProvider, array $bundles)
+    public function __construct(ManagerRegistry $mr, BlockUsageProvider $blockUsageProvider)
     {
         $this->mr = $mr;
         $this->blockUsageProvider = $blockUsageProvider;
