@@ -90,16 +90,14 @@ class Mailer
         ];
         $template = 'IntegratedUserBundle::mail/password.reset.notfound.html.twig';
 
-        if ($user = $this->userManager->findByUsernameAndScope($email, $scope)) {
-            if ($user->isEnabled()) {
-                $timestamp = time();
-                $key = $this->keyGenerator->generateKey($timestamp, $user);
-                $template = 'IntegratedUserBundle::mail/password.reset.html.twig';
+        if ($user = $this->userManager->findEnabledByUsernameAndScope($email, $scope)) {
+            $timestamp = time();
+            $key = $this->keyGenerator->generateKey($timestamp, $user);
+            $template = 'IntegratedUserBundle::mail/password.reset.html.twig';
 
-                $data['user'] = $user;
-                $data['timestamp'] = $timestamp;
-                $data['key'] = $key;
-            }
+            $data['user'] = $user;
+            $data['timestamp'] = $timestamp;
+            $data['key'] = $key;
         }
 
         $message = (new \Swift_Message())
