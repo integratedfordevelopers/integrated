@@ -233,7 +233,7 @@ class Manager implements ManagerInterface
         $builder->from($this->options['lock_table_name'], 'l');
 
         foreach ($filters as $filter) {
-            $where = $builder->expr()->and();
+            $where = [];
 
             if (!$filter instanceof Filter) {
                 throw new UnexpectedTypeException($filter, 'Integrated\Common\Locks\Filter');
@@ -246,7 +246,7 @@ class Manager implements ManagerInterface
                 $resources = array_map(['Integrated\\Common\\Locks\\Provider\\DBAL\\Resource', 'serialize'], $resources);
                 $resources = array_map([$builder->getConnection(), 'quote'], $resources);
 
-                $where->with($builder->expr()->in('l.resource', $resources));
+                $where[] = $builder->expr()->and($builder->expr()->in('l.resource', $resources));
             }
 
             $owners = \is_array($filter->owners) ? $filter->owners : [$filter->owners];
@@ -256,11 +256,11 @@ class Manager implements ManagerInterface
                 $owners = array_map(['Integrated\\Common\\Locks\\Provider\\DBAL\\Resource', 'serialize'], $owners);
                 $owners = array_map([$builder->getConnection(), 'quote'], $owners);
 
-                $where->with($builder->expr()->in('l.resource_owner', $owners));
+                $where[] = $builder->expr()->and($builder->expr()->in('l.resource_owner', $owners));
             }
 
-            if ($where->count()) {
-                $builder->orWhere($where);
+            if (count($where)) {
+                $builder->orWhere(...$where);
             }
         }
 
