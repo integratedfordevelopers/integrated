@@ -63,11 +63,6 @@ class User implements UserInterface
     /**
      * @var bool
      */
-    protected $locked = false;
-
-    /**
-     * @var bool
-     */
     protected $enabled = true;
 
     /**
@@ -409,7 +404,7 @@ class User implements UserInterface
             "ID: %s\nUsername: %s\n CreatedAt: %s\nEnabled: %s",
             $this->getId(),
             $this->getUsername(),
-            $this->getCreatedAt(),
+            $this->getCreatedAt()->format('r'),
             $this->isEnabled() ? 'TRUE' : 'FALSE'
         );
     }
