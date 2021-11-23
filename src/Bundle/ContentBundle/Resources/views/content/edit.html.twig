@@ -100,7 +100,7 @@
                         </div>
 
                         {% block content_history %}
-                            {% if hasContentHistoryBundle %}
+                            {% if showContentHistory %}
                                 {{ render(controller('Integrated\Bundle\ContentHistoryBundle\Controller\ContentHistoryController::history', { 'content': content })) }}
                             {% endif %}
                         {% endblock %}
@@ -251,11 +251,9 @@
     <script src="{{ asset_url }}"></script>
 {% endjavascripts %}
 
-{% if hasWorkflowBundle %}
-    {% javascripts '@IntegratedWorkflowBundle/Resources/public/js/workflowChangeState.js' %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-{% endif %}
+{% javascripts '@IntegratedWorkflowBundle/Resources/public/js/workflowChangeState.js' %}
+    <script src="{{ asset_url }}"></script>
+{% endjavascripts %}
 #}
 {{ include('IntegratedContentBundle:content:handlebars/templates.html.twig')}}
 {% endblock javascript %}

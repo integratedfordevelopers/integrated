@@ -6,6 +6,25 @@
 
     <services>
 
+        <service id="Integrated\Bundle\ContentBundle\Controller\ContentController">
+            <argument type="service" id="integrated.form.resolver" />
+            <argument type="service" id="integrated_content.content_type.manager" />
+            <argument type="service" id="integrated_solr.indexer.mongodb.subscriber" />
+            <argument type="service" id="integrated_solr.lock.factory" />
+            <argument type="service" id="integrated_solr.indexer" />
+            <argument type="service" id="integrated_content.services.search.content.referenced" />
+            <argument type="service" id="integrated_locking.dbal.manager" />
+            <argument type="service" id="integrated_user.user.manager" />
+            <argument type="service" id="integrated_image.twig_extension" />
+
+            <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+
         <service id="Integrated\Bundle\ContentBundle\Controller\ContentTypeController">
             <argument type="service" id="integrated_content.content_type.manager" />
             <argument type="service" id="integrated_content.event_dispatcher" />
