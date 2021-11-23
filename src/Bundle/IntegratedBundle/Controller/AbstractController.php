@@ -12,8 +12,7 @@
 namespace Integrated\Bundle\IntegratedBundle\Controller;
 
 use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
-use Integrated\Common\ContentType\ResolverInterface;
-use Knp\Component\Pager\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
 use Solarium\Client;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as BaseAbstractController;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -25,7 +24,7 @@ class AbstractController extends BaseAbstractController
         return $this->container->get('doctrine_mongodb');
     }
 
-    public function getPaginator(): Paginator
+    public function getPaginator(): PaginatorInterface
     {
         return $this->container->get('knp_paginator');
     }
@@ -44,7 +43,7 @@ class AbstractController extends BaseAbstractController
     {
         return array_merge(parent::getSubscribedServices(), [
             'doctrine_mongodb' => ManagerRegistry::class,
-            'knp_paginator' => Paginator::class,
+            'knp_paginator' => PaginatorInterface::class,
             'solarium.client' => Client::class,
             'translator' => TranslatorInterface::class,
         ]);

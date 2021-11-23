@@ -13,6 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Controller;
 
 use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
 use Integrated\Bundle\ContentBundle\Services\SearchContentReferenced;
+use Integrated\Bundle\ImageBundle\Twig\Extension\ImageExtension;
 use Integrated\Bundle\IntegratedBundle\Controller\AbstractController;
 use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\Locks\Provider\DBAL\Manager;
@@ -143,7 +144,7 @@ class ContentController extends AbstractController
         }
 
         /** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
-        foreach ($this->getFormResolver()->getTypes() as $type) {
+        foreach ($this->resolver->getTypes() as $type) {
             $types[$type->getClass()][$type->getId()] = $type;
             $displayTypes[$type->getId()] = $type->getName();
         }
