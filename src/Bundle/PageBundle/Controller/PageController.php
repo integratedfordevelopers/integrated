@@ -15,6 +15,7 @@ use Doctrine\ODM\MongoDB\Mapping\MappingException;
 use Doctrine\ODM\MongoDB\MongoDBException;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Query\Builder;
+use Integrated\Bundle\IntegratedBundle\Controller\AbstractController;
 use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
 use Integrated\Bundle\PageBundle\Document\Page\AbstractPage;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
@@ -24,7 +25,6 @@ use Integrated\Bundle\PageBundle\Form\Type\PageFilterType;
 use Integrated\Bundle\PageBundle\Form\Type\PageType;
 use Integrated\Bundle\PageBundle\Services\PageCopyService;
 use MongoDB\BSON\Regex;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -108,7 +108,7 @@ class PageController extends AbstractController
             $request->getSession()->set('page_filterform_data', $filterForm->getData());
         }
 
-        $pagination = $this->get('knp_paginator')->paginate(
+        $pagination = $this->getPaginator()->paginate(
             $builder,
             $request->query->get('page', 1),
             25
