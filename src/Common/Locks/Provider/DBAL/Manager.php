@@ -259,7 +259,7 @@ class Manager implements ManagerInterface
                 $where[] = $builder->expr()->and($builder->expr()->in('l.resource_owner', $owners));
             }
 
-            if (count($where)) {
+            if (\count($where)) {
                 $builder->orWhere(...$where);
             }
         }

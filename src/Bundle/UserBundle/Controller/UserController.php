@@ -15,7 +15,6 @@ use Integrated\Bundle\IntegratedBundle\Controller\AbstractController;
 use Integrated\Bundle\UserBundle\Provider\FilterQueryProvider;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Form\FormInterface;
-use Knp\Component\Pager\Paginator;
 use Integrated\Bundle\UserBundle\Form\Type\DeleteFormType;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Symfony\Component\HttpFoundation\Request;

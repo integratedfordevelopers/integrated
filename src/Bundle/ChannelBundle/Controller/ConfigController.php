@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ChannelBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormInterface;
-use Knp\Component\Pager\Paginator;
 use Braincrafted\Bundle\BootstrapBundle\Session\FlashMessage;
 use Exception;
 use Integrated\Bundle\ChannelBundle\Event\FilterResponseConfigEvent;
