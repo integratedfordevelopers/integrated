@@ -50,7 +50,7 @@ class ScopeController extends AbstractController
             15
         );
 
-        return $this->render('IntegratedUserBundle:scope:index.html.twig', [
+        return $this->render('@IntegratedUser/scope/index.html.twig', [
             'scopes' => $paginator,
         ]);
     }
@@ -86,7 +86,7 @@ class ScopeController extends AbstractController
             }
         }
 
-        return $this->render('IntegratedUserBundle:scope:new.html.twig', [
+        return $this->render('@IntegratedUser/scope/new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -127,7 +127,7 @@ class ScopeController extends AbstractController
             }
         }
 
-        return $this->render('IntegratedUserBundle:scope:edit.html.twig', [
+        return $this->render('@IntegratedUser/scope/edit.html.twig', [
             'scope' => $scope,
             'form' => $form->createView(),
         ]);
@@ -187,7 +187,7 @@ class ScopeController extends AbstractController
             }
         }
 
-        return $this->render('IntegratedUserBundle:scope:delete.html.twig', [
+        return $this->render('@IntegratedUser/scope/delete.html.twig', [
             'scope' => $scope,
             'form' => $form->createView(),
         ]);

@@ -99,7 +99,7 @@ class BulkController extends AbstractController
             return $this->redirectToRoute('integrated_content_bulk_configure', ['id' => $bulk->getId()]);
         }
 
-        return $this->render('IntegratedContentBundle:bulk:select.html.twig', [
+        return $this->render('@IntegratedContent/bulk/select.html.twig', [
             'content' => $content,
             'limit' => $limit,
             'form' => $form->createView(),
@@ -127,7 +127,7 @@ class BulkController extends AbstractController
             return $this->redirectToRoute('integrated_content_bulk_confirm', ['id' => $bulk->getId()]);
         }
 
-        return $this->render('IntegratedContentBundle:bulk:configure.html.twig', [
+        return $this->render('@IntegratedContent/bulk/configure.html.twig', [
             'id' => $bulk->getId(),
             'selection' => \count($bulk->getSelection()),
             'form' => $form->createView(),
@@ -169,7 +169,7 @@ class BulkController extends AbstractController
             }
         }
 
-        return $this->render('IntegratedContentBundle:bulk:confirm.html.twig', [
+        return $this->render('@IntegratedContent/bulk/confirm.html.twig', [
             'id' => $bulk->getId(),
             'selection' => \count($bulk->getSelection()),
             'form' => $form->createView(),

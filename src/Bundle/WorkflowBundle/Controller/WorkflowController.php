@@ -207,13 +207,13 @@ class WorkflowController extends AbstractController
 
         if (empty($stateId)) {
             $workflowId = $request->get('workflow');
-            $repository = $this->getDoctrine()->getRepository('IntegratedWorkflowBundle:Definition');
+            $repository = $this->getDoctrine()->getRepository(Definition::class);
             $workflow = $repository->find($workflowId);
             $state = $workflow->getDefault();
 
             $isDefaultState = true;
         } else {
-            $repository = $this->getDoctrine()->getRepository('IntegratedWorkflowBundle:Definition\State');
+            $repository = $this->getDoctrine()->getRepository(Definition\State::class);
             $state = $repository->find($stateId);
         }
 
