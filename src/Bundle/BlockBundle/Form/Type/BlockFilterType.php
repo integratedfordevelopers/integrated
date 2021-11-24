@@ -45,13 +45,11 @@ class BlockFilterType extends AbstractType
      * @param MetadataFactoryInterface $factory
      * @param DocumentManager          $dm
      * @param BlockUsageProvider       $blockUsageProvider
-     * @param array                    $bundles
      */
     public function __construct(
         MetadataFactoryInterface $factory,
         DocumentManager $dm,
-        BlockUsageProvider $blockUsageProvider,
-        array $bundles
+        BlockUsageProvider $blockUsageProvider
     ) {
         $this->factory = $factory;
         $this->dm = $dm;
