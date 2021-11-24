@@ -64,7 +64,7 @@ class BlockManager
     {
         $this->blockRegistry = $blockRegistry;
         $this->themeManager = $themeManager;
-        $this->repository = $dm->getRepository('IntegratedBlockBundle:Block\Block');
+        $this->repository = $dm->getRepository('@IntegratedBlockBundle:Block\Block');
         $this->twig = $twig; // @todo templating service (INTEGRATED-443)
     }
 

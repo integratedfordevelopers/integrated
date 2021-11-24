@@ -59,7 +59,7 @@ class WorkflowController extends AbstractController
             15
         );
 
-        return $this->render('IntegratedWorkflowBundle:workflow:index.html.twig', ['pager' => $pager]);
+        return $this->render('@IntegratedWorkflow/workflow/index.html.twig', ['pager' => $pager]);
     }
 
     /**
@@ -94,7 +94,7 @@ class WorkflowController extends AbstractController
             }
         }
 
-        return $this->render('IntegratedWorkflowBundle:workflow:new.html.twig', ['form' => $form->createView()]);
+        return $this->render('@IntegratedWorkflow/workflow/new.html.twig', ['form' => $form->createView()]);
     }
 
     /**
@@ -140,7 +140,7 @@ class WorkflowController extends AbstractController
             }
         }
 
-        return $this->render('IntegratedWorkflowBundle:workflow:edit.html.twig', [
+        return $this->render('@IntegratedWorkflow/workflow/edit.html.twig', [
             'workflow' => $workflow,
             'form' => $form->createView(),
         ]);
@@ -188,7 +188,7 @@ class WorkflowController extends AbstractController
             }
         }
 
-        return $this->render('IntegratedWorkflowBundle:workflow:delete.html.twig', [
+        return $this->render('@IntegratedWorkflow/workflow/delete.html.twig', [
             'workflow' => $workflow,
             'form' => $form->createView(),
         ]);

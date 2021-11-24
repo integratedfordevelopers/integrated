@@ -1,6 +1,6 @@
-{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% extends '@IntegratedContent/base.html.twig' %}
 
-{% form_theme facetFilter 'IntegratedBlockBundle:form:form_div_filter.html.twig' %}
+{% form_theme facetFilter '@IntegratedBlock/form/form_div_filter.html.twig' %}
 
 {% block crumbs %}
     <div class="breadcrumb-holder">
@@ -30,7 +30,7 @@
                 </ul>
 `           {% endif %}
 
-            {% include 'IntegratedBlockBundle:block/partials:block_list.html.twig' %}
+            {% include '@IntegratedBlock/block/partials/block_list.html.twig' %}
 
         </div>
 

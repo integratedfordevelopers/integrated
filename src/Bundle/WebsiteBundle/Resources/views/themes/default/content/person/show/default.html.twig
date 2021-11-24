@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-    {% include 'IntegratedWebsiteBundle::json-ld.html.twig' with {content: person} %}
+    {% include '@IntegratedWebsite/json-ld.html.twig' with {content: person} %}
 
     <h1>{{ person.firstName }} {{ person.lastName }}</h1>
 

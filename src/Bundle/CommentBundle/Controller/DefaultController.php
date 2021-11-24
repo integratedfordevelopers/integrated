@@ -90,7 +90,7 @@ class DefaultController extends AbstractController
             return new JsonResponse(['id' => $comment->getId()]);
         }
 
-        return $this->render('IntegratedCommentBundle:comment:new.html.twig', [
+        return $this->render('@IntegratedComment/comment/new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -124,7 +124,7 @@ class DefaultController extends AbstractController
             return new JsonResponse(['id' => $comment->getId()]);
         }
 
-        return $this->render('IntegratedCommentBundle:comment:get.html.twig', [
+        return $this->render('@IntegratedComment/comment/get.html.twig', [
             'comment' => $comment,
             'form' => $form->createView(),
         ]);

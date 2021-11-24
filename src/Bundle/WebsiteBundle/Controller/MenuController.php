@@ -39,7 +39,7 @@ class MenuController extends AbstractController
             $menu = $this->getMenuFactory()->fromArray($data['data']);
         }
 
-        return $this->render('IntegratedWebsiteBundle:menu:render.'.$request->getRequestFormat('json').'.twig', [
+        return $this->render('@IntegratedWebsite/menu/render.'.$request->getRequestFormat('json').'.twig', [
             'menu' => $menu,
             'options' => isset($data['options']) ? $data['options'] : [],
         ]);
