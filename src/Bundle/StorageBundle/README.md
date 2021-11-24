@@ -35,7 +35,7 @@ The bundle makes use of *knplabs/knp-gaufrette-bundle* for configuration and a f
         adapters:
             foo:
                 local:
-                    directory: %kernel.project_dir%/../web/uploads/documents
+                    directory: %kernel.project_dir%/web/uploads/documents
         filesystems:
             foo:
                 adapter: foo
