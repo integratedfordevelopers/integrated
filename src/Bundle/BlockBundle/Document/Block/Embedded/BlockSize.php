@@ -19,8 +19,6 @@ use Integrated\Bundle\BlockBundle\Document\Block\Block;
 class BlockSize
 {
     /**
-     * @deprecated
-     *
      * @var Block
      */
     protected $block;
@@ -66,30 +64,6 @@ class BlockSize
     public function setBlock(Block $block)
     {
         $this->block = $block;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     *
-     * @deprecated use sizeXs, sizeMd etc instead
-     */
-    public function getSize()
-    {
-        return $this->size;
-    }
-
-    /**
-     * @param int $size
-     *
-     * @deprecated use sizeXs, sizeMd etc instead
-     *
-     * @return $this
-     */
-    public function setSize($size)
-    {
-        $this->size = (int) $size;
 
         return $this;
     }
@@ -191,12 +165,6 @@ class BlockSize
         }
         if ($this->getSizeLg()) {
             $sizes['lg'] = $this->getSizeLg();
-        }
-
-        if (!\count($sizes)) {
-            if ($this->getSize()) {
-                $sizes['sm'] = $this->getSize();
-            }
         }
 
         return $sizes;

@@ -74,7 +74,6 @@ class BlockController extends AbstractController
             $user = $this->getUser();
         }
 
-        $pageBundleInstalled = isset($this->getParameter('kernel.bundles')['IntegratedPageBundle']);
         $data = $request->get('integrated_block_filter');
         $queryProvider = $this->get('integrated_block.provider.filter_query');
 
@@ -93,7 +92,6 @@ class BlockController extends AbstractController
         return $this->render(sprintf('IntegratedBlockBundle:block:index.%s.twig', $request->getRequestFormat()), [
             'blocks' => $pagination,
             'factory' => $this->metadataFactory,
-            'pageBundleInstalled' => $pageBundleInstalled,
             'facetFilter' => $facetFilter->createView(),
         ]);
     }

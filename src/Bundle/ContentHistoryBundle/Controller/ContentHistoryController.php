@@ -49,7 +49,7 @@ class ContentHistoryController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Content $content, Request $request)
+    public function index(Content $content, Request $request)
     {
         $builder = $this->repository->createQueryBuilder();
 
@@ -72,7 +72,7 @@ class ContentHistoryController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAction(ContentHistory $contentHistory)
+    public function show(ContentHistory $contentHistory)
     {
         return $this->render('IntegratedContentHistoryBundle:content_history:show.html.twig', [
             'contentHistory' => $contentHistory,
@@ -85,7 +85,7 @@ class ContentHistoryController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function historyAction(Content $content, $limit = 3)
+    public function history(Content $content, $limit = 3)
     {
         return $this->render('IntegratedContentHistoryBundle:content_history:history.html.twig', [
             'content' => $content,

@@ -23,6 +23,7 @@ use Integrated\Bundle\PageBundle\Form\Type\PageCopyType;
 use Integrated\Bundle\PageBundle\Form\Type\PageFilterType;
 use Integrated\Bundle\PageBundle\Form\Type\PageType;
 use Integrated\Bundle\PageBundle\Services\PageCopyService;
+use MongoDB\BSON\Regex;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
@@ -92,8 +93,8 @@ class PageController extends AbstractController
         $this->displayPathErrors($builder);
 
         if ($query = $filterForm->get('q')->getData()) {
-            $builder->addOr($builder->expr()->field('title')->equals(new \MongoRegex('/'.$query.'/i')));
-            $builder->addOr($builder->expr()->field('path')->equals(new \MongoRegex('/'.$query.'/i')));
+            $builder->addOr($builder->expr()->field('title')->equals(new Regex('/'.$query.'/i')));
+            $builder->addOr($builder->expr()->field('path')->equals(new Regex('/'.$query.'/i')));
         }
 
         if ($channel = $filterForm->get('channel')->getData()) {

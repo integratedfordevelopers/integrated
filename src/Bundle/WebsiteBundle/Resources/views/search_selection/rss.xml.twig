@@ -4,7 +4,7 @@
         <title>{{ selection.title|default }}</title>
         <link>{{ url('integrated_website_search_selection_rss', { 'id': selection.id }) }}</link>
 
-        {% spaceless %}
+        {% apply spaceless %}
         {% for document in documents %}
             {% set content = document.content|default %}
             {% if content is iterable %}
@@ -22,6 +22,6 @@
             </item>
 
         {% endfor %}
-        {% endspaceless %}
+        {% endapply %}
     </channel>
 </rss>

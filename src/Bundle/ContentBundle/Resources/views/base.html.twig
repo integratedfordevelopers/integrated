@@ -56,7 +56,7 @@
 <body>
 {% block form_theme %}
     {% if form is defined %}
-        {% form_theme form with ['IntegratedContentBundle:form:form_div_layout.html.twig'] %}
+        {% form_theme form with ['@IntegratedContent/form/form_div_layout.html.twig'] %}
     {% endif %}
 {% endblock %}
 

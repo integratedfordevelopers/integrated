@@ -13,11 +13,13 @@ namespace Integrated\Bundle\ContentBundle\Twig;
 
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class JsonPaginationExtension extends \Twig_Extension
+class JsonPaginationExtension extends AbstractExtension
 {
     /**
      * @var UrlGeneratorInterface
@@ -38,7 +40,7 @@ class JsonPaginationExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('json_pagination', [$this, 'paginate', ['is_safe' => 'json']]),
+            new TwigFilter('json_pagination', [$this, 'paginate', ['is_safe' => 'json']]),
         ];
     }
 

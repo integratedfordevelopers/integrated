@@ -14,7 +14,7 @@
             <argument type="string">25</argument>
         </service>
 
-        <service id="integrated_solr.lock.factory" class="Symfony\Component\Lock\Factory" public="true">
+        <service id="integrated_solr.lock.factory" class="Symfony\Component\Lock\LockFactory" public="true">
             <argument type="service" id="integrated_solr.lock.store" />
 
             <call method="setLogger">

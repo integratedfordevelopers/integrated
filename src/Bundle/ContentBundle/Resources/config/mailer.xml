@@ -15,7 +15,7 @@
         <service id="integrated_content.mailer.form" class="%integrated_content.mailer.form.class%">
             <argument type="service" id="mailer" />
             <argument type="service" id="channel.context"/>
-            <argument type="service" id="templating" />
+            <argument type="service" id="twig" />
             <argument type="service" id="integrated_theme.templating.theme_manager"/>
             <argument type="service" id="translator"/>
             <argument>%mailer_from%</argument>

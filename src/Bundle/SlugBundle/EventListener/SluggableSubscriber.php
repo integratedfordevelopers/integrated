@@ -25,6 +25,7 @@ use Doctrine\Persistence\ObjectRepository;
 use Integrated\Bundle\SlugBundle\Mapping\Metadata\PropertyMetadata;
 use Integrated\Bundle\SlugBundle\Slugger\SluggerInterface;
 use Metadata\MetadataFactoryInterface;
+use MongoDB\BSON\Regex;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
@@ -317,9 +318,9 @@ class SluggableSubscriber implements EventSubscriber
             $query = $builder->count()->getQuery();
 
             return $query->execute() === 0;
-        } elseif ($uow instanceof ORMUnitOfWork) {
-            throw new \RuntimeException('Not implemented yet'); // @todo (INTEGRATED-294)
         }
+
+        throw new \RuntimeException('Not implemented yet'); // @todo (INTEGRATED-294)
     }
 
     /**
@@ -338,13 +339,13 @@ class SluggableSubscriber implements EventSubscriber
 
         if ($uow instanceof ODMUnitOfWork) {
             return array_merge($objects, $this->getRepository($om, $class)->findBy([
-                $field => new \MongoRegex(
+                $field => new Regex(
                     '/^'.preg_quote($slug, '/').'('.preg_quote($separator, '/').'\d+)?$/'
                 ), // counter is optional
             ]));
-        } elseif ($uow instanceof ORMUnitOfWork) {
-            throw new \RuntimeException('Not implemented yet'); // @todo (INTEGRATED-294)
         }
+
+        throw new \RuntimeException('Not implemented yet'); // @todo (INTEGRATED-294)
     }
 
     /**
@@ -361,6 +362,8 @@ class SluggableSubscriber implements EventSubscriber
         } elseif ($uow instanceof ORMUnitOfWork) {
             return array_merge($uow->getScheduledEntityInsertions(), $uow->getScheduledEntityUpdates());
         }
+
+        throw new \RuntimeException('Not implemented yet');
     }
 
     /**

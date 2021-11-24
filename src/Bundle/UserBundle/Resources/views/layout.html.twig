@@ -24,7 +24,7 @@
 <body>
 {% block form_theme %}
     {% if form is defined %}
-        {% form_theme form with ['IntegratedFormTypeBundle:form:form_div_layout.html.twig'] %}
+        {% form_theme form with ['@IntegratedFormType/form/form_div_layout.html.twig'] %}
     {% endif %}
 {% endblock %}
 

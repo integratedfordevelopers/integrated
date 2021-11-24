@@ -16,8 +16,8 @@
         <field name="updatedAt" type="date" />
         <field name="publishedAt" type="date" />
         <field name="publishedUntil" type="date" />
-        <field name="disabled" type="boolean" />
-        <field name="locked" type="boolean" />
+        <field name="disabled" type="bool" />
+        <field name="locked" type="bool" />
         <field name="groups" type="collection" />
 
         <discriminator-field name="class" />

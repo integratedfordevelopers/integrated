@@ -8,9 +8,7 @@
                     <col />
                     <col />
                     <col />
-                    {% if pageBundleInstalled %}
-                        <col style="width: 60px;" />
-                    {% endif %}
+                    <col style="width: 60px;" />
                     <col style="width: 60px;" />
                 </colgroup>
 
@@ -19,9 +17,7 @@
                     <th>{{ knp_pagination_sortable(blocks, 'Block name'|trans, 'title') }}</th>
                     <th>{{ knp_pagination_sortable(blocks, 'Short code'|trans, 'id') }}</th>
                     <th>{{ knp_pagination_sortable(blocks, 'Type'|trans, 'type') }}</th>
-                    {% if pageBundleInstalled %}
-                        <th>{% trans %}Usage{% endtrans %}</th>
-                    {% endif %}
+                    <th>{% trans %}Usage{% endtrans %}</th>
                     <th>{% trans %}Actions{% endtrans %}</th>
                 </tr>
                 </thead>
@@ -38,41 +34,39 @@
                         <td>
                             {{ block|integrated_block_type }}
                         </td>
-                        {% if pageBundleInstalled %}
-                            <td>
-                                {% set pageList %}
-                                    {% if integrated_find_pages(block)|length %}
-                                        <h3>
-                                            {% trans %}Channels{% endtrans %}
-                                        </h3>
-                                        <ul class="list-bullet">
-                                            {% for channel in integrated_find_channels(block) %}
-                                                <li>{{ channel.name }}</li>
-                                            {% endfor %}
-                                        </ul>
-                                        <h3>
-                                            {% trans %}Pages{% endtrans %}
-                                        </h3>
-                                        <ul class="list-bullet">
-                                            {% for page in integrated_find_pages(block) %}
-                                                <li>{{ page.title }}</li>
-                                            {% endfor %}
-                                        </ul>
-                                    {% endif %}
-                                {% endset %}
-
-                                {% if pageList|trim %}
-                                    <span class="glyphicon glyphicon-list-alt" data-toggle="popover" data-trigger="hover" data-content="{{ pageList|e }}" data-html="true" data-placement="left"></span>
+                        <td>
+                            {% set pageList %}
+                                {% if integrated_find_pages(block)|length %}
+                                    <h3>
+                                        {% trans %}Channels{% endtrans %}
+                                    </h3>
+                                    <ul class="list-bullet">
+                                        {% for channel in integrated_find_channels(block) %}
+                                            <li>{{ channel.name }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                    <h3>
+                                        {% trans %}Pages{% endtrans %}
+                                    </h3>
+                                    <ul class="list-bullet">
+                                        {% for page in integrated_find_pages(block) %}
+                                            <li>{{ page.title }}</li>
+                                        {% endfor %}
+                                    </ul>
                                 {% endif %}
-                            </td>
-                        {% endif %}
+                            {% endset %}
+
+                            {% if pageList|trim %}
+                                <span class="glyphicon glyphicon-list-alt" data-toggle="popover" data-trigger="hover" data-content="{{ pageList|e }}" data-html="true" data-placement="left"></span>
+                            {% endif %}
+                        </td>
                         <td>
                             <a href="{{ path('integrated_block_block_edit', { 'id': block.id }) }}"  title="{% trans %}Edit{% endtrans %}">
                                 {{ icon('pencil') }}
                             </a>
                             &nbsp;
                             {% if not block.locked and (is_granted('ROLE_ADMIN') or is_granted('ROLE_WEBSITE_MANAGER')) %}
-                                {% if pageBundleInstalled and not integrated_find_pages(block) %}
+                                {% if not integrated_find_pages(block) %}
                                     <a href="{{ path('integrated_block_block_delete', { 'id': block.id }) }}" title="{% trans %}Delete{% endtrans %}">
                                         {{ icon('remove-circle') }}
                                     </a>

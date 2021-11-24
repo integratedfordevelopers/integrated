@@ -40,7 +40,7 @@ class SessionController extends AbstractController
      *
      * @return RedirectResponse
      */
-    public function enterSessionAction(string $sessionId, Request $request)
+    public function enterSession(string $sessionId, Request $request)
     {
         $page = $request->get('path', '/');
 

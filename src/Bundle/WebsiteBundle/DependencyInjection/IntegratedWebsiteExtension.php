@@ -46,12 +46,23 @@ class IntegratedWebsiteExtension extends Extension implements PrependExtensionIn
      */
     public function prepend(ContainerBuilder $container)
     {
+        if ($container->getParameter('kernel.environment') === 'dev') {
+            return;
+        }
+
         foreach ($container->getExtensions() as $name => $extension) {
             switch ($name) {
                 case 'twig':
                     $container->prependExtensionConfig(
                         $name,
-                        ['exception_controller' => 'integrated_website.controller.error:showAction']
+                        ['exception_controller' => null]
+                    );
+                    break;
+
+                case 'framework':
+                    $container->prependExtensionConfig(
+                        $name,
+                        ['error_controller' => 'Integrated\Bundle\WebsiteBundle\Controller\ErrorController::show']
                     );
                     break;
             }

@@ -16,6 +16,7 @@ use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Block\BlockRequiredItemsInterface;
 use Integrated\Common\Content\ContentInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig\Environment;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -38,11 +39,11 @@ class BlockHandler implements BlockHandlerInterface
     private $document;
 
     /**
-     * @param \Twig_Environment $twig
+     * @param Environment $twig
      *
      * @return $this
      */
-    public function setTwig(\Twig_Environment $twig)
+    public function setTwig(Environment $twig)
     {
         $this->twig = $twig;
 

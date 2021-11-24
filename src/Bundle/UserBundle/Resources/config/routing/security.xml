@@ -5,7 +5,7 @@
 		xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
 	<route id="integrated_user_login" path="/login">
-		<default key="_controller">IntegratedUserBundle:Security:login</default>
+		<default key="_controller">Integrated\Bundle\UserBundle\Controller\SecurityController::login</default>
 	</route>
 
 	<route id="integrated_user_check" path="/login-check" />
@@ -19,11 +19,11 @@
     <route id="integrated_user_two_factor_check" path="login/authenticator-check" />
 
     <route id="integrated_user_password_reset" path="/login/reset-password">
-        <default key="_controller">IntegratedUserBundle:Security:passwordReset</default>
+        <default key="_controller">Integrated\Bundle\UserBundle\Controller\SecurityController::passwordReset</default>
     </route>
 
     <route id="integrated_user_password_change" path="/login/change-password/{id}/{timestamp}/{key}">
-        <default key="_controller">IntegratedUserBundle:Security:passwordChange</default>
+        <default key="_controller">Integrated\Bundle\UserBundle\Controller\SecurityController::passwordChange</default>
     </route>
 
 </routes>

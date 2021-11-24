@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block page_copy_pages_row %}
-    {% spaceless %}
+    {% apply spaceless %}
         <table class="table table-hover" id="copy-table">
             <colgroup>
                 <col style="width: 2em" />
@@ -35,11 +35,11 @@
 
             </tbody>
         </table>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block page_copy_page_row %}
-    {% spaceless %}
+    {% apply spaceless %}
         <tr>
             <td>
                 {{ form_widget(form.selected) }}
@@ -61,11 +61,11 @@
                 {% endfor %}
             </td>
         </tr>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block page_copy_block_row %}
-    {% spaceless %}
+    {% apply spaceless %}
         <div class="row">
             <div class="col-md-4">
                 {{ block.id|truncate(20) }}
@@ -77,6 +77,6 @@
                 {{ form_widget(form.newBlockId) }}
             </div>
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 

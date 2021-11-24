@@ -13,14 +13,15 @@ namespace Integrated\Bundle\WebsiteBundle\Controller;
 
 use Integrated\Bundle\ThemeBundle\Exception\CircularFallbackException;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
-use Symfony\Bundle\TwigBundle\Controller\ExceptionController;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ErrorHandler\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\Request;
-use Twig\Environment;
+use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class ErrorController extends ExceptionController
+class ErrorController extends AbstractController
 {
     /**
      * @var ThemeManager
@@ -28,31 +29,25 @@ class ErrorController extends ExceptionController
     protected $themeManager;
 
     /**
-     * @param Environment  $twig
-     * @param string       $debug
      * @param ThemeManager $themeManager
      */
-    public function __construct(Environment $twig, $debug, ThemeManager $themeManager)
+    public function __construct(ThemeManager $themeManager)
     {
-        parent::__construct($twig, $debug);
-
         $this->themeManager = $themeManager;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function findTemplate(Request $request, $format, $code, $showException)
+    public function show(Request $request, FlattenException $exception, DebugLoggerInterface $logger = null)
     {
-        if (!$showException) {
-            try {
-                if ($template = $this->themeManager->locateTemplate(sprintf('error/%s.%s.twig', $code, $format))) {
-                    return $template;
-                }
-            } catch (CircularFallbackException $e) {
+        try {
+            if ($template = $this->themeManager->locateTemplate(sprintf('error/%s.%s.twig', $exception->getStatusCode(), $request->getPreferredFormat()))) {
+                return $this->render($template);
             }
+        } catch (CircularFallbackException $e) {
         }
 
-        return parent::findTemplate($request, $format, $code, $showException);
+        return $this->render($this->themeManager->locateTemplate('error/error.html.twig'));
     }
 }

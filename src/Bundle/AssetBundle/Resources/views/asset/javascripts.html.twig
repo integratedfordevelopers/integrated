@@ -1,13 +1,13 @@
 {% block integrated_javascript %}
-{% spaceless %}
+{% apply spaceless %}
 <script type="text/javascript" src="{{ asset(asset_url) }}"></script>
-{% endspaceless %}
+{% endapply %}
 {% endblock %}
 
 {% block integrated_javascript_inline %}
-{% spaceless %}
+{% apply spaceless %}
 <script type="text/javascript">
     {{ asset_content|raw -}}
 </script>
-{% endspaceless %}
+{% endapply %}
 {% endblock %}

@@ -10,7 +10,7 @@
         <field field-name="returnUrl" type="string" />
         <field field-name="textAfterSubmit" type="string" />
         <field field-name="emailAddresses" type="collection" />
-        <field field-name="recaptcha" type="boolean" />
+        <field field-name="recaptcha" type="bool" />
 
         <reference-one
                 field="contentType"

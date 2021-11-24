@@ -60,7 +60,7 @@ class SecurityController extends AbstractController
     /**
      * @return Response
      */
-    public function loginAction()
+    public function login()
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('integrated_content_content_index');
@@ -72,13 +72,13 @@ class SecurityController extends AbstractController
             ['action' => $this->generateUrl('integrated_user_check')]
         );
 
-        return $this->render('IntegratedUserBundle:security:login.html.twig', ['form' => $form->createView()]);
+        return $this->render('@IntegratedUser/security/login.html.twig', ['form' => $form->createView()]);
     }
 
     /**
      * @return RedirectResponse|Response
      */
-    public function passwordResetAction(Request $request)
+    public function passwordReset(Request $request)
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('integrated_content_content_index');
@@ -113,7 +113,7 @@ class SecurityController extends AbstractController
      *
      * @throws Error
      */
-    public function passwordChangeAction(Request $request, int $id, int $timestamp, string $key)
+    public function passwordChange(Request $request, int $id, int $timestamp, string $key)
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('integrated_user_profile_index');

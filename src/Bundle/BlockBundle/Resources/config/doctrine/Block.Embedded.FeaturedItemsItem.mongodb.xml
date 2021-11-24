@@ -10,7 +10,7 @@
         <field name="linkText" type="string" />
         <field name="target" type="string" />
         <field name="text" type="string" />
-        <field name="disabled" type="boolean" />
+        <field name="disabled" type="bool" />
         <field name="order" type="float" />
 
         <embed-one field="image" target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage" />

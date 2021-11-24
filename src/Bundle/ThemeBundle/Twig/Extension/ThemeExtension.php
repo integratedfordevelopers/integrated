@@ -12,11 +12,13 @@
 namespace Integrated\Bundle\ThemeBundle\Twig\Extension;
 
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class ThemeExtension extends \Twig_Extension
+class ThemeExtension extends AbstractExtension
 {
     /**
      * @var ThemeManager
@@ -37,7 +39,7 @@ class ThemeExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('integrated_active_theme', [$this, 'getActiveTheme']),
+            new TwigFunction('integrated_active_theme', [$this, 'getActiveTheme']),
         ];
     }
 

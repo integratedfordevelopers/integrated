@@ -12,11 +12,13 @@
 namespace Integrated\Bundle\SlugBundle\Twig\Extension;
 
 use Integrated\Bundle\SlugBundle\Slugger\SluggerInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class SluggerExtension extends \Twig_Extension
+class SluggerExtension extends AbstractExtension
 {
     /**
      * @var SluggerInterface
@@ -37,7 +39,7 @@ class SluggerExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('slugify', [$this, 'slugify']),
+            new TwigFilter('slugify', [$this, 'slugify']),
         ];
     }
 

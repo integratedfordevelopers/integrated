@@ -24,7 +24,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Lock\Exception\LockConflictedException;
-use Symfony\Component\Lock\Factory;
+use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Process\Process;
 
 /**
@@ -43,7 +43,7 @@ class IndexerRunCommand extends Command
     protected $queueProvider;
 
     /**
-     * @var Factory
+     * @var LockFactory
      */
     protected $lockFactory;
 
@@ -67,7 +67,7 @@ class IndexerRunCommand extends Command
      *
      * @param Indexer                      $indexer
      * @param QueueProvider                $queueProvider
-     * @param Factory                      $lockFactory
+     * @param LockFactory                  $lockFactory
      * @param DoctrineClearEventSubscriber $clearEventSubscriber
      * @param KernelInterface              $kernel
      * @param string                       $workingDirectory
@@ -75,7 +75,7 @@ class IndexerRunCommand extends Command
     public function __construct(
         Indexer $indexer,
         QueueProvider $queueProvider,
-        Factory $lockFactory,
+        LockFactory $lockFactory,
         DoctrineClearEventSubscriber $clearEventSubscriber,
         KernelInterface $kernel,
         $workingDirectory

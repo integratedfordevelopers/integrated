@@ -35,7 +35,7 @@ class UserController extends AbstractController
      *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function index(Request $request)
     {
         if (!$this->isGranted('ROLE_USER_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -68,7 +68,7 @@ class UserController extends AbstractController
      *
      * @return Response
      */
-    public function newAction(Request $request)
+    public function new(Request $request)
     {
         if (!$this->isGranted('ROLE_USER_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -106,7 +106,7 @@ class UserController extends AbstractController
      *
      * @throws NotFoundHttpException
      */
-    public function editAction(Request $request)
+    public function edit(Request $request)
     {
         if (!$this->isGranted('ROLE_USER_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -147,7 +147,7 @@ class UserController extends AbstractController
      *
      * @return Response
      */
-    public function deleteAction(Request $request)
+    public function delete(Request $request)
     {
         if (!$this->isGranted('ROLE_USER_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();

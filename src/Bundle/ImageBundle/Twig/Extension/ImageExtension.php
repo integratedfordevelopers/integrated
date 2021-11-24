@@ -17,11 +17,13 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
 use Integrated\Bundle\ImageBundle\Converter\WebFormatConverter;
 use Integrated\Bundle\ImageBundle\Factory\StorageModelFactory;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
  */
-class ImageExtension extends \Twig_Extension
+class ImageExtension extends AbstractExtension
 {
     /**
      * @var ImageHandling
@@ -70,12 +72,12 @@ class ImageExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('integrated_image', [$this, 'image'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFunction('integrated_image_credits', [$this, 'imageCredits'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFunction('integrated_image_description', [$this, 'imageDescription'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFunction('image_json', [$this, 'imageJson'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFunction('web_image', [$this, 'webImage'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFunction('image', [$this, 'image'], ['is_safe' => ['html']]),
+            new TwigFunction('integrated_image', [$this, 'image'], ['is_safe' => ['html']]),
+            new TwigFunction('integrated_image_credits', [$this, 'imageCredits'], ['is_safe' => ['html']]),
+            new TwigFunction('integrated_image_description', [$this, 'imageDescription'], ['is_safe' => ['html']]),
+            new TwigFunction('image_json', [$this, 'imageJson'], ['is_safe' => ['html']]),
+            new TwigFunction('web_image', [$this, 'webImage'], ['is_safe' => ['html']]),
+            new TwigFunction('image', [$this, 'image'], ['is_safe' => ['html']]),
         ];
     }
 

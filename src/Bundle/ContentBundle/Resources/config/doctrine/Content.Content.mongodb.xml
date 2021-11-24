@@ -14,8 +14,8 @@
         <field field-name="contentType" type="string" index="true" />
         <field field-name="createdAt" type="date" />
         <field field-name="updatedAt" type="date" />
-        <field field-name="published" type="boolean" />
-        <field field-name="disabled" type="boolean" />
+        <field field-name="published" type="bool" />
+        <field field-name="disabled" type="bool" />
         <field field-name="customFields" type="hash" />
         <field field-name="copyrightRestrictions" type="string" />
 

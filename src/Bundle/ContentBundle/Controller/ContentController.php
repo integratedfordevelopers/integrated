@@ -71,8 +71,8 @@ class ContentController extends AbstractController
 
         /** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
         foreach ($this->get('integrated.form.resolver')->getTypes() as $type) {
-            $types[$type->getClass()][$type->getType()] = $type;
-            $displayTypes[$type->getType()] = $type->getName();
+            $types[$type->getClass()][$type->getId()] = $type;
+            $displayTypes[$type->getId()] = $type->getName();
         }
 
         foreach (array_keys($types) as $key) {
@@ -115,9 +115,9 @@ class ContentController extends AbstractController
             /** @var Relation $relation */
             if ($relation = $dm->getRepository($this->relationClass)->find($relation)) {
                 foreach ($relation->getTargets() as $target) {
-                    $contentType[] = $target->getType();
+                    $contentType[] = $target->getId();
                     $relations[] = [
-                        'href' => $this->generateUrl('integrated_content_content_new', ['class' => $target->getClass(), 'type' => $target->getType(), 'relation' => $relation->getId()]),
+                        'href' => $this->generateUrl('integrated_content_content_new', ['class' => $target->getClass(), 'type' => $target->getId(), 'relation' => $relation->getId()]),
                         'name' => $target->getName(),
                     ];
                 }

@@ -33,7 +33,7 @@ class GroupController extends AbstractController
      *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function index(Request $request)
     {
         if (!$this->isGranted('ROLE_USER_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -47,7 +47,7 @@ class GroupController extends AbstractController
             15
         );
 
-        return $this->render('IntegratedUserBundle:group:index.html.twig', [
+        return $this->render('@IntegratedUser/group/index.html.twig', [
             'groups' => $paginator,
         ]);
     }
@@ -57,7 +57,7 @@ class GroupController extends AbstractController
      *
      * @return Response
      */
-    public function newAction(Request $request)
+    public function new(Request $request)
     {
         if (!$this->isGranted('ROLE_USER_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -83,7 +83,7 @@ class GroupController extends AbstractController
             }
         }
 
-        return $this->render('IntegratedUserBundle:group:new.html.twig', [
+        return $this->render('@IntegratedUser/group/new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -95,7 +95,7 @@ class GroupController extends AbstractController
      *
      * @throws NotFoundHttpException
      */
-    public function editAction(Request $request)
+    public function edit(Request $request)
     {
         if (!$this->isGranted('ROLE_USER_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -125,7 +125,7 @@ class GroupController extends AbstractController
             }
         }
 
-        return $this->render('IntegratedUserBundle:group:edit.html.twig', [
+        return $this->render('@IntegratedUser/group/edit.html.twig', [
             'group' => $group,
             'form' => $form->createView(),
         ]);
@@ -136,7 +136,7 @@ class GroupController extends AbstractController
      *
      * @return Response
      */
-    public function deleteAction(Request $request)
+    public function delete(Request $request)
     {
         if (!$this->isGranted('ROLE_USER_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
@@ -166,7 +166,7 @@ class GroupController extends AbstractController
             }
         }
 
-        return $this->render('IntegratedUserBundle:group:delete.html.twig', [
+        return $this->render('@IntegratedUser/group/delete.html.twig', [
             'group' => $group,
             'form' => $form->createView(),
         ]);

@@ -30,7 +30,7 @@ class SearchSelectionController extends AbstractController
      *
      * @return array
      */
-    public function rssAction(Request $request, SearchSelection $selection)
+    public function rss(Request $request, SearchSelection $selection)
     {
         $block = new ContentBlock();
         $block->setSearchSelection($selection);

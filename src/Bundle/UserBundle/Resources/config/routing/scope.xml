@@ -5,31 +5,31 @@
 		xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
 	<route id="integrated_user_scope_index" path="/" methods="GET">
-		<default key="_controller">IntegratedUserBundle:Scope:index</default>
+		<default key="_controller">Integrated\Bundle\UserBundle\Controller\ScopeController::index</default>
 	</route>
 
 	<route id="integrated_user_scope_new" path="/new">
-		<default key="_controller">IntegratedUserBundle:Scope:new</default>
+		<default key="_controller">Integrated\Bundle\UserBundle\Controller\ScopeController::new</default>
 	</route>
 
 	<route id="integrated_user_scope_new_rest" path="/" methods="POST">
-		<default key="_controller">IntegratedUserBundle:Scope:new</default>
+		<default key="_controller">Integrated\Bundle\UserBundle\Controller\ScopeController::new</default>
 	</route>
 
 	<route id="integrated_user_scope_edit" path="/{id}"  methods="GET">
-		<default key="_controller">IntegratedUserBundle:Scope:edit</default>
+		<default key="_controller">Integrated\Bundle\UserBundle\Controller\ScopeController::edit</default>
 	</route>
 
 	<route id="integrated_user_scope_edit_rest" path="/{id}" methods="PUT">
-		<default key="_controller">IntegratedUserBundle:Scope:edit</default>
+		<default key="_controller">Integrated\Bundle\UserBundle\Controller\ScopeController::edit</default>
 	</route>
 
 	<route id="integrated_user_scope_delete" path="/{id}/delete">
-		<default key="_controller">IntegratedUserBundle:Scope:delete</default>
+		<default key="_controller">Integrated\Bundle\UserBundle\Controller\ScopeController::delete</default>
 	</route>
 
 	<route id="integrated_user_scope_delete_rest" path="/{id}" methods="DELETE">
-		<default key="_controller">IntegratedUserBundle:Scope:delete</default>
+		<default key="_controller">Integrated\Bundle\UserBundle\Controller\ScopeController::delete</default>
 	</route>
 
 </routes>

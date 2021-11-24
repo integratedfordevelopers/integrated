@@ -21,11 +21,13 @@ use Knp\Menu\Twig\Helper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class MenuExtension extends \Twig_Extension
+class MenuExtension extends AbstractExtension
 {
     /**
      * @var IntegratedMenuProvider
@@ -106,12 +108,12 @@ class MenuExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'integrated_menu',
                 [$this, 'renderMenu'],
                 ['is_safe' => ['html'], 'needs_context' => true]
             ),
-            new \Twig_SimpleFunction('integrated_menu_prepare', [$this, 'prepareMenu'], ['is_safe' => ['html']]),
+            new TwigFunction('integrated_menu_prepare', [$this, 'prepareMenu'], ['is_safe' => ['html']]),
         ];
     }
 

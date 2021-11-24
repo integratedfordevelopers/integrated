@@ -1,9 +1,9 @@
-{% spaceless %}
+{% apply spaceless %}
     {% set items = [] %}
     {% for content in pagination %}
         {% set item = {'id': content.id, 'title': content.__toString(), 'href': path('integrated_content_content_edit', {'id': content.id})} %}
         {% set items = items|merge([item]) %}
     {% endfor %}
     {% set data = {'pagination': pagination|json_pagination , 'items': items} %}
-{% endspaceless %}
+{% endapply %}
 {{ data|json_encode(constant('JSON_PRETTY_PRINT'))|raw }}

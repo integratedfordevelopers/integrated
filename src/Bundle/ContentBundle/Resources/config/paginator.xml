@@ -13,7 +13,7 @@
     <services>
 
         <service id="integrated_content.subscriber.paginate_solarium_query" class="%integrated_content.subscriber.paginate_solarium_query.class%">
-            <tag name="knp_paginator.subscriber" />
+            <tag name="kernel.event_subscriber" />
         </service>
 
     </services>
