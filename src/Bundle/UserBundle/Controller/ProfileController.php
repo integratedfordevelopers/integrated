@@ -80,7 +80,7 @@ class ProfileController extends AbstractController
             }
         }
 
-        return $this->render('IntegratedUserBundle:profile:index.html.twig', [
+        return $this->render('@IntegratedUser/profile/index.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
         ]);

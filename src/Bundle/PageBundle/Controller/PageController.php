@@ -114,7 +114,7 @@ class PageController extends AbstractController
             25
         );
 
-        $response = $this->render('IntegratedPageBundle:page:index.html.twig', [
+        $response = $this->render('@IntegratedPage/page/index.html.twig', [
             'pages' => $pagination,
             'filterForm' => $filterForm->createView(),
             'lastPage' => $this->getLastEditPage($request->getSession()),
@@ -152,7 +152,7 @@ class PageController extends AbstractController
             return $this->redirectToRoute('integrated_page_page_index');
         }
 
-        return $this->render('IntegratedPageBundle:page:new.html.twig', [
+        return $this->render('@IntegratedPage/page/new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -184,7 +184,7 @@ class PageController extends AbstractController
             return $this->redirectToRoute('integrated_page_page_index');
         }
 
-        return $this->render('IntegratedPageBundle:page:edit.html.twig', [
+        return $this->render('@IntegratedPage/page/edit.html.twig', [
             'page' => $page,
             'form' => $form->createView(),
         ]);
@@ -220,7 +220,7 @@ class PageController extends AbstractController
             return $this->redirectToRoute('integrated_page_page_index');
         }
 
-        return $this->render('IntegratedPageBundle:page:delete.html.twig', [
+        return $this->render('@IntegratedPage/page/delete.html.twig', [
             'page' => $page,
             'form' => $form->createView(),
         ]);
@@ -273,7 +273,7 @@ class PageController extends AbstractController
             }
         }
 
-        return $this->render('IntegratedPageBundle:page:copy.html.twig', [
+        return $this->render('@IntegratedPage/page/copy.html.twig', [
             'form' => $form->createView(),
         ]);
     }

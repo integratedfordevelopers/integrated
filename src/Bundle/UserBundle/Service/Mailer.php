@@ -88,12 +88,12 @@ class Mailer
         $data = [
             'subject' => '[Integrated] '.$this->translator->trans('Password reset'),
         ];
-        $template = 'IntegratedUserBundle::mail/password.reset.notfound.html.twig';
+        $template = '@IntegratedUser/mail/password.reset.notfound.html.twig';
 
         if ($user = $this->userManager->findEnabledByUsernameAndScope($email, $scope)) {
             $timestamp = time();
             $key = $this->keyGenerator->generateKey($timestamp, $user);
-            $template = 'IntegratedUserBundle::mail/password.reset.html.twig';
+            $template = '@IntegratedUser/mail/password.reset.html.twig';
 
             $data['user'] = $user;
             $data['timestamp'] = $timestamp;

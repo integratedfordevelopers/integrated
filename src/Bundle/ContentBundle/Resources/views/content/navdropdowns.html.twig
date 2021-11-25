@@ -2,7 +2,7 @@
     {% block navbar_content_type %}
         <li class="dropdown">
             <a href="#" class="dropdown-toggle btn btn-blue" data-toggle="dropdown">{% trans %}Create new{% endtrans %}</a>
-            {{ knp_menu_render('content_type', {'template': 'IntegratedContentBundle:menu:content_type.html.twig'}) }}
+            {{ knp_menu_render('content_type', {'template': '@IntegratedContent/menu/content_type.html.twig'}) }}
         </li>
     {% endblock navbar_content_type %}
 

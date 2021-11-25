@@ -6,12 +6,12 @@
 
             <a href="#" class="cancel-comment"><i class="integrate-icon-cancel"></i></a>
 
-            {% include 'IntegratedCommentBundle:comment:partial.comment.html.twig' %}
+            {% include '@IntegratedComment/comment/partial.comment.html.twig' %}
 
             <div class="comment-reply">
                 {% for reply in comment.replies %}
                     <hr>
-                    {% include 'IntegratedCommentBundle:comment:partial.comment.html.twig' with {'comment': reply, 'parent': comment} %}
+                    {% include '@IntegratedComment/comment/partial.comment.html.twig' with {'comment': reply, 'parent': comment} %}
                 {% endfor %}
             </div>
         </div>

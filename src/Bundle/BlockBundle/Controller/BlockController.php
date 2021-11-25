@@ -89,7 +89,7 @@ class BlockController extends AbstractController
             ['defaultSortFieldName' => 'title', 'defaultSortDirection' => 'asc', 'query_type' => 'block_overview']
         );
 
-        return $this->render(sprintf('IntegratedBlockBundle:block:index.%s.twig', $request->getRequestFormat()), [
+        return $this->render(sprintf('@IntegratedBlock/block/index.%s.twig', $request->getRequestFormat()), [
             'blocks' => $pagination,
             'factory' => $this->metadataFactory,
             'facetFilter' => $facetFilter->createView(),
@@ -110,7 +110,7 @@ class BlockController extends AbstractController
 
         $request->attributes->set('integrated_block_edit', true);
 
-        return $this->render('IntegratedBlockBundle:block:show.json.twig', [
+        return $this->render('@IntegratedBlock/block/show.json.twig', [
             'block' => $block,
         ]);
     }
@@ -150,7 +150,7 @@ class BlockController extends AbstractController
             $this->documentManager->flush();
 
             if ('iframe.html' === $request->getRequestFormat()) {
-                return $this->render('IntegratedBlockBundle:block:saved.iframe.html.twig', ['id' => $block->getId()]);
+                return $this->render('@IntegratedBlock/block/saved.iframe.html.twig', ['id' => $block->getId()]);
             }
 
             $this->addFlash('success', 'Block created');
@@ -158,7 +158,7 @@ class BlockController extends AbstractController
             return $this->redirectToRoute('integrated_block_block_index');
         }
 
-        return $this->render(sprintf('IntegratedBlockBundle:block:new.%s.twig', $request->getRequestFormat()), [
+        return $this->render(sprintf('@IntegratedBlock/block/new.%s.twig', $request->getRequestFormat()), [
             'form' => $form->createView(),
         ]);
     }
@@ -227,7 +227,7 @@ class BlockController extends AbstractController
             $this->documentManager->flush();
 
             if ('iframe.html' === $request->getRequestFormat()) {
-                return $this->render('IntegratedBlockBundle:block:saved.iframe.html.twig', [
+                return $this->render('@IntegratedBlock/block/saved.iframe.html.twig', [
                     'id' => $block->getId(),
                 ]);
             }
@@ -239,7 +239,7 @@ class BlockController extends AbstractController
 
         $metadata = $this->metadataFactory->getMetadata(\get_class($block));
 
-        return $this->render(sprintf('IntegratedBlockBundle:block:edit.%s.twig', $request->getRequestFormat()), [
+        return $this->render(sprintf('@IntegratedBlock/block/edit.%s.twig', $request->getRequestFormat()), [
             'form' => $form->createView(),
             'blockType' => $metadata->getType(),
         ]);
@@ -280,7 +280,7 @@ class BlockController extends AbstractController
             return $this->redirectToRoute('integrated_block_block_index');
         }
 
-        return $this->render('IntegratedBlockBundle:block:delete.html.twig', [
+        return $this->render('@IntegratedBlock/block/delete.html.twig', [
             'block' => $block,
             'form' => $form->createView(),
         ]);

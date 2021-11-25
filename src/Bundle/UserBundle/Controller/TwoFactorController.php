@@ -67,7 +67,7 @@ class TwoFactorController extends AbstractController
             }
         }
 
-        return $this->render('IntegratedUserBundle:two_factor:delete.html.twig', [
+        return $this->render('@IntegratedUser/two_factor/delete.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
         ]);

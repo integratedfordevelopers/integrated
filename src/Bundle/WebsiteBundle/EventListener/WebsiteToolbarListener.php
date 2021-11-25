@@ -96,7 +96,7 @@ class WebsiteToolbarListener implements EventSubscriberInterface
 
         if (false !== $pos) {
             $toolbar = $this->twig->render(
-                'IntegratedWebsiteBundle::toolbar.html.twig',
+                '@IntegratedWebsite/toolbar.html.twig',
                 [
                     'message' => $this->toolbarMessage,
                     'layoutEditable' => $this->websiteEditableChecker->checkEditable(),

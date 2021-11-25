@@ -1,4 +1,4 @@
-{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% extends '@IntegratedContent/base.html.twig' %}
 {% block content %}
     <div class="row">
         <div class="col-md-12 push-sm-down">
@@ -10,7 +10,7 @@
                 </li>
             </ul>
             <section class="section-white section-padding section-shadow section-radius">
-                {{ include('IntegratedContentBundle:relation:partial/list.html.twig', { 'documents': documents }) }}
+                {{ include('@IntegratedContent/relation/partial/list.html.twig', { 'documents': documents }) }}
             </section>
         </div>
     </div>

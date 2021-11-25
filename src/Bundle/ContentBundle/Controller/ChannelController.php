@@ -66,7 +66,7 @@ class ChannelController extends AbstractController
 
         $documents = $this->documentManager->getRepository(Channel::class)->findBy([], ['name' => 1]);
 
-        return $this->render('IntegratedContentBundle:channel:index.html.twig', [
+        return $this->render('@IntegratedContent/channel/index.html.twig', [
             'documents' => $documents,
         ]);
     }
@@ -84,7 +84,7 @@ class ChannelController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        return $this->render('IntegratedContentBundle:channel:show.html.twig', [
+        return $this->render('@IntegratedContent/channel/show.html.twig', [
             'channel' => $channel,
         ]);
     }
@@ -104,7 +104,7 @@ class ChannelController extends AbstractController
 
         $form = $this->createCreateForm($channel);
 
-        return $this->render('IntegratedContentBundle:channel:new.html.twig', [
+        return $this->render('@IntegratedContent/channel/new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -139,7 +139,7 @@ class ChannelController extends AbstractController
             return $this->redirectToRoute('integrated_content_channel_show', ['id' => $channel->getId()]);
         }
 
-        return $this->render('IntegratedContentBundle:channel:new.html.twig', [
+        return $this->render('@IntegratedContent/channel/new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -159,7 +159,7 @@ class ChannelController extends AbstractController
 
         $form = $this->createEditForm($channel);
 
-        return $this->render('IntegratedContentBundle:channel:edit.html.twig', [
+        return $this->render('@IntegratedContent/channel/edit.html.twig', [
             'form' => $form->createView(),
             'channel' => $channel,
         ]);
@@ -193,7 +193,7 @@ class ChannelController extends AbstractController
             return $this->redirectToRoute('integrated_content_channel_show', ['id' => $channel->getId()]);
         }
 
-        return $this->render('IntegratedContentBundle:channel:edit.html.twig', [
+        return $this->render('@IntegratedContent/channel/edit.html.twig', [
             'form' => $form->createView(),
             'channel' => $channel,
         ]);
@@ -230,7 +230,7 @@ class ChannelController extends AbstractController
             return $this->redirectToRoute('integrated_content_channel_index');
         }
 
-        return $this->render('IntegratedContentBundle:channel:delete.html.twig', [
+        return $this->render('@IntegratedContent/channel/delete.html.twig', [
             'channel' => $channel,
             'form' => $form->createView(),
             'referenced' => $referenced,

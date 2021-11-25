@@ -52,7 +52,7 @@ class RelationController extends AbstractController
 
         $documents = $qb->getQuery()->execute();
 
-        return $this->render(sprintf('IntegratedContentBundle:relation:index.%s.twig', $request->getRequestFormat()), ['documents' => $documents]);
+        return $this->render(sprintf('@IntegratedContent/relation/index.%s.twig', $request->getRequestFormat()), ['documents' => $documents]);
     }
 
     /**
@@ -68,7 +68,7 @@ class RelationController extends AbstractController
 
         $form = $this->createDeleteForm($relation);
 
-        return $this->render('IntegratedContentBundle:relation:show.html.twig', [
+        return $this->render('@IntegratedContent/relation/show.html.twig', [
             'form' => $form->createView(),
             'relation' => $relation,
         ]);
@@ -85,7 +85,7 @@ class RelationController extends AbstractController
 
         $form = $this->createNewForm(new Relation());
 
-        return $this->render('IntegratedContentBundle:relation:new.html.twig', [
+        return $this->render('@IntegratedContent/relation/new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -117,7 +117,7 @@ class RelationController extends AbstractController
             return $this->redirectToRoute('integrated_content_relation_index');
         }
 
-        return $this->render('IntegratedContentBundle:relation:new.html.twig', [
+        return $this->render('@IntegratedContent/relation/new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -135,7 +135,7 @@ class RelationController extends AbstractController
 
         $form = $this->createEditForm($relation);
 
-        return $this->render('IntegratedContentBundle:relation:edit.html.twig', [
+        return $this->render('@IntegratedContent/relation/edit.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -165,7 +165,7 @@ class RelationController extends AbstractController
             return $this->redirectToRoute('integrated_content_relation_index');
         }
 
-        return $this->render('IntegratedContentBundle:relation:edit.html.twig', [
+        return $this->render('@IntegratedContent/relation/edit.html.twig', [
             'form' => $form->createView(),
         ]);
     }

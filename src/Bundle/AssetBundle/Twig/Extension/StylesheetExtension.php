@@ -21,7 +21,7 @@ class StylesheetExtension extends AbstractAssetExtension
      */
     protected function getTemplate()
     {
-        return '@IntegratedAssetBundle/Resources/views/asset/stylesheets.html.twig';
+        return '@IntegratedAsset/asset/stylesheets.html.twig';
     }
 
     /**

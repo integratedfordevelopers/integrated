@@ -60,7 +60,7 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
      */
     public function __construct(DocumentManager $dm, array $options)
     {
-        $this->repo = $dm->getRepository('IntegratedContentBundle:Relation\Relation');
+        $this->repo = $dm->getRepository(Relation::class);
         $this->relations = new ArrayCollection();
         $this->options = $options;
     }
