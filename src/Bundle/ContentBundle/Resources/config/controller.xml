@@ -63,7 +63,7 @@
             </call>
         </service>
 
-        <service id="integrated_content.controller.search_controller" class="Integrated\Bundle\ContentBundle\Controller\SearchController" public="true">
+        <service id="Integrated\Bundle\ContentBundle\Controller\SearchController">
             <argument type="service" id="integrated_solr.indexer.client" />
             <argument type="service" id="serializer" />
             <argument type="service" id="service_container" />
@@ -76,7 +76,16 @@
             </call>
         </service>
 
-        <service id="integrated_content.controller.bulk_controller" class="Integrated\Bundle\ContentBundle\Controller\BulkController" public="true">
+        <service id="Integrated\Bundle\ContentBundle\Controller\SearchSelectionController">
+            <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+
+        <service id="Integrated\Bundle\ContentBundle\Controller\BulkController">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <argument type="service" id="integrated_content.provider.content_provider" />
             <argument type="service" id="integrated_content.bulk.handler" />
