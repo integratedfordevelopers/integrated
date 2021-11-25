@@ -239,7 +239,10 @@ class BootstrapFormExtension extends AbstractExtension
     {
         return sprintf(
             '<div class="form-group"><label class="col-sm-%s control-label">%s</label><div class="col-sm-%s"><p class="form-control-static">%s</p></div></div>',
-            $this->getLabelCol(), $label, $this->getWidgetCol(), $value
+            $this->getLabelCol(),
+            $label,
+            $this->getWidgetCol(),
+            $value
         );
     }
 }
