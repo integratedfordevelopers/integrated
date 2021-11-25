@@ -52,10 +52,10 @@ class InlineTextBlockController extends BlockController
             $this->documentManager->persist($block);
             $this->documentManager->flush();
 
-            return $this->render('IntegratedBlockBundle:block:saved.iframe.html.twig', ['id' => $block->getId()]);
+            return $this->render('@IntegratedBlock/block/saved.iframe.html.twig', ['id' => $block->getId()]);
         }
 
-        return $this->render('IntegratedBlockBundle:block:new.iframe.html.twig', [
+        return $this->render('@IntegratedBlock/block/new.iframe.html.twig', [
             'form' => $form->createView(),
         ]);
     }

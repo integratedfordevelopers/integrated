@@ -56,7 +56,7 @@ class ScraperController extends AbstractController
 
         $result = $this->entityManager->getRepository(Scraper::class)->findBy([], ['channelId' => 'asc', 'name' => 'asc']);
 
-        return $this->render('IntegratedThemeBundle:scraper:index.html.twig', [
+        return $this->render('@IntegratedTheme/scraper/index.html.twig', [
             'result' => $result,
         ]);
     }
@@ -88,7 +88,7 @@ class ScraperController extends AbstractController
             return $this->redirectToRoute('integrated_theme_scraper_edit', ['id' => $scraper->getId()]);
         }
 
-        return $this->render('IntegratedThemeBundle:scraper:new.html.twig', [
+        return $this->render('@IntegratedTheme/scraper/new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -118,7 +118,7 @@ class ScraperController extends AbstractController
             return $this->redirectToRoute('integrated_theme_scraper_index');
         }
 
-        return $this->render('IntegratedThemeBundle:scraper:edit.html.twig', [
+        return $this->render('@IntegratedTheme/scraper/edit.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -148,7 +148,7 @@ class ScraperController extends AbstractController
             return $this->redirectToRoute('integrated_theme_scraper_index');
         }
 
-        return $this->render('IntegratedThemeBundle:scraper:delete.html.twig', [
+        return $this->render('@IntegratedTheme/scraper/delete.html.twig', [
             'scraper' => $scraper,
             'form' => $form->createView(),
         ]);

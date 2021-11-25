@@ -63,12 +63,12 @@
 {% block header %}
     <nav class="navbar megamenu">
         <div class="container">
-            {% include 'IntegratedContentBundle:partials:block.navigation.html.twig' %}
-            {% include 'IntegratedContentBundle:partials:block.logo.html.twig' %}
+            {% include '@IntegratedContent/partials/block.navigation.html.twig' %}
+            {% include '@IntegratedContent/partials/block.logo.html.twig' %}
 
             {{ render(controller('Integrated\\Bundle\\ContentBundle\\Controller\\ContentController::navdropdowns')) }}
 
-            {% include 'IntegratedContentBundle:partials:block.search.html.twig' %}
+            {% include '@IntegratedContent/partials/block.search.html.twig' %}
         </div>
     </nav>
 {% endblock %}
@@ -125,7 +125,7 @@
 
     {% block locking %}
         {% if locking is defined and locking.lock is defined and locking.locked == false %}
-            {% include 'IntegratedLockingBundle::locking.refresh.html.twig' with { 'lock': locking.lock } %}
+            {% include '@IntegratedLocking/locking.refresh.html.twig' with { 'lock': locking.lock } %}
         {% endif %}
     {% endblock locking %}
 {% endblock javascript %}

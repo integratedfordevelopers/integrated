@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\WebsiteBundle\Routing;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Integrated\Bundle\PageBundle\Document\Page\Page;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
 use Symfony\Component\Routing\Route;
@@ -53,7 +54,7 @@ class PageLoader implements LoaderInterface
 
         $routes = new RouteCollection();
 
-        $pages = $this->dm->getRepository('IntegratedPageBundle:Page\Page')->findBy(['disabled' => false]);
+        $pages = $this->dm->getRepository(Page::class)->findBy(['disabled' => false]);
 
         /** @var \Integrated\Bundle\PageBundle\Document\Page\Page $page */
         foreach ($pages as $page) {

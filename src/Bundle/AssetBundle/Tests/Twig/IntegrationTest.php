@@ -51,10 +51,10 @@ class IntegrationTest extends IntegrationTestCase
     public function testIntegration($file, $message, $condition, $templates, $exception, $outputs, $deprecation = '')
     {
         $templates = $templates + [
-            '@IntegratedAssetBundle/Resources/views/asset/javascripts.html.twig' => file_get_contents(
+            '@IntegratedAsset/asset/javascripts.html.twig' => file_get_contents(
                 __DIR__.'/../../Resources/views/asset/javascripts.html.twig'
             ),
-            '@IntegratedAssetBundle/Resources/views/asset/stylesheets.html.twig' => file_get_contents(
+            '@IntegratedAsset/asset/stylesheets.html.twig' => file_get_contents(
                 __DIR__.'/../../Resources/views/asset/stylesheets.html.twig'
             ),
         ];

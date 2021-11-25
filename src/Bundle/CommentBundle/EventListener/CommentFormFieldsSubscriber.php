@@ -151,7 +151,7 @@ class CommentFormFieldsSubscriber implements EventSubscriberInterface
     protected function getComments($contentId)
     {
         if (null === $this->comments) {
-            $comments = $this->documentManager->getRepository('IntegratedCommentBundle:Comment')
+            $comments = $this->documentManager->getRepository(Comment::class)
                 ->findBy(['content.$id' => $contentId], ['date' => 'asc']);
 
             $this->comments = [];

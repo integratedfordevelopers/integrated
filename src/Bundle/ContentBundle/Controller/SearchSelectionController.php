@@ -43,7 +43,7 @@ class SearchSelectionController extends AbstractController
         $paginator = $this->get('knp_paginator');
         $paginator = $paginator->paginate($this->getQueryBuilder(), $request->query->get('page', 1), 15);
 
-        return $this->render('IntegratedContentBundle:search_selection:index.html.twig', [
+        return $this->render('@IntegratedContent/search_selection/index.html.twig', [
             'searchSelections' => $paginator,
         ]);
     }
@@ -74,7 +74,7 @@ class SearchSelectionController extends AbstractController
             return $this->redirectToRoute('integrated_content_search_selection_index');
         }
 
-        return $this->render('IntegratedContentBundle:search_selection:new.html.twig', [
+        return $this->render('@IntegratedContent/search_selection/new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -106,7 +106,7 @@ class SearchSelectionController extends AbstractController
             return $this->redirectToRoute('integrated_content_search_selection_index');
         }
 
-        return $this->render('IntegratedContentBundle:search_selection:edit.html.twig', [
+        return $this->render('@IntegratedContent/search_selection/edit.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -142,7 +142,7 @@ class SearchSelectionController extends AbstractController
             return $this->redirectToRoute('integrated_content_search_selection_index');
         }
 
-        return $this->render('IntegratedContentBundle:search_selection:delete.html.twig', [
+        return $this->render('@IntegratedContent/search_selection/delete.html.twig', [
             'searchSelection' => $searchSelection,
             'form' => $form->createView(),
             'referenced' => $referenced,
@@ -164,7 +164,7 @@ class SearchSelectionController extends AbstractController
 
         $user = $this->getUser();
 
-        return $this->render('IntegratedContentBundle:search_selection:menu.html.twig', [
+        return $this->render('@IntegratedContent/search_selection/menu.html.twig', [
             'filters' => $request ? $request->query->all() : [],
             'searchSelections' => $user ? $repo->findPublicByUserId($user->getId()) : [],
         ]);

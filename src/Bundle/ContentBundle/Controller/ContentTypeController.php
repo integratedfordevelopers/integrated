@@ -83,7 +83,7 @@ class ContentTypeController extends AbstractController
         $documents = $this->contentTypeManager->getAll();
         $documentTypes = $this->metadata->getAllMetadata();
 
-        return $this->render('IntegratedContentBundle:content_type:index.html.twig', [
+        return $this->render('@IntegratedContent/content_type/index.html.twig', [
             'documents' => $documents,
             'documentTypes' => $documentTypes,
         ]);
@@ -98,7 +98,7 @@ class ContentTypeController extends AbstractController
     {
         $documentTypes = $this->metadata->getAllMetadata();
 
-        return $this->render('IntegratedContentBundle:content_type:select.html.twig', [
+        return $this->render('@IntegratedContent/content_type/select.html.twig', [
             'documentTypes' => $documentTypes,
         ]);
     }
@@ -117,7 +117,7 @@ class ContentTypeController extends AbstractController
         $contentType = $this->getContentType($id);
         $form = $this->createDeleteForm($contentType);
 
-        return $this->render('IntegratedContentBundle:content_type:show.html.twig', [
+        return $this->render('@IntegratedContent/content_type/show.html.twig', [
             'form' => $form->createView(),
             'contentType' => $contentType,
         ]);
@@ -159,7 +159,7 @@ class ContentTypeController extends AbstractController
             return $this->redirectToRoute('integrated_content_content_type_show', ['id' => $contentType->getId()]);
         }
 
-        return $this->render('IntegratedContentBundle:content_type:new.html.twig', [
+        return $this->render('@IntegratedContent/content_type/new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -200,7 +200,7 @@ class ContentTypeController extends AbstractController
             return $this->redirectToRoute('integrated_content_content_type_show', ['id' => $contentType->getId()]);
         }
 
-        return $this->render('IntegratedContentBundle:content_type:edit.html.twig', [
+        return $this->render('@IntegratedContent/content_type/edit.html.twig', [
             'form' => $form->createView(),
             'contentType' => $contentType,
         ]);
@@ -252,7 +252,7 @@ class ContentTypeController extends AbstractController
             return $this->redirectToRoute('integrated_content_content_type_index');
         }
 
-        return $this->render('IntegratedContentBundle:content_type:delete.html.twig', [
+        return $this->render('@IntegratedContent/content_type/delete.html.twig', [
             'contentType' => $contentType,
             'form' => $form->createView(),
         ]);
