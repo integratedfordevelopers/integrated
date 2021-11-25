@@ -10,6 +10,11 @@
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
 
             <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
         <service id="Integrated\Bundle\PageBundle\Controller\PageController">
@@ -17,6 +22,11 @@
             <argument type="service" id="Integrated\Bundle\PageBundle\Services\PageCopyService" />
 
             <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
     </services>

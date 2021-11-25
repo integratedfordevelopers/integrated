@@ -31,63 +31,135 @@
 
         <service id="Integrated\Bundle\WebsiteBundle\Controller\ErrorController" public="true">
             <argument type="service" id="integrated_theme.templating.theme_manager" />
+
+            <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
         <service id="integrated_website.controller.page" class="%integrated_website.controller.page.class%">
             <argument type="service" id="integrated_theme.templating.theme_manager" />
+
+            <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
         <service id="integrated_website.controller.grid" class="%integrated_website.controller.grid.class%">
+            <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
             <call method="setContainer">
-                <argument type="service" id="service_container"/>
+                <argument type="service" id="service_container" />
             </call>
         </service>
 
         <service id="Integrated\Bundle\WebsiteBundle\Controller\SessionController">
             <argument type="service" id="session" />
-            <tag name="controller.service_arguments"/>
+
+            <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
         <service id="integrated_website.controller.content.article" class="%integrated_website.controller.content.article.class%">
             <argument type="service" id="integrated_website.service.content_service" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
+
             <tag name="integrated_page.contenttype_controller" class="%integrated_website.controller.content_type.article.class%" />
+            <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
         <service id="integrated_website.controller.content.news" class="%integrated_website.controller.content.news.class%">
             <argument type="service" id="integrated_website.service.content_service" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
+
             <tag name="integrated_page.contenttype_controller" class="%integrated_website.controller.content_type.news.class%" />
+            <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
         <service id="integrated_website.controller.content.company" class="%integrated_website.controller.content.company.class%">
             <argument type="service" id="integrated_website.service.content_service" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
+
             <tag name="integrated_page.contenttype_controller" class="%integrated_website.controller.content_type.company.class%" />
+            <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
         <service id="integrated_website.controller.content.event" class="%integrated_website.controller.content.event.class%">
             <argument type="service" id="integrated_website.service.content_service" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
+
             <tag name="integrated_page.contenttype_controller" class="%integrated_website.controller.content_type.event.class%" />
+            <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
         <service id="integrated_website.controller.content.job_posting" class="%integrated_website.controller.content.job_posting.class%">
             <argument type="service" id="integrated_website.service.content_service" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
+
             <tag name="integrated_page.contenttype_controller" class="%integrated_website.controller.content_type.job_posting.class%" />
+            <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
         <service id="integrated_website.controller.content.person" class="%integrated_website.controller.content.person.class%">
             <argument type="service" id="integrated_website.service.content_service" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
+
             <tag name="integrated_page.contenttype_controller" class="%integrated_website.controller.content_type.person.class%" />
+            <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
         <service id="integrated_website.controller.content.taxonomy" class="%integrated_website.controller.content.taxonomy.class%">
             <argument type="service" id="integrated_website.service.content_service" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
+
             <tag name="integrated_page.contenttype_controller" class="%integrated_website.controller.content_type.taxonomy.class%" />
+            <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
     </services>

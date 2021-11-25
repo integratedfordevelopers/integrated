@@ -11,6 +11,12 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
+use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
+use Integrated\Bundle\ContentBundle\Services\SearchContentReferenced;
+use Integrated\Bundle\ImageBundle\Twig\Extension\ImageExtension;
+use Integrated\Bundle\IntegratedBundle\Controller\AbstractController;
+use Integrated\Common\ContentType\ResolverInterface;
+use Integrated\Common\Locks\Provider\DBAL\Manager;
 use Integrated\Common\Locks\Resource;
 use Integrated\Common\Locks\Filter;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
@@ -25,12 +31,14 @@ use Integrated\Common\Content\Form\ContentFormType;
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\Locks;
 use Integrated\Common\Security\Permissions;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Integrated\Common\Solr\Indexer\IndexerInterface;
+use Integrated\MongoDB\Solr\Indexer\QueueSubscriber;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Traversable;
 
@@ -43,6 +51,72 @@ class ContentController extends AbstractController
      * @var string
      */
     protected $relationClass = 'Integrated\\Bundle\\ContentBundle\\Document\\Relation\\Relation';
+
+    /**
+     * @var ResolverInterface
+     */
+    private $resolver;
+
+    /**
+     * @var ContentTypeManager
+     */
+    private $contentTypeManager;
+
+    /**
+     * @var QueueSubscriber
+     */
+    private $queueSubscriber;
+
+    /**
+     * @var LockFactory
+     */
+    private $lockFactory;
+
+    /**
+     * @var IndexerInterface
+     */
+    private $indexer;
+    /**
+     * @var SearchContentReferenced
+     */
+    private $contentReferenced;
+
+    /**
+     * @var Manager
+     */
+    private $lockManager;
+
+    /**
+     * @var UserManagerInterface
+     */
+    private $userManager;
+
+    /**
+     * @var ImageExtension
+     */
+    private $imageExtension;
+
+    public function __construct(
+        ResolverInterface $resolver,
+        ContentTypeManager $contentTypeManager,
+        QueueSubscriber $queueSubscriber,
+        LockFactory $lockFactory,
+        IndexerInterface $indexer,
+        SearchContentReferenced $contentReferenced,
+        Manager $lockManager,
+        UserManagerInterface $userManager,
+        ImageExtension $imageExtension
+    ) {
+        $this->resolver = $resolver;
+        $this->contentTypeManager = $contentTypeManager;
+        $this->queueSubscriber = $queueSubscriber;
+        $this->lockFactory = $lockFactory;
+        $this->indexer = $indexer;
+        $this->contentReferenced = $contentReferenced;
+        $this->lockManager = $lockManager;
+        $this->userManager = $userManager;
+        $this->imageExtension = $imageExtension;
+    }
 
     /**
      * @param Request $request
@@ -70,7 +144,7 @@ class ContentController extends AbstractController
         }
 
         /** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
-        foreach ($this->get('integrated.form.resolver')->getTypes() as $type) {
+        foreach ($this->resolver->getTypes() as $type) {
             $types[$type->getClass()][$type->getId()] = $type;
             $displayTypes[$type->getId()] = $type->getName();
         }
@@ -80,7 +154,7 @@ class ContentController extends AbstractController
         }
 
         /** @var $client \Solarium\Client */
-        $client = $this->get('solarium.client');
+        $client = $this->getSolarium();
         $client->getPlugin('postbigrequest');
 
         $query = $client->createSelect();
@@ -110,7 +184,7 @@ class ContentController extends AbstractController
             $contentType = [];
 
             /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-            $dm = $this->get('doctrine_mongodb')->getManager();
+            $dm = $this->getDoctrineODM()->getManager();
 
             /** @var Relation $relation */
             if ($relation = $dm->getRepository($this->relationClass)->find($relation)) {
@@ -127,7 +201,7 @@ class ContentController extends AbstractController
         }
 
         /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-        $dm = $this->get('doctrine_mongodb')->getManager();
+        $dm = $this->getDoctrineODM()->getManager();
 
         $active = [];
 
@@ -177,47 +251,42 @@ class ContentController extends AbstractController
             }
         }
 
-        // If the workflow bundle is loaded then only display the results that the
-        // user has read rights to
+        $filterWorkflow = [];
 
-        if ($this->has('integrated_workflow.solr.workflow.extension')) {
-            $filterWorkflow = [];
+        $user = $this->getUser();
 
-            $user = $this->getUser();
+        if ($user instanceof GroupableInterface) {
+            foreach ($user->getGroups() as $group) {
+                $filterWorkflow[] = $group->getId();
+            }
+        }
 
-            if ($user instanceof GroupableInterface) {
-                foreach ($user->getGroups() as $group) {
-                    $filterWorkflow[] = $group->getId();
-                }
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            // allow content without workflow
+            $fq = $query->createFilterQuery('workflow')
+                ->addTag('workflow')
+                ->addTag('security')
+                ->setQuery('(*:* -security_workflow_read:[* TO *])');
+
+            // allow content with group access
+            if ($filterWorkflow) {
+                $fq->setQuery(
+                    $fq->getQuery().' OR security_workflow_read: ((%1%))',
+                    [implode(') OR (', $filterWorkflow)]
+                );
             }
 
-            if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-                // allow content without workflow
-                $fq = $query->createFilterQuery('workflow')
-                    ->addTag('workflow')
-                    ->addTag('security')
-                    ->setQuery('(*:* -security_workflow_read:[* TO *])');
+            // always allow access to assigned content
+            $fq->setQuery(
+                $fq->getQuery().' OR facet_workflow_assigned_id: %1%',
+                [$user->getId()]
+            );
 
-                // allow content with group access
-                if ($filterWorkflow) {
-                    $fq->setQuery(
-                        $fq->getQuery().' OR security_workflow_read: ((%1%))',
-                        [implode(') OR (', $filterWorkflow)]
-                    );
-                }
-
-                // always allow access to assigned content
+            if ($person = $user->getRelation()) {
                 $fq->setQuery(
-                    $fq->getQuery().' OR facet_workflow_assigned_id: %1%',
-                    [$user->getId()]
+                    $fq->getQuery().' OR author: %1%*',
+                    [$person->getId()]
                 );
-
-                if ($person = $user->getRelation()) {
-                    $fq->setQuery(
-                        $fq->getQuery().' OR author: %1%*',
-                        [$person->getId()]
-                    );
-                }
             }
         }
 
@@ -327,7 +396,7 @@ class ContentController extends AbstractController
         $result = $client->select($query);
 
         /** @var $paginator \Knp\Component\Pager\Paginator */
-        $paginator = $this->get('knp_paginator');
+        $paginator = $this->getPaginator();
         $paginator = $paginator->paginate(
             [$client, $query],
             $request->query->get('page', 1),
@@ -336,7 +405,7 @@ class ContentController extends AbstractController
         );
 
         /** @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-        $dm = $this->get('doctrine_mongodb')->getManager();
+        $dm = $this->getDoctrineODM()->getManager();
         $channels = [];
         if ($channelResult = $dm->getRepository('Integrated\\Bundle\\ContentBundle\\Document\\Channel\\Channel')->findAll()) {
             /** @var $channel \Integrated\Bundle\ContentBundle\Document\Channel\Channel */
@@ -390,11 +459,11 @@ class ContentController extends AbstractController
     public function new(Request $request)
     {
         /** @var ContentTypeInterface $contentType */
-        $contentType = $this->get('integrated_content.content_type.manager')->getType($request->get('type'));
+        $contentType = $this->contentTypeManager->getType($request->get('type'));
 
         $content = $contentType->create();
 
-        if (!$this->get('security.authorization_checker')->isGranted(Permissions::CREATE, $content)) {
+        if (!$this->isGranted(Permissions::CREATE, $content)) {
             throw new AccessDeniedException();
         }
 
@@ -409,30 +478,24 @@ class ContentController extends AbstractController
             }
 
             if ($form->isValid()) {
-                if ($this->has('integrated_solr.indexer')) {
-                    //higher priority for content edited in Integrated
-                    $subscriber = $this->get('integrated_solr.indexer.mongodb.subscriber');
-                    $queue = $subscriber->getQueue();
-                    $subscriber->setPriority($queue::PRIORITY_HIGH);
-                }
+                //higher priority for content edited in Integrated
+                $queue = $this->queueSubscriber->getQueue();
+                $this->queueSubscriber->setPriority($queue::PRIORITY_HIGH);
 
                 /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-                $dm = $this->get('doctrine_mongodb')->getManager();
+                $dm = $this->getDoctrineODM()->getManager();
 
                 $dm->persist($content);
                 $dm->flush();
 
-                if ($this->has('integrated_solr.indexer')) {
-                    $lock = $this->get('integrated_solr.lock.factory')->createLock(self::class);
-                    $lock->acquire(true);
+                $lock = $this->lockFactory->createLock(self::class);
+                $lock->acquire(true);
 
-                    try {
-                        $indexer = $this->get('integrated_solr.indexer');
-                        $indexer->setOption('queue.size', 2);
-                        $indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
-                    } finally {
-                        $lock->release();
-                    }
+                try {
+                    $this->indexer->setOption('queue.size', 2);
+                    $this->indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
+                } finally {
+                    $lock->release();
                 }
 
                 if ($request->getRequestFormat() == 'iframe.html') {
@@ -447,7 +510,7 @@ class ContentController extends AbstractController
                 }
 
                 // Set flash message
-                $this->addFlash('success', $this->get('translator')->trans('The document %name% has been created', ['%name%' => $contentType->getName()]));
+                $this->addFlash('success', $this->getTranslator()->trans('The document %name% has been created', ['%name%' => $contentType->getName()]));
 
                 return $this->redirectToRoute('integrated_content_content_index', ['remember' => 1]);
             }
@@ -457,8 +520,7 @@ class ContentController extends AbstractController
             'editable' => true,
             'type' => $contentType,
             'form' => $form->createView(),
-            'hasWorkflowBundle' => $this->has('integrated_workflow.form.workflow.state.type'),
-            'hasContentHistoryBundle' => false, // not needed here
+            'showContentHistory' => false,
             'references' => json_encode($this->getReferences($content)),
         ]);
     }
@@ -474,9 +536,9 @@ class ContentController extends AbstractController
     public function edit(Request $request, Content $content)
     {
         /** @var ContentTypeInterface $contentType */
-        $contentType = $this->get('integrated_content.content_type.manager')->getType($content->getContentType());
+        $contentType = $this->contentTypeManager->getType($content->getContentType());
 
-        if (!$this->get('security.authorization_checker')->isGranted(Permissions::VIEW, $content)) {
+        if (!$this->isGranted(Permissions::VIEW, $content)) {
             throw new AccessDeniedException();
         }
 
@@ -521,7 +583,7 @@ class ContentController extends AbstractController
                 return $this->redirect($url);
             }
 
-            if (!$this->get('security.authorization_checker')->isGranted(Permissions::EDIT, $content)) {
+            if (!$this->isGranted(Permissions::EDIT, $content)) {
                 throw new AccessDeniedException();
             }
 
@@ -532,31 +594,25 @@ class ContentController extends AbstractController
             // this is not rest compatible since a button click is required to save
             if ($form->get('actions')->getData() == 'save') {
                 if (!$locking['locked'] && $form->isValid()) {
-                    if ($this->has('integrated_solr.indexer')) {
-                        //higher priority for content edited in Integrated
-                        $subscriber = $this->get('integrated_solr.indexer.mongodb.subscriber');
-                        $queue = $subscriber->getQueue();
-                        $subscriber->setPriority($queue::PRIORITY_HIGH);
-                    }
+                    //higher priority for content edited in Integrated
+                    $queue = $this->queueSubscriber->getQueue();
+                    $this->queueSubscriber->setPriority($queue::PRIORITY_HIGH);
 
                     /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-                    $dm = $this->get('doctrine_mongodb')->getManager();
+                    $dm = $this->getDoctrineODM()->getManager();
                     $dm->flush();
 
                     // Set flash message
-                    $this->addFlash('success', $this->get('translator')->trans('The changes to %name% are saved', ['%name%' => $contentType->getName()]));
+                    $this->addFlash('success', $this->getTranslator()->trans('The changes to %name% are saved', ['%name%' => $contentType->getName()]));
 
-                    if ($this->has('integrated_solr.indexer')) {
-                        $lock = $this->get('integrated_solr.lock.factory')->createLock(self::class);
-                        $lock->acquire(true);
+                    $lock = $this->lockFactory->createLock(self::class);
+                    $lock->acquire(true);
 
-                        try {
-                            $indexer = $this->get('integrated_solr.indexer');
-                            $indexer->setOption('queue.size', 2);
-                            $indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
-                        } finally {
-                            $lock->release();
-                        }
+                    try {
+                        $this->indexer->setOption('queue.size', 2);
+                        $this->indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
+                    } finally {
+                        $lock->release();
                     }
 
                     if (!$locking['locked']) {
@@ -599,13 +655,12 @@ class ContentController extends AbstractController
         }
 
         return $this->render('@IntegratedContent/content/edit.html.twig', [
-            'editable' => $this->get('security.authorization_checker')->isGranted(Permissions::EDIT, $content),
+            'editable' => $this->isGranted(Permissions::EDIT, $content),
             'type' => $contentType,
             'form' => $form->createView(),
             'content' => $content,
             'locking' => $locking,
-            'hasWorkflowBundle' => $this->has('integrated_workflow.form.workflow.state.type'),
-            'hasContentHistoryBundle' => $this->has('integrated_content_history.controller.content_history'),
+            'showContentHistory' => true,
             'references' => json_encode($this->getReferences($content)),
         ]);
     }
@@ -621,9 +676,9 @@ class ContentController extends AbstractController
     public function delete(Request $request, Content $content)
     {
         /** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
-        $type = $this->get('integrated.form.resolver')->getType($content->getContentType());
+        $type = $this->resolver->getType($content->getContentType());
 
-        if (!$this->get('security.authorization_checker')->isGranted(Permissions::DELETE, $content)) {
+        if (!$this->isGranted(Permissions::DELETE, $content)) {
             throw new AccessDeniedException();
         }
 
@@ -646,8 +701,7 @@ class ContentController extends AbstractController
             }
         }
 
-        $contentReferenced = $this->get('integrated_content.services.search.content.referenced');
-        $referenced = $contentReferenced->getReferenced($content);
+        $referenced = $this->contentReferenced->getReferenced($content);
 
         $form = $this->createDeleteForm($content, $locking, \count($referenced) > 0);
 
@@ -671,27 +725,21 @@ class ContentController extends AbstractController
             // this is not rest compatible since a button click is required to save
             if ($form->get('actions')->getData() == 'delete') {
                 if ($form->isValid()) {
-                    if ($this->has('integrated_solr.indexer')) {
-                        //higher priority for content edited in Integrated
-                        $subscriber = $this->get('integrated_solr.indexer.mongodb.subscriber');
-                        $queue = $subscriber->getQueue();
-                        $subscriber->setPriority($queue::PRIORITY_HIGH);
-                    }
+                    //higher priority for content edited in Integrated
+                    $queue = $this->queueSubscriber->getQueue();
+                    $this->queueSubscriber->setPriority($queue::PRIORITY_HIGH);
 
                     /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-                    $dm = $this->get('doctrine_mongodb')->getManager();
+                    $dm = $this->getDoctrineODM()->getManager();
 
                     $dm->remove($content);
                     $dm->flush();
 
                     // Set flash message
-                    $this->addFlash('success', $this->get('translator')->trans('The document %name% has been deleted', ['%name%' => $type->getName()]));
+                    $this->addFlash('success', $this->getTranslator()->trans('The document %name% has been deleted', ['%name%' => $type->getName()]));
 
-                    if ($this->has('integrated_solr.indexer')) {
-                        $indexer = $this->get('integrated_solr.indexer');
-                        $indexer->setOption('queue.size', 2);
-                        $indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
-                    }
+                    $this->indexer->setOption('queue.size', 2);
+                    $this->indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
 
                     if (!$locking['locked']) {
                         $locking['release']();
@@ -753,7 +801,7 @@ class ContentController extends AbstractController
      */
     protected function getLock($object, $timeout = null)
     {
-        if (!$this->has('integrated_locking.dbal.manager') || !$this->get('security.authorization_checker')->isGranted(Permissions::EDIT, $object)) {
+        if (!$this->isGranted(Permissions::EDIT, $object)) {
             return [
                 'lock' => null,
                 'user' => null,
@@ -765,7 +813,7 @@ class ContentController extends AbstractController
         }
 
         /** @var Locks\ManagerInterface $service */
-        $service = $this->get('integrated_locking.dbal.manager');
+        $service = $this->lockManager;
 
         // Remove expired locks
         $service->clean();
@@ -814,13 +862,8 @@ class ContentController extends AbstractController
             $user = null;
 
             if ($owner = $lock->getRequest()->getOwner()) {
-                if ($this->has('integrated_user.user.manager')) {
-                    /** @var UserManagerInterface $manager */
-                    $manager = $this->get('integrated_user.user.manager');
-
-                    if ($manager->getClassName() === $owner->getType()) {
-                        $user = $manager->findByUsername($owner->getIdentifier());
-                    }
+                if ($this->userManager->getClassName() === $owner->getType()) {
+                    $user = $this->userManager->findByUsername($owner->getIdentifier());
                 }
             }
 
@@ -854,10 +897,6 @@ class ContentController extends AbstractController
     {
         $results = [];
 
-        if (!$this->has('integrated_locking.dbal.manager')) {
-            return $results;
-        }
-
         $filter = new Filter();
 
         foreach ($iterator as $data) {
@@ -868,21 +907,13 @@ class ContentController extends AbstractController
             return $results;
         }
 
-        /** @var Locks\ManagerInterface $service */
-        $service = $this->get('integrated_locking.dbal.manager');
-
-        foreach ($service->findBy($filter) as $lock) {
+        foreach ($this->lockManager->findBy($filter) as $lock) {
             // get the user the locks belongs to.
             $user = null;
 
             if ($owner = $lock->getRequest()->getOwner()) {
-                if ($this->has('integrated_user.user.manager')) {
-                    /** @var UserManagerInterface $manager */
-                    $manager = $this->get('integrated_user.user.manager');
-
-                    if ($manager->getClassName() === $owner->getType()) {
-                        $user = $manager->findByUsername($owner->getIdentifier());
-                    }
+                if ($this->userManager->getClassName() === $owner->getType()) {
+                    $user = $this->userManager->findByUsername($owner->getIdentifier());
                 }
             }
 
@@ -938,8 +969,7 @@ class ContentController extends AbstractController
         //
         // Get documents assigned to this user
         //
-        $client = $this->get('solarium.client');
-        $query = $client->createSelect();
+        $query = $this->getSolarium()->createSelect();
 
         $assignedContent = [];
 
@@ -950,7 +980,7 @@ class ContentController extends AbstractController
                 ->createFilterQuery('workflow_assigned_id')
                 ->setQuery('facet_workflow_assigned_id:'.$userId.'');
 
-            $result = $client->select($query);
+            $result = $this->getSolarium()->select($query);
 
             $assignedContent = $result->getDocuments();
         }
@@ -972,7 +1002,7 @@ class ContentController extends AbstractController
     public function usedBy(Content $content, Request $request)
     {
         /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-        $dm = $this->get('doctrine_mongodb')->getManager();
+        $dm = $this->getDoctrineODM()->getManager();
 
         $qb = $dm->createQueryBuilder(Content::class);
         $qb->field('relations.references.$id')->equals($content->getId());
@@ -980,8 +1010,7 @@ class ContentController extends AbstractController
         $query = $qb->getQuery();
 
         /** @var $paginator \Knp\Component\Pager\Paginator */
-        $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate(
+        $pagination = $this->getPaginator()->paginate(
             $query,
             $request->query->get('page', 1),
             $request->query->get('limit', 15)
@@ -1082,7 +1111,7 @@ class ContentController extends AbstractController
 
         // load a different set of buttons based on the permissions and locking state
 
-        if (!$this->get('security.authorization_checker')->isGranted(Permissions::EDIT, $content)) {
+        if (!$this->isGranted(Permissions::EDIT, $content)) {
             return $form->add('actions', ActionsType::class, ['buttons' => ['back']]);
         }
 
@@ -1132,7 +1161,7 @@ class ContentController extends AbstractController
                 ];
 
                 if ($reference instanceof Image) {
-                    $properties['image'] = $this->get('integrated_image.twig_extension')->image($reference->getFile())->cropResize(250, 250)->jpeg();
+                    $properties['image'] = $this->imageExtension->image($reference->getFile())->cropResize(250, 250)->jpeg();
                 }
 
                 $references[$relation->getRelationId()][] = $properties;

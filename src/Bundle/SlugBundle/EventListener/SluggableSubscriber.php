@@ -136,10 +136,15 @@ class SluggableSubscriber implements EventSubscriber
 
                 if ($event == 'preUpdate') {
                     $uow = $om->getUnitOfWork();
-                    if (\array_key_exists($propertyMetadata->name, $uow->getEntityChangeSet($object))) {
+                    if ($om instanceof DocumentManager) {
+                        $changeset = $uow->getDocumentChangeSet($object);
+                    } else {
+                        $changeset = $uow->getEntityChangeSet($object);
+                    }
+                    if (\array_key_exists($propertyMetadata->name, $changeset)) {
                         // generate custom slug
                         $slug = $this->slugger->slugify(
-                            $uow->getEntityChangeSet($object)[$propertyMetadata->name],
+                            $changeset[$propertyMetadata->name],
                             $propertyMetadata->slugSeparator
                         );
                     } elseif (null !== $propertyMetadata->getValue($object)) {

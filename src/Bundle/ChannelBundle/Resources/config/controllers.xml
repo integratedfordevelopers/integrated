@@ -4,20 +4,20 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-
-        <parameter key="integrated_channel.controller.config.class">Integrated\Bundle\ChannelBundle\Controller\ConfigController</parameter>
-        <parameter key="integrated_channel.controller.connector.class">Integrated\Bundle\ChannelBundle\Controller\ConnectorController</parameter>
-
-    </parameters>
-
     <services>
 
-        <service id="integrated_channel.controller.config" class="%integrated_channel.controller.config.class%" public="true">
+        <service id="Integrated\Bundle\ChannelBundle\Controller\ConfigController">
             <argument type="service" id="integrated_channel.config.manager" />
             <argument type="service" id="integrated_channel.adapter.registry" />
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="service_container" />
+
+            <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
     </services>

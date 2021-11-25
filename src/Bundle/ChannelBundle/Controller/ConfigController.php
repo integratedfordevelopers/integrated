@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ChannelBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormInterface;
-use Knp\Component\Pager\Paginator;
 use Exception;
 use Integrated\Bundle\ChannelBundle\Event\FilterResponseConfigEvent;
 use Integrated\Bundle\ChannelBundle\Event\FormConfigEvent;
@@ -23,10 +22,10 @@ use Integrated\Bundle\ChannelBundle\Form\Type\ConfigFormType;
 use Integrated\Bundle\ChannelBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\ChannelBundle\IntegratedChannelEvents;
 use Integrated\Bundle\ChannelBundle\Model\Config;
+use Integrated\Bundle\IntegratedBundle\Controller\AbstractController;
 use Integrated\Common\Channel\Connector\Adapter\RegistryInterface;
 use Integrated\Common\Channel\Connector\AdapterInterface;
 use Integrated\Common\Channel\Connector\Config\ConfigManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -358,13 +357,5 @@ class ConfigController extends AbstractController
         $form->add('actions', ActionsType::class, ['buttons' => ['delete', 'cancel']]);
 
         return $form;
-    }
-
-    /**
-     * @return Paginator
-     */
-    protected function getPaginator()
-    {
-        return $this->get('knp_paginator');
     }
 }

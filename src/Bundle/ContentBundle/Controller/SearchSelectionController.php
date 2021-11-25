@@ -16,8 +16,8 @@ use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
 use Integrated\Bundle\ContentBundle\Form\Type\SearchSelectionType;
+use Integrated\Bundle\IntegratedBundle\Controller\AbstractController;
 use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -39,9 +39,7 @@ class SearchSelectionController extends AbstractController
      */
     public function index(Request $request)
     {
-        /** @var $paginator \Knp\Component\Pager\Paginator */
-        $paginator = $this->get('knp_paginator');
-        $paginator = $paginator->paginate($this->getQueryBuilder(), $request->query->get('page', 1), 15);
+        $paginator = $this->getPaginator()->paginate($this->getQueryBuilder(), $request->query->get('page', 1), 15);
 
         return $this->render('@IntegratedContent/search_selection/index.html.twig', [
             'searchSelections' => $paginator,

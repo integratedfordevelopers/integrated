@@ -11,12 +11,26 @@
             <argument type="service" id="integrated_content.channel.context" />
             <argument type="service" id="service_container" />
             <argument type="service" id="Integrated\Bundle\ContentBundle\Services\ContentTypeInformation"/>
+
+            <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
         <service id="integrated_sitemap.controller.news" class="Integrated\Bundle\SitemapBundle\Controller\NewsController">
             <argument type="service" id="doctrine_mongodb" />
             <argument type="service" id="integrated_content.channel.context" />
             <argument type="service" id="service_container" />
+
+            <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
         <service id="integrated_sitemap.controller.robots" class="Integrated\Bundle\SitemapBundle\Controller\RobotsController" />
