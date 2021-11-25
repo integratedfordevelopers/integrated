@@ -913,10 +913,7 @@ class ContentController extends AbstractController
             return $results;
         }
 
-        /** @var Locks\ManagerInterface $service */
-        $service = $this->lockManager;
-
-        foreach ($service->findBy($filter) as $lock) {
+        foreach ($this->lockManager->findBy($filter) as $lock) {
             // get the user the locks belongs to.
             $user = null;
 
