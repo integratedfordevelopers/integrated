@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-    {% include 'IntegratedWebsiteBundle::json-ld.html.twig' with {content: taxonomy} %}
+    {% include '@IntegratedWebsite/json-ld.html.twig' with {content: taxonomy} %}
 
     <h1>{{ taxonomy.title }}</h1>
 

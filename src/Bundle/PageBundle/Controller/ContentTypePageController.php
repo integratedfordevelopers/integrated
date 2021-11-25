@@ -66,7 +66,7 @@ class ContentTypePageController extends AbstractController
             return $this->redirectToRoute('integrated_page_page_index');
         }
 
-        return $this->render('IntegratedPageBundle:content_type_page:edit.html.twig', [
+        return $this->render('@IntegratedPage/content_type_page/edit.html.twig', [
             'page' => $page,
             'form' => $form->createView(),
         ]);

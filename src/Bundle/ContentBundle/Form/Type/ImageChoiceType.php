@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Integrated\Bundle\ContentBundle\Document\Content\Image;
 use Integrated\Bundle\ContentBundle\Form\DataTransformer\ImageTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -32,7 +33,7 @@ class ImageChoiceType extends AbstractType
      */
     public function __construct(DocumentManager $manager)
     {
-        $this->repository = $manager->getRepository('IntegratedContentBundle:Content\Image');
+        $this->repository = $manager->getRepository(Image::class);
     }
 
     /**

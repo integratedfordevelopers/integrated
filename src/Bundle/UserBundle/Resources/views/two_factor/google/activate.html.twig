@@ -1,4 +1,4 @@
-{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% extends '@IntegratedContent/base.html.twig' %}
 
 {% block header %}
     {% if not config.required %}
@@ -6,7 +6,7 @@
     {% else %}
         <nav class="navbar megamenu">
             <div class="container">
-                {% include 'IntegratedContentBundle:partials:block.logo.html.twig' %}
+                {% include '@IntegratedContent/partials/block.logo.html.twig' %}
             </div>
         </nav>
     {% endif %}

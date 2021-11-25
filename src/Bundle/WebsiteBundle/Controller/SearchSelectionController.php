@@ -40,7 +40,7 @@ class SearchSelectionController extends AbstractController
             $block->setItemsPerPage($itemsPerPage);
         }
 
-        return $this->render('IntegratedWebsiteBundle:search_selection:rss.'.$request->getRequestFormat('xml').'.twig', [
+        return $this->render('@IntegratedWebsite/search_selection/rss.'.$request->getRequestFormat('xml').'.twig', [
             'selection' => $selection,
             'documents' => $this->get('integrated_content.provider.solarium')->execute($block, $request),
         ]);
