@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of BraincraftedBootstrapBundle.
- * (c) 2012-2013 by Florian Eckerstorfer
+ * (c) 2012-2013 by Florian Eckerstorfer.
  */
 
 namespace Integrated\Bundle\FormTypeBundle\Form\Extension;
@@ -12,14 +12,13 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 
 /**
- * TypeSetterExtension
+ * TypeSetterExtension.
  *
- * @package    BraincraftedBootstrapBundle
- * @subpackage Form
  * @author     Florian Eckerstorfer <florian@eckerstorfer.co>
  * @copyright  2012-2013 Florian Eckerstorfer
  * @license    http://opensource.org/licenses/MIT The MIT License
- * @link       http://bootstrap.braincrafted.com Bootstrap for Symfony2
+ *
+ * @see       http://bootstrap.braincrafted.com Bootstrap for Symfony2
  */
 class TypeSetterExtension extends AbstractTypeExtension
 {

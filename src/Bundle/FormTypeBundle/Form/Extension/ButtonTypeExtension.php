@@ -9,14 +9,13 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 
 /**
- * FormControlStaticType
+ * FormControlStaticType.
  *
- * @package    BraincraftedBootstrapBundle
- * @subpackage Form
  * @author     André Püschel <pue@der-pue.de>
  * @copyright  2014 André Püschel
  * @license    http://opensource.org/licenses/MIT The MIT License
- * @link       http://bootstrap.braincrafted.com Bootstrap for Symfony2
+ *
+ * @see       http://bootstrap.braincrafted.com Bootstrap for Symfony2
  */
 class ButtonTypeExtension extends AbstractTypeExtension
 {
