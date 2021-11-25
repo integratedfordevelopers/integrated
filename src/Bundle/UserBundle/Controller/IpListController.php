@@ -13,12 +13,11 @@ namespace Integrated\Bundle\UserBundle\Controller;
 
 use Symfony\Component\Form\FormInterface;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
+use Integrated\Bundle\IntegratedBundle\Controller\AbstractController;
 use Integrated\Bundle\UserBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\UserBundle\Form\Type\IpListFormType;
 use Integrated\Bundle\UserBundle\Model\IpList;
 use Integrated\Bundle\UserBundle\Model\IpListManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,11 +29,9 @@ class IpListController extends AbstractController
      */
     private $manager;
 
-    public function __construct(IpListManagerInterface $manager, ContainerInterface $container)
+    public function __construct(IpListManagerInterface $manager)
     {
         $this->manager = $manager;
-
-        $this->setContainer($container);
     }
 
     /**
@@ -48,9 +45,7 @@ class IpListController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        /** @var $paginator \Knp\Component\Pager\Paginator */
-        $paginator = $this->get('knp_paginator');
-        $paginator = $paginator->paginate(
+        $paginator = $this->getPaginator()->paginate(
             $this->manager->findAll(),
             $request->query->get('page', 1),
             15

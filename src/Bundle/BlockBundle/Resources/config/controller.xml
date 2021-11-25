@@ -12,6 +12,11 @@
             <argument type="service" id="knp_paginator"/>
 
             <tag name="controller.service_arguments"/>
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
         <service id="Integrated\Bundle\BlockBundle\Controller\InlineTextBlockController">
@@ -20,6 +25,11 @@
             <argument type="service" id="knp_paginator"/>
 
             <tag name="controller.service_arguments"/>
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
     </services>

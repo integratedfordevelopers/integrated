@@ -11,10 +11,10 @@
 
 namespace Integrated\Bundle\UserBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Integrated\Bundle\IntegratedBundle\Controller\AbstractController;
+use Integrated\Bundle\UserBundle\Provider\FilterQueryProvider;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Form\FormInterface;
-use Knp\Component\Pager\Paginator;
 use Integrated\Bundle\UserBundle\Form\Type\DeleteFormType;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,6 +31,16 @@ use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 class UserController extends AbstractController
 {
     /**
+     * @var FilterQueryProvider
+     */
+    private $filterQueryProvider;
+
+    public function __construct(FilterQueryProvider $filterQueryProvider)
+    {
+        $this->filterQueryProvider = $filterQueryProvider;
+    }
+
+    /**
      * @param Request $request
      *
      * @return Response
@@ -42,9 +52,8 @@ class UserController extends AbstractController
         }
 
         $data = $request->query->get('integrated_user_filter');
-        $queryProvider = $this->get('integrated_user.provider.filter_query');
 
-        $users = $queryProvider->getUsers($data);
+        $users = $this->filterQueryProvider->getUsers($data);
 
         $facetFilter = $this->createForm(UserFilterType::class, null, [
             'data' => $data,
@@ -283,13 +292,5 @@ class UserController extends AbstractController
         }
 
         return $this->container->get('integrated_user.user.manager');
-    }
-
-    /**
-     * @return Paginator
-     */
-    protected function getPaginator()
-    {
-        return $this->get('knp_paginator');
     }
 }

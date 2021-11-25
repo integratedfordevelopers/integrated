@@ -6,37 +6,97 @@
 
     <services>
 
+        <service id="Integrated\Bundle\ContentBundle\Controller\ContentController">
+            <argument type="service" id="integrated.form.resolver" />
+            <argument type="service" id="integrated_content.content_type.manager" />
+            <argument type="service" id="integrated_solr.indexer.mongodb.subscriber" />
+            <argument type="service" id="integrated_solr.lock.factory" />
+            <argument type="service" id="integrated_solr.indexer" />
+            <argument type="service" id="integrated_content.services.search.content.referenced" />
+            <argument type="service" id="integrated_locking.dbal.manager" />
+            <argument type="service" id="integrated_user.user.manager" />
+            <argument type="service" id="integrated_image.twig_extension" />
+
+            <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+
         <service id="Integrated\Bundle\ContentBundle\Controller\ContentTypeController">
             <argument type="service" id="integrated_content.content_type.manager" />
             <argument type="service" id="integrated_content.event_dispatcher" />
             <argument type="service" id="integrated_content.metadata.factory" />
+
             <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
         <service id="Integrated\Bundle\ContentBundle\Controller\ChannelController">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <argument type="service" id="integrated_content.services.search.content.referenced" />
+
             <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
         <service id="Integrated\Bundle\ContentBundle\Controller\RankController">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <argument type="service" id="integrated_content.provider.content_provider" />
             <argument type="service" id="translator" />
+
             <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
-        <service id="integrated_content.controller.search_controller" class="Integrated\Bundle\ContentBundle\Controller\SearchController" public="true">
+        <service id="Integrated\Bundle\ContentBundle\Controller\SearchController">
             <argument type="service" id="integrated_solr.indexer.client" />
             <argument type="service" id="serializer" />
             <argument type="service" id="service_container" />
+
+            <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
-        <service id="integrated_content.controller.bulk_controller" class="Integrated\Bundle\ContentBundle\Controller\BulkController" public="true">
+        <service id="Integrated\Bundle\ContentBundle\Controller\SearchSelectionController">
+            <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+
+        <service id="Integrated\Bundle\ContentBundle\Controller\BulkController">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <argument type="service" id="integrated_content.provider.content_provider" />
             <argument type="service" id="integrated_content.bulk.handler" />
             <argument type="service" id="service_container" />
+
+            <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
     </services>

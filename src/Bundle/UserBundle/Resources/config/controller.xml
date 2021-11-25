@@ -11,20 +11,37 @@
             <argument type="service" id="Integrated\Bundle\UserBundle\Service\KeyGenerator" />
 
             <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
-        <service id="integrated_user.controller.profile" class="Integrated\Bundle\UserBundle\Controller\ProfileController" public="true">
+        <service id="Integrated\Bundle\UserBundle\Controller\ProfileController">
             <argument type="service" id="integrated_user.user.manager" />
             <argument type="service" id="security.encoder_factory" />
             <argument type="service" id="braincrafted_bootstrap.flash" />
             <argument type="service" id="service_container" />
+
+            <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
-        <service id="integrated_user.controller.ip_list" class="Integrated\Bundle\UserBundle\Controller\IpListController">
+        <service id="Integrated\Bundle\UserBundle\Controller\IpListController">
             <argument type="service" id="integrated_user.ip_list.manager" />
             <argument type="service" id="service_container" />
 
             <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
         <service id="integrated_user.controller.two_factor_google" class="Integrated\Bundle\UserBundle\Controller\TwoFactor\GoogleController">
@@ -37,6 +54,11 @@
             <argument type="service" id="service_container" />
 
             <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
         <service id="integrated_user.controller.two_factor" class="Integrated\Bundle\UserBundle\Controller\TwoFactorController">
@@ -44,7 +66,22 @@
             <argument type="service" id="service_container" />
 
             <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
+        <service id="Integrated\Bundle\UserBundle\Controller\UserController">
+            <argument type="service" id="integrated_user.provider.filter_query" />
+
+            <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
     </services>
 </container>

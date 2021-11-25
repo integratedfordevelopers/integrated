@@ -14,6 +14,13 @@
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <argument type="service" id="form.factory" />
             <argument type="service" id="security.token_storage" />
+
+            <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
     </services>
