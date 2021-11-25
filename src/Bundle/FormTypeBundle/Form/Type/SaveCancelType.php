@@ -38,6 +38,8 @@ class SaveCancelType extends SubmitType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        parent::configureOptions($resolver);
+
         $resolver->setDefaults([
             'cancel_route_parameters' => [],
             'label' => 'Save',

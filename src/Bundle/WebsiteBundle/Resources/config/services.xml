@@ -40,7 +40,7 @@
 
         <service id="integrated_website.event_listener.content_youtube_listener" class="Integrated\Bundle\WebsiteBundle\EventListener\Objects\ContentYoutubeListener">
             <argument type="service" id="integrated_theme.templating.theme_manager" />
-            <argument type="service" id="templating" />
+            <argument type="service" id="twig" />
             <argument>%kernel.environment%</argument>
             <tag name="kernel.event_listener" event="content.event" method="process" />
         </service>

@@ -17,7 +17,7 @@
     </route>
 
     <route id="integrated_comment_get" path="/comment/{comment}">
-        <default key="_controller">Integrated\Bundle\CommentBundle\Controller\DefaultController::get</default>
+        <default key="_controller">Integrated\Bundle\CommentBundle\Controller\DefaultController::getComment</default>
     </route>
 
 </routes>

@@ -11,10 +11,10 @@
 namespace Integrated\Bundle\UserBundle\Service;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 use Twig\Error\Error;
 use Integrated\Bundle\UserBundle\Doctrine\UserManager;
 use Integrated\Bundle\UserBundle\Model\ScopeInterface;
-use Symfony\Bridge\Twig\TwigEngine;
 
 class Mailer
 {
@@ -29,7 +29,7 @@ class Mailer
     private $mailer;
 
     /**
-     * @var TwigEngine
+     * @var Environment
      */
     private $templating;
 
@@ -58,13 +58,13 @@ class Mailer
      *
      * @param UserManager         $userManager
      * @param \Swift_Mailer       $mailer
-     * @param TwigEngine          $templating
+     * @param Environment         $templating
      * @param TranslatorInterface $translator
      * @param KeyGenerator        $keyGenerator
      * @param                     $from
      * @param                     $name
      */
-    public function __construct(UserManager $userManager, \Swift_Mailer $mailer, TwigEngine $templating, TranslatorInterface $translator, KeyGenerator $keyGenerator, $from, $name)
+    public function __construct(UserManager $userManager, \Swift_Mailer $mailer, Environment $templating, TranslatorInterface $translator, KeyGenerator $keyGenerator, $from, $name)
     {
         $this->userManager = $userManager;
         $this->mailer = $mailer;
@@ -90,16 +90,14 @@ class Mailer
         ];
         $template = 'IntegratedUserBundle::mail/password.reset.notfound.html.twig';
 
-        if ($user = $this->userManager->findByUsernameAndScope($email, $scope)) {
-            if ($user->isEnabled()) {
-                $timestamp = time();
-                $key = $this->keyGenerator->generateKey($timestamp, $user);
-                $template = 'IntegratedUserBundle::mail/password.reset.html.twig';
+        if ($user = $this->userManager->findEnabledByUsernameAndScope($email, $scope)) {
+            $timestamp = time();
+            $key = $this->keyGenerator->generateKey($timestamp, $user);
+            $template = 'IntegratedUserBundle::mail/password.reset.html.twig';
 
-                $data['user'] = $user;
-                $data['timestamp'] = $timestamp;
-                $data['key'] = $key;
-            }
+            $data['user'] = $user;
+            $data['timestamp'] = $timestamp;
+            $data['key'] = $key;
         }
 
         $message = (new \Swift_Message())

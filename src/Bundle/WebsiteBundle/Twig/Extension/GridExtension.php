@@ -16,11 +16,14 @@ use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig\Environment;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class GridExtension extends \Twig_Extension
+class GridExtension extends AbstractExtension
 {
     /**
      * @var OptionsResolver
@@ -48,7 +51,7 @@ class GridExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'integrated_grid',
                 [$this, 'renderGrid'],
                 ['is_safe' => ['html'], 'needs_environment' => true, 'needs_context' => true]
@@ -57,14 +60,14 @@ class GridExtension extends \Twig_Extension
     }
 
     /**
-     * @param \Twig_Environment $environment
-     * @param array             $context
-     * @param string            $id
-     * @param array             $options
+     * @param Environment $environment
+     * @param array       $context
+     * @param string      $id
+     * @param array       $options
      *
      * @return string
      */
-    public function renderGrid(\Twig_Environment $environment, $context, $id, array $options = [])
+    public function renderGrid(Environment $environment, $context, $id, array $options = [])
     {
         $options = $this->resolver->resolve($options);
 

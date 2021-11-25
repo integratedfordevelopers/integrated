@@ -26,7 +26,7 @@ class IntegratedStorageExtension extends Extension implements PrependExtensionIn
     /**
      * @var string
      */
-    protected $formTemplate = 'IntegratedStorageBundle:form:form_div_layout.html.twig';
+    protected $formTemplate = '@IntegratedStorage/form/form_div_layout.html.twig';
 
     /**
      * {@inheritdoc}

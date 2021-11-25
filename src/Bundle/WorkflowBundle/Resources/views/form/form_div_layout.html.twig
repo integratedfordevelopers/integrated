@@ -27,7 +27,7 @@
 {% endblock %}
 
 {% block workflow_definition_state_collection_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if prototype is defined %}
             {% set prototype_vars = {} %}
             {% if style is defined %}
@@ -68,5 +68,5 @@
             {% endif %}
 
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock workflow_definition_state_collection_widget %}

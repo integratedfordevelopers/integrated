@@ -28,32 +28,32 @@
 {% endblock %}
 
 {% block integrated_datetime_widget  %}
-    {% spaceless %}
+    {% apply spaceless %}
         <div class="input-group date form_datetime" data-locale="{{ app.request.locale }}" style="width: 230px;" data-date-format="d-m-Y H:i">
             <input {{ block('widget_attributes') }} class="form-control" size="16" type="text" {% if value is not empty %}value="{{ value }}" {% endif %} autocomplete="off">
             <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block integrated_color_row %}
-{% spaceless %}
+{% apply spaceless %}
     {% integrated_javascripts 'bundles/integratedformtype/components/mjolnic-bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js' %}{% endintegrated_javascripts %}
     {% integrated_javascripts inline=true %}
         $('.colorpicker-component').colorpicker();
     {% endintegrated_javascripts %}
 
     {{ block("form_row") }}
-{% endspaceless %}
+{% endapply %}
 {% endblock %}
 
 {% block integrated_color_widget %}
-{% spaceless %}
+{% apply spaceless %}
     <div class="input-group colorpicker-component">
         <input {{ block('widget_attributes') }} class="form-control" type="text" value="{{ value }}">
         <span class="input-group-addon"><i></i></span>
     </div>
-{% endspaceless %}
+{% endapply %}
 {% endblock %}
 
 {% block integrated_wysihtml5x_widget  %}
@@ -65,7 +65,7 @@
 {% endblock %}
 
 {% block integrated_editor_row  %}
-    {% spaceless %}
+    {% apply spaceless %}
 
     {# @todo to this include with a Twig extension #}
     <link href="/bundles/integratedformtype/css/tinymce.editor.css" rel="stylesheet" type="text/css" />
@@ -131,33 +131,33 @@
                 }
         );
         </script>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block checkbox_row %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set style = style|default(bootstrap_get_style()) %}
         {% if style == 'horizontal' and (align_widget is defined or attr.align_widget is defined) %}
             {% set align_with_widget = true %}
         {% endif %}
 
         {{ parent() }}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block radio_row %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set style = style|default(bootstrap_get_style()) %}
         {% if style == 'horizontal' and (align_widget is defined or attr.align_widget is defined) %}
             {% set align_with_widget = true %}
         {% endif %}
 
         {{ parent() }}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block integrated_sortable_collection_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if prototype is defined %}
             {% set prototype_vars = {} %}
             {% if style is defined %}
@@ -217,11 +217,11 @@
             'bundles/integratedformtype/components/jquery-ui/jquery-ui.min.js'
             'bundles/integratedformtype/js/content_sortable_collection.js' %}
         {% endintegrated_javascripts %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block integrated_collection_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if prototype is defined %}
             {% set prototype_vars = {} %}
             {% if style is defined %}
@@ -262,7 +262,7 @@
                 <a href="#" class="btn btn-primary btn-sm" data-addfield="collection" data-collection="{{ form.vars.id }}" data-prototype-name="{{ prototype_name }}">{{ form.vars.add_button_text|trans({}, translation_domain)|parse_icons|raw }}</a>
             {% endif %}
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block integrated_content_choice_widget %}
@@ -274,7 +274,7 @@
         'data-allow-clear' : (allow_clear ? 'true' : 'false'),
         'class' : (attr.class|default('') ~ ' form-control integrated_content_choice')|trim
     }) %}
-    {% spaceless %}
+    {% apply spaceless %}
         <select {{ block('widget_attributes') }}>
             {% if multiple %}
                 {{ block('integrated_content_choice_multiple') }}
@@ -282,7 +282,7 @@
                 {{ block('integrated_content_choice_single') }}
             {% endif %}
         </select>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block integrated_content_rank_widget %}
@@ -295,13 +295,13 @@
         'data-allow-clear' : (allow_clear ? 'true' : 'false'),
         'class' : (attr.class|default('') ~ ' form-control integrated_content_choice')|trim
     }) %}
-    {% spaceless %}
+    {% apply spaceless %}
         <select {{ block('widget_attributes') }}>
             {% if data %}
                 <option value="{{ data }}" selected="selected">{% trans%}Keep current position{% endtrans %}</option>
             {% endif %}
         </select>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block integrated_content_choice_single %}
@@ -329,7 +329,7 @@
 {% endblock %}
 
 {% block integrated_save_cancel_row %}
-    {% spaceless %}
+    {% apply spaceless %}
         <section class="section-white prefooter-holder">
             <div class="container text-center">
                 {{ form_widget(form) }}
@@ -337,6 +337,6 @@
                 <a class="btn btn-gray-thin integrated-cancel-button" href="{{ path(cancel_route, cancel_route_parameters) }}">{% trans %}Cancel{% endtrans %}</a>
             </div><!-- container -->
         </section>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 

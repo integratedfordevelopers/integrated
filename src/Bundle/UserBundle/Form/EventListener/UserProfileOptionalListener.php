@@ -11,10 +11,10 @@
 
 namespace Integrated\Bundle\UserBundle\Form\EventListener;
 
+use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -43,7 +43,7 @@ class UserProfileOptionalListener implements EventSubscriberInterface
             return;
         }
 
-        if ($data instanceof AdvancedUserInterface) {
+        if ($data instanceof UserInterface) {
             $event->getForm()->get('enabled')->setData($data->isEnabled());
         }
     }
@@ -59,7 +59,7 @@ class UserProfileOptionalListener implements EventSubscriberInterface
             return;
         }
 
-        if ($data instanceof AdvancedUserInterface) {
+        if ($data instanceof UserInterface) {
             $data->setEnabled($event->getForm()->get('enabled')->getData());
         }
     }

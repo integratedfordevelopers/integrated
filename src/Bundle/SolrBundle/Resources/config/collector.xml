@@ -7,7 +7,7 @@
     <services>
 
 		<service id="integrated_solr.solarium.data_collector" class="Integrated\Bundle\SolrBundle\DataCollector\SolariumDataCollector">
-            <tag name="data_collector" id="solr" template="IntegratedSolrBundle:collector:solarium" />
+            <tag name="data_collector" id="solr" template="@IntegratedSolr/collector/solarium.html.twig" />
         </service>
 
     </services>

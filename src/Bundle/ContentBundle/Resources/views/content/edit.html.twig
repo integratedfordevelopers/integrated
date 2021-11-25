@@ -101,7 +101,7 @@
 
                         {% block content_history %}
                             {% if hasContentHistoryBundle %}
-                                {{ render(controller('integrated_content_history.controller.content_history:historyAction', { 'content': content })) }}
+                                {{ render(controller('Integrated\Bundle\ContentHistoryBundle\Controller\ContentHistoryController::history', { 'content': content })) }}
                             {% endif %}
                         {% endblock %}
                     {% endblock %}

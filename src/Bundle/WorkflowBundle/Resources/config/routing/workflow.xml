@@ -5,35 +5,35 @@
 		xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
 	<route id="integrated_workflow_index" path="/" methods="GET">
-		<default key="_controller">IntegratedWorkflowBundle:Workflow:index</default>
+		<default key="_controller">Integrated\Bundle\WorkflowBundle\Controller\WorkflowController::index</default>
 	</route>
 
 	<route id="integrated_workflow_new" path="/new">
-		<default key="_controller">IntegratedWorkflowBundle:Workflow:new</default>
+		<default key="_controller">Integrated\Bundle\WorkflowBundle\Controller\WorkflowController::new</default>
 	</route>
 
 	<route id="integrated_workflow_change_state" path="/change_state" methods="GET">
-		<default key="_controller">IntegratedWorkflowBundle:Workflow:changeState</default>
+		<default key="_controller">Integrated\Bundle\WorkflowBundle\Controller\WorkflowController::changeState</default>
 	</route>
 
 	<route id="integrated_workflow_new_rest" path="/" methods="POST">
-		<default key="_controller">IntegratedWorkflowBundle:Workflow:new</default>
+		<default key="_controller">Integrated\Bundle\WorkflowBundle\Controller\WorkflowController::new</default>
 	</route>
 
 	<route id="integrated_workflow_edit" path="/{id}"  methods="GET">
-		<default key="_controller">IntegratedWorkflowBundle:Workflow:edit</default>
+		<default key="_controller">Integrated\Bundle\WorkflowBundle\Controller\WorkflowController::edit</default>
 	</route>
 
 	<route id="integrated_workflow_edit_rest" path="/{id}" methods="PUT">
-		<default key="_controller">IntegratedWorkflowBundle:Workflow:edit</default>
+		<default key="_controller">Integrated\Bundle\WorkflowBundle\Controller\WorkflowController::edit</default>
 	</route>
 
 	<route id="integrated_workflow_delete" path="/{id}/delete">
-		<default key="_controller">IntegratedWorkflowBundle:Workflow:delete</default>
+		<default key="_controller">Integrated\Bundle\WorkflowBundle\Controller\WorkflowController::delete</default>
 	</route>
 
 	<route id="integrated_workflow_delete_rest" path="/{id}" methods="DELETE">
-		<default key="_controller">IntegratedWorkflowBundle:Workflow:delete</default>
+		<default key="_controller">Integrated\Bundle\WorkflowBundle\Controller\WorkflowController::delete</default>
 	</route>
 
 </routes>

@@ -5,39 +5,39 @@
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="integrated_content_content_type_index" path="/" methods="GET">
-        <default key="_controller">IntegratedContentBundle:ContentType:index</default>
+        <default key="_controller">Integrated\Bundle\ContentBundle\Controller\ContentTypeController::index</default>
     </route>
 
     <route id="integrated_content_content_type_select" path="/select" methods="GET">
-        <default key="_controller">IntegratedContentBundle:ContentType:select</default>
+        <default key="_controller">Integrated\Bundle\ContentBundle\Controller\ContentTypeController::select</default>
     </route>
 
     <route id="integrated_content_content_type_new" path="/new">
-        <default key="_controller">IntegratedContentBundle:ContentType:new</default>
+        <default key="_controller">Integrated\Bundle\ContentBundle\Controller\ContentTypeController::new</default>
     </route>
 
     <route id="integrated_content_content_type_new_rest" path="/" methods="POST">
-        <default key="_controller">IntegratedContentBundle:ContentType:new</default>
+        <default key="_controller">Integrated\Bundle\ContentBundle\Controller\ContentTypeController::new</default>
     </route>
 
     <route id="integrated_content_content_type_edit" path="/{id}" methods="GET">
-        <default key="_controller">IntegratedContentBundle:ContentType:edit</default>
+        <default key="_controller">Integrated\Bundle\ContentBundle\Controller\ContentTypeController::edit</default>
     </route>
 
     <route id="integrated_content_content_type_edit_rest" path="/{id}" methods="PUT">
-        <default key="_controller">IntegratedContentBundle:ContentType:edit</default>
+        <default key="_controller">Integrated\Bundle\ContentBundle\Controller\ContentTypeController::edit</default>
     </route>
 
     <route id="integrated_content_content_type_delete" path="/{id}" methods="DELETE">
-        <default key="_controller">IntegratedContentBundle:ContentType:delete</default>
+        <default key="_controller">Integrated\Bundle\ContentBundle\Controller\ContentTypeController::delete</default>
     </route>
 
     <route id="integrated_content_content_type_delete_rest" path="/{id}/delete">
-        <default key="_controller">IntegratedContentBundle:ContentType:delete</default>
+        <default key="_controller">Integrated\Bundle\ContentBundle\Controller\ContentTypeController::delete</default>
     </route>
 
     <route id="integrated_content_content_type_show" path="/{id}/show" methods="GET">
-        <default key="_controller">IntegratedContentBundle:ContentType:show</default>
+        <default key="_controller">Integrated\Bundle\ContentBundle\Controller\ContentTypeController::show</default>
     </route>
 
 </routes>

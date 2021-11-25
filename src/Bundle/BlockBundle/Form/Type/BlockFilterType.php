@@ -42,26 +42,18 @@ class BlockFilterType extends AbstractType
     private $blockUsageProvider;
 
     /**
-     * @var bool
-     */
-    private $pageBundleInstalled;
-
-    /**
      * @param MetadataFactoryInterface $factory
      * @param DocumentManager          $dm
      * @param BlockUsageProvider       $blockUsageProvider
-     * @param array                    $bundles
      */
     public function __construct(
         MetadataFactoryInterface $factory,
         DocumentManager $dm,
-        BlockUsageProvider $blockUsageProvider,
-        array $bundles
+        BlockUsageProvider $blockUsageProvider
     ) {
         $this->factory = $factory;
         $this->dm = $dm;
         $this->blockUsageProvider = $blockUsageProvider;
-        $this->pageBundleInstalled = isset($bundles['IntegratedPageBundle']);
     }
 
     /**
@@ -87,18 +79,15 @@ class BlockFilterType extends AbstractType
             ]
         );
 
-        /* if IntegratedPageBundle is installed show channels */
-        if ($this->pageBundleInstalled) {
-            $builder->add(
-                'channels',
-                ChoiceType::class,
-                [
-                    'choices' => $this->getChannelChoices($options['blockIds']),
-                    'expanded' => true,
-                    'multiple' => true,
-                ]
-            );
-        }
+        $builder->add(
+            'channels',
+            ChoiceType::class,
+            [
+                'choices' => $this->getChannelChoices($options['blockIds']),
+                'expanded' => true,
+                'multiple' => true,
+            ]
+        );
     }
 
     /**

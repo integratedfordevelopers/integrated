@@ -15,22 +15,17 @@ use Integrated\Bundle\ContentBundle\Document\Content\Relation\Company;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Integrated\Bundle\WebsiteBundle\Service\ContentService;
-use Symfony\Bundle\TwigBundle\TwigEngine;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class CompanyController
+class CompanyController extends AbstractController
 {
     /**
      * @var ContentService
      */
     private $contentService;
-
-    /**
-     * @var TwigEngine
-     */
-    protected $templating;
 
     /**
      * @var ThemeManager
@@ -39,13 +34,11 @@ class CompanyController
 
     /**
      * @param ContentService $contentService
-     * @param TwigEngine     $templating
      * @param ThemeManager   $themeManager
      */
-    public function __construct(ContentService $contentService, TwigEngine $templating, ThemeManager $themeManager)
+    public function __construct(ContentService $contentService, ThemeManager $themeManager)
     {
         $this->contentService = $contentService;
-        $this->templating = $templating;
         $this->themeManager = $themeManager;
     }
 
@@ -59,7 +52,7 @@ class CompanyController
     {
         $this->contentService->prepare($company);
 
-        return $this->templating->renderResponse(
+        return $this->render(
             $this->themeManager->locateTemplate('content/company/show/'.$page->getLayout()),
             [
                 'company' => $company,

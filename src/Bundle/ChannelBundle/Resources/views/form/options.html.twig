@@ -1,5 +1,5 @@
 {% block integrated_channel_options_row  %}
-    {% spaceless %}
+    {% apply spaceless %}
 
         {% if attr.style is defined and attr.style is not empty %}
             {% set style = attr.style %}
@@ -38,5 +38,5 @@
 
         {{ block('form_rows') }}
 
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}

@@ -57,11 +57,6 @@ class ContentService
 
     /**
      * @param Content $content
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @throws \Integrated\Bundle\ThemeBundle\Exception\CircularFallbackException
-     * @throws \Twig\Error\Error
      */
     public function prepare(Content $content)
     {

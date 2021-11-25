@@ -1,4 +1,4 @@
-{% spaceless %}
+{% apply spaceless %}
 {% set items = [] %}
 {% for content in pager %}
     {% set item = {'id': content.type_id, 'type': content.type_name,'title': content.title|default('(no title)'), 'content': null, 'image': null} %}
@@ -33,5 +33,5 @@
     {% set paging = paging|merge([{'prev': true}]) %}
 {% endif %}
 {% set data = {'href': 'resource', 'relations': relations, 'pagination': pager|json_pagination , 'items': items} %}
-{% endspaceless %}
+{% endapply %}
 {{ data|json_encode(constant('JSON_PRETTY_PRINT'))|raw }}

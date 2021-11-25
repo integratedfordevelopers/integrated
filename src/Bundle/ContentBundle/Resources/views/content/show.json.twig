@@ -1,8 +1,8 @@
-{% spaceless %}
+{% apply spaceless %}
 {% set data = {
     'id'   : document.id,
     'title': document.title|default(document.name|default),
 } %}
 
 {{ data|json_encode|raw }}
-{% endspaceless %}
+{% endapply %}

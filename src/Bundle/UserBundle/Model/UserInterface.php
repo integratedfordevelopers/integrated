@@ -13,13 +13,13 @@ namespace Integrated\Bundle\UserBundle\Model;
 
 use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
 use Serializable;
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\UserInterface as SymfonyUserInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface UserInterface extends AdvancedUserInterface, GroupableInterface, TwoFactorInterface, Serializable, EquatableInterface
+interface UserInterface extends SymfonyUserInterface, GroupableInterface, TwoFactorInterface, Serializable, EquatableInterface
 {
     /**
      * @return string
@@ -50,6 +50,11 @@ interface UserInterface extends AdvancedUserInterface, GroupableInterface, TwoFa
      * @return string
      */
     public function getEmail();
+
+    /**
+     * Checks whether the user is enabled.
+     */
+    public function isEnabled(): bool;
 
     /**
      * @param RoleInterface $role

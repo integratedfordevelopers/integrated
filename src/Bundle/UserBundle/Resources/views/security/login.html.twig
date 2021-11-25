@@ -1,9 +1,9 @@
-{% extends "IntegratedUserBundle::layout.html.twig" %}
+{% extends "@IntegratedUser/layout.html.twig" %}
 
 {% block style %}
     {{ parent() }}
 
-    {% include('IntegratedUserBundle:partial:modal.html.twig') %}
+    {% include('@IntegratedUser/partial/modal.html.twig') %}
 {% endblock style %}
 
 {% block flash %}

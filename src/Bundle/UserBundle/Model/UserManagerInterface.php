@@ -109,5 +109,5 @@ interface UserManagerInterface extends ManagerInterface
      *
      * @return UserInterface
      */
-    public function findByUsernameAndScope($username, ?ScopeInterface $scope = null);
+    public function findEnabledByUsernameAndScope($username, ?ScopeInterface $scope = null);
 }

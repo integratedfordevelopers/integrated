@@ -177,12 +177,13 @@ class UserManager implements UserManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function findByUsernameAndScope($username, ?ScopeInterface $scope = null)
+    public function findEnabledByUsernameAndScope($username, ?ScopeInterface $scope = null)
     {
         $builder = $this->createQueryBuilder()
             ->select('User')
             ->leftJoin('User.scope', 'Scope')
             ->where('User.username = :username')
+            ->andWhere('User.enabled = true')
             ->setParameter('username', $username);
 
         if ($scope) {

@@ -5,19 +5,19 @@
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="integrated_theme_scraper_index" path="/scraper" methods="GET">
-        <default key="_controller">IntegratedThemeBundle:Scraper:index</default>
+        <default key="_controller">Integrated\Bundle\ThemeBundle\Controller\ScraperController::index</default>
     </route>
 
     <route id="integrated_theme_scraper_new" path="/scraper/new">
-        <default key="_controller">IntegratedThemeBundle:Scraper:new</default>
+        <default key="_controller">Integrated\Bundle\ThemeBundle\Controller\ScraperController::new</default>
     </route>
 
     <route id="integrated_theme_scraper_edit" path="/scraper/{id}">
-        <default key="_controller">IntegratedThemeBundle:Scraper:edit</default>
+        <default key="_controller">Integrated\Bundle\ThemeBundle\Controller\ScraperController::edit</default>
     </route>
 
     <route id="integrated_theme_scraper_delete" path="/scraper/{id}/delete">
-        <default key="_controller">IntegratedThemeBundle:Scraper:delete</default>
+        <default key="_controller">Integrated\Bundle\ThemeBundle\Controller\ScraperController::delete</default>
     </route>
 
 </routes>

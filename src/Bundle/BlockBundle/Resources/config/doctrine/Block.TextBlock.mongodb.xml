@@ -8,7 +8,7 @@
         <field name="content" type="string" />
 
         <field name="publishedTitle" type="string" />
-        <field name="useTitle" type="boolean" />
+        <field name="useTitle" type="bool" />
 
         <reference-one
             field="requiredRelation"

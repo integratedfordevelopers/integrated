@@ -17,7 +17,7 @@ use Integrated\Bundle\CommentBundle\Document\Embedded\Reply;
 use Integrated\Bundle\CommentBundle\Form\Type\CommentType;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\UserBundle\Model\User;
-use Symfony\Bundle\TwigBundle\TwigEngine;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,13 +27,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * Class DefaultController.
  */
-class DefaultController
+class DefaultController extends AbstractController
 {
-    /**
-     * @var TwigEngine
-     */
-    protected $templating;
-
     /**
      * @var DocumentManager
      */
@@ -50,18 +45,15 @@ class DefaultController
     protected $tokenStorage;
 
     /**
-     * @param TwigEngine            $templating
      * @param DocumentManager       $dm
      * @param FormFactory           $formFactory
      * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
-        TwigEngine $templating,
         DocumentManager $dm,
         FormFactory $formFactory,
         TokenStorageInterface $tokenStorage
     ) {
-        $this->templating = $templating;
         $this->dm = $dm;
         $this->formFactory = $formFactory;
         $this->tokenStorage = $tokenStorage;
@@ -98,7 +90,7 @@ class DefaultController
             return new JsonResponse(['id' => $comment->getId()]);
         }
 
-        return $this->templating->renderResponse('IntegratedCommentBundle:comment:new.html.twig', [
+        return $this->render('IntegratedCommentBundle:comment:new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -109,7 +101,7 @@ class DefaultController
      *
      * @return JsonResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function get(Request $request, Comment $comment)
+    public function getComment(Request $request, Comment $comment)
     {
         $reply = new Reply();
         $reply->setDate(new \DateTime());
@@ -132,7 +124,7 @@ class DefaultController
             return new JsonResponse(['id' => $comment->getId()]);
         }
 
-        return $this->templating->renderResponse('IntegratedCommentBundle:comment:get.html.twig', [
+        return $this->render('IntegratedCommentBundle:comment:get.html.twig', [
             'comment' => $comment,
             'form' => $form->createView(),
         ]);

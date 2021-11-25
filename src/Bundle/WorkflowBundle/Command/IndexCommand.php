@@ -25,7 +25,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Lock\Lock;
 use Symfony\Component\Lock\LockFactory;
 
 /**
@@ -141,8 +140,8 @@ The <info>%command.name%</info> command starts a index of all the content from t
             $types = [];
 
             foreach ($this->findTypes($workflow) as $row) {
-                $this->stateManager->ensureWorkflowState($row->getType());
-                $types[] = $row->getType();
+                $this->stateManager->ensureWorkflowState($row->getId());
+                $types[] = $row->getId();
             }
 
             if (!$types) {
@@ -205,10 +204,10 @@ The <info>%command.name%</info> command starts a index of all the content from t
     }
 
     /**
-     * @return Lock
+     * @return LockFactory
      */
     protected function getLock()
     {
-        return $this->lockFactory->createLock(self::class.md5(__DIR__));
+        return $this->lockFactory->createLock(self::class.md5(__DIR__.$this->getName()));
     }
 }

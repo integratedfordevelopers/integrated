@@ -13,30 +13,23 @@ namespace Integrated\Bundle\WebsiteBundle\Controller;
 
 use Integrated\Bundle\PageBundle\Document\Page\Page;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
-use Symfony\Bundle\TwigBundle\TwigEngine;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class PageController
+class PageController extends AbstractController
 {
-    /**
-     * @var TwigEngine
-     */
-    protected $templating;
-
     /**
      * @var ThemeManager
      */
     protected $themeManager;
 
     /**
-     * @param TwigEngine   $templating
      * @param ThemeManager $themeManager
      */
-    public function __construct(TwigEngine $templating, ThemeManager $themeManager)
+    public function __construct(ThemeManager $themeManager)
     {
-        $this->templating = $templating;
         $this->themeManager = $themeManager;
     }
 
@@ -47,7 +40,7 @@ class PageController
      */
     public function showAction(Page $page)
     {
-        return $this->templating->renderResponse($this->themeManager->locateTemplate($page->getLayout()), [
+        return $this->render($this->themeManager->locateTemplate($page->getLayout()), [
             'page' => $page,
         ]);
     }

@@ -73,7 +73,7 @@ The <info>%command.name%</info> .
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        if (!$this->lock(self::class.md5(__DIR__))) {
+        if (!$this->lock(self::class.md5(__DIR__.$this->getName()))) {
             $output->writeln('The command is already running in another process.');
 
             return 0;

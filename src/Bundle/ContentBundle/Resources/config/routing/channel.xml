@@ -5,31 +5,31 @@
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="integrated_content_channel_index" path="/" methods="GET">
-        <default key="_controller">IntegratedContentBundle:Channel:index</default>
+        <default key="_controller">Integrated\Bundle\ContentBundle\Controller\ChannelController::index</default>
     </route>
 
     <route id="integrated_content_channel_new" path="/new" methods="GET">
-        <default key="_controller">IntegratedContentBundle:Channel:new</default>
+        <default key="_controller">Integrated\Bundle\ContentBundle\Controller\ChannelController::new</default>
     </route>
 
     <route id="integrated_content_channel_create" path="/" methods="POST">
-        <default key="_controller">IntegratedContentBundle:Channel:create</default>
+        <default key="_controller">Integrated\Bundle\ContentBundle\Controller\ChannelController::create</default>
     </route>
 
     <route id="integrated_content_channel_edit" path="/{id}/edit" methods="GET">
-        <default key="_controller">IntegratedContentBundle:Channel:edit</default>
+        <default key="_controller">Integrated\Bundle\ContentBundle\Controller\ChannelController::edit</default>
     </route>
 
     <route id="integrated_content_channel_update" path="/{id}" methods="PUT">
-        <default key="_controller">IntegratedContentBundle:Channel:update</default>
+        <default key="_controller">Integrated\Bundle\ContentBundle\Controller\ChannelController::update</default>
     </route>
 
     <route id="integrated_content_channel_delete" path="/{id}/delete" methods="GET,DELETE">
-        <default key="_controller">IntegratedContentBundle:Channel:delete</default>
+        <default key="_controller">Integrated\Bundle\ContentBundle\Controller\ChannelController::delete</default>
     </route>
 
     <route id="integrated_content_channel_show" path="/{id}" methods="GET">
-        <default key="_controller">IntegratedContentBundle:Channel:show</default>
+        <default key="_controller">Integrated\Bundle\ContentBundle\Controller\ChannelController::show</default>
     </route>
 
 </routes>

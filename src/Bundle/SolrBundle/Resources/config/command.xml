@@ -12,7 +12,7 @@
             <argument type="service" id="integrated_solr.lock.factory" />
             <argument type="service" id="integrated_solr.event_listeners.doctrine.clear" />
             <argument type="service" id="kernel" />
-            <argument>%kernel.root_dir%/..</argument>
+            <argument>%kernel.project_dir%</argument>
 
             <tag name="console.command" />
         </service>

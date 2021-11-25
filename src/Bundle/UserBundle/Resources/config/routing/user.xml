@@ -5,31 +5,31 @@
 		xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
 	<route id="integrated_user_user_index" path="/" methods="GET">
-		<default key="_controller">IntegratedUserBundle:User:index</default>
+		<default key="_controller">Integrated\Bundle\UserBundle\Controller\UserController::index</default>
 	</route>
 
 	<route id="integrated_user_user_new" path="/new">
-		<default key="_controller">IntegratedUserBundle:User:new</default>
+		<default key="_controller">Integrated\Bundle\UserBundle\Controller\UserController::new</default>
 	</route>
 
 	<route id="integrated_user_user_new_rest" path="/" methods="POST">
-		<default key="_controller">IntegratedUserBundle:User:new</default>
+		<default key="_controller">Integrated\Bundle\UserBundle\Controller\UserController::new</default>
 	</route>
 
 	<route id="integrated_user_user_edit" path="/{id}"  methods="GET">
-		<default key="_controller">IntegratedUserBundle:User:edit</default>
+		<default key="_controller">Integrated\Bundle\UserBundle\Controller\UserController::edit</default>
 	</route>
 
 	<route id="integrated_user_user_edit_rest" path="/{id}" methods="PUT">
-		<default key="_controller">IntegratedUserBundle:User:edit</default>
+		<default key="_controller">Integrated\Bundle\UserBundle\Controller\UserController::edit</default>
 	</route>
 
 	<route id="integrated_user_user_delete" path="/{id}/delete">
-		<default key="_controller">IntegratedUserBundle:User:delete</default>
+		<default key="_controller">Integrated\Bundle\UserBundle\Controller\UserController::delete</default>
 	</route>
 
 	<route id="integrated_user_user_delete_rest" path="/{id}" methods="DELETE">
-		<default key="_controller">IntegratedUserBundle:User:delete</default>
+		<default key="_controller">Integrated\Bundle\UserBundle\Controller\UserController::delete</default>
 	</route>
 
     <route id="integrated_user_user_delete_authenticator" path="/{id}/authenticator/delete">

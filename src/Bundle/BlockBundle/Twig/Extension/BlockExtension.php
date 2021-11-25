@@ -20,8 +20,12 @@ use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
+use Twig\Environment;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
-class BlockExtension extends \Twig_Extension
+class BlockExtension extends AbstractExtension
 {
     /**
      * @var BlockManager
@@ -96,19 +100,19 @@ class BlockExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'integrated_block',
                 [$this, 'renderBlock'],
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'integrated_channel_block',
                 [$this, 'renderChannelBlock'],
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
-            new \Twig_SimpleFunction('integrated_find_channels', [$this, 'findChannels']),
-            new \Twig_SimpleFunction('integrated_find_pages', [$this, 'findPages']),
-            new \Twig_SimpleFunction('integrated_find_block_types', [$this, 'findBlockTypes']),
+            new TwigFunction('integrated_find_channels', [$this, 'findChannels']),
+            new TwigFunction('integrated_find_pages', [$this, 'findPages']),
+            new TwigFunction('integrated_find_block_types', [$this, 'findBlockTypes']),
         ];
     }
 
@@ -118,7 +122,7 @@ class BlockExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('integrated_block_type', [$this, 'getBlockTypeName']),
+            new TwigFilter('integrated_block_type', [$this, 'getBlockTypeName']),
         ];
     }
 
@@ -131,7 +135,7 @@ class BlockExtension extends \Twig_Extension
      *
      * @throws \Exception
      */
-    public function renderBlock(\Twig_Environment $environment, $block, array $options = [])
+    public function renderBlock(Environment $environment, $block, array $options = [])
     {
         if ($block instanceof BlockInterface) {
             $id = $block->getId();
@@ -179,7 +183,7 @@ class BlockExtension extends \Twig_Extension
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function renderChannelBlock(\Twig_Environment $environment, string $id, string $name, string $class, array $options = [])
+    public function renderChannelBlock(Environment $environment, string $id, string $name, string $class, array $options = [])
     {
         //postfix with channel
         $id = $id.'_'.$this->channelContext->getChannel()->getId();
