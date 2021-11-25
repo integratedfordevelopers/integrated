@@ -88,5 +88,13 @@
             <tag name="form.type" />
         </service>
 
+        <service id="Integrated\Bundle\FormTypeBundle\Form\Type\BootstrapCollectionType">
+            <tag name="form.type" alias="bootstrap_collection" />
+        </service>
+
+        <service id="Integrated\Bundle\FormTypeBundle\Form\Type\FormActionsType">
+            <tag name="form.type" alias="form_actions" />
+        </service>
+
     </services>
 </container>
