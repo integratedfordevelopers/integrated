@@ -57,7 +57,7 @@ class WorkflowController extends AbstractController
             15
         );
 
-        return $this->render('IntegratedWorkflowBundle:workflow:index.html.twig', ['pager' => $pager]);
+        return $this->render('@IntegratedWorkflow/workflow/index.html.twig', ['pager' => $pager]);
     }
 
     /**
@@ -92,7 +92,7 @@ class WorkflowController extends AbstractController
             }
         }
 
-        return $this->render('IntegratedWorkflowBundle:workflow:new.html.twig', ['form' => $form->createView()]);
+        return $this->render('@IntegratedWorkflow/workflow/new.html.twig', ['form' => $form->createView()]);
     }
 
     /**
@@ -138,7 +138,7 @@ class WorkflowController extends AbstractController
             }
         }
 
-        return $this->render('IntegratedWorkflowBundle:workflow:edit.html.twig', [
+        return $this->render('@IntegratedWorkflow/workflow/edit.html.twig', [
             'workflow' => $workflow,
             'form' => $form->createView(),
         ]);
@@ -186,7 +186,7 @@ class WorkflowController extends AbstractController
             }
         }
 
-        return $this->render('IntegratedWorkflowBundle:workflow:delete.html.twig', [
+        return $this->render('@IntegratedWorkflow/workflow/delete.html.twig', [
             'workflow' => $workflow,
             'form' => $form->createView(),
         ]);
@@ -205,13 +205,13 @@ class WorkflowController extends AbstractController
 
         if (empty($stateId)) {
             $workflowId = $request->get('workflow');
-            $repository = $this->getDoctrine()->getRepository('IntegratedWorkflowBundle:Definition');
+            $repository = $this->getDoctrine()->getRepository(Definition::class);
             $workflow = $repository->find($workflowId);
             $state = $workflow->getDefault();
 
             $isDefaultState = true;
         } else {
-            $repository = $this->getDoctrine()->getRepository('IntegratedWorkflowBundle:Definition\State');
+            $repository = $this->getDoctrine()->getRepository(Definition\State::class);
             $state = $repository->find($stateId);
         }
 

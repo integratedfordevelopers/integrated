@@ -21,7 +21,7 @@ class JavascriptExtension extends AbstractAssetExtension
      */
     protected function getTemplate()
     {
-        return '@IntegratedAssetBundle/Resources/views/asset/javascripts.html.twig';
+        return '@IntegratedAsset/asset/javascripts.html.twig';
     }
 
     /**

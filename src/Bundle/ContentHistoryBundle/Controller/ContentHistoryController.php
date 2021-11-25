@@ -62,7 +62,7 @@ class ContentHistoryController extends AbstractController
             $request->query->get('limit', 20)
         );
 
-        return $this->render('IntegratedContentHistoryBundle:content_history:index.html.twig', [
+        return $this->render('@IntegratedContentHistory/content_history/index.html.twig', [
             'paginator' => $paginator,
         ]);
     }
@@ -74,7 +74,7 @@ class ContentHistoryController extends AbstractController
      */
     public function show(ContentHistory $contentHistory)
     {
-        return $this->render('IntegratedContentHistoryBundle:content_history:show.html.twig', [
+        return $this->render('@IntegratedContentHistory/content_history/show.html.twig', [
             'contentHistory' => $contentHistory,
         ]);
     }
@@ -87,7 +87,7 @@ class ContentHistoryController extends AbstractController
      */
     public function history(Content $content, $limit = 3)
     {
-        return $this->render('IntegratedContentHistoryBundle:content_history:history.html.twig', [
+        return $this->render('@IntegratedContentHistory/content_history/history.html.twig', [
             'content' => $content,
             'documents' => $this->repository->findBy(
                 ['contentId' => $content->getId()],

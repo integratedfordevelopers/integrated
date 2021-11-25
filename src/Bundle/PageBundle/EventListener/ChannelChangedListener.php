@@ -15,6 +15,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\ContentBundle\Services\ContentTypeInformation;
+use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Bundle\PageBundle\Services\ContentTypePageService;
 use Integrated\Bundle\PageBundle\Services\RouteCache;
 use Integrated\Common\Channel\Event\ChannelEvent;
@@ -150,7 +151,7 @@ class ChannelChangedListener implements EventSubscriberInterface
      */
     protected function getPageRepository()
     {
-        return $this->dm->getRepository('IntegratedPageBundle:Page\ContentTypePage');
+        return $this->dm->getRepository(ContentTypePage::class);
     }
 
     /**
@@ -158,7 +159,7 @@ class ChannelChangedListener implements EventSubscriberInterface
      */
     protected function getChannelRepository()
     {
-        return $this->dm->getRepository('IntegratedContentBundle:Channel\Channel');
+        return $this->dm->getRepository(Channel::class);
     }
 
     /**
@@ -166,6 +167,6 @@ class ChannelChangedListener implements EventSubscriberInterface
      */
     protected function getContentTypeRepository()
     {
-        return $this->dm->getRepository('IntegratedContentBundle:ContentType\ContentType');
+        return $this->dm->getRepository(ContentType::class);
     }
 }

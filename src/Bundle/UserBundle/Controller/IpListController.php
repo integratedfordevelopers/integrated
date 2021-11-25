@@ -51,7 +51,7 @@ class IpListController extends AbstractController
             15
         );
 
-        return $this->render('IntegratedUserBundle:ip_list:index.html.twig', [
+        return $this->render('@IntegratedUser/ip_list/index.html.twig', [
             'lists' => $paginator,
         ]);
     }
@@ -90,7 +90,7 @@ class IpListController extends AbstractController
             }
         }
 
-        return $this->render('IntegratedUserBundle:ip_list:new.html.twig', [
+        return $this->render('@IntegratedUser/ip_list/new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -128,7 +128,7 @@ class IpListController extends AbstractController
             }
         }
 
-        return $this->render('IntegratedUserBundle:ip_list:edit.html.twig', [
+        return $this->render('@IntegratedUser/ip_list/edit.html.twig', [
             'list' => $list,
             'form' => $form->createView(),
         ]);
@@ -167,7 +167,7 @@ class IpListController extends AbstractController
             }
         }
 
-        return $this->render('IntegratedUserBundle:ip_list:delete.html.twig', [
+        return $this->render('@IntegratedUser/ip_list/delete.html.twig', [
             'list' => $list,
             'form' => $form->createView(),
         ]);

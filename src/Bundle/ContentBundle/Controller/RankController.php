@@ -106,7 +106,7 @@ class RankController extends AbstractController
             $result[$current] = '...'.$this->translator->trans('Current position');
         }
 
-        return $this->render('IntegratedContentBundle:rank:lookup.json.twig', [
+        return $this->render('@IntegratedContent/rank/lookup.json.twig', [
             'result' => $result,
             'relations' => [],
         ]);

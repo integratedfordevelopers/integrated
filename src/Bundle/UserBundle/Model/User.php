@@ -63,11 +63,6 @@ class User implements UserInterface
     /**
      * @var bool
      */
-    protected $locked = false;
-
-    /**
-     * @var bool
-     */
     protected $enabled = true;
 
     /**
@@ -308,14 +303,6 @@ class User implements UserInterface
     }
 
     /**
-     * @param bool $locked
-     */
-    public function setLocked($locked = true)
-    {
-        $this->locked = (bool) $locked;
-    }
-
-    /**
      * @param bool $enabled
      */
     public function setEnabled($enabled = true)
@@ -362,34 +349,7 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isAccountNonExpired()
-    {
-        return true; // @todo implement
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isAccountNonLocked()
-    {
-        return !$this->locked;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCredentialsNonExpired()
-    {
-        return true; // @todo implement
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isEnabled()
+    public function isEnabled(): bool
     {
         return $this->enabled;
     }
@@ -441,14 +401,11 @@ class User implements UserInterface
     public function __toString()
     {
         return sprintf(
-            "ID: %s\nUsername: %s\n CreatedAt: %s\nEnabled: %s\nLocked: %s\nExpired (account): %s\nExpired (credentials): %s",
+            "ID: %s\nUsername: %s\n CreatedAt: %s\nEnabled: %s",
             $this->getId(),
             $this->getUsername(),
-            $this->getCreatedAt(),
-            $this->isEnabled() ? 'TRUE' : 'FALSE',
-            $this->isAccountNonLocked() ? 'FALSE' : 'TRUE',
-            $this->isAccountNonExpired() ? 'FALSE' : 'TRUE',
-            $this->isCredentialsNonExpired() ? 'FALSE' : 'TRUE'
+            $this->getCreatedAt()->format('r'),
+            $this->isEnabled() ? 'TRUE' : 'FALSE'
         );
     }
 

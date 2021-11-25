@@ -85,7 +85,7 @@ class ConfigController extends AbstractController
         }
 
         if ($pager = $this->getPaginator()) {
-            return $this->render('IntegratedChannelBundle:config:index.html.twig', [
+            return $this->render('@IntegratedChannel/config/index.html.twig', [
                 'adapters' => $this->registry->getAdapters(),
                 'pager' => $pager->paginate($this->manager->findAll(), $request->query->get('page', 1)),
             ]);
@@ -154,7 +154,7 @@ class ConfigController extends AbstractController
             return $response;
         }
 
-        return $this->render('IntegratedChannelBundle:config:new.html.twig', [
+        return $this->render('@IntegratedChannel/config/new.html.twig', [
             'adapter' => $adapter,
             'data' => $data,
             'form' => $form->createView(),
@@ -223,7 +223,7 @@ class ConfigController extends AbstractController
             return $response;
         }
 
-        return $this->render('IntegratedChannelBundle:config:edit.html.twig', [
+        return $this->render('@IntegratedChannel/config/edit.html.twig', [
             'adapter' => $adapter,
             'data' => $data,
             'form' => $form->createView(),
@@ -301,7 +301,7 @@ class ConfigController extends AbstractController
             return $response;
         }
 
-        return $this->render('IntegratedChannelBundle:config:delete.html.twig', [
+        return $this->render('@IntegratedChannel/config/delete.html.twig', [
             'adapter' => $this->registry->hasAdapter($data->getAdapter()) ? $this->registry->getAdapter($data->getAdapter()) : null,
             'data' => $data,
             'form' => $form->createView(),

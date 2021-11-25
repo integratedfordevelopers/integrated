@@ -204,7 +204,7 @@ class UrlResolver
             return $this->contentTypePages[$channelId][$contentTypeId];
         }
 
-        $page = $this->dm->getRepository('IntegratedPageBundle:Page\ContentTypePage')
+        $page = $this->dm->getRepository(ContentTypePage::class)
             ->findOneBy([
                 'channel.$id' => $channelId,
                 'contentType.$id' => $contentTypeId,

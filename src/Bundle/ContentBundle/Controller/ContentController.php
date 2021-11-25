@@ -420,7 +420,7 @@ class ContentController extends AbstractController
         $active['workflow_assigned'] = $activeAssigned;
         $active['authors'] = $activeAuthors;
 
-        return $this->render('IntegratedContentBundle:content:index.'.$request->getRequestFormat().'.twig', [
+        return $this->render('@IntegratedContent/content/index.'.$request->getRequestFormat().'.twig', [
             'types' => $types,
             'params' => ['sort' => ['current' => $sort, 'default' => $sort_default, 'options' => $sort_options]],
             'pager' => $paginator,
@@ -444,7 +444,7 @@ class ContentController extends AbstractController
      */
     public function show(Request $request, Content $content)
     {
-        return $this->render('IntegratedContentBundle:content:show.'.$request->getRequestFormat().'.twig', [
+        return $this->render('@IntegratedContent/content/show.'.$request->getRequestFormat().'.twig', [
             'document' => $content,
         ]);
     }
@@ -500,7 +500,7 @@ class ContentController extends AbstractController
 
                 if ($request->getRequestFormat() == 'iframe.html') {
                     return $this->render(
-                        'IntegratedContentBundle:content:saved.iframe.html.twig',
+                        '@IntegratedContent/content/saved.iframe.html.twig',
                         [
                             'id' => $content->getId(),
                             'title' => method_exists($content, 'getTitle') ? $content->getTitle() : $content->getId(),
@@ -518,7 +518,7 @@ class ContentController extends AbstractController
             }
         }
 
-        return $this->render(sprintf('IntegratedContentBundle:content:new.%s.twig', $request->getRequestFormat()), [
+        return $this->render(sprintf('@IntegratedContent/content/new.%s.twig', $request->getRequestFormat()), [
             'editable' => true,
             'type' => $contentType,
             'form' => $form->createView(),
@@ -658,7 +658,7 @@ class ContentController extends AbstractController
             $this->get('braincrafted_bootstrap.flash')->error($text);
         }
 
-        return $this->render('IntegratedContentBundle:content:edit.html.twig', [
+        return $this->render('@IntegratedContent/content/edit.html.twig', [
             'editable' => $this->isGranted(Permissions::EDIT, $content),
             'type' => $contentType,
             'form' => $form->createView(),
@@ -783,7 +783,7 @@ class ContentController extends AbstractController
             $this->get('braincrafted_bootstrap.flash')->error($text);
         }
 
-        return $this->render('IntegratedContentBundle:content:delete.html.twig', [
+        return $this->render('@IntegratedContent/content/delete.html.twig', [
             'type' => $type,
             'form' => $form->createView(),
             'content' => $content,
@@ -991,7 +991,7 @@ class ContentController extends AbstractController
             $assignedContent = $result->getDocuments();
         }
 
-        return $this->render('IntegratedContentBundle:content:navdropdowns.html.twig', [
+        return $this->render('@IntegratedContent/content/navdropdowns.html.twig', [
             'avatarurl' => $avatarurl,
             'queuecount' => $queuecount,
             'queuepercentage' => $queuepercentage,
@@ -1010,7 +1010,7 @@ class ContentController extends AbstractController
         /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
         $dm = $this->getDoctrineODM()->getManager();
 
-        $qb = $dm->createQueryBuilder('IntegratedContentBundle:Content\Content');
+        $qb = $dm->createQueryBuilder(Content::class);
         $qb->field('relations.references.$id')->equals($content->getId());
 
         $query = $qb->getQuery();
@@ -1022,7 +1022,7 @@ class ContentController extends AbstractController
             $request->query->get('limit', 15)
         );
 
-        return $this->render('IntegratedContentBundle:content:used_by.'.$request->getRequestFormat().'.twig', [
+        return $this->render('@IntegratedContent/content/used_by.'.$request->getRequestFormat().'.twig', [
             'content' => $content,
             'pagination' => $pagination,
         ]);

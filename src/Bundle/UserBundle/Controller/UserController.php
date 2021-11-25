@@ -66,7 +66,7 @@ class UserController extends AbstractController
             15
         );
 
-        return $this->render('IntegratedUserBundle:user:index.html.twig', [
+        return $this->render('@IntegratedUser/user/index.html.twig', [
             'users' => $pagination,
             'facetFilter' => $facetFilter->createView(),
         ]);
@@ -103,7 +103,7 @@ class UserController extends AbstractController
             }
         }
 
-        return $this->render('IntegratedUserBundle:user:new.html.twig', [
+        return $this->render('@IntegratedUser/user/new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -145,7 +145,7 @@ class UserController extends AbstractController
             }
         }
 
-        return $this->render('IntegratedUserBundle:user:edit.html.twig', [
+        return $this->render('@IntegratedUser/user/edit.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
         ]);
@@ -186,7 +186,7 @@ class UserController extends AbstractController
             }
         }
 
-        return $this->render('IntegratedUserBundle:user:delete.html.twig', [
+        return $this->render('@IntegratedUser/user/delete.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
         ]);
