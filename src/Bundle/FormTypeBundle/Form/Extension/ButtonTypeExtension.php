@@ -36,7 +36,7 @@ class ButtonTypeExtension extends AbstractTypeExtension
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefined(array('button_class', 'as_link'));
+        $resolver->setDefined(['button_class', 'as_link']);
     }
 
     /**
