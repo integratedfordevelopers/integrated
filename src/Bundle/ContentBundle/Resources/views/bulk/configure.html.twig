@@ -71,7 +71,5 @@
         });
     </script>
 
-    {% javascripts '@IntegratedContentBundle/Resources/public/js/bulk_relation.js' %}
-    <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    <script src="{{ asset('bundles/integratedcontent/js/bulk_relation.js') }}" />
 {% endblock javascript %}
