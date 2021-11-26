@@ -120,8 +120,6 @@ class IntegratedInstallCommand extends Command
         if (\in_array('assets', $steps) || empty($steps)) {
             $io->section('Install assets');
 
-            $this->executeCommand('sp:bower:install', $output);
-            $this->executeCommand('assetic:dump', $output);
             $this->executeCommand('assets:install', $output);
         }
 
@@ -141,8 +139,8 @@ class IntegratedInstallCommand extends Command
      */
     protected function executeCommand($command, OutputInterface $output)
     {
-        $php = escapeshellarg(self::getPhp(false));
-        $console = escapeshellarg('bin/console');
+        $php = self::getPhp(false);
+        $console = 'bin/console';
 
         $output->writeln(sprintf('Execute %s %s %s', $php, $console, $command), OutputInterface::VERBOSITY_VERY_VERBOSE);
 
