@@ -24,7 +24,6 @@
 
 {% block javascript %}
     {{ parent() }}
-    {% javascripts "@IntegratedContentBundle/Resources/public/js/channel.js" %}
-    <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+
+    <script src="{{ asset('bundles/integratedcontent/js/channel.js') }}" />
 {% endblock javascript %}

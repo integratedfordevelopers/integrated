@@ -38,13 +38,8 @@
 
 {% block javascript %}
     {{ parent() }}
-    {# TODO: migrate to Webpack Encore
-    {% javascripts
-    '@IntegratedWorkflowBundle/Resources/public/js/updateTransitions.js'
-    '@IntegratedWorkflowBundle/Resources/public/js/defaultSelection.js'
-    '@IntegratedWorkflowBundle/Resources/public/js/select2_init.js'
-    %}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-     #}
+
+    <script src="{{ asset('bundles/integratedworkflow/js/updateTransitions.js') }}" />
+    <script src="{{ asset('bundles/integratedworkflow/js/defaultSelection.js') }}" />
+    <script src="{{ asset('bundles/integratedworkflow/js/select2_init.js') }}" />
 {% endblock %}
