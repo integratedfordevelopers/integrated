@@ -3,9 +3,7 @@
 {% block style %}
     {{ parent() }}
 
-    {% stylesheets "@IntegratedBlockBundle/Resources/public/css/iframe.css" %}
-        <link rel="stylesheet" href="{{ asset_url }}" />
-    {% endstylesheets %}
+    <link rel="stylesheet" href="{{ asset('bundles/integratedblock/css/iframe.css') }}" />
 {% endblock %}
 
 {% block header %}{% endblock %}

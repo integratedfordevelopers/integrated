@@ -4,8 +4,5 @@
 
     {{ parent() }}
 
-    {% stylesheets "@IntegratedWorkflowBundle/Resources/public/css/style.css" %}
-        <link rel="stylesheet" href="{{ asset_url }}" />
-    {% endstylesheets %}
-
+    <link rel="stylesheet" href="{{ asset('bundles/integratedworkflow/css/style.css') }}" />
 {% endblock %}

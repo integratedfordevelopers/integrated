@@ -83,5 +83,23 @@
                 <argument type="service" id="service_container" />
             </call>
         </service>
+
+        <service id="Integrated\Bundle\UserBundle\Controller\GroupController">
+            <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+
+        <service id="Integrated\Bundle\UserBundle\Controller\ScopeController">
+            <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
     </services>
 </container>
