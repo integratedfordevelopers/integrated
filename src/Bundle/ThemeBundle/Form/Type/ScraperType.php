@@ -13,6 +13,7 @@ namespace Integrated\Bundle\ThemeBundle\Form\Type;
 
 use Integrated\Bundle\ChannelBundle\Form\Type\ChannelChoiceType;
 use Integrated\Bundle\FormTypeBundle\Form\Type\CollectionType;
+use Integrated\Bundle\FormTypeBundle\Form\Type\FormActionsType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -34,7 +35,7 @@ class ScraperType extends AbstractType
             'entry_type' => ScraperBlockType::class,
         ]);
 
-        $builder->add('actions', \Integrated\Bundle\FormTypeBundle\Form\Type\FormActionsType::class, [
+        $builder->add('actions', FormActionsType::class, [
             'buttons' => [
                 'submit' => ['type' => SubmitType::class, 'options' => ['label' => 'Save']],
             ],
