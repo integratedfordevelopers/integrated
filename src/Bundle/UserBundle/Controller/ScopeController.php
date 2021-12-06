@@ -13,7 +13,7 @@ namespace Integrated\Bundle\UserBundle\Controller;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Form\FormInterface;
-use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
+use Integrated\Bundle\FormTypeBundle\Form\Type\FormActionsType;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\IntegratedBundle\Controller\AbstractController;
 use Integrated\Bundle\UserBundle\Form\Type\DeleteFormType;
@@ -78,7 +78,7 @@ class ScopeController extends AbstractController
                 $scope = $form->getData();
 
                 $this->getManager()->persist($scope);
-                $this->get('braincrafted_bootstrap.flash')->success(sprintf('The scope %s is created', $scope->getName()));
+                $this->addFlash('success', sprintf('The scope %s is created', $scope->getName()));
 
                 return $this->redirectToRoute('integrated_user_scope_index');
             }
@@ -119,7 +119,7 @@ class ScopeController extends AbstractController
 
             if ($form->isValid()) {
                 $this->getManager()->persist($scope);
-                $this->get('braincrafted_bootstrap.flash')->success(sprintf('The changes to the scope %s are saved', $scope->getName()));
+                $this->addFlash('success', sprintf('The changes to the scope %s are saved', $scope->getName()));
 
                 return $this->redirectToRoute('integrated_user_scope_index');
             }
@@ -179,7 +179,7 @@ class ScopeController extends AbstractController
 
             if (false === $hasRelations) {
                 $this->getManager()->remove($scope);
-                $this->get('braincrafted_bootstrap.flash')->success(sprintf('The scope %s is removed', $scope->getName()));
+                $this->addFlash('success', sprintf('The scope %s is removed', $scope->getName()));
 
                 return $this->redirectToRoute('integrated_user_scope_index');
             }

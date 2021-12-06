@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ChannelBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormInterface;
-use Braincrafted\Bundle\BootstrapBundle\Session\FlashMessage;
 use Exception;
 use Integrated\Bundle\ChannelBundle\Event\FilterResponseConfigEvent;
 use Integrated\Bundle\ChannelBundle\Event\FormConfigEvent;
@@ -139,9 +138,7 @@ class ConfigController extends AbstractController
             );
 
             if (!$response = $event->getResponse()) {
-                if ($message = $this->getFlashMessage()) {
-                    $message->success(sprintf('The config %s is saved', $data->getName()));
-                }
+                $this->addFlash('success', sprintf('The config %s is saved', $data->getName()));
 
                 $response = $this->redirectToRoute('integrated_channel_config_index');
             }
@@ -208,9 +205,7 @@ class ConfigController extends AbstractController
             $this->manager->persist($data);
 
             if (!$response = $event->getResponse()) {
-                if ($message = $this->getFlashMessage()) {
-                    $message->success(sprintf('The changes to the config %s are saved', $data->getName()));
-                }
+                $this->addFlash('success', sprintf('The changes to the config %s are saved', $data->getName()));
 
                 $response = $this->redirectToRoute('integrated_channel_config_index');
             }
@@ -240,7 +235,7 @@ class ConfigController extends AbstractController
         $session = new Session();
 
         if (!$id = $session->get('externalReturnId')) {
-            $this->getFlashMessage()->error('Config not found in session');
+            $this->addFlash('danger', 'Config not found in session');
 
             return $this->index($request);
         }
@@ -287,9 +282,7 @@ class ConfigController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->manager->remove($data);
 
-            if ($message = $this->getFlashMessage()) {
-                $message->success(sprintf('The config %s is removed', $data->getName()));
-            }
+            $this->addFlash('success', sprintf('The config %s is removed', $data->getName()));
 
             $response = $this->redirectToRoute('integrated_channel_config_index');
 
@@ -364,13 +357,5 @@ class ConfigController extends AbstractController
         $form->add('actions', ActionsType::class, ['buttons' => ['delete', 'cancel']]);
 
         return $form;
-    }
-
-    /**
-     * @return FlashMessage
-     */
-    protected function getFlashMessage()
-    {
-        return $this->get('braincrafted_bootstrap.flash');
     }
 }

@@ -112,7 +112,7 @@ class RelationController extends AbstractController
             $dm->persist($relation);
             $dm->flush();
 
-            $this->get('braincrafted_bootstrap.flash')->success('Item created');
+            $this->addFlash('success', 'Item created');
 
             return $this->redirectToRoute('integrated_content_relation_index');
         }
@@ -160,7 +160,7 @@ class RelationController extends AbstractController
             $dm = $this->get('doctrine_mongodb')->getManager();
             $dm->flush();
 
-            $this->get('braincrafted_bootstrap.flash')->success('Item updated');
+            $this->addFlash('success', 'Item updated');
 
             return $this->redirectToRoute('integrated_content_relation_index');
         }
@@ -191,7 +191,7 @@ class RelationController extends AbstractController
             $dm->remove($relation);
             $dm->flush();
 
-            $this->get('braincrafted_bootstrap.flash')->success('Item deleted');
+            $this->addFlash('success', 'Item deleted');
         }
 
         return $this->redirectToRoute('integrated_content_relation_index');

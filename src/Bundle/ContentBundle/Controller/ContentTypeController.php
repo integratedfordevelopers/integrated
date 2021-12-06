@@ -11,9 +11,9 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
+use Integrated\Bundle\FormTypeBundle\Form\Type\FormActionsType;
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Symfony\Component\Form\Form;
-use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\ContentBundle\Form\Type\ContentTypeFormType;
@@ -152,7 +152,7 @@ class ContentTypeController extends AbstractController
             $dm->persist($contentType);
             $dm->flush();
 
-            $this->get('braincrafted_bootstrap.flash')->success('Item created');
+            $this->addFlash('success', 'Item created');
 
             $this->eventDispatcher->dispatch(new ContentTypeEvent($contentType), Events::CONTENT_TYPE_CREATED);
 
@@ -193,7 +193,7 @@ class ContentTypeController extends AbstractController
 
             $dm->flush();
 
-            $this->get('braincrafted_bootstrap.flash')->success('Item updated');
+            $this->addFlash('success', 'Item updated');
 
             $this->eventDispatcher->dispatch(new ContentTypeEvent($contentType), Events::CONTENT_TYPE_UPDATED);
 
@@ -236,7 +236,7 @@ class ContentTypeController extends AbstractController
 
             if ($count > 0) {
                 // Set flash message and redirect to item page
-                $this->get('braincrafted_bootstrap.flash')->error('Unable te delete, ContentType is not empty');
+                $this->addFlash('danger', 'Unable te delete, ContentType is not empty');
 
                 return $this->redirectToRoute('integrated_content_content_type_show', ['id' => $contentType->getId()]);
             }
@@ -247,7 +247,7 @@ class ContentTypeController extends AbstractController
             $this->eventDispatcher->dispatch(new ContentTypeEvent($contentType), Events::CONTENT_TYPE_DELETED);
 
             // Set flash message
-            $this->get('braincrafted_bootstrap.flash')->success('Item deleted');
+            $this->addFlash('success', 'Item deleted');
 
             return $this->redirectToRoute('integrated_content_content_type_index');
         }

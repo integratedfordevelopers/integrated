@@ -61,7 +61,7 @@ class ContentTypePageController extends AbstractController
 
             $this->get('integrated_page.services.route_cache')->clear();
 
-            $this->get('braincrafted_bootstrap.flash')->success('Page updated');
+            $this->addFlash('success', 'Page updated');
 
             return $this->redirectToRoute('integrated_page_page_index');
         }

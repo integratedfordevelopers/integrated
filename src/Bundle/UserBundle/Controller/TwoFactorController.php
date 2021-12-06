@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\UserBundle\Controller;
 
 use Symfony\Component\Form\FormInterface;
-use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
+use Integrated\Bundle\FormTypeBundle\Form\Type\FormActionsType;
 use Integrated\Bundle\UserBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
@@ -61,7 +61,7 @@ class TwoFactorController extends AbstractController
                 $this->manager->persist($user);
 
                 $translation = $this->get('translator')->trans('The two factor authenticator for user %name% is removed', ['%name%' => $user->getUsername()]);
-                $this->get('braincrafted_bootstrap.flash')->success($translation);
+                $this->addFlash('success', $translation);
 
                 return $this->redirectToRoute('integrated_user_user_index');
             }

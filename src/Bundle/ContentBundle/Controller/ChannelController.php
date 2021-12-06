@@ -131,7 +131,7 @@ class ChannelController extends AbstractController
             $this->documentManager->persist($channel);
             $this->documentManager->flush();
 
-            $this->get('braincrafted_bootstrap.flash')->success('Item created');
+            $this->addFlash('success', 'Item created');
 
             $dispatcher = $this->get('integrated_content.event_dispatcher');
             $dispatcher->dispatch(new ChannelEvent($channel), Events::CHANNEL_CREATED);
@@ -185,7 +185,7 @@ class ChannelController extends AbstractController
         if ($form->isValid()) {
             $this->documentManager->flush();
 
-            $this->get('braincrafted_bootstrap.flash')->success('Item updated');
+            $this->addFlash('success', 'Item updated');
 
             $dispatcher = $this->get('integrated_content.event_dispatcher');
             $dispatcher->dispatch(new ChannelEvent($channel), Events::CHANNEL_UPDATED);
@@ -225,7 +225,7 @@ class ChannelController extends AbstractController
             $dispatcher = $this->get('integrated_content.event_dispatcher');
             $dispatcher->dispatch(new ChannelEvent($channel), Events::CHANNEL_DELETED);
 
-            $this->get('braincrafted_bootstrap.flash')->success('Channel deleted');
+            $this->addFlash('success', 'Channel deleted');
 
             return $this->redirectToRoute('integrated_content_channel_index');
         }

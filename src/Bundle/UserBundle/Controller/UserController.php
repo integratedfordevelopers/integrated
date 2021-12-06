@@ -16,7 +16,7 @@ use Integrated\Bundle\UserBundle\Provider\FilterQueryProvider;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Form\FormInterface;
 use Integrated\Bundle\UserBundle\Form\Type\DeleteFormType;
-use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
+use Integrated\Bundle\FormTypeBundle\Form\Type\FormActionsType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -97,7 +97,7 @@ class UserController extends AbstractController
                 $user = $form->getData();
 
                 $this->getManager()->persist($user);
-                $this->get('braincrafted_bootstrap.flash')->success(sprintf('The user %s is created', $user->getUsername()));
+                $this->addFlash('success', sprintf('The user %s is created', $user->getUsername()));
 
                 return $this->redirectToRoute('integrated_user_user_index');
             }
@@ -139,7 +139,7 @@ class UserController extends AbstractController
 
             if ($form->isValid()) {
                 $this->getManager()->persist($user);
-                $this->get('braincrafted_bootstrap.flash')->success(sprintf('The changes to the user %s are saved', $user->getUsername()));
+                $this->addFlash('success', sprintf('The changes to the user %s are saved', $user->getUsername()));
 
                 return $this->redirectToRoute('integrated_user_user_index');
             }
@@ -180,7 +180,7 @@ class UserController extends AbstractController
 
             if ($form->isValid()) {
                 $this->getManager()->remove($user);
-                $this->get('braincrafted_bootstrap.flash')->success(sprintf('The user %s is removed', $user->getUsername()));
+                $this->addFlash('success', sprintf('The user %s is removed', $user->getUsername()));
 
                 return $this->redirectToRoute('integrated_user_user_index');
             }

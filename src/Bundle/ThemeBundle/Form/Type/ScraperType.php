@@ -11,9 +11,9 @@
 
 namespace Integrated\Bundle\ThemeBundle\Form\Type;
 
-use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Integrated\Bundle\ChannelBundle\Form\Type\ChannelChoiceType;
 use Integrated\Bundle\FormTypeBundle\Form\Type\CollectionType;
+use Integrated\Bundle\FormTypeBundle\Form\Type\FormActionsType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

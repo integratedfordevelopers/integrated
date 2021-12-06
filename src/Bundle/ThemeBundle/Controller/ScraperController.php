@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\ThemeBundle\Controller;
 
-use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
+use Integrated\Bundle\FormTypeBundle\Form\Type\FormActionsType;
 use Doctrine\ORM\EntityManagerInterface;
 use Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\ThemeBundle\Entity\Scraper;
@@ -83,7 +83,7 @@ class ScraperController extends AbstractController
 
             $this->scraper->prepare($scraper);
 
-            $this->get('braincrafted_bootstrap.flash')->success('Item created');
+            $this->addFlash('success', 'Item created');
 
             return $this->redirectToRoute('integrated_theme_scraper_edit', ['id' => $scraper->getId()]);
         }
@@ -113,7 +113,7 @@ class ScraperController extends AbstractController
 
             $this->scraper->prepare($scraper);
 
-            $this->get('braincrafted_bootstrap.flash')->success('Item updated');
+            $this->addFlash('success', 'Item updated');
 
             return $this->redirectToRoute('integrated_theme_scraper_index');
         }
@@ -143,7 +143,7 @@ class ScraperController extends AbstractController
             $this->entityManager->flush();
 
             // Set flash message
-            $this->get('braincrafted_bootstrap.flash')->success('Item deleted');
+            $this->addFlash('success', 'Item updated');
 
             return $this->redirectToRoute('integrated_theme_scraper_index');
         }

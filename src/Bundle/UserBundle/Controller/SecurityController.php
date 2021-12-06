@@ -95,7 +95,7 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->mailer->sendPasswordResetMail($form->get('email')->getData());
 
-            $this->get('braincrafted_bootstrap.flash')->success('An e-mail with a password reset link has been sent');
+            $this->addFlash('success', 'An e-mail with a password reset link has been sent');
 
             return $this->redirectToRoute('integrated_user_login');
         }
@@ -120,7 +120,7 @@ class SecurityController extends AbstractController
         }
 
         if (!$this->keyGenerator->isValidKey($id, $timestamp, $key)) {
-            $this->get('braincrafted_bootstrap.flash')->error('Password reset link is invalid or expired');
+            $this->addFlash('danger', 'Password reset link is invalid or expired');
 
             return $this->redirectToRoute('integrated_user_login');
         }
@@ -135,9 +135,9 @@ class SecurityController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($this->userManager->changePassword($id, $form->get('password')->getData())) {
-                $this->get('braincrafted_bootstrap.flash')->success('Your password has been changed');
+                $this->addFlash('success', 'Your password has been changed');
             } else {
-                $this->get('braincrafted_bootstrap.flash')->error('An error occurred while changing the password');
+                $this->addFlash('danger', 'An error occurred while changing the password');
             }
 
             return $this->redirectToRoute('integrated_user_login');

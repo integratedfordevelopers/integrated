@@ -510,9 +510,7 @@ class ContentController extends AbstractController
                 }
 
                 // Set flash message
-                $this->get('braincrafted_bootstrap.flash')->success(
-                    $this->getTranslator()->trans('The document %name% has been created', ['%name%' => $contentType->getName()])
-                );
+                $this->addFlash('success', $this->getTranslator()->trans('The document %name% has been created', ['%name%' => $contentType->getName()]));
 
                 return $this->redirectToRoute('integrated_content_content_index', ['remember' => 1]);
             }
@@ -605,9 +603,7 @@ class ContentController extends AbstractController
                     $dm->flush();
 
                     // Set flash message
-                    $this->get('braincrafted_bootstrap.flash')->success(
-                        $this->getTranslator()->trans('The changes to %name% are saved', ['%name%' => $contentType->getName()])
-                    );
+                    $this->addFlash('success', $this->getTranslator()->trans('The changes to %name% are saved', ['%name%' => $contentType->getName()]));
 
                     $lock = $this->lockFactory->createLock(self::class);
                     $lock->acquire(true);
@@ -655,7 +651,7 @@ class ContentController extends AbstractController
                 $text = 'The document is currently locked and can not be edited until this lock is released.';
             }
 
-            $this->get('braincrafted_bootstrap.flash')->error($text);
+            $this->addFlash('danger', $text);
         }
 
         return $this->render('@IntegratedContent/content/edit.html.twig', [
@@ -740,9 +736,7 @@ class ContentController extends AbstractController
                     $dm->flush();
 
                     // Set flash message
-                    $this->get('braincrafted_bootstrap.flash')->success(
-                        $this->getTranslator()->trans('The document %name% has been deleted', ['%name%' => $type->getName()])
-                    );
+                    $this->addFlash('success', $this->getTranslator()->trans('The document %name% has been deleted', ['%name%' => $type->getName()]));
 
                     $this->indexer->setOption('queue.size', 2);
                     $this->indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
@@ -780,7 +774,7 @@ class ContentController extends AbstractController
                 $text = 'The document is currently locked and can not be deleted until this lock is released.';
             }
 
-            $this->get('braincrafted_bootstrap.flash')->error($text);
+            $this->addFlash('danger', $text);
         }
 
         return $this->render('@IntegratedContent/content/delete.html.twig', [

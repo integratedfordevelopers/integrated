@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
-use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
+use Integrated\Bundle\FormTypeBundle\Form\Type\BootstrapCollectionType;
 use Integrated\Bundle\FormTypeBundle\Form\Type\ColorType;
 use Integrated\Bundle\StorageBundle\Form\Type\ImageDropzoneType;
 use Integrated\Bundle\UserBundle\Model\Scope;
