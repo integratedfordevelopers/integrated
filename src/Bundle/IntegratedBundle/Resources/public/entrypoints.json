@@ -1,0 +1,28 @@
+{
+  "entrypoints": {
+    "app": {
+      "css": [
+        "/bundles/integratedintegrated/app.css"
+      ],
+      "js": [
+        "/bundles/integratedintegrated/app.js"
+      ]
+    },
+    "iframe": {
+      "css": [
+        "/bundles/integratedintegrated/iframe.css"
+      ],
+      "js": [
+        "/bundles/integratedintegrated/iframe.js"
+      ]
+    },
+    "tinymce": {
+      "css": [
+        "/bundles/integratedintegrated/tinymce.css"
+      ],
+      "js": [
+        "/bundles/integratedintegrated/tinymce.js"
+      ]
+    }
+  }
+}

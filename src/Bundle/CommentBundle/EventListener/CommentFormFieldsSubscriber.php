@@ -122,7 +122,6 @@ class CommentFormFieldsSubscriber implements EventSubscriberInterface
             'new' => $this->generator->generate('integrated_comment_new', ['content' => '__content__', 'field' => '__field__']),
         ];
 
-        $this->stylesheets->add('bundles/integratedcomment/css/comments.css');
         $this->javascripts->add('var integrated_comment_urls = '.json_encode($urls), true);
         $this->javascripts->add('bundles/integratedcomment/js/comments.js');
     }

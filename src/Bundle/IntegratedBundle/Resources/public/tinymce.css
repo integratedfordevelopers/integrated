@@ -1,0 +1,42 @@
+body {
+	font-size: 14px;
+	line-height: 1.428571429;
+	color: #555;
+	font-family: 'PT Sans', sans-serif;
+}
+p {
+	margin-top: 0px;
+}
+
+.mce-panel, .mce-btn, .mce-btn.mce-active, .mce-btn:hover, .mce-btn.mce-active:hover {
+  background-color: rgb(238, 238, 238);
+  background-image: none;
+}
+.mce-floatpanel, .mce-foot, .mce-abs-layout-item {
+  background-color: #ffffff;
+}
+.mce-primary button {
+  background-color: #337ab7;
+}
+.mce-path-item, .mce-wordcount {
+  font-family: 'PT Sans', sans-serif;
+  font-size: 12px;
+}
+.mce-container .mce-resizehandle, .mce-label, .mce-title, .mce-primary button, .mce-abs-layout-item button {
+  font-family: 'PT Sans', sans-serif;
+}
+.mce-path, .mce-wordcount {
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+.mce-resizehandle {
+  display: none;
+}
+.mce-panel {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.mce-toolbar-grp {
+  border: none;
+}
+

@@ -94,7 +94,6 @@ abstract class AbstractDropzoneType extends AbstractType
     {
         $this->stylesheets->add('bundles/integratedstorage/components/integrated-jquery.filer/css/jquery.filer.css');
         $this->stylesheets->add('bundles/integratedstorage/components/integrated-jquery.filer/css/themes/jquery.filer-dragdropbox-theme.css');
-        $this->stylesheets->add('bundles/integratedstorage/css/drag-drop.css');
         $this->javascripts->add('bundles/integratedstorage/components/integrated-jquery.filer/js/jquery.filer.js');
         $this->javascripts->add('bundles/integratedstorage/js/drag-drop.js');
 

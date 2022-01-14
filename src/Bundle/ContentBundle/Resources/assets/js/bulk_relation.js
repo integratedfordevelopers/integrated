@@ -1,4 +1,4 @@
-function implementSelect2() {
+function implementSelect2() {assets
     /* add select 2 for each relations input */
     $(".relation-items").each(function () {
         $(this).select2({

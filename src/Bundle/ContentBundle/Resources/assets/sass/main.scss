@@ -4,6 +4,7 @@ $custom-font-path: '../../';
 
 @import './node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
 @import url('//fonts.googleapis.com/css?family=PT+Sans:400,700');
+@import url('//fonts.googleapis.com/css?family=PT+Sans:400,700');
 @import "./node_modules/bourbon/app/assets/stylesheets/bourbon";
 
 // we want the mixin from bootstrap so load them again to override the changes made by bourbon

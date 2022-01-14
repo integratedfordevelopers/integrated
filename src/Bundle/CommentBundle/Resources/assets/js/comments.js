@@ -302,7 +302,6 @@ $(function () {
         tinymce.activeEditor.on('click', tinyCommentCheckSelect);
         tinymce.activeEditor.on('keypress', tinyCommentCheckSelect);
         tinymce.activeEditor.on('focusout', removeCommentButton);
-        tinymce.activeEditor.dom.loadCSS("/bundles/integratedcomment/css/comments.css");
     };
 
     var waitForTiny = setInterval(tinymceInit, 100);
