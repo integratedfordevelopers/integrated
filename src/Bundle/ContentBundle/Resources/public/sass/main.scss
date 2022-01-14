@@ -1,13 +1,13 @@
 /* Set some custom paths */
-$icon-font-path: '/bundles/integratedcontent/components/bootstrap-sass-official/assets/fonts/bootstrap/';
-$custom-font-path: '/bundles/integratedcontent/';
+$icon-font-path: '/node_modules/bootstrap-sass/assets/fonts/bootstrap/';
+$custom-font-path: '../../';
 
-@import '../components/bootstrap-sass-official/assets/stylesheets/bootstrap';
+@import './node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
 @import url('//fonts.googleapis.com/css?family=PT+Sans:400,700');
-@import "../components/bourbon/app/assets/stylesheets/bourbon";
+@import "./node_modules/bourbon/app/assets/stylesheets/bourbon";
 
 // we want the mixin from bootstrap so load them again to override the changes made by bourbon
-@import '../components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins';
+@import './node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins';
 
 @import 'components/fonts';
 @import 'components/variables';
