@@ -302,6 +302,7 @@ $(function () {
         tinymce.activeEditor.on('click', tinyCommentCheckSelect);
         tinymce.activeEditor.on('keypress', tinyCommentCheckSelect);
         tinymce.activeEditor.on('focusout', removeCommentButton);
+        /** @todo INTEGRATED-1678 make sure the line below is webpack compatible */
         tinymce.activeEditor.dom.loadCSS("/bundles/integratedcomment/css/comments.css");
     };
 

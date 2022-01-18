@@ -1,6 +1,0 @@
-{
-    "name": "integrated-storage-bundle",
-    "dependencies": {
-        "integrated-jquery.filer": "1.3.*"
-    }
-}
