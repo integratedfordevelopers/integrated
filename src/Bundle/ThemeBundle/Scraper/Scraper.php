@@ -13,8 +13,8 @@ namespace Integrated\Bundle\ThemeBundle\Scraper;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Integrated\Bundle\ThemeBundle\DomQuery\DomQuery;
 use Integrated\Bundle\ThemeBundle\Entity\Scraper as ScraperEntity;
-use Rct567\DomQuery\DomQuery;
 use Symfony\Component\HttpKernel\Kernel;
 use Twig\Loader\FilesystemLoader;
 
