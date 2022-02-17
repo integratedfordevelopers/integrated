@@ -20,6 +20,7 @@ use Integrated\Common\Locks\LockInterface;
 use Integrated\Common\Locks\ManagerInterface;
 use Integrated\Common\Locks\RequestInterface;
 use Integrated\Common\Locks\ResourceInterface;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -75,11 +76,8 @@ class Manager implements ManagerInterface
         // lock failed.
 
         try {
-            // have the server created a uuid for this lock
-
-            $data = $this->connection->fetchOne('SELECT '.$this->platform->getGuidExpression());
             $data = [
-                'id' => $data,
+                'id' => Uuid::uuid4()->toString(),
                 'resource' => Resource::serialize($request->getResource()),
                 'resource_owner' => Resource::serialize($owner),
                 'created' => $created,
