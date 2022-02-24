@@ -11,20 +11,20 @@
         "sass-loader": "^7.3.1"
     },
     "dependencies": {
-        "handlebars": "~2.0",
-        "requirejs": "2.1.14",
-        "modernizr": "~3.11",
+        "bootstrap-colorpicker": "~2.4.0",
         "bootstrap-sass": "^3.4.1",
-        "jquery-placeholder": "~2.1",
-        "bourbon": "~4.2.3",
-        "tinymce": "~4.5.7",
-        "select2": "4.0.5",
-        "moment": "~2.17",
-        "jquery": "~2.1",
-        "jquery-ui": "~1.12",
         "bootstrap3-wysihtml5-bower": "~0.3",
+        "bourbon": "~4.2.3",
+        "typeahead.js": "0.10.1",
+        "handlebars": "~2.0",
+        "jquery": "~2.2",
         "jquery-datetimepicker": "~2.5.1",
-        "bootstrap-colorpicker": "~2.4.0"
+        "jquery-placeholder": "~2.1",
+        "components-jqueryui": "~1.12",
+        "moment": "~2.17",
+        "select2": "4.0.5",
+        "tinymce": "~4.5.7",
+        "jquery.filer": "~1.3.0"
     },
     "private": true
 }

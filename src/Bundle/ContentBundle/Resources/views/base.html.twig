@@ -101,24 +101,8 @@
 </div>
 
 {% block javascript %}
-    <script src="//code.jquery.com/jquery.js"></script>
-    <script src="{{ asset('/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('bundles/integratedintegrated/app.js') }}"></script>
 
-{# TODO: migrate to Webpack Encore
-    {% javascripts
-        '@IntegratedContentBundle/Resources/public/components/corejs-typeahead/dist/typeahead.bundle.js'
-        '@IntegratedContentBundle/Resources/public/components/handlebars/handlebars.js'
-        '@IntegratedContentBundle/Resources/public/components/modernizr/modernizr.js'
-        '@IntegratedContentBundle/Resources/public/components/respond/dest/respond.src.js'
-        '@IntegratedContentBundle/Resources/public/components/select2/dist/js/select2.full.js'
-        '@IntegratedContentBundle/Resources/public/components/jquery-placeholder/jquery.placeholder.js'
-        '@IntegratedContentBundle/Resources/public/components/moment/min/moment-with-locales.js'
-        '@IntegratedContentBundle/Resources/public/js/scripts.js'
-        '@integrated_js'
-    %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
- #}
     {% if app.request.locale %}
     <script>
         moment.locale('{{ app.request.locale }}');

@@ -92,10 +92,8 @@ abstract class AbstractDropzoneType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $this->stylesheets->add('bundles/integratedstorage/components/integrated-jquery.filer/css/jquery.filer.css');
-        $this->stylesheets->add('bundles/integratedstorage/components/integrated-jquery.filer/css/themes/jquery.filer-dragdropbox-theme.css');
-        $this->javascripts->add('bundles/integratedstorage/components/integrated-jquery.filer/js/jquery.filer.js');
-        $this->javascripts->add('bundles/integratedstorage/js/drag-drop.js');
+        $this->javascripts->add('bundles/integratedintegrated/drag-drop.css');
+        $this->javascripts->add('bundles/integratedintegrated/drag-drop.js');
 
         $view->vars['type'] = $this->type;
 

@@ -174,87 +174,71 @@
 {% endblock %}
 
 {% block javascript %}
-{{ parent() }}
-{# TODO: Migrate to Webpack encore
-{% javascripts
-    "@IntegratedContentBundle/Resources/public/components/handlebars/handlebars.min.js"
-    "@IntegratedContentBundle/Resources/public/js/handlebars.helpers.js"
-    "@IntegratedContentBundle/Resources/public/js/relation.js"
-%}
-<script src="{{ asset_url }}"></script>
-{% endjavascripts %}
- #}
-{% if content is defined %}
-<script>
-    $(function() {
-        var cnt = $('#used-by');
+    {{ parent() }}
 
-        var handleUsedBy = function(data) {
-            var optionsTemplateSource = $('#used-by-template').html(), optionsTemplate = Handlebars.compile(optionsTemplateSource);
-            var paginationTemplateSource = $('#pagination-template').html(), paginationTemplate = Handlebars.compile(paginationTemplateSource);
+    <script src="{{ asset('bundles/integratedintegrated/content_edit.js') }}"></script>
 
-            data.title = "{% trans %}Used by{% endtrans %}";
+    {% if content is defined %}
+    <script>
+        $(function() {
+            var cnt = $('#used-by');
 
-            if (data.pagination.numFound == 0) {
-                cnt.hide();
-            }
-            cnt.html(optionsTemplate(data)).find('.content_column_inner').append(paginationTemplate(data));
-            cnt.find('.pagination a').click(function(ev){
-                ev.preventDefault();
-                loadUsedBy($(this).attr('href'));
-            });
-        };
+            var handleUsedBy = function(data) {
+                var optionsTemplateSource = $('#used-by-template').html(), optionsTemplate = Handlebars.compile(optionsTemplateSource);
+                var paginationTemplateSource = $('#pagination-template').html(), paginationTemplate = Handlebars.compile(paginationTemplateSource);
 
-        var loadUsedBy = function(url) {
-            cnt.find('.pagination a').unbind('click').click(function(ev){
-                ev.preventDefault();
-            });
+                data.title = "{% trans %}Used by{% endtrans %}";
 
-            $.ajax({
-                url: url,
-                data: {
-                    'limit': 5
-                },
-                success: handleUsedBy
-            });
-        };
+                if (data.pagination.numFound == 0) {
+                    cnt.hide();
+                }
+                cnt.html(optionsTemplate(data)).find('.content_column_inner').append(paginationTemplate(data));
+                cnt.find('.pagination a').click(function(ev){
+                    ev.preventDefault();
+                    loadUsedBy($(this).attr('href'));
+                });
+            };
 
-        loadUsedBy('{{ path('integrated_content_content_used_by', {'id': content.id, '_format': 'json'}) }}');
+            var loadUsedBy = function(url) {
+                cnt.find('.pagination a').unbind('click').click(function(ev){
+                    ev.preventDefault();
+                });
 
-        window.addEventListener('message', function(event) {
-            // also resize modal if relations are changed
-            var iframe = $('[data-id="' + event.data.resizeModal + '"]');
-            var height = iframe.contents().height();
-            var margin = 120;
+                $.ajax({
+                    url: url,
+                    data: {
+                        'limit': 5
+                    },
+                    success: handleUsedBy
+                });
+            };
 
-            if (height > ($(window).height() - margin)) {
-                height = $(window).height() - margin;
-            }
+            loadUsedBy('{{ path('integrated_content_content_used_by', {'id': content.id, '_format': 'json'}) }}');
 
-            iframe.attr('height', height);
-        }, false);
-    });
-</script>
+            window.addEventListener('message', function(event) {
+                // also resize modal if relations are changed
+                var iframe = $('[data-id="' + event.data.resizeModal + '"]');
+                var height = iframe.contents().height();
+                var margin = 120;
+
+                if (height > ($(window).height() - margin)) {
+                    height = $(window).height() - margin;
+                }
+
+                iframe.attr('height', height);
+            }, false);
+        });
+    </script>
+
     {% if editable %}
         <script>
             var formInvalid = {{ form.vars.valid ? '0' : '1' }};
         </script>
-{# TODO: Migrate to Webpack encore
-        {% javascripts "@IntegratedContentBundle/Resources/public/js/unlock_article.js" %}
-            <script src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-#}    {% endif %}
+
+        <script src="{{ asset('bundles/integratedintegrated/js/unlock_article.js') }}"></script>
+    {% endif %}
 {% endif %}
 
-{# TODO: Migrate to Webpack encore
-{% javascripts "@IntegratedUserBundle/Resources/public/js/visible_user_form.js" %}
-    <script src="{{ asset_url }}"></script>
-{% endjavascripts %}
-
-{% javascripts '@IntegratedWorkflowBundle/Resources/public/js/workflowChangeState.js' %}
-    <script src="{{ asset_url }}"></script>
-{% endjavascripts %}
-#}
 {{ include('@IntegratedContent/content/handlebars/templates.html.twig')}}
 {% endblock javascript %}
 

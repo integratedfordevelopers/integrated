@@ -79,7 +79,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        require(["{{ asset('bundles/integratedformtype/components/tinymce/tinymce.min.js') }}"],
+        require(["{{ asset('bundles/integratedintegrated/tinymce.js') }}"],
                 function () {
                     tinymce.init({
                         selector: "textarea#{{ id }}",
@@ -213,8 +213,7 @@
         </div>
 
         {% integrated_javascripts mode='append'
-            'bundles/integratedformtype/components/jquery-ui/jquery-ui.min.js'
-            'bundles/integratedformtype/js/content_sortable_collection.js' %}
+            'bundles/integratedintegrated/content_sortable.js' %}
         {% endintegrated_javascripts %}
     {% endapply %}
 {% endblock %}
