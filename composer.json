@@ -95,9 +95,9 @@
         "squizlabs/php_codesniffer": "^3.1",
         "phpunit/phpunit": "~8.5",
         "friendsofphp/php-cs-fixer": "^2.8",
-        "phpstan/phpstan": "^0.12.99",
-        "phpstan/phpstan-doctrine": "^0.12.44",
-        "phpstan/phpstan-deprecation-rules": "^0.12.6"
+        "phpstan/phpstan": "^1",
+        "phpstan/phpstan-doctrine": "^1",
+        "phpstan/phpstan-deprecation-rules": "^1"
     },
     "provide": {
         "ext-mongo": "*"

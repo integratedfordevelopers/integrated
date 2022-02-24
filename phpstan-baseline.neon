@@ -1,41 +1,29 @@
 parameters:
 	ignoreErrors:
 		-
-			message:
-				"""
-					#^Call to deprecated method getLabel\\(\\) of class Integrated\\\\Bundle\\\\ContentBundle\\\\Document\\\\ContentType\\\\Embedded\\\\Field\\:
-					since version 0\\.7, this object does not contain all the options
-					            so the label can not be determined based solely on this object\\.$#
-				"""
+			message: """
+				#^Call to deprecated method getLabel\\(\\) of class Integrated\\\\Bundle\\\\ContentBundle\\\\Document\\\\ContentType\\\\Embedded\\\\Field\\:
+				since version 0\\.7, this object does not contain all the options
+				            so the label can not be determined based solely on this object\\.$#
+			"""
 			count: 1
 			path: src/Bundle/ContentBundle/Form/DataTransformer/ContentType/Field/CustomTransformer.php
 
 		-
-			message:
-				"""
-					#^Class Integrated\\\\Bundle\\\\ContentBundle\\\\Templating\\\\GlobalVariables extends deprecated class Symfony\\\\Bundle\\\\FrameworkBundle\\\\Templating\\\\GlobalVariables\\:
-					since version 4\\.3, to be removed in 5\\.0; use Twig instead\\.$#
-				"""
-			count: 1
-			path: src/Bundle/ContentBundle/Templating/GlobalVariables.php
-
-		-
-			message:
-				"""
-					#^Call to deprecated method getLabel\\(\\) of class Integrated\\\\Bundle\\\\ContentBundle\\\\Document\\\\ContentType\\\\Embedded\\\\Field\\:
-					since version 0\\.7, this object does not contain all the options
-					            so the label can not be determined based solely on this object\\.$#
-				"""
+			message: """
+				#^Call to deprecated method getLabel\\(\\) of class Integrated\\\\Bundle\\\\ContentBundle\\\\Document\\\\ContentType\\\\Embedded\\\\Field\\:
+				since version 0\\.7, this object does not contain all the options
+				            so the label can not be determined based solely on this object\\.$#
+			"""
 			count: 2
 			path: src/Bundle/ContentBundle/Tests/Document/ContentType/Embedded/FieldTest.php
 
 		-
-			message:
-				"""
-					#^Call to deprecated method getLabel\\(\\) of class Integrated\\\\Bundle\\\\ContentBundle\\\\Document\\\\ContentType\\\\Embedded\\\\Field\\:
-					since version 0\\.7, this object does not contain all the options
-					            so the label can not be determined based solely on this object\\.$#
-				"""
+			message: """
+				#^Call to deprecated method getLabel\\(\\) of class Integrated\\\\Bundle\\\\ContentBundle\\\\Document\\\\ContentType\\\\Embedded\\\\Field\\:
+				since version 0\\.7, this object does not contain all the options
+				            so the label can not be determined based solely on this object\\.$#
+			"""
 			count: 1
 			path: src/Bundle/ContentBundle/Tests/Form/DataTransformer/ContentType/Field/CustomTransformerTest.php
 
@@ -45,40 +33,12 @@ parameters:
 			path: src/Bundle/MenuBundle/Provider/IntegratedMenuProvider.php
 
 		-
-			message:
-				"""
-					#^Return type of method Integrated\\\\Bundle\\\\UserBundle\\\\Model\\\\User\\:\\:getRoles\\(\\) has typehint with deprecated class Symfony\\\\Component\\\\Security\\\\Core\\\\Role\\\\Role\\:
-					since Symfony 4\\.3, to be removed in 5\\.0\\. Use strings as roles instead\\.$#
-				"""
+			message: """
+				#^Return type of method Integrated\\\\Bundle\\\\UserBundle\\\\Model\\\\User\\:\\:getRoles\\(\\) has typehint with deprecated class Symfony\\\\Component\\\\Security\\\\Core\\\\Role\\\\Role\\:
+				since Symfony 4\\.3, to be removed in 5\\.0\\. Use strings as roles instead\\.$#
+			"""
 			count: 1
 			path: src/Bundle/UserBundle/Model/User.php
-
-		-
-			message:
-				"""
-					#^Interface Integrated\\\\Bundle\\\\UserBundle\\\\Model\\\\UserInterface extends deprecated interface Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\AdvancedUserInterface\\:
-					since Symfony 4\\.1$#
-				"""
-			count: 1
-			path: src/Bundle/UserBundle/Model/UserInterface.php
-
-		-
-			message:
-				"""
-					#^Class Integrated\\\\Bundle\\\\UserBundle\\\\Security\\\\Firewall\\\\IpListListener implements deprecated interface Symfony\\\\Component\\\\Security\\\\Http\\\\Firewall\\\\ListenerInterface\\:
-					since Symfony 4\\.3, turn listeners into callables instead$#
-				"""
-			count: 1
-			path: src/Bundle/UserBundle/Security/Firewall/IpListListener.php
-
-		-
-			message:
-				"""
-					#^Parameter \\$event of method Integrated\\\\Bundle\\\\UserBundle\\\\Security\\\\Firewall\\\\IpListListener\\:\\:handle\\(\\) has typehint with deprecated class Symfony\\\\Component\\\\HttpKernel\\\\Event\\\\GetResponseEvent\\:
-					since Symfony 4\\.3, use RequestEvent instead$#
-				"""
-			count: 1
-			path: src/Bundle/UserBundle/Security/Firewall/IpListListener.php
 
 		-
 			message: "#^Method Integrated\\\\Bundle\\\\WebsiteBundle\\\\Routing\\\\PageLoader\\:\\:getResolver\\(\\) should return Symfony\\\\Component\\\\Config\\\\Loader\\\\LoaderResolverInterface but return statement is missing\\.$#"
@@ -94,13 +54,4 @@ parameters:
 			message: "#^Method Integrated\\\\Common\\\\Converter\\\\Type\\\\RegistryBuilder\\:\\:addTypeExtension\\(\\) should return Integrated\\\\Common\\\\Converter\\\\Type\\\\RegistryBuilderInterface but return statement is missing\\.$#"
 			count: 1
 			path: src/Common/Converter/Type/RegistryBuilder.php
-
-		-
-			message:
-				"""
-					#^Call to deprecated method getGuidExpression\\(\\) of class Doctrine\\\\DBAL\\\\Platforms\\\\AbstractPlatform\\:
-					Use application\\-generated UUIDs instead$#
-				"""
-			count: 1
-			path: src/Common/Locks/Provider/DBAL/Manager.php
 

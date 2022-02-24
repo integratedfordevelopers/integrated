@@ -62,7 +62,7 @@ class WorkflowStateInstanceInjectionListener implements EventSubscriber
      */
     public function postLoad(LifecycleEventArgs $args)
     {
-        $object = $args->getEntity();
+        $object = $args->getObject();
 
         if (!$object instanceof State) {
             return;
