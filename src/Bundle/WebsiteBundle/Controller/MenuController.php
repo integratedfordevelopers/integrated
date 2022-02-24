@@ -62,7 +62,8 @@ class MenuController extends AbstractController
         if (isset($data['menu'])) {
             foreach ((array) $data['menu'] as $array) { // support multiple menu's
                 if ($menu = $this->getMenuFactory()->fromArray((array) $array)) {
-                    if ($menu2 = $this->getMenuProvider()->get($menu->getName())) {
+                    if ($this->getMenuProvider()->has($menu->getName())) {
+                        $menu2 = $this->getMenuProvider()->get($menu->getName());
                         $menu2->setChildren($menu->getChildren());
                     } else {
                         $menu->setChannel($this->getChannel());

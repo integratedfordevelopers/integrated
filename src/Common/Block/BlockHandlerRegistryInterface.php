@@ -32,7 +32,7 @@ interface BlockHandlerRegistryInterface
     /**
      * @param string $type
      *
-     * @return BlockHandlerInterface
+     * @return BlockHandlerInterface|null
      */
     public function getHandler($type);
 }

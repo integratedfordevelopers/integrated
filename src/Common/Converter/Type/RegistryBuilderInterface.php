@@ -47,8 +47,6 @@ interface RegistryBuilderInterface
      * Add the type extension to the builder.
      *
      * @param TypeExtensionInterface $extension
-     *
-     * @return RegistryBuilderInterface
      */
     public function addTypeExtension(TypeExtensionInterface $extension);
 

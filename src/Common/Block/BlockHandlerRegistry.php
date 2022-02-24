@@ -54,5 +54,7 @@ class BlockHandlerRegistry implements BlockHandlerRegistryInterface
         if ($this->hasHandler($type)) {
             return $this->registry[$type];
         }
+
+        return null;
     }
 }
