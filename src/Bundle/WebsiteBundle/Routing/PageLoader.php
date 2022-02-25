@@ -14,6 +14,7 @@ namespace Integrated\Bundle\WebsiteBundle\Routing;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\PageBundle\Document\Page\Page;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\Config\Loader\LoaderResolver;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
@@ -97,6 +98,7 @@ class PageLoader implements LoaderInterface
      */
     public function getResolver()
     {
+        return new LoaderResolver();
     }
 
     /**

@@ -133,16 +133,16 @@ class MenuExtension extends AbstractExtension
             $options['editMode'] = true;
         }
 
-        $menu = $this->provider->get($name, $options);
+        if ($this->provider->has($name)) {
+            $menu = $this->provider->get($name, $options);
+        } else {
+            $menu = $this->factory->createItem($name);
+        }
 
         $html = '';
 
         if ($edit) {
             $html .= '<div class="integrated-website-menu">';
-
-            if (!$this->provider->has($name)) {
-                $menu = $this->factory->createItem($name);
-            }
 
             $html .= '<script type="text/json">'.json_encode(
                 ['data' => $menu->toArray(), 'options' => $options]
