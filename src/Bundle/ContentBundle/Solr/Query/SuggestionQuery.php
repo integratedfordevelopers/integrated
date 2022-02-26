@@ -77,7 +77,7 @@ class SuggestionQuery extends Query implements WorkflowMarkerInterface
 
         $facet = new Field($facet);
         $facet->setKey('suggest');
-        $facet->addExclude('suggest');
+        $facet->getLocalParameters()->getLocalParameters()->setExclude('suggest');
 
         $this->getFacetSet()
             ->removeFacet('suggest')
