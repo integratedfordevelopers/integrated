@@ -65,7 +65,7 @@
         "twig/twig": ">=2.12",
         "doctrine/mongodb-odm-bundle": "~4.3",
         "psr/simple-cache": "^1.0",
-        "doesntmattr/mongodb-migrations-bundle": "^3.0",
+        "graviton/mongodb-migrations-bundle": "^2.0",
         "excelwebzone/recaptcha-bundle": "^1.5",
         "ramsey/uuid": "^4.2"
     },
