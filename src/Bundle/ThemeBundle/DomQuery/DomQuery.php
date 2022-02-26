@@ -3,18 +3,16 @@
 namespace Integrated\Bundle\ThemeBundle\DomQuery;
 
 /**
- * Class DomQuery
- *
- * @package Rct567\DomQuery
+ * Class DomQuery.
  */
 class DomQuery extends DomQueryNodes
 {
     /**
-     * Node data
+     * Node data.
      *
      * @var array
      */
-    private static $node_data = array();
+    private static $node_data = [];
 
     /**
      * Get the combined text contents of each element in the set of matched elements, including their descendants,
@@ -24,7 +22,7 @@ class DomQuery extends DomQueryNodes
      *
      * @return $this|string|null
      */
-    public function text($val=null)
+    public function text($val = null)
     {
         if ($val !== null) { // set node value for all nodes
             foreach ($this->nodes as $node) {
@@ -39,13 +37,13 @@ class DomQuery extends DomQueryNodes
     }
 
     /**
-     * Get the HTML contents of the first element in the set of matched elements
+     * Get the HTML contents of the first element in the set of matched elements.
      *
      * @param string|null $html_string
      *
      * @return $this|string
      */
-    public function html($html_string=null)
+    public function html($html_string = null)
     {
         if ($html_string !== null) { // set html for all nodes
             foreach ($this as $node) {
@@ -68,12 +66,13 @@ class DomQuery extends DomQueryNodes
      *
      * @return $this|string|null
      */
-    public function attr(string $name, $val=null)
+    public function attr(string $name, $val = null)
     {
         if ($val !== null) { // set attribute for all nodes
             foreach ($this->getElements() as $node) {
                 $node->setAttribute($name, $val);
             }
+
             return $this;
         }
         if ($node = $this->getFirstElmNode()) { // get attribute value for first element
@@ -90,20 +89,21 @@ class DomQuery extends DomQueryNodes
      *
      * @return $this|string|object
      */
-    public function data(string $key=null, $val=null)
+    public function data(string $key = null, $val = null)
     {
         $doc_hash = spl_object_hash($this->document);
 
         if ($val !== null) { // set data for all nodes
             if (!isset(self::$node_data[$doc_hash])) {
-                self::$node_data[$doc_hash] = array();
+                self::$node_data[$doc_hash] = [];
             }
             foreach ($this->getElements() as $node) {
                 if (!isset(self::$node_data[$doc_hash][self::getElementId($node)])) {
-                    self::$node_data[$doc_hash][self::getElementId($node)] = (object) array();
+                    self::$node_data[$doc_hash][self::getElementId($node)] = (object) [];
                 }
                 self::$node_data[$doc_hash][self::getElementId($node)]->$key = $val;
             }
+
             return $this;
         }
 
@@ -116,20 +116,24 @@ class DomQuery extends DomQueryNodes
                 }
             }
             if ($key === null) { // object with all data
-                $data = array();
+                $data = [];
                 foreach ($node->attributes as $attr) {
                     if (strpos($attr->nodeName, 'data-') === 0) {
                         $val = $attr->nodeValue[0] === '{' ? json_decode($attr->nodeValue) : $attr->nodeValue;
                         $data[substr($attr->nodeName, 5)] = $val;
                     }
                 }
+
                 return (object) $data;
             }
             if ($data = $node->getAttribute('data-'.$key)) {
                 $val = $data[0] === '{' ? json_decode($data) : $data;
+
                 return $val;
             }
         }
+
+        return $this;
     }
 
     /**
@@ -139,7 +143,7 @@ class DomQuery extends DomQueryNodes
      *
      * @return void
      */
-    public function removeData($name=null)
+    public function removeData($name = null)
     {
         $remove_names = \is_array($name) ? $name : explode(' ', $name);
         $doc_hash = spl_object_hash($this->document);
@@ -170,7 +174,7 @@ class DomQuery extends DomQueryNodes
     }
 
     /**
-     * Convert css string to array
+     * Convert css string to array.
      *
      * @param string containing style properties
      *
@@ -179,7 +183,7 @@ class DomQuery extends DomQueryNodes
     private static function parseStyle(string $css)
     {
         $statements = explode(';', preg_replace('/\s+/s', ' ', $css));
-        $styles = array();
+        $styles = [];
 
         foreach ($statements as $statement) {
             if ($p = strpos($statement, ':')) {
@@ -193,7 +197,7 @@ class DomQuery extends DomQueryNodes
     }
 
     /**
-     * Convert css name-value array to string
+     * Convert css name-value array to string.
      *
      * @param array with style properties
      *
@@ -205,6 +209,7 @@ class DomQuery extends DomQueryNodes
         foreach ($array as $key => $value) {
             $styles .= $key.': '.$value.';';
         }
+
         return $styles;
     }
 
@@ -217,7 +222,7 @@ class DomQuery extends DomQueryNodes
      *
      * @return $this|string
      */
-    public function css(string $name, $val=null)
+    public function css(string $name, $val = null)
     {
         if ($val !== null) { // set css for all nodes
             foreach ($this->getElements() as $node) {
@@ -225,6 +230,7 @@ class DomQuery extends DomQueryNodes
                 $style[$name] = $val;
                 $node->setAttribute('style', self::getStyle($style));
             }
+
             return $this;
         }
         if ($node = $this->getFirstElmNode()) { // get css value for first element
@@ -233,6 +239,8 @@ class DomQuery extends DomQueryNodes
                 return $style[$name];
             }
         }
+
+        return $this;
     }
 
     /**
@@ -268,7 +276,7 @@ class DomQuery extends DomQueryNodes
         $add_names = \is_array($class_name) ? $class_name : explode(' ', $class_name);
 
         foreach ($this->getElements() as $node) {
-            $node_classes = array();
+            $node_classes = [];
             if ($node_class_attr = $node->getAttribute('class')) {
                 $node_classes = explode(' ', $node_class_attr);
             }
@@ -290,7 +298,7 @@ class DomQuery extends DomQueryNodes
      *
      * @param string $class_name
      *
-     * @return boolean
+     * @return bool
      */
     public function hasClass($class_name)
     {
@@ -313,7 +321,7 @@ class DomQuery extends DomQueryNodes
      *
      * @return $this
      */
-    public function removeClass($class_name='')
+    public function removeClass($class_name = '')
     {
         $remove_names = \is_array($class_name) ? $class_name : explode(' ', $class_name);
 
@@ -323,7 +331,7 @@ class DomQuery extends DomQueryNodes
                 $class_removed = false;
 
                 if ($class_name === '') { // remove all
-                    $node_classes = array();
+                    $node_classes = [];
                     $class_removed = true;
                 } else {
                     foreach ($remove_names as $remove_name) {
@@ -350,7 +358,7 @@ class DomQuery extends DomQueryNodes
      *
      * @return $this
      */
-    public function toggleClass($class_name='')
+    public function toggleClass($class_name = '')
     {
         $toggle_names = \is_array($class_name) ? $class_name : explode(' ', $class_name);
 
@@ -376,7 +384,7 @@ class DomQuery extends DomQueryNodes
      *
      * @return $this|mixed|null
      */
-    public function prop(string $name, $val=null)
+    public function prop(string $name, $val = null)
     {
         if ($val !== null) { // set attribute for all nodes
             foreach ($this->nodes as $node) {
@@ -413,7 +421,7 @@ class DomQuery extends DomQueryNodes
      *
      * @return self
      */
-    public function children($selector=null)
+    public function children($selector = null)
     {
         $result = $this->createChildInstance();
 
@@ -429,7 +437,7 @@ class DomQuery extends DomQueryNodes
             }
 
             if ($selector !== false) { // filter out text nodes
-                $filtered_elements = array();
+                $filtered_elements = [];
                 foreach ($result->getElements() as $result_elm) {
                     $filtered_elements[] = $result_elm;
                 }
@@ -452,7 +460,7 @@ class DomQuery extends DomQueryNodes
      *
      * @return self
      */
-    public function siblings($selector=null)
+    public function siblings($selector = null)
     {
         $result = $this->createChildInstance();
 
@@ -476,13 +484,13 @@ class DomQuery extends DomQueryNodes
     }
 
     /**
-     * Get the parent of each element in the current set of matched elements, optionally filtered by a selector
+     * Get the parent of each element in the current set of matched elements, optionally filtered by a selector.
      *
      * @param string|self|callable|\DOMNodeList|\DOMNode|null $selector expression that filters the set of matched elements
      *
      * @return self
      */
-    public function parent($selector=null)
+    public function parent($selector = null)
     {
         $result = $this->createChildInstance();
 
@@ -557,7 +565,7 @@ class DomQuery extends DomQueryNodes
                         foreach ($selection as $result_node) {
                             if ($result_node->isSameNode($node)) {
                                 $matched = true;
-                                break 1;
+                                break;
                             }
                         }
                         if (!$matched) {
@@ -574,14 +582,14 @@ class DomQuery extends DomQueryNodes
     }
 
     /**
-     * Reduce the set of matched elements to those that match the selector
+     * Reduce the set of matched elements to those that match the selector.
      *
-     * @param string|self|callable|\DOMNodeList|\DOMNode $selector
+     * @param string|self|callable|\DOMNodeList|\DOMNode     $selector
      * @param string|self|\DOMNodeList|\DOMNode|\DOMDocument $context
      *
      * @return self
      */
-    public function add($selector, $context=null)
+    public function add($selector, $context = null)
     {
         $result = $this->createChildInstance();
         $result->nodes = $this->nodes;
@@ -604,7 +612,7 @@ class DomQuery extends DomQueryNodes
     }
 
     /**
-     * Reduce the set of matched elements to those that match the selector
+     * Reduce the set of matched elements to those that match the selector.
      *
      * @param string|self|callable|\DOMNodeList|\DOMNode $selector
      *
@@ -628,7 +636,7 @@ class DomQuery extends DomQueryNodes
                     foreach ($this->nodes as $node) {
                         if ($result_node->isSameNode($node)) {
                             $result->addDomNode($node);
-                            break 1;
+                            break;
                         }
                     }
                 }
@@ -656,18 +664,19 @@ class DomQuery extends DomQueryNodes
      *
      * @return int $position
      */
-    public function index($selector=null)
+    public function index($selector = null)
     {
         if ($selector === null) {
             if ($node = $this->getFirstElmNode()) {
                 $position = 0;
                 while ($node && ($node = $node->previousSibling)) {
                     if ($node instanceof \DOMElement) {
-                        $position++;
+                        ++$position;
                     } else {
                         break;
                     }
                 }
+
                 return $position;
             }
         } else {
@@ -682,11 +691,11 @@ class DomQuery extends DomQueryNodes
     }
 
     /**
-     * Check if any node matches the selector
+     * Check if any node matches the selector.
      *
      * @param string|self|callable|\DOMNodeList|\DOMNode $selector
      *
-     * @return boolean
+     * @return bool
      */
     public function is($selector)
     {
@@ -714,7 +723,7 @@ class DomQuery extends DomQueryNodes
     }
 
     /**
-     * Reduce the set of matched elements to those that have a descendant that matches the selector
+     * Reduce the set of matched elements to those that have a descendant that matches the selector.
      *
      * @param string|self|callable|\DOMNodeList|\DOMNode $selector
      *
@@ -736,25 +745,26 @@ class DomQuery extends DomQueryNodes
     }
 
     /**
-     * Reduce the set of matched elements to a subset specified by the offset and length (php like)
+     * Reduce the set of matched elements to a subset specified by the offset and length (php like).
      *
-     * @param integer $offset
-     * @param integer $length
+     * @param int $offset
+     * @param int $length
      *
      * @return self
      */
-    public function slice($offset=0, $length=null)
+    public function slice($offset = 0, $length = null)
     {
         $result = $this->createChildInstance();
         $result->nodes = \array_slice($this->nodes, $offset, $length);
         $result->length = \count($result->nodes);
+
         return $result;
     }
 
-     /**
+    /**
      * Reduce the set of matched elements to the one at the specified index.
      *
-     * @param integer $index
+     * @param int $index
      *
      * @return self
      */
@@ -764,45 +774,47 @@ class DomQuery extends DomQueryNodes
     }
 
     /**
-     * Returns DomQuery with first node
+     * Returns DomQuery with first node.
      *
      * @param string|self|callable|\DOMNodeList|\DOMNode|null $selector expression that filters the set of matched elements
      *
      * @return self
      */
-    public function first($selector=null)
+    public function first($selector = null)
     {
         $result = $this[0];
         if ($selector) {
             $result = $result->filter($selector);
         }
+
         return $result;
     }
 
     /**
-     * Returns DomQuery with last node
+     * Returns DomQuery with last node.
      *
      * @param string|self|callable|\DOMNodeList|\DOMNode|null $selector expression that filters the set of matched elements
      *
      * @return self
      */
-    public function last($selector=null)
+    public function last($selector = null)
     {
-        $result = $this[$this->length-1];
+        $result = $this[$this->length - 1];
         if ($selector) {
             $result = $result->filter($selector);
         }
+
         return $result;
     }
 
     /**
-     * Returns DomQuery with immediately following sibling of all nodes
+     * Returns DomQuery with immediately following sibling of all nodes.
      *
      * @param string|self|callable|\DOMNodeList|\DOMNode|null $selector expression that filters the set of matched elements
      *
      * @return self
      */
-    public function next($selector=null)
+    public function next($selector = null)
     {
         $result = $this->createChildInstance();
 
@@ -828,7 +840,7 @@ class DomQuery extends DomQueryNodes
      *
      * @return self
      */
-    public function nextAll($selector=null)
+    public function nextAll($selector = null)
     {
         $result = $this->createChildInstance();
 
@@ -850,13 +862,13 @@ class DomQuery extends DomQueryNodes
     }
 
     /**
-     * Returns DomQuery with immediately preceding sibling of all nodes
+     * Returns DomQuery with immediately preceding sibling of all nodes.
      *
      * @param string|self|callable|\DOMNodeList|\DOMNode|null $selector expression that filters the set of matched elements
      *
      * @return self
      */
-    public function prev($selector=null)
+    public function prev($selector = null)
     {
         $result = $this->createChildInstance();
 
@@ -882,7 +894,7 @@ class DomQuery extends DomQueryNodes
      *
      * @return self
      */
-    public function prevAll($selector=null)
+    public function prevAll($selector = null)
     {
         $result = $this->createChildInstance();
 
@@ -904,14 +916,14 @@ class DomQuery extends DomQueryNodes
     }
 
     /**
-     * Remove the set of matched elements
+     * Remove the set of matched elements.
      *
      * @param string|self|callable|\DOMNodeList|\DOMNode|null $selector expression that
-     * filters the set of matched elements to be removed
+     *                                                                  filters the set of matched elements to be removed
      *
      * @return self
      */
-    public function remove($selector=null)
+    public function remove($selector = null)
     {
         $result = $this;
         if ($selector) {
@@ -923,17 +935,17 @@ class DomQuery extends DomQueryNodes
             }
         }
 
-        $result->nodes = array();
+        $result->nodes = [];
         $result->length = 0;
 
         return $result;
     }
 
     /**
-     * Import nodes and insert or append them via callback function
+     * Import nodes and insert or append them via callback function.
      *
      * @param string|self|array $content
-     * @param callable $import_function
+     * @param callable          $import_function
      *
      * @return void
      */
@@ -969,16 +981,16 @@ class DomQuery extends DomQueryNodes
     }
 
     /**
-     * Get target result using selector or instance of self
+     * Get target result using selector or instance of self.
      *
-     * @param string|self $target
+     * @param string|self                                    $target
      * @param string|self|\DOMNodeList|\DOMNode|\DOMDocument $context
      *
      * @return self
      */
-    private function getTargetResult($target, $context=null)
+    private function getTargetResult($target, $context = null)
     {
-        if ($context===null && \is_string($target) && strpos($target, '<') === false) {
+        if ($context === null && \is_string($target) && strpos($target, '<') === false) {
             $context = $this->document;
         }
 
@@ -1019,7 +1031,7 @@ class DomQuery extends DomQueryNodes
     }
 
     /**
-     * Insert content to the beginning of each element in the set of matched elements
+     * Insert content to the beginning of each element in the set of matched elements.
      *
      * @param string|self $content,...
      *
@@ -1123,7 +1135,7 @@ class DomQuery extends DomQueryNodes
     }
 
     /**
-     * Wrap an HTML structure around each element in the set of matched elements
+     * Wrap an HTML structure around each element in the set of matched elements.
      *
      * @param string|self $content,...
      *
@@ -1150,7 +1162,7 @@ class DomQuery extends DomQueryNodes
     }
 
     /**
-     * Wrap an HTML structure around all elements in the set of matched elements
+     * Wrap an HTML structure around all elements in the set of matched elements.
      *
      * @param string|self $content,...
      *
@@ -1187,7 +1199,7 @@ class DomQuery extends DomQueryNodes
     }
 
     /**
-     * Wrap an HTML structure around the content of each element in the set of matched elements
+     * Wrap an HTML structure around the content of each element in the set of matched elements.
      *
      * @param string|self $content,...
      *
@@ -1203,11 +1215,11 @@ class DomQuery extends DomQueryNodes
     }
 
     /**
-     * Check if property exist for this instance
+     * Check if property exist for this instance.
      *
      * @param string $name
      *
-     * @return boolean
+     * @return bool
      */
     public function __isset($name)
     {
