@@ -41,7 +41,6 @@
         <service id="Integrated\Bundle\ThemeBundle\Scraper\Scraper">
             <argument type="service" id="doctrine.orm.default_entity_manager" />
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
-            <argument type="service" id="kernel" />
             <argument type="service" id="twig.loader.native_filesystem" />
             <argument type="service" id="Integrated\Bundle\ThemeBundle\Scraper\ScraperPageLoader" />
         </service>
