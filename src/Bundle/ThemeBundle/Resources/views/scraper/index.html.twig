@@ -41,13 +41,13 @@
                                 {{ scraper.channelId }}
                             </td>
                             <td>
-                                {{ scraper.templateName|replace({'Resources/views': '[..]'})|truncate(50) }}
+                                {{ scraper.templateName|replace({'Resources/views': '[..]'})|u.truncate(50) }}
                             </td>
                             <td>
-                                {{ scraper.url|truncate(50) }}
+                                {{ scraper.url|u.truncate(50) }}
                             </td>
                             <td>
-                                {{ scraper.lastModified|localizeddate("medium", "none") }}
+                                {{ scraper.lastModified|format_date("medium", "none") }}
                             </td>
                             <td>
                                 <a href="{{ path('integrated_theme_scraper_edit', {'id': scraper.id}) }}" title="{% trans %}Edit{% endtrans %}">

@@ -38,7 +38,7 @@ class ChannelExtension extends AbstractExtension implements GlobalsInterface
     /**
      * {@inheritdoc}
      */
-    public function getGlobals()
+    public function getGlobals(): array
     {
         return [
             '_channel' => $this->getChannel(),

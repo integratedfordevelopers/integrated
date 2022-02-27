@@ -58,7 +58,7 @@
                                 {% endfor %}
                             </td>
                             <td>
-                                {{ document.createdAt|localizeddate("medium", "none") }}
+                                {{ document.createdAt|format_date("medium", "none") }}
                             </td>
                             <td>
                                 <a href="{{ path('integrated_content_content_type_show', {'id': document.id}) }}" title="{% trans %}Information{% endtrans %}">

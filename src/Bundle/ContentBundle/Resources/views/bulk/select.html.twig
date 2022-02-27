@@ -59,8 +59,8 @@
                         <td>{{ form_widget(item) }}</td>
                         <td><a href="{{ path('integrated_content_content_edit', {id: content[item.vars.label].id}) }}">{{ content[item.vars.label] }}</a></td>
                         <td>{{ content[item.vars.label].getContentType()|capitalize }}</td>
-                        <td>{{ content[item.vars.label].getCreatedAt()|localizeddate('medium') }}</td>
-                        <td>{{ content[item.vars.label].getUpdatedAt()|localizeddate('medium') }}</td>
+                        <td>{{ content[item.vars.label].getCreatedAt()|format_date('medium') }}</td>
+                        <td>{{ content[item.vars.label].getUpdatedAt()|format_date('medium') }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>

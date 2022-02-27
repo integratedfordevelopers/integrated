@@ -6,7 +6,7 @@
 {% block content %}
 <section class="section-white section-padding section-shadow section-radius">
     <p>
-        <b>{% trans %}Date{% endtrans %}:</b> {{ contentHistory.date|localizeddate }}<br />
+        <b>{% trans %}Date{% endtrans %}:</b> {{ contentHistory.date|format_date }}<br />
         <b>{% trans %}Action{% endtrans %}:</b> {{ contentHistory.action|trans }}<br />
         <b>{% trans %}User{% endtrans %}:</b> {{ contentHistory.user.name|default('Unknown'|trans) }} {% if contentHistory.user.id is defined %}(#{{ contentHistory.user.id }}){% endif %}<br />
         <b>{% trans %}Endpoint{% endtrans %}:</b> {{ contentHistory.request.endpoint }}<br />

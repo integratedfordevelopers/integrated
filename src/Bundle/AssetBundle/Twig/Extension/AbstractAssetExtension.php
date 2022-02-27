@@ -67,7 +67,7 @@ abstract class AbstractAssetExtension extends AbstractExtension
     public function render(Environment $environment)
     {
         /** @var \Twig_Template $template */
-        $template = $environment->loadTemplate($this->getTemplate());
+        $template = $environment->load($this->getTemplate());
 
         $html = [];
 
