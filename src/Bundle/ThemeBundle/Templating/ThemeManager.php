@@ -207,7 +207,7 @@ class ThemeManager
 
             $paths = [];
             $namespacePaths = $this->loader->getPaths($namespace);
-            if (count($namespacePaths) === 0) {
+            if (\count($namespacePaths) === 0) {
                 throw new \Exception(sprintf('Namespace %s not found. Use Twig namespace notation for themes', $namespace));
             }
             foreach ($namespacePaths as $namespacePath) {
