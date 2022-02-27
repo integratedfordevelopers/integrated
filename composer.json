@@ -113,6 +113,9 @@
             "Integrated\\Common\\": "src/Common"
         }
     },
+    "config": {
+        "sort-packages": true
+    },
     "extra": {
         "branch-alias": {
             "dev-release/0.10": "0.10.x-dev",
