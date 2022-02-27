@@ -7,7 +7,6 @@
     <services>
 
         <service id="integrated_theme.templating.theme_manager" class="Integrated\Bundle\ThemeBundle\Templating\ThemeManager" public="true">
-            <argument type="service" id="kernel" />
             <argument type="service" id="twig.loader.native_filesystem" />
         </service>
 

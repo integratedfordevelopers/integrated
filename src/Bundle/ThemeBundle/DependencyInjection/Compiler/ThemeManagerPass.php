@@ -30,6 +30,6 @@ class ThemeManagerPass implements CompilerPassInterface
 
         $definition = $container->getDefinition('integrated_theme.templating.theme_manager');
 
-        $definition->addMethodCall('registerPath', ['default', '@IntegratedThemeBundle/Resources/views/themes/default']);
+        $definition->addMethodCall('registerPath', ['default', '@IntegratedTheme/themes/default']);
     }
 }

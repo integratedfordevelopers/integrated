@@ -3,41 +3,43 @@
         <h2>{{ block.publishedTitle }}</h2>
 
         <ul class="list-unstyled row m-b-0">
-            {% for item in block.items if not item.disabled %}
-                <li class="col-lg-4 col-sm-6">
-                    <div class="card ">
-                        {% if item.image|default %}
-                            {% if item.link %}
-                                <a href="{{ item.link }}" {% if item.target %}target="{{ item.target }}"{% endif %}>
-                            {% endif %}
-
-                            <img class="card-img-top img-responsive full-xs" src="{{ image(item.image).cropResize(290,115) }}" alt="{{ item.title }}">
-
-                            {% if item.link %}
-		                 </a>
-                            {% endif %}
-                        {% endif %}
-                        <div class="card-block">
-                            <h4 class="card-title">
+            {% for item in block.items %}
+                {% if not item.disabled %}
+                    <li class="col-lg-4 col-sm-6">
+                        <div class="card ">
+                            {% if item.image|default %}
                                 {% if item.link %}
-                                    <a href="{{ item.link }}">
+                                    <a href="{{ item.link }}" {% if item.target %}target="{{ item.target }}"{% endif %}>
                                 {% endif %}
-                                {{ item.title }}
-                                {% if item.link %}
-                                    </a>
-                                {% endif %}
-                            </h4>
 
-                            <div class="card-text">
-                                {{ item.text|default|raw }}
+                                <img class="card-img-top img-responsive full-xs" src="{{ image(item.image).cropResize(290,115) }}" alt="{{ item.title }}">
+
+                                {% if item.link %}
+                             </a>
+                                {% endif %}
+                            {% endif %}
+                            <div class="card-block">
+                                <h4 class="card-title">
+                                    {% if item.link %}
+                                        <a href="{{ item.link }}">
+                                    {% endif %}
+                                    {{ item.title }}
+                                    {% if item.link %}
+                                        </a>
+                                    {% endif %}
+                                </h4>
+
+                                <div class="card-text">
+                                    {{ item.text|default|raw }}
+                                </div>
+
+                                {% if item.link %}
+                                    <a href="{{ item.link }}" {% if item.target %}target="{{ item.target }}"{% endif %}>{{ item.linkText|default }}</a>
+                                {% endif %}
                             </div>
-
-                            {% if item.link %}
-                                <a href="{{ item.link }}" {% if item.target %}target="{{ item.target }}"{% endif %}>{{ item.linkText|default }}</a>
-                            {% endif %}
                         </div>
-                    </div>
-                </li>
+                    </li>
+                {% endif %}
             {% endfor %}
         </ul>
     </div>

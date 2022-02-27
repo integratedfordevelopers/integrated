@@ -5,42 +5,44 @@
 
     {% set route = app.request.attributes.get('_route') %}
 
-    {% for facetName, facet in facets if facet.values.values|default|length %}
-        {% set activeFilters = app.request.query.get(facetName)|default([]) %}
+    {% for facetName, facet in facets %}
+        {% if facet.values.values|default|length %}
+            {% set activeFilters = app.request.query.get(facetName)|default([]) %}
 
-        <div class="panel-body">
-            <b>{{ facet.name }}</b>
-            {% set hidden = false %}
-            {% set id = null %}
+            <div class="panel-body">
+                <b>{{ facet.name }}</b>
+                {% set hidden = false %}
+                {% set id = null %}
 
-            {% for name, count in facet.values.values %}
-                {% if loop.index == 6 and renderedActiveFilters|default(0) == activeFilters|length %}
-                    {% set hidden = true %}
-                    {% set id = block.id|slugify ~ '-' ~ facet.name|slugify %}
+                {% for name, count in facet.values.values %}
+                    {% if loop.index == 6 and renderedActiveFilters|default(0) == activeFilters|length %}
+                        {% set hidden = true %}
+                        {% set id = block.id|slugify ~ '-' ~ facet.name|slugify %}
 
-                    <a href="#" onclick="$(this).remove(); $('[data-id=\'{{ id }}\']').removeClass('hidden'); return false;">
-                        {% trans %}Show more{% endtrans %}
-                    </a>
-                {% endif %}
+                        <a href="#" onclick="$(this).remove(); $('[data-id=\'{{ id }}\']').removeClass('hidden'); return false;">
+                            {% trans %}Show more{% endtrans %}
+                        </a>
+                    {% endif %}
 
-                {% if name in activeFilters %}
-                    {% set active = true %}
-                    {% set renderedActiveFilters = renderedActiveFilters|default(0) + 1 %}
-                    {% set newParam = {(facetName): activeFilters|unset_value(name)} %}
-                {% else %}
-                    {% set active = false %}
-                    {% set newParam = {(facetName): activeFilters|merge([name])} %}
-                {% endif %}
-                {% set params = app.request.query.all|merge(app.request.attributes.get('_route_params'))|merge(newParam) %}
+                    {% if name in activeFilters %}
+                        {% set active = true %}
+                        {% set renderedActiveFilters = renderedActiveFilters|default(0) + 1 %}
+                        {% set newParam = {(facetName): activeFilters|unset_value(name)} %}
+                    {% else %}
+                        {% set active = false %}
+                        {% set newParam = {(facetName): activeFilters|merge([name])} %}
+                    {% endif %}
+                    {% set params = app.request.query.all|merge(app.request.attributes.get('_route_params'))|merge(newParam) %}
 
-                <div class="checkbox{% if active %} active{% elseif hidden %} hidden{% endif %}"{% if id %} data-id="{{ id }}"{% endif %}>
-                    <label onclick="document.location='{{ path(route, params) }}';">
-                        <input type="checkbox"{% if active %} checked{% endif %}>
-                        <span>{{ name }} </span>
-                        <span class="text-muted">({{ count }})</span>
-                    </label>
-                </div>
-            {% endfor %}
-        </div>
+                    <div class="checkbox{% if active %} active{% elseif hidden %} hidden{% endif %}"{% if id %} data-id="{{ id }}"{% endif %}>
+                        <label onclick="document.location='{{ path(route, params) }}';">
+                            <input type="checkbox"{% if active %} checked{% endif %}>
+                            <span>{{ name }} </span>
+                            <span class="text-muted">({{ count }})</span>
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
     {% endfor %}
 </div>

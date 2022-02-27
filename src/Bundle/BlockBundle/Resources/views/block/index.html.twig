@@ -20,10 +20,12 @@
                     <li class="dropdown">
                         <a href="#" data-toggle="dropdown" role="button">{% trans %}Create new{% endtrans %} <b class="caret"></b></a>
                         <ul role="menu" class="dropdown-menu">
-                            {% for metadata in factory.allMetadata if 'InlineTextBlock' not in metadata.class %}
-                                <li role="presentation">
-                                    <a href="{{ path('integrated_block_block_new') }}?class={{ metadata.class }}">{{ metadata.type|default(metadata.class) }}</a>
-                                </li>
+                            {% for metadata in factory.allMetadata %}
+                                {% if 'InlineTextBlock' not in metadata.class %}
+                                    <li role="presentation">
+                                        <a href="{{ path('integrated_block_block_new') }}?class={{ metadata.class }}">{{ metadata.type|default(metadata.class) }}</a>
+                                    </li>
+                                {% endif %}
                             {% endfor %}
                         </ul>
                     </li>

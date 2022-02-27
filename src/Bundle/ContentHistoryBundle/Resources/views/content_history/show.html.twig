@@ -30,22 +30,24 @@
             </tr>
         </thead>
         <tbody>
-            {% for field, changeSet in contentHistory.changeSet if changeSet is not null %}
-                {% set isUpdate = contentHistory.action == 'update' %}
+            {% for field, changeSet in contentHistory.changeSet %}
+                {% if changeSet is not null %}
+                    {% set isUpdate = contentHistory.action == 'update' %}
 
-                <tr>
-                    <td>{{ field }}</td>
-                    {% if showOld %}
-                        <td>
-                            {% include '@IntegratedContentHistory/value.html.twig' with { 'value': isUpdate and changeSet[0] is defined ? changeSet[0] : changeSet } %}
-                        </td>
-                    {% endif %}
-                    {% if showNew %}
-                        <td>
-                            {% include '@IntegratedContentHistory/value.html.twig' with { 'value': isUpdate and changeSet[1] is defined ? changeSet[1] : changeSet } %}
-                        </td>
-                    {% endif %}
-                </tr>
+                    <tr>
+                        <td>{{ field }}</td>
+                        {% if showOld %}
+                            <td>
+                                {% include '@IntegratedContentHistory/value.html.twig' with { 'value': isUpdate and changeSet[0] is defined ? changeSet[0] : changeSet } %}
+                            </td>
+                        {% endif %}
+                        {% if showNew %}
+                            <td>
+                                {% include '@IntegratedContentHistory/value.html.twig' with { 'value': isUpdate and changeSet[1] is defined ? changeSet[1] : changeSet } %}
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endif %}
             {% endfor %}
         </tbody>
     </table>
