@@ -67,7 +67,10 @@
         "psr/simple-cache": "^1.0",
         "doesntmattr/mongodb-migrations-bundle": "^3.0",
         "excelwebzone/recaptcha-bundle": "^1.5",
-        "ramsey/uuid": "^4.2"
+        "ramsey/uuid": "^4.2",
+        "twig/intl-extra": "^3.3",
+        "twig/extra-bundle": "^3.3",
+        "twig/string-extra": "^3.3"
     },
     "replace": {
         "integrated/asset-bundle": "self.version",
