@@ -151,7 +151,7 @@ class MenuItem extends KnpMenuItem
      *
      * @return $this
      */
-    public function setFactory(FactoryInterface $factory)
+    public function setFactory(FactoryInterface $factory): ItemInterface
     {
         if (!$factory instanceof DatabaseMenuFactory) {
             throw new \InvalidArgumentException(
@@ -167,7 +167,7 @@ class MenuItem extends KnpMenuItem
     /**
      * {@inheritdoc}
      */
-    public function addChild($child, array $options = [])
+    public function addChild($child, array $options = []): ItemInterface
     {
         if ($child instanceof Menu) {
             throw new \InvalidArgumentException(
@@ -193,7 +193,7 @@ class MenuItem extends KnpMenuItem
     /**
      * {@inheritdoc}
      */
-    public function getChild($id)
+    public function getChild($id): ?ItemInterface
     {
         /** @var MenuItem $child */
         foreach ($this->children as $child) {
@@ -208,7 +208,7 @@ class MenuItem extends KnpMenuItem
     /**
      * @return \Knp\Menu\ItemInterface[]
      */
-    public function getChildren()
+    public function getChildren(): array
     {
         if ($this->children instanceof Collection) {
             return $this->children->toArray();
@@ -220,7 +220,7 @@ class MenuItem extends KnpMenuItem
     /**
      * @return \Knp\Menu\ItemInterface
      */
-    public function getFirstChild()
+    public function getFirstChild(): ItemInterface
     {
         $children = $this->getChildren();
 
@@ -230,7 +230,7 @@ class MenuItem extends KnpMenuItem
     /**
      * @return \Knp\Menu\ItemInterface
      */
-    public function getLastChild()
+    public function getLastChild(): ItemInterface
     {
         $children = $this->getChildren();
 

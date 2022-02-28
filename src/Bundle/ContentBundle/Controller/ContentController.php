@@ -161,19 +161,19 @@ class ContentController extends AbstractController
 
         $facetSet = $query->getFacetSet();
         $facetSet->setMinCount(1);
-        $facetSet->createFacetField('contenttypes')->setField('type_name')->addExclude('contenttypes');
-        $facetSet->createFacetField('channels')->setField('facet_channels')->addExclude('channels');
+        $facetSet->createFacetField('contenttypes')->setField('type_name')->getLocalParameters()->setExclude('contenttypes');
+        $facetSet->createFacetField('channels')->setField('facet_channels')->getLocalParameters()->setExclude('channels');
 
-        $facetSet->createFacetField('workflow_state')->setField('facet_workflow_state')->addExclude('workflow_state');
+        $facetSet->createFacetField('workflow_state')->setField('facet_workflow_state')->getLocalParameters()->setExclude('workflow_state');
         $facetTitles['workflow_state'] = 'Workflow status';
 
-        $facetSet->createFacetField('workflow_assigned')->setField('facet_workflow_assigned')->addExclude('workflow_assigned');
+        $facetSet->createFacetField('workflow_assigned')->setField('facet_workflow_assigned')->getLocalParameters()->setExclude('workflow_assigned');
         $facetTitles['workflow_assigned'] = 'Assigned user';
 
-        $facetSet->createFacetField('authors')->setField('facet_authors')->addExclude('authors');
+        $facetSet->createFacetField('authors')->setField('facet_authors')->getLocalParameters()->setExclude('authors');
         $facetTitles['authors'] = 'Author';
 
-        $facetSet->createFacetField('properties')->setField('facet_properties')->addExclude('properties');
+        $facetSet->createFacetField('properties')->setField('facet_properties')->getLocalParameters()->setExclude('properties');
 
         // If the request query contains a relation parameter we need to fetch all the targets of the relation in order
         // to filter on these targets.
@@ -228,7 +228,7 @@ class ContentController extends AbstractController
             $name = preg_replace('/[^a-zA-Z]/', '', $relation->getName());
 
             //create relation facet field
-            $facetSet->createFacetField($name)->setField('facet_'.$relation->getId())->addExclude($name);
+            $facetSet->createFacetField($name)->setField('facet_'.$relation->getId())->getLocalParameters()->setExclude($name);
             $facetTitles[$name] = $relation->getName();
             $relationfilter = $request->query->get($name);
 

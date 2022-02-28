@@ -66,7 +66,7 @@ class BreadcrumbExtensionTest extends \PHPUnit\Framework\TestCase
         $this->breadcrumbMenuProvider
             ->expects($this->once())
             ->method('get')
-            ->willReturn([$menu]);
+            ->willReturn($menu);
 
         $this->assertEquals('', $this->breadcrumbExtension->renderBreadcrumb());
     }
