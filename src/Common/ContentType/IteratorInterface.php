@@ -32,7 +32,8 @@ interface IteratorInterface extends BaseIteratorInterface
      *
      * @see http://php.net/manual/en/iterator.next.php
      */
-    public function next(): void;
+    #[\ReturnTypeWillChange]
+    public function next();
 
     /**
      * Return the key of the current content type.
@@ -50,12 +51,14 @@ interface IteratorInterface extends BaseIteratorInterface
      *
      * @return bool
      */
-    public function valid(): bool;
+    #[\ReturnTypeWillChange]
+    public function valid();
 
     /**
      * Rewind the Iterator to the first content type.
      *
      * @see http://php.net/manual/en/iterator.rewind.php
      */
-    public function rewind(): void;
+    #[\ReturnTypeWillChange]
+    public function rewind();
 }
