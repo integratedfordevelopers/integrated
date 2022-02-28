@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\ThemeBundle\Templating;
 
 use Integrated\Bundle\ThemeBundle\Exception\CircularFallbackException;
-use Symfony\Component\HttpKernel\Kernel;
 use Twig\Loader\FilesystemLoader;
 
 /**
@@ -20,11 +19,6 @@ use Twig\Loader\FilesystemLoader;
  */
 class ThemeManager
 {
-    /**
-     * @var Kernel
-     */
-    protected $kernel;
-
     /**
      * @var array
      */
@@ -45,12 +39,8 @@ class ThemeManager
      */
     private $loader;
 
-    /**
-     * @param Kernel $kernel
-     */
-    public function __construct(Kernel $kernel, FilesystemLoader $loader)
+    public function __construct(FilesystemLoader $loader)
     {
-        $this->kernel = $kernel;
         $this->loader = $loader;
     }
 
@@ -213,7 +203,18 @@ class ThemeManager
     public function locateResources($name)
     {
         if (str_starts_with($name, '@')) {
-            return [$this->kernel->locateResource($name)];
+            list($namespace, $path) = explode('/', substr($name, 1), 2);
+
+            $paths = [];
+            $namespacePaths = $this->loader->getPaths($namespace);
+            if (\count($namespacePaths) === 0) {
+                throw new \Exception(sprintf('Namespace %s not found. Use Twig namespace notation for themes', $namespace));
+            }
+            foreach ($namespacePaths as $namespacePath) {
+                $paths[] = $namespacePath.'/'.$path;
+            }
+
+            return $paths;
         }
 
         $paths = [];

@@ -68,7 +68,7 @@
     {% apply spaceless %}
         <div class="row">
             <div class="col-md-4">
-                {{ block.id|truncate(20) }}
+                {{ block.id|u.truncate(20) }}
             </div>
             <div class="col-md-4">
                 {{ form_widget(form.operation) }}

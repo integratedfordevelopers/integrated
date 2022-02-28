@@ -32,7 +32,7 @@ class ThemeManagerPass implements CompilerPassInterface
 
         $definition->addMethodCall(
             'registerPath',
-            ['default', '@IntegratedWebsiteBundle/Resources/views/themes/default']
+            ['default', '@IntegratedWebsite/themes/default']
         );
     }
 }

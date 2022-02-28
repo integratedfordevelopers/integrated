@@ -87,7 +87,7 @@
                                     {% endif %}
                                     {% if content.pub_time is defined %}
                                         |
-                                        {{ content.pub_time|localizeddate('medium') }}
+                                        {{ content.pub_time|format_date('medium') }}
                                     {% endif %}
                                     {% if content.pub_edited is defined %}
                                         {% if content.pub_time is not defined or content.pub_edited != content.pub_time %}
@@ -95,7 +95,7 @@
                                         {% if content.pub_time is defined %}
                                             {% trans %}Updated{% endtrans %}
                                         {% endif %}
-                                        {{ content.pub_edited|localizeddate('medium') }}
+                                        {{ content.pub_edited|format_date('medium') }}
                                         {% endif %}
                                     {% endif %}
                                 </li>

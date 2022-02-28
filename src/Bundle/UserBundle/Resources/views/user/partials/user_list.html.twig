@@ -32,7 +32,7 @@
                 {% endif %}
 
                 <td>{{ user.scope.name|default('') }}</td>
-                <td>{% if user.createdAt|date('Y') > 0 %}{{ user.createdAt|localizeddate("medium", "none") }}{% endif %}</td>
+                <td>{% if user.createdAt|date('Y') > 0 %}{{ user.createdAt|format_date("medium", "none") }}{% endif %}</td>
                 <td>{% if user.relation.id|default %}
                         <a href="{{ path('integrated_content_content_edit', {id: user.relation.id}) }}">{{ user.relation.name|default }} {{ user.relation.firstname|default }} {{ user.relation.lastname|default }}</a>
                     {% endif %}

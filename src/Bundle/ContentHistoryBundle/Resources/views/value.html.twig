@@ -3,7 +3,7 @@
 {% elseif value|get_type in ['string', 'integer', 'double'] %}
     {{ value }}
 {% elseif value|get_type == 'object' and value|get_class == 'MongoDate' %}
-    {{ value.toDatetime()|localizeddate }}
+    {{ value.toDatetime()|format_date('medium') }}
 {% elseif value is not null %}
     <i>{% trans %}Not yet supported{% endtrans %}</i>
 {% else %}

@@ -36,13 +36,13 @@ This bundle can be installed following these steps:
         themes:
             mytheme1:
                 paths: 
-                    - @AppBundle/Resources/views/themes/mytheme1
+                    - @AppBundle/themes/mytheme1
                 fallback: 
                     - default
             mytheme2:
                 paths:
-                    - @AppBundle/Resources/views/themes/mytheme2
-                    - @OtherBundle/Resources/views/themes/mytheme2
+                    - @AppBundle/themes/mytheme2
+                    - @OtherBundle/themes/mytheme2
                 fallback: 
                     - mytheme1
                     - mytheme3
