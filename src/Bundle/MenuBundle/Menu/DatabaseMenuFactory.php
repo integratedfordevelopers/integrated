@@ -67,7 +67,7 @@ class DatabaseMenuFactory implements FactoryInterface
      *
      * @return \Integrated\Bundle\MenuBundle\Document\Menu
      */
-    public function createItem($name, array $options = [])
+    public function createItem(string $name, array $options = []): ItemInterface
     {
         return $this->getItem($this->menuClass, $name, $options);
     }
