@@ -86,7 +86,7 @@ class ParentAwareConfigIterator implements Iterator
     /**
      * {@inheritdoc}
      *
-     * @return null|int
+     * @return int|null
      */
     public function key(): ?int
     {
