@@ -21,7 +21,7 @@ use Twig\TwigFunction;
  */
 class BreadcrumbExtensionTest extends \PHPUnit\Framework\TestCase
 {
-    const TEMPLATE = 'default';
+    public const TEMPLATE = 'default';
 
     /**
      * @var Helper|\PHPUnit_Framework_MockObject_MockObject

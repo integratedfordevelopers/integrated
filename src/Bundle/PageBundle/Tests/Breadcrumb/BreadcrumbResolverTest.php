@@ -27,7 +27,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class BreadcrumbResolverTest extends TestCase
 {
-    const TEMPLATE = 'default';
+    public const TEMPLATE = 'default';
 
     /**
      * @var DocumentManager|\PHPUnit_Framework_MockObject_MockObject

@@ -18,7 +18,7 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class ContentEvent extends Event
 {
-    const NAME = 'content.event';
+    public const NAME = 'content.event';
 
     /**
      * @var string

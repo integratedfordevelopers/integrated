@@ -39,7 +39,7 @@ class MongoDBIterator implements IteratorInterface
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         next($this->types);
     }
@@ -55,7 +55,7 @@ class MongoDBIterator implements IteratorInterface
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         return key($this->types) !== null;
     }
@@ -63,7 +63,7 @@ class MongoDBIterator implements IteratorInterface
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         reset($this->types);
     }

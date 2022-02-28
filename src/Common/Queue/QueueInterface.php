@@ -24,14 +24,14 @@ interface QueueInterface extends Countable
      *
      * message marked with this priority will be handled last
      */
-    const PRIORITY_LOW = -10;
+    public const PRIORITY_LOW = -10;
 
     /**
      * Medium-low priority in the queue.
      *
      * This is a priority in between low and medium.
      */
-    const PRIORITY_MEDIUM_LOW = -5;
+    public const PRIORITY_MEDIUM_LOW = -5;
 
     /**
      * Medium priority in the queue.
@@ -41,21 +41,21 @@ interface QueueInterface extends Countable
      *
      * This is the default priority if none is given.
      */
-    const PRIORITY_MEDIUM = 0;
+    public const PRIORITY_MEDIUM = 0;
 
     /**
      * Medium-high priority in the queue.
      *
      * This is a priority in between medium and high.
      */
-    const PRIORITY_MEDIUM_HIGH = 5;
+    public const PRIORITY_MEDIUM_HIGH = 5;
 
     /**
      * Highest priority in the queue.
      *
      * Messages marked with this priority will be handled first.
      */
-    const PRIORITY_HIGH = 10;
+    public const PRIORITY_HIGH = 10;
 
     /**
      * Push the payload to the queue.
@@ -80,7 +80,7 @@ interface QueueInterface extends Countable
     /**
      * @return int
      */
-    public function count();
+    public function count(): int;
 
     /**
      * Clear all the message from the queue.

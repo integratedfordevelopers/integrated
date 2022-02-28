@@ -13,10 +13,10 @@ namespace Integrated\Bundle\ThemeBundle\Entity\Scraper;
 
 class Block
 {
-    const MODE_IGNORE = 'ignore';
-    const MODE_REPLACE = 'replace';
-    const MODE_APPEND = 'append';
-    const MODE_REPLACE_INNER = 'replace.inner';
+    public const MODE_IGNORE = 'ignore';
+    public const MODE_REPLACE = 'replace';
+    public const MODE_APPEND = 'append';
+    public const MODE_REPLACE_INNER = 'replace.inner';
 
     /**
      * @var int

@@ -22,9 +22,9 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
  */
 class RegisterContentStyleParametersPass implements CompilerPassInterface
 {
-    const STYLE_FORMAT = 'style_formats';
-    const CONTENT_CSS = 'content_css';
-    const PARAMETER_NAME = 'integrated_content_styles';
+    public const STYLE_FORMAT = 'style_formats';
+    public const CONTENT_CSS = 'content_css';
+    public const PARAMETER_NAME = 'integrated_content_styles';
 
     /** @var array */
     private $parameters;

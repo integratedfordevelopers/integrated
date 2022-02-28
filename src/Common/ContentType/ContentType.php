@@ -16,9 +16,9 @@ namespace Integrated\Common\ContentType;
  */
 final class ContentType
 {
-    const MAPPED_NONE = 0;
+    public const MAPPED_NONE = 0;
 
-    const MAPPED_ONE = 1;
+    public const MAPPED_ONE = 1;
 
-    const MAPPED_MANY = 2;
+    public const MAPPED_MANY = 2;
 }

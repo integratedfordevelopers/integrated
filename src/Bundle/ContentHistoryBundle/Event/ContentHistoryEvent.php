@@ -20,11 +20,11 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 final class ContentHistoryEvent extends Event
 {
-    const INSERT = 'insert';
+    public const INSERT = 'insert';
 
-    const UPDATE = 'update';
+    public const UPDATE = 'update';
 
-    const DELETE = 'delete';
+    public const DELETE = 'delete';
 
     /**
      * @var ContentHistory

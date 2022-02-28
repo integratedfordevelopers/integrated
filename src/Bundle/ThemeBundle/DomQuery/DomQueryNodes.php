@@ -2,6 +2,8 @@
 
 namespace Integrated\Bundle\ThemeBundle\DomQuery;
 
+use Traversable;
+
 /**
  * Class DomQueryNodes.
  *
@@ -301,7 +303,9 @@ class DomQueryNodes implements \Countable, \IteratorAggregate, \ArrayAccess
             $xml_pi_node_added = true;
         }
 
-        libxml_disable_entity_loader(true);
+        if (\PHP_VERSION_ID < 80000) {
+            libxml_disable_entity_loader(true);
+        }
         libxml_use_internal_errors(true);
 
         $dom_document = new \DOMDocument('1.0', $encoding);
@@ -694,7 +698,7 @@ class DomQueryNodes implements \Countable, \IteratorAggregate, \ArrayAccess
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return \count($this->nodes);
     }
@@ -816,7 +820,7 @@ class DomQueryNodes implements \Countable, \IteratorAggregate, \ArrayAccess
      *
      * @return \ArrayIterator containing nodes as instances of DomQuery
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         $iteration_result = [];
         if (\is_array($this->nodes)) {
@@ -835,7 +839,7 @@ class DomQueryNodes implements \Countable, \IteratorAggregate, \ArrayAccess
      *
      * @return bool
      */
-    public function offsetExists($key)
+    public function offsetExists($key): bool
     {
         return isset($this->nodes[$key]);
     }
@@ -868,7 +872,7 @@ class DomQueryNodes implements \Countable, \IteratorAggregate, \ArrayAccess
      *
      * @throws \BadMethodCallException when attempting to write to a read-only item
      */
-    public function offsetSet($key, $value)
+    public function offsetSet($key, $value): void
     {
         throw new \BadMethodCallException('Attempting to write to a read-only node list');
     }
@@ -880,7 +884,7 @@ class DomQueryNodes implements \Countable, \IteratorAggregate, \ArrayAccess
      *
      * @throws \BadMethodCallException when attempting to unset a read-only item
      */
-    public function offsetUnset($key)
+    public function offsetUnset($key): void
     {
         throw new \BadMethodCallException('Attempting to unset on a read-only node list');
     }

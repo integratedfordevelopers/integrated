@@ -29,7 +29,7 @@ class RelationsType extends AbstractType
     /**
      * @var string
      */
-    const REPOSITORY = 'Integrated\\Bundle\\ContentBundle\\Document\\Relation\\Relation';
+    public const REPOSITORY = 'Integrated\\Bundle\\ContentBundle\\Document\\Relation\\Relation';
 
     /**
      * @var ManagerRegistry

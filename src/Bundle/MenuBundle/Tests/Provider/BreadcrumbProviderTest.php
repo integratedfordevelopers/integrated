@@ -19,8 +19,8 @@ use PHPUnit\Framework\TestCase;
 
 class BreadcrumbProviderTest extends TestCase
 {
-    const VALID_MENU = 'breadcrumb';
-    const INVALID_MENU = 'invalid_menu';
+    public const VALID_MENU = 'breadcrumb';
+    public const INVALID_MENU = 'invalid_menu';
 
     /**
      * @var FactoryInterface|\PHPUnit_Framework_MockObject_MockObject

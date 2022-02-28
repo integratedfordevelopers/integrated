@@ -13,8 +13,8 @@ namespace Integrated\Common\Security;
 
 interface PermissionInterface
 {
-    const READ = 1;
-    const WRITE = 2;
+    public const READ = 1;
+    public const WRITE = 2;
 
     /**
      * @return string

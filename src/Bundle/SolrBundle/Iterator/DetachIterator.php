@@ -52,7 +52,7 @@ class DetachIterator implements Iterator
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         $this->iterator->next();
     }
@@ -68,7 +68,7 @@ class DetachIterator implements Iterator
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         return $this->iterator->valid();
     }
@@ -76,7 +76,7 @@ class DetachIterator implements Iterator
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->iterator->rewind();
     }

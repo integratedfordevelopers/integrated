@@ -29,7 +29,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class SuggestionNormalizerTest extends \PHPUnit\Framework\TestCase
 {
-    const ROUTE = 'this-is-the-route';
+    public const ROUTE = 'this-is-the-route';
 
     /**
      * @var UrlGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject

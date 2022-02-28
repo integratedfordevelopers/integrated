@@ -19,8 +19,8 @@ use Integrated\Bundle\MenuBundle\Provider\MenuProvider;
  */
 class MenuProviderTest extends \PHPUnit\Framework\TestCase
 {
-    const VALID_MENU = 'integrated_menu';
-    const INVALID_MENU = 'invalid_menu';
+    public const VALID_MENU = 'integrated_menu';
+    public const INVALID_MENU = 'invalid_menu';
 
     /**
      * @var MenuProvider

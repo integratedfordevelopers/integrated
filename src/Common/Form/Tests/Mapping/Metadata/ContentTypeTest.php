@@ -19,7 +19,7 @@ use Integrated\Common\Form\Mapping\Metadata\Field;
  */
 class ContentTypeTest extends \PHPUnit\Framework\TestCase
 {
-    const CONTENT_TYPE_CLASS = 'class';
+    public const CONTENT_TYPE_CLASS = 'class';
 
     /**
      * @var Document

@@ -23,10 +23,10 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class ConfigureMenuListener implements EventSubscriberInterface
 {
-    const MENU = 'integrated_menu';
-    const MENU_WEBSITE = 'Website';
-    const ROLE_WEBSITE_MANAGER = 'ROLE_WEBSITE_MANAGER';
-    const ROLE_ADMIN = 'ROLE_ADMIN';
+    public const MENU = 'integrated_menu';
+    public const MENU_WEBSITE = 'Website';
+    public const ROLE_WEBSITE_MANAGER = 'ROLE_WEBSITE_MANAGER';
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
 
     /**
      * @var AuthorizationCheckerInterface

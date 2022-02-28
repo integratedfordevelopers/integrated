@@ -22,7 +22,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class EditorType extends AbstractType
 {
-    const RELATION = '__editor_image';
+    public const RELATION = '__editor_image';
 
     /**
      * @var array

@@ -13,15 +13,16 @@ namespace Integrated\Common\Normalizer;
 
 use ArrayIterator;
 use Integrated\Common\Normalizer\Exception\UnexpectedTypeException;
+use Traversable;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class Container implements ContainerInterface
 {
-    const EMPTY_TYPE = 0;
-    const VALUE_TYPE = 1;
-    const ARRAY_TYPE = 2;
+    public const EMPTY_TYPE = 0;
+    public const VALUE_TYPE = 1;
+    public const ARRAY_TYPE = 2;
 
     /**
      * @var array
@@ -124,7 +125,7 @@ class Container implements ContainerInterface
     /**
      * {@inheritdoc}
      */
-    public function count()
+    public function count(): int
     {
         return \count($this->data);
     }
@@ -132,7 +133,7 @@ class Container implements ContainerInterface
     /**
      * {@inheritdoc}
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->data);
     }

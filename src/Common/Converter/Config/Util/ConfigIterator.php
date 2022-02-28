@@ -50,7 +50,7 @@ class ConfigIterator implements Iterator
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         next($this->types);
     }
@@ -70,7 +70,7 @@ class ConfigIterator implements Iterator
      *
      * @return bool
      */
-    public function valid()
+    public function valid(): bool
     {
         return key($this->types) !== null;
     }
@@ -78,7 +78,7 @@ class ConfigIterator implements Iterator
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         reset($this->types);
     }

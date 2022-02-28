@@ -24,7 +24,7 @@ use Symfony\Component\Routing\RouteCollection;
  */
 class PageLoader implements LoaderInterface
 {
-    const ROUTE_PREFIX = 'integrated_website_page_';
+    public const ROUTE_PREFIX = 'integrated_website_page_';
 
     /**
      * @var bool

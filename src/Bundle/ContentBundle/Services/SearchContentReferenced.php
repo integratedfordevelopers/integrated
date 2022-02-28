@@ -26,7 +26,7 @@ class SearchContentReferenced
     /**
      * @const IGNORE_CLASSES
      */
-    const IGNORE_CLASSES = ['Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction'];
+    public const IGNORE_CLASSES = ['Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction'];
 
     /**
      * @var DocumentManager

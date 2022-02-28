@@ -25,7 +25,7 @@ class ProcessPoolGenerator
     /**
      * @const
      */
-    const COMMAND = 'php bin/console %s %s %d:%d -e %s';
+    public const COMMAND = 'php bin/console %s %s %d:%d -e %s';
 
     /**
      * @var InputInterface

@@ -24,7 +24,7 @@ interface ManagerInterface
     /**
      * @const string
      */
-    const LOG_PREFIX = 'IntegratedStorage: ';
+    public const LOG_PREFIX = 'IntegratedStorage: ';
 
     /**
      * The (queued) command (message) bus strategy.

@@ -71,7 +71,7 @@ class ParentAwareConfigIterator implements Iterator
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         if (!$this->current) {
             return;
@@ -86,9 +86,9 @@ class ParentAwareConfigIterator implements Iterator
     /**
      * {@inheritdoc}
      *
-     * @return int
+     * @return int|null
      */
-    public function key()
+    public function key(): ?int
     {
         return $this->current ? $this->counter : null;
     }
@@ -98,7 +98,7 @@ class ParentAwareConfigIterator implements Iterator
      *
      * @return bool
      */
-    public function valid()
+    public function valid(): bool
     {
         return $this->current ? true : false;
     }
@@ -106,7 +106,7 @@ class ParentAwareConfigIterator implements Iterator
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         reset($this->iterators);
 

@@ -27,7 +27,7 @@ class AddressType extends AbstractType
     /**
      * @const array
      */
-    const PROPERTIES = ['type', 'name', 'country', 'address1', 'address2', 'zipcode', 'city'];
+    public const PROPERTIES = ['type', 'name', 'country', 'address1', 'address2', 'zipcode', 'city'];
 
     /**
      * {@inheritdoc}

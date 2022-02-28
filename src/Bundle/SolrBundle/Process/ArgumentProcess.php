@@ -22,7 +22,7 @@ class ArgumentProcess
     /**
      * @const string
      */
-    const FORMAT = '/^(\d):(\d)$/';
+    public const FORMAT = '/^(\d):(\d)$/';
 
     /**
      * @var string

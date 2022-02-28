@@ -23,7 +23,7 @@ final class Events
      *
      * @var string
      */
-    const PRE_EXECUTE = 'integrated.solr.task.preExecute';
+    public const PRE_EXECUTE = 'integrated.solr.task.preExecute';
 
     /**
      * This event is fired just before the worker run is finished.
@@ -32,7 +32,7 @@ final class Events
      *
      * @var string
      */
-    const POST_EXECUTE = 'integrated.solr.task.postExecute';
+    public const POST_EXECUTE = 'integrated.solr.task.postExecute';
 
     /**
      * This event is fired after a error occurred when executing a
@@ -43,5 +43,5 @@ final class Events
      *
      * @var string
      */
-    const ERROR = 'integrated.solr.task.error';
+    public const ERROR = 'integrated.solr.task.error';
 }

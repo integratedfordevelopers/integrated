@@ -24,7 +24,7 @@ use Symfony\Component\Routing\RouteCollection;
  */
 class ContentTypePageLoader extends Loader
 {
-    const ROUTE_PREFIX = 'integrated_website_content_type_page';
+    public const ROUTE_PREFIX = 'integrated_website_content_type_page';
 
     /**
      * @var bool

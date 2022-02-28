@@ -23,7 +23,7 @@ class ConfigureMenuEvent extends Event
     /**
      * @var string
      */
-    const CONFIGURE = 'integrated_menu.configure';
+    public const CONFIGURE = 'integrated_menu.configure';
 
     /**
      * @var FactoryInterface

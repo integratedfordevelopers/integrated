@@ -29,7 +29,7 @@ class QueueExporterTest extends \PHPUnit\Framework\TestCase
     /**
      * @var string
      */
-    const TEST_STATE = 'TEST';
+    public const TEST_STATE = 'TEST';
 
     /**
      * @var QueueInterface|\PHPUnit_Framework_MockObject_MockObject

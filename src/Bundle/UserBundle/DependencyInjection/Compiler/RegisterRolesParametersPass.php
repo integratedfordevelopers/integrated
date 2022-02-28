@@ -21,7 +21,7 @@ use Symfony\Component\DomCrawler\Crawler;
  */
 class RegisterRolesParametersPass implements CompilerPassInterface
 {
-    const PARAMETER_NAME = 'integrated_roles';
+    public const PARAMETER_NAME = 'integrated_roles';
 
     /**
      * {@inheritdoc}

@@ -16,9 +16,9 @@ namespace Integrated\Common\Channel;
  */
 final class Events
 {
-    const CHANNEL_CREATED = 'integrated.channel.created';
+    public const CHANNEL_CREATED = 'integrated.channel.created';
 
-    const CHANNEL_UPDATED = 'integrated.channel.updated';
+    public const CHANNEL_UPDATED = 'integrated.channel.updated';
 
-    const CHANNEL_DELETED = 'integrated.channel.deleted';
+    public const CHANNEL_DELETED = 'integrated.channel.deleted';
 }

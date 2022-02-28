@@ -26,7 +26,7 @@ class AppCache implements CacheInterface
     /**
      * @const
      */
-    const CACHE_PATH = '%s/integrated/storage/file';
+    public const CACHE_PATH = '%s/integrated/storage/file';
 
     /**
      * @var ManagerInterface
