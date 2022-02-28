@@ -13,6 +13,7 @@ namespace Integrated\Bundle\MenuBundle\Provider;
 
 use Integrated\Bundle\PageBundle\Breadcrumb\BreadcrumbResolver;
 use Knp\Menu\FactoryInterface;
+use Knp\Menu\ItemInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
 
 class BreadcrumbMenuProvider implements MenuProviderInterface
@@ -40,7 +41,7 @@ class BreadcrumbMenuProvider implements MenuProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function get($name, array $options = [])
+    public function get(string $name, array $options = []): ItemInterface
     {
         if ($name !== 'breadcrumb') {
             throw new \InvalidArgumentException('This provider can be used for menu "breadcrumb" only');
@@ -60,7 +61,7 @@ class BreadcrumbMenuProvider implements MenuProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function has($name, array $options = [])
+    public function has(string $name, array $options = []): bool
     {
         return $name === 'breadcrumb';
     }

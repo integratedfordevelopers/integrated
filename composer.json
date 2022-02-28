@@ -33,7 +33,7 @@
         "gregwar/image-bundle": "~2.1",
         "jms/metadata": "~1.6",
         "knplabs/knp-gaufrette-bundle": "~0.5",
-        "knplabs/knp-menu-bundle": "~2.2",
+        "knplabs/knp-menu-bundle": "^3.2",
         "knplabs/knp-paginator-bundle": "~5.0",
         "monolog/monolog": "~1.22",
         "nelmio/alice": "~3.1",
