@@ -16,8 +16,8 @@ namespace Integrated\Bundle\ContentBundle\Filter;
  */
 class ContentTypeFilter
 {
-    const FILTER_IMAGE = 'image';
-    const FILTER_VIDEO = 'video';
+    public const FILTER_IMAGE = 'image';
+    public const FILTER_VIDEO = 'video';
 
     /**
      * @param string      $class

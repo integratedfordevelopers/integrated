@@ -18,13 +18,13 @@ use Integrated\Common\Content\RankableInterface;
 
 class UpdateRankListener implements EventSubscriber
 {
-    const RANK_FIRST_TAG = '-first-';
-    const RANK_MIN_CHAR = 'A';
-    const RANK_MEDIUM_CHAR = 'a';
-    const RANK_MAX_CHAR = 'z';
-    const ASCII_TABLE_POS_LOWER_A = 97;
-    const ASCII_TABLE_POS_UPPER_A = 65;
-    const ALPHABET_LENGTH = 26;
+    public const RANK_FIRST_TAG = '-first-';
+    public const RANK_MIN_CHAR = 'A';
+    public const RANK_MEDIUM_CHAR = 'a';
+    public const RANK_MAX_CHAR = 'z';
+    public const ASCII_TABLE_POS_LOWER_A = 97;
+    public const ASCII_TABLE_POS_UPPER_A = 65;
+    public const ALPHABET_LENGTH = 26;
 
     /**
      * {@inheritdoc}

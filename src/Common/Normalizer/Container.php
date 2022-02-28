@@ -19,9 +19,9 @@ use Integrated\Common\Normalizer\Exception\UnexpectedTypeException;
  */
 class Container implements ContainerInterface
 {
-    const EMPTY_TYPE = 0;
-    const VALUE_TYPE = 1;
-    const ARRAY_TYPE = 2;
+    public const EMPTY_TYPE = 0;
+    public const VALUE_TYPE = 1;
+    public const ARRAY_TYPE = 2;
 
     /**
      * @var array

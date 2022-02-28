@@ -21,12 +21,12 @@ class DoctrineDocument
     /**
      * @const string
      */
-    const GET_SIGNATURE = 'get%s';
+    public const GET_SIGNATURE = 'get%s';
 
     /**
      * @const string
      */
-    const SET_SIGNATURE = 'set%s';
+    public const SET_SIGNATURE = 'set%s';
 
     /**
      * @var object

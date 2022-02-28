@@ -25,12 +25,12 @@ class FilesystemWalk
     /**
      * @const string
      */
-    const ADD = 'add';
+    public const ADD = 'add';
 
     /**
      * @const string
      */
-    const REMOVE = 'remove';
+    public const REMOVE = 'remove';
 
     /**
      * @param ManagerInterface         $storage

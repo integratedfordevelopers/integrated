@@ -37,7 +37,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class ContentSubscriber implements ContentSubscriberInterface
 {
-    const CONTENT_CLASS = 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Relation\\Relation';
+    public const CONTENT_CLASS = 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Relation\\Relation';
 
     /**
      * @var ExtensionInterface

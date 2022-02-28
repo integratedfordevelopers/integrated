@@ -6,7 +6,7 @@ use Symfony\Component\Finder\Finder;
 
 class BundleTest
 {
-    const BUNDLES_DIRECTORY = '/../../';
+    public const BUNDLES_DIRECTORY = '/../../';
 
     /**
      * @var array

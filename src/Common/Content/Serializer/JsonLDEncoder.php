@@ -21,7 +21,7 @@ class JsonLDEncoder extends JsonEncoder
     /**
      * @var string
      */
-    const FORMAT = 'json-ld';
+    public const FORMAT = 'json-ld';
 
     /**
      * {@inheritdoc}

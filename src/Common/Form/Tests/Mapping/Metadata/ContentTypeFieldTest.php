@@ -18,7 +18,7 @@ use Integrated\Common\Form\Mapping\Metadata\Field;
  */
 class ContentTypeFieldTest extends \PHPUnit\Framework\TestCase
 {
-    const NAME = 'name';
+    public const NAME = 'name';
 
     /**
      * @var Field

@@ -19,7 +19,7 @@ use stdClass;
  */
 class QueueMessageTest extends \PHPUnit\Framework\TestCase
 {
-    const PAYLOAD = 'O:8:"stdClass":0:{}'; // serialized stdClass;
+    public const PAYLOAD = 'O:8:"stdClass":0:{}'; // serialized stdClass;
 
     protected $data;
 

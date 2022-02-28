@@ -26,12 +26,12 @@ class MenuItem extends KnpMenuItem
     /**
      * Use an URI als link.
      */
-    const TYPE_LINK_URI = 0;
+    public const TYPE_LINK_URI = 0;
 
     /**
      * Use a search selection for the links.
      */
-    const TYPE_LINK_SEARCH_SELECTION = 1;
+    public const TYPE_LINK_SEARCH_SELECTION = 1;
 
     /**
      * @var string

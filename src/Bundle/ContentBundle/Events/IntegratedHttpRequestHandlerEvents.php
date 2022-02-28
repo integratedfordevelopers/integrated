@@ -19,12 +19,12 @@ final class IntegratedHttpRequestHandlerEvents
     /**
      * @const Called before the request handler starts work on the form
      */
-    const PRE_HANDLE = 'pre.handle';
+    public const PRE_HANDLE = 'pre.handle';
 
     /**
      * @const Called after the request handler checked the form
      */
-    const POST_HANDLE = 'post.handle';
+    public const POST_HANDLE = 'post.handle';
 
     /**
      * Instantiation prohibited.

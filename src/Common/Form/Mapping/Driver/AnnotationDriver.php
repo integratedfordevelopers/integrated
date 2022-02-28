@@ -23,9 +23,9 @@ use Integrated\Common\Form\Mapping\MetadataEditorInterface;
  */
 class AnnotationDriver implements DriverInterface
 {
-    const DOCUMENT_CLASS = 'Integrated\\Common\\Form\\Mapping\\Annotations\\Document';
+    public const DOCUMENT_CLASS = 'Integrated\\Common\\Form\\Mapping\\Annotations\\Document';
 
-    const FIELD_CLASS = 'Integrated\\Common\\Form\\Mapping\\Annotations\\Field';
+    public const FIELD_CLASS = 'Integrated\\Common\\Form\\Mapping\\Annotations\\Field';
 
     /**
      * @var MappingDriver

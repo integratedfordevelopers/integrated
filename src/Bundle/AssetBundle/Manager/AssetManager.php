@@ -18,8 +18,8 @@ use Integrated\Bundle\AssetBundle\Asset\Asset;
  */
 class AssetManager
 {
-    const MODE_APPEND = 'append';
-    const MODE_PREPEND = 'prepend';
+    public const MODE_APPEND = 'append';
+    public const MODE_PREPEND = 'prepend';
 
     /**
      * @var array

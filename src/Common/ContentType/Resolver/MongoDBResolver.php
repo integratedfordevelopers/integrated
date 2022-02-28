@@ -22,7 +22,7 @@ use Integrated\Common\ContentType\ResolverInterface;
  */
 class MongoDBResolver implements ResolverInterface
 {
-    const CONTENT_TYPE_INTERFACE = 'Integrated\\Common\\ContentType\\ContentTypeInterface';
+    public const CONTENT_TYPE_INTERFACE = 'Integrated\\Common\\ContentType\\ContentTypeInterface';
 
     /**
      * @var DocumentRepository

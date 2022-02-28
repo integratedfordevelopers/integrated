@@ -21,7 +21,7 @@ class ConfigureRolesEvent extends Event
     /**
      * @var string
      */
-    const CONFIGURE = 'integrated_roles.configure';
+    public const CONFIGURE = 'integrated_roles.configure';
 
     /**
      * @var array

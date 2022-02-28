@@ -11,11 +11,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class MongoDBMigrations
 {
-    const DOCTRINE_MIGRATIONS_DIRECTORY = '/../Migrations/MongoDB';
-    const DOCTRINE_MIGRATIONS_NAMESPACE = 'Integrated\Bundle\InstallerBundle\Migrations\MongoDB';
-    const DOCTRINE_MIGRATIONS_NAME = 'Integrated MongoDB Migrations';
-    const DOCTRINE_MIGRATIONS_COLLECTION = 'integrated_migration_versions';
-    const DOCTRINE_MIGRATIONS_DIRECTION_UP = 'up';
+    public const DOCTRINE_MIGRATIONS_DIRECTORY = '/../Migrations/MongoDB';
+    public const DOCTRINE_MIGRATIONS_NAMESPACE = 'Integrated\Bundle\InstallerBundle\Migrations\MongoDB';
+    public const DOCTRINE_MIGRATIONS_NAME = 'Integrated MongoDB Migrations';
+    public const DOCTRINE_MIGRATIONS_COLLECTION = 'integrated_migration_versions';
+    public const DOCTRINE_MIGRATIONS_DIRECTION_UP = 'up';
 
     /**
      * @var DocumentManager

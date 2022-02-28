@@ -27,7 +27,7 @@ class RequestSerializerTest extends \PHPUnit\Framework\TestCase
     /**
      * @var string
      */
-    const TEST_STATE = 'TEST';
+    public const TEST_STATE = 'TEST';
 
     /**
      * @var SerializerInterface|\PHPUnit_Framework_MockObject_MockObject

@@ -16,9 +16,9 @@ namespace Integrated\Bundle\WorkflowBundle\Utils;
  */
 class StateVisibleConfig
 {
-    const OPTIONAL = 0;
+    public const OPTIONAL = 0;
 
-    const REQUIRED = 1;
+    public const REQUIRED = 1;
 
-    const DISABLED = 2;
+    public const DISABLED = 2;
 }

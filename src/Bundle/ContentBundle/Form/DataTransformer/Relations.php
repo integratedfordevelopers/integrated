@@ -25,7 +25,7 @@ class Relations implements DataTransformerInterface
     /**
      * @var string
      */
-    const REPOSITORY = 'Integrated\Bundle\ContentBundle\Document\Content\Content';
+    public const REPOSITORY = 'Integrated\Bundle\ContentBundle\Document\Content\Content';
 
     /**
      * @var RelationInterface[]

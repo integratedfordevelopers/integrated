@@ -21,15 +21,15 @@ final class Events
         // don't allow creation
     }
 
-    const PRE_BUILD = 'form.pre.build';
+    public const PRE_BUILD = 'form.pre.build';
 
-    const POST_BUILD = 'form.post.build';
+    public const POST_BUILD = 'form.post.build';
 
-    const PRE_BUILD_FIELD = 'form.pre.build.field';
+    public const PRE_BUILD_FIELD = 'form.pre.build.field';
 
-    const BUILD_FIELD = 'form.build.field';
+    public const BUILD_FIELD = 'form.build.field';
 
-    const POST_BUILD_FIELD = 'form.post.build.field';
+    public const POST_BUILD_FIELD = 'form.post.build.field';
 
     /**
      * The pre view event is called at the start of the form
@@ -37,11 +37,11 @@ final class Events
      *
      * This event allows for changing of the options
      */
-    const PRE_VIEW = 'form.pre.view';
+    public const PRE_VIEW = 'form.pre.view';
 
     /**
      * The post view event is called at the end of the form type
      * finishView method.
      */
-    const POST_VIEW = 'form.post.view';
+    public const POST_VIEW = 'form.post.view';
 }

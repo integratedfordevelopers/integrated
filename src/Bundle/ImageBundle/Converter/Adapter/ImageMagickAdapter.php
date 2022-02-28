@@ -25,7 +25,7 @@ class ImageMagickAdapter implements AdapterInterface
     /**
      * @const string
      */
-    const NAME = 'Imagick';
+    public const NAME = 'Imagick';
 
     /**
      * @var AppCache

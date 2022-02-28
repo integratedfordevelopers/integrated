@@ -20,21 +20,21 @@ final class Events
     {
     }
 
-    const METADATA = 'extension.metadata';
+    public const METADATA = 'extension.metadata';
 
-    const PRE_READ = 'extension.read.pre';
+    public const PRE_READ = 'extension.read.pre';
 
-    const POST_READ = 'extension.read.post';
+    public const POST_READ = 'extension.read.post';
 
-    const PRE_CREATE = 'extension.create.pre';
+    public const PRE_CREATE = 'extension.create.pre';
 
-    const POST_CREATE = 'extension.create.post';
+    public const POST_CREATE = 'extension.create.post';
 
-    const PRE_UPDATE = 'extension.update.pre';
+    public const PRE_UPDATE = 'extension.update.pre';
 
-    const POST_UPDATE = 'extension.update.post';
+    public const POST_UPDATE = 'extension.update.post';
 
-    const PRE_DELETE = 'extension.delete.pre';
+    public const PRE_DELETE = 'extension.delete.pre';
 
-    const POST_DELETE = 'extension.delete.post';
+    public const POST_DELETE = 'extension.delete.post';
 }
