@@ -28,9 +28,9 @@ parameters:
 			path: src/Bundle/ContentBundle/Tests/Form/DataTransformer/ContentType/Field/CustomTransformerTest.php
 
 		-
-			message: "#^Method Integrated\\\\Bundle\\\\MenuBundle\\\\Provider\\\\IntegratedMenuProvider\\:\\:get\\(\\) should return Knp\\\\Menu\\\\ItemInterface but return statement is missing\\.$#"
+			message: "#^Call to deprecated function libxml_disable_entity_loader\\(\\)\\.$#"
 			count: 1
-			path: src/Bundle/MenuBundle/Provider/IntegratedMenuProvider.php
+			path: src/Bundle/ThemeBundle/DomQuery/DomQueryNodes.php
 
 		-
 			message: """
@@ -39,19 +39,4 @@ parameters:
 			"""
 			count: 1
 			path: src/Bundle/UserBundle/Model/User.php
-
-		-
-			message: "#^Method Integrated\\\\Bundle\\\\WebsiteBundle\\\\Routing\\\\PageLoader\\:\\:getResolver\\(\\) should return Symfony\\\\Component\\\\Config\\\\Loader\\\\LoaderResolverInterface but return statement is missing\\.$#"
-			count: 1
-			path: src/Bundle/WebsiteBundle/Routing/PageLoader.php
-
-		-
-			message: "#^Method Integrated\\\\Common\\\\Block\\\\BlockHandlerRegistry\\:\\:getHandler\\(\\) should return Integrated\\\\Common\\\\Block\\\\BlockHandlerInterface but return statement is missing\\.$#"
-			count: 1
-			path: src/Common/Block/BlockHandlerRegistry.php
-
-		-
-			message: "#^Method Integrated\\\\Common\\\\Converter\\\\Type\\\\RegistryBuilder\\:\\:addTypeExtension\\(\\) should return Integrated\\\\Common\\\\Converter\\\\Type\\\\RegistryBuilderInterface but return statement is missing\\.$#"
-			count: 1
-			path: src/Common/Converter/Type/RegistryBuilder.php
 

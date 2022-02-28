@@ -36,7 +36,7 @@ trait LocatableStorageInterfaceTrait
     /**
      * {@inheritdoc}
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return \strlen($this->getPathname()) > ($offset + 1);
     }
@@ -58,7 +58,7 @@ trait LocatableStorageInterfaceTrait
      *
      * @throws \Exception
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         throw new \Exception('Setting properties is forbidden');
     }
@@ -68,7 +68,7 @@ trait LocatableStorageInterfaceTrait
      *
      * @throws \Exception
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         throw new \Exception('Setting properties is forbidden');
     }

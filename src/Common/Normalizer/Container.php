@@ -13,6 +13,7 @@ namespace Integrated\Common\Normalizer;
 
 use ArrayIterator;
 use Integrated\Common\Normalizer\Exception\UnexpectedTypeException;
+use Traversable;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -124,7 +125,7 @@ class Container implements ContainerInterface
     /**
      * {@inheritdoc}
      */
-    public function count()
+    public function count(): int
     {
         return \count($this->data);
     }
@@ -132,7 +133,7 @@ class Container implements ContainerInterface
     /**
      * {@inheritdoc}
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->data);
     }

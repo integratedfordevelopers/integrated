@@ -80,7 +80,7 @@ interface QueueInterface extends Countable
     /**
      * @return int
      */
-    public function count();
+    public function count(): int;
 
     /**
      * Clear all the message from the queue.

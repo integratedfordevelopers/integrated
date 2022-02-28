@@ -39,7 +39,7 @@ class UniqueConfigIterator extends IteratorIterator
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         do {
             parent::next();
@@ -49,7 +49,7 @@ class UniqueConfigIterator extends IteratorIterator
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         parent::rewind();
 

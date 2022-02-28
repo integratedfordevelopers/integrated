@@ -57,7 +57,7 @@ class PriorityIterator implements IteratorInterface
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         if (!$this->iterator->valid()) {
             return;
@@ -79,7 +79,7 @@ class PriorityIterator implements IteratorInterface
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         return $this->iterator->valid();
     }
@@ -87,7 +87,7 @@ class PriorityIterator implements IteratorInterface
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->accepted = [];
         $this->iterator->rewind();

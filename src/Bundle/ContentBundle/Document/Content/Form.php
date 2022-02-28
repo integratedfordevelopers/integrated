@@ -25,7 +25,7 @@ class Form extends Content
      */
     public function getTitle()
     {
-        return 'Form created at '.strftime('F jS, Y', $this->createdAt->getTimestamp());
+        return 'Form created at '.date('F jS, Y', $this->createdAt->getTimestamp());
     }
 
     /**

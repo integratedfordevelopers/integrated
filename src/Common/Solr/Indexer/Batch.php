@@ -14,6 +14,7 @@ namespace Integrated\Common\Solr\Indexer;
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
+use Traversable;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -64,7 +65,7 @@ class Batch implements Countable, IteratorAggregate
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return \count($this->batch);
     }
@@ -74,7 +75,7 @@ class Batch implements Countable, IteratorAggregate
      *
      * @return BatchOperation[]
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->batch);
     }

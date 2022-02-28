@@ -73,7 +73,7 @@ class Queue implements QueueInterface
     /**
      * {@inheritdoc}
      */
-    public function count()
+    public function count(): int
     {
         return $this->provider->count($this->channel);
     }
