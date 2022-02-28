@@ -232,7 +232,7 @@ class SolariumProvider
                     ->setField($field);
 
                 if (null === $suffix) {
-                    $facet->getLocalParameters()->getLocalParameters()->setExclude($field);
+                    $facet->getLocalParameters()->setExclude($field);
                 }
 
                 $param = isset($request[$field]) ? $request[$field] : null;

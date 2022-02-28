@@ -68,7 +68,7 @@ class IntegratedSolrExtension extends Extension
             $endpoints[] = new Reference('solarium.client.endpoint.'.$name);
         }
 
-        $adapterDefinition = $container->register('solarium.adapter.curl', Curl::class);
+        $container->register('solarium.adapter.curl', Curl::class);
 
         $container->setDefinition(
             'solarium.client',
