@@ -211,7 +211,7 @@ class RouterTest extends TestCase
             ],
             [
                 'name2',
-                null,
+                [],
                 UrlGeneratorInterface::ABSOLUTE_PATH,
                 'return2',
             ],
