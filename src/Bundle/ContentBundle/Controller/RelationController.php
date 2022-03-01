@@ -39,7 +39,7 @@ class RelationController extends AbstractController
      */
     public function index(Request $request)
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
         $dm = $this->get('doctrine_mongodb')->getManager();
@@ -64,7 +64,7 @@ class RelationController extends AbstractController
      */
     public function show(Relation $relation)
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $form = $this->createDeleteForm($relation);
 
@@ -81,7 +81,7 @@ class RelationController extends AbstractController
      */
     public function new()
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $form = $this->createNewForm(new Relation());
 
@@ -99,7 +99,7 @@ class RelationController extends AbstractController
      */
     public function create(Request $request)
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $relation = new Relation();
 
@@ -131,7 +131,7 @@ class RelationController extends AbstractController
      */
     public function edit(Relation $relation)
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $form = $this->createEditForm($relation);
 
@@ -150,7 +150,7 @@ class RelationController extends AbstractController
      */
     public function update(Request $request, Relation $relation)
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $form = $this->createEditForm($relation);
         $form->handleRequest($request);
@@ -180,7 +180,7 @@ class RelationController extends AbstractController
      */
     public function delete(Request $request, Relation $relation)
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $form = $this->createDeleteForm($relation);
 

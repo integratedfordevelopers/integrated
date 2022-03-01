@@ -155,7 +155,7 @@ class SearchSelectionController extends AbstractController
     public function menu()
     {
         /** @var Request $request */
-        $request = $this->get('request_stack')->getMasterRequest();
+        $request = $this->get('request_stack')->getMainRequest();
 
         /** @var SearchSelectionRepository $repo */
         $repo = $this->getDocumentManager()->getRepository(SearchSelection::class);

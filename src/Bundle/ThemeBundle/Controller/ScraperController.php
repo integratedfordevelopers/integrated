@@ -52,7 +52,7 @@ class ScraperController extends AbstractController
      */
     public function index(): Response
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $result = $this->entityManager->getRepository(Scraper::class)->findBy([], ['channelId' => 'asc', 'name' => 'asc']);
 
@@ -70,7 +70,7 @@ class ScraperController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $scraper = new Scraper();
 
@@ -103,7 +103,7 @@ class ScraperController extends AbstractController
      */
     public function edit(Scraper $scraper, Request $request): Response
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $form = $this->createForm(ScraperType::class, $scraper);
         $form->handleRequest($request);
@@ -133,7 +133,7 @@ class ScraperController extends AbstractController
      */
     public function deleteAction(Scraper $scraper, Request $request): Response
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $form = $this->createDeleteForm($scraper);
         $form->handleRequest($request);

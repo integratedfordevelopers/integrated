@@ -46,7 +46,7 @@ class WorkflowController extends AbstractController
      */
     public function index(Request $request)
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
@@ -69,7 +69,7 @@ class WorkflowController extends AbstractController
      */
     public function new(Request $request)
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $form = $this->createNewForm();
 
@@ -106,7 +106,7 @@ class WorkflowController extends AbstractController
      */
     public function edit(Request $request)
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         /** @var Definition $workflow */
         $workflow = $this->getDoctrine()
@@ -153,7 +153,7 @@ class WorkflowController extends AbstractController
      */
     public function delete(Request $request)
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         /** @var Definition $workflow */
         $workflow = $this->getDoctrine()

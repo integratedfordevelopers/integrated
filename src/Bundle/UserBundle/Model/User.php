@@ -403,7 +403,7 @@ class User implements UserInterface
         return sprintf(
             "ID: %s\nUsername: %s\n CreatedAt: %s\nEnabled: %s",
             $this->getId(),
-            $this->getUsername(),
+            $this->getUserIdentifier(),
             $this->getCreatedAt()->format('r'),
             $this->isEnabled() ? 'TRUE' : 'FALSE'
         );
@@ -411,6 +411,6 @@ class User implements UserInterface
 
     public function isEqualTo(BaseUserInterface $user)
     {
-        return $user->getUsername() === $this->getUsername();
+        return $user->getUserIdentifier() === $this->getUserIdentifier();
     }
 }

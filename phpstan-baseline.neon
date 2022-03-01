@@ -2,6 +2,62 @@ parameters:
 	ignoreErrors:
 		-
 			message: """
+				#^Call to deprecated method get\\(\\) of class Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:
+				since Symfony 5\\.4, use method or constructor injection in your controller instead$#
+			"""
+			count: 1
+			path: src/Bundle/BlockBundle/Controller/BlockController.php
+
+		-
+			message: """
+				#^Call to deprecated method getMasterRequest\\(\\) of class Symfony\\\\Component\\\\HttpFoundation\\\\RequestStack\\:
+				since symfony/http\\-foundation 5\\.3, use getMainRequest\\(\\) instead$#
+			"""
+			count: 1
+			path: src/Bundle/CommentBundle/EventListener/CommentFormFieldsSubscriber.php
+
+		-
+			message: """
+				#^Call to deprecated method get\\(\\) of class Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:
+				since Symfony 5\\.4, use method or constructor injection in your controller instead$#
+			"""
+			count: 3
+			path: src/Bundle/ContentBundle/Controller/ChannelController.php
+
+		-
+			message: """
+				#^Call to deprecated method getUsername\\(\\) of class Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:
+				since Symfony 5\\.3, use getUserIdentifier\\(\\) instead$#
+			"""
+			count: 1
+			path: src/Bundle/ContentBundle/Controller/ContentController.php
+
+		-
+			message: """
+				#^Call to deprecated method get\\(\\) of class Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:
+				since Symfony 5\\.4, use method or constructor injection in your controller instead$#
+			"""
+			count: 3
+			path: src/Bundle/ContentBundle/Controller/ContentTypeController.php
+
+		-
+			message: """
+				#^Call to deprecated method get\\(\\) of class Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:
+				since Symfony 5\\.4, use method or constructor injection in your controller instead$#
+			"""
+			count: 4
+			path: src/Bundle/ContentBundle/Controller/RelationController.php
+
+		-
+			message: """
+				#^Call to deprecated method get\\(\\) of class Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:
+				since Symfony 5\\.4, use method or constructor injection in your controller instead$#
+			"""
+			count: 5
+			path: src/Bundle/ContentBundle/Controller/SearchSelectionController.php
+
+		-
+			message: """
 				#^Call to deprecated method getLabel\\(\\) of class Integrated\\\\Bundle\\\\ContentBundle\\\\Document\\\\ContentType\\\\Embedded\\\\Field\\:
 				since version 0\\.7, this object does not contain all the options
 				            so the label can not be determined based solely on this object\\.$#
@@ -28,15 +84,295 @@ parameters:
 			path: src/Bundle/ContentBundle/Tests/Form/DataTransformer/ContentType/Field/CustomTransformerTest.php
 
 		-
+			message: """
+				#^Call to method createTestEntityManager\\(\\) of deprecated class Symfony\\\\Bridge\\\\Doctrine\\\\Test\\\\DoctrineTestHelper\\:
+				since Symfony 5\\.3$#
+			"""
+			count: 1
+			path: src/Bundle/ContentBundle/Tests/Form/Type/RelationTypeTest.php
+
+		-
+			message: """
+				#^Call to deprecated method getUsername\\(\\) of class Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:
+				since Symfony 5\\.3, use getUserIdentifier\\(\\) instead$#
+			"""
+			count: 1
+			path: src/Bundle/ContentHistoryBundle/EventListener/UserSubscriber.php
+
+		-
+			message: """
+				#^Call to deprecated method get\\(\\) of class Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:
+				since Symfony 5\\.4, use method or constructor injection in your controller instead$#
+			"""
+			count: 1
+			path: src/Bundle/LockingBundle/Controller/ApiController.php
+
+		-
+			message: """
+				#^Call to deprecated method has\\(\\) of class Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:
+				since Symfony 5\\.4, use method or constructor injection in your controller instead$#
+			"""
+			count: 1
+			path: src/Bundle/LockingBundle/Controller/ApiController.php
+
+		-
+			message: """
+				#^Call to deprecated method get\\(\\) of class Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:
+				since Symfony 5\\.4, use method or constructor injection in your controller instead$#
+			"""
+			count: 2
+			path: src/Bundle/PageBundle/Controller/ContentTypePageController.php
+
+		-
+			message: """
+				#^Call to deprecated method get\\(\\) of class Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:
+				since Symfony 5\\.4, use method or constructor injection in your controller instead$#
+			"""
+			count: 3
+			path: src/Bundle/PageBundle/Controller/PageController.php
+
+		-
+			message: """
+				#^Call to deprecated method getMasterRequest\\(\\) of class Symfony\\\\Component\\\\HttpFoundation\\\\RequestStack\\:
+				since symfony/http\\-foundation 5\\.3, use getMainRequest\\(\\) instead$#
+			"""
+			count: 1
+			path: src/Bundle/StorageBundle/Storage/Cache/AppCache.php
+
+		-
+			message: """
+				#^Instantiation of deprecated class Symfony\\\\Component\\\\Intl\\\\Exception\\\\NotImplementedException\\:
+				since Symfony 5\\.3, use symfony/polyfill\\-intl\\-icu \\^1\\.21 instead$#
+			"""
+			count: 1
+			path: src/Bundle/StorageBundle/Storage/Handler/QueuedCommandBus.php
+
+		-
 			message: "#^Call to deprecated function libxml_disable_entity_loader\\(\\)\\.$#"
 			count: 1
 			path: src/Bundle/ThemeBundle/DomQuery/DomQueryNodes.php
 
 		-
 			message: """
-				#^Return type of method Integrated\\\\Bundle\\\\UserBundle\\\\Model\\\\User\\:\\:getRoles\\(\\) has typehint with deprecated class Symfony\\\\Component\\\\Security\\\\Core\\\\Role\\\\Role\\:
-				since Symfony 4\\.3, to be removed in 5\\.0\\. Use strings as roles instead\\.$#
+				#^Parameter \\$encoderFactory of method Integrated\\\\Bundle\\\\UserBundle\\\\Command\\\\ChangePasswordCommand\\:\\:__construct\\(\\) has typehint with deprecated interface Symfony\\\\Component\\\\Security\\\\Core\\\\Encoder\\\\EncoderFactoryInterface\\:
+				since Symfony 5\\.3, use \\{@link PasswordHasherFactoryInterface\\} instead$#
 			"""
 			count: 1
-			path: src/Bundle/UserBundle/Model/User.php
+			path: src/Bundle/UserBundle/Command/ChangePasswordCommand.php
+
+		-
+			message: """
+				#^Parameter \\$encoderFactory of method Integrated\\\\Bundle\\\\UserBundle\\\\Command\\\\CreateUserCommand\\:\\:__construct\\(\\) has typehint with deprecated interface Symfony\\\\Component\\\\Security\\\\Core\\\\Encoder\\\\EncoderFactoryInterface\\:
+				since Symfony 5\\.3, use \\{@link PasswordHasherFactoryInterface\\} instead$#
+			"""
+			count: 1
+			path: src/Bundle/UserBundle/Command/CreateUserCommand.php
+
+		-
+			message: """
+				#^Parameter \\$encoderFactory of method Integrated\\\\Bundle\\\\UserBundle\\\\Controller\\\\ProfileController\\:\\:__construct\\(\\) has typehint with deprecated interface Symfony\\\\Component\\\\Security\\\\Core\\\\Encoder\\\\EncoderFactoryInterface\\:
+				since Symfony 5\\.3, use \\{@link PasswordHasherFactoryInterface\\} instead$#
+			"""
+			count: 1
+			path: src/Bundle/UserBundle/Controller/ProfileController.php
+
+		-
+			message: """
+				#^Call to deprecated method get\\(\\) of class Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:
+				since Symfony 5\\.4, use method or constructor injection in your controller instead$#
+			"""
+			count: 1
+			path: src/Bundle/UserBundle/Controller/ScopeController.php
+
+		-
+			message: """
+				#^Call to deprecated method getDoctrine\\(\\) of class Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:
+				since Symfony 5\\.4, inject an instance of ManagerRegistry in your controller instead$#
+			"""
+			count: 1
+			path: src/Bundle/UserBundle/Controller/ScopeController.php
+
+		-
+			message: """
+				#^Call to deprecated method get\\(\\) of class Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:
+				since Symfony 5\\.4, use method or constructor injection in your controller instead$#
+			"""
+			count: 1
+			path: src/Bundle/UserBundle/Controller/TwoFactorController.php
+
+		-
+			message: """
+				#^Call to deprecated method getUsername\\(\\) of class Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:
+				since Symfony 5\\.3, use getUserIdentifier\\(\\) instead$#
+			"""
+			count: 1
+			path: src/Bundle/UserBundle/Controller/TwoFactorController.php
+
+		-
+			message: """
+				#^Call to deprecated method getUsername\\(\\) of class Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:
+				since Symfony 5\\.3, use getUserIdentifier\\(\\) instead$#
+			"""
+			count: 2
+			path: src/Bundle/UserBundle/Controller/UserController.php
+
+		-
+			message: """
+				#^Parameter \\$factory of method Integrated\\\\Bundle\\\\UserBundle\\\\DataFixtures\\\\Faker\\\\Provider\\\\EncodeProvider\\:\\:__construct\\(\\) has typehint with deprecated interface Symfony\\\\Component\\\\Security\\\\Core\\\\Encoder\\\\EncoderFactoryInterface\\:
+				since Symfony 5\\.3, use \\{@link PasswordHasherFactoryInterface\\} instead$#
+			"""
+			count: 1
+			path: src/Bundle/UserBundle/DataFixtures/Faker/Provider/EncodeProvider.php
+
+		-
+			message: """
+				#^Class Integrated\\\\Bundle\\\\UserBundle\\\\DependencyInjection\\\\Security\\\\IpListFactory implements deprecated interface Symfony\\\\Bundle\\\\SecurityBundle\\\\DependencyInjection\\\\Security\\\\Factory\\\\SecurityFactoryInterface\\:
+				since Symfony 5\\.3, use AuthenticatorFactoryInterface instead\\.$#
+			"""
+			count: 1
+			path: src/Bundle/UserBundle/DependencyInjection/Security/IpListFactory.php
+
+		-
+			message: """
+				#^Class Integrated\\\\Bundle\\\\UserBundle\\\\DependencyInjection\\\\Security\\\\ScopeFactory implements deprecated interface Symfony\\\\Bundle\\\\SecurityBundle\\\\DependencyInjection\\\\Security\\\\Factory\\\\SecurityFactoryInterface\\:
+				since Symfony 5\\.3, use AuthenticatorFactoryInterface instead\\.$#
+			"""
+			count: 1
+			path: src/Bundle/UserBundle/DependencyInjection/Security/ScopeFactory.php
+
+		-
+			message: """
+				#^Parameter \\$encoderFactory of method Integrated\\\\Bundle\\\\UserBundle\\\\Doctrine\\\\UserManager\\:\\:__construct\\(\\) has typehint with deprecated interface Symfony\\\\Component\\\\Security\\\\Core\\\\Encoder\\\\EncoderFactoryInterface\\:
+				since Symfony 5\\.3, use \\{@link PasswordHasherFactoryInterface\\} instead$#
+			"""
+			count: 1
+			path: src/Bundle/UserBundle/Doctrine/UserManager.php
+
+		-
+			message: """
+				#^Call to deprecated method getListeners\\(\\) of class Symfony\\\\Bundle\\\\SecurityBundle\\\\Security\\\\FirewallConfig\\:
+				since Symfony 5\\.4, use \\{@see getAuthenticators\\(\\)\\} instead$#
+			"""
+			count: 1
+			path: src/Bundle/UserBundle/EventListener/IpListFirewallListener.php
+
+		-
+			message: """
+				#^Call to method mapFormsToData\\(\\) of deprecated class Symfony\\\\Component\\\\Form\\\\Extension\\\\Core\\\\DataMapper\\\\PropertyPathMapper\\:
+				since symfony/form 5\\.2\\. Use \\{@see DataMapper\\} instead\\.$#
+			"""
+			count: 1
+			path: src/Bundle/UserBundle/Form/DataMapper/UserMapper.php
+
+		-
+			message: """
+				#^Class Integrated\\\\Bundle\\\\UserBundle\\\\Form\\\\DataMapper\\\\UserMapper extends deprecated class Symfony\\\\Component\\\\Form\\\\Extension\\\\Core\\\\DataMapper\\\\PropertyPathMapper\\:
+				since symfony/form 5\\.2\\. Use \\{@see DataMapper\\} instead\\.$#
+			"""
+			count: 1
+			path: src/Bundle/UserBundle/Form/DataMapper/UserMapper.php
+
+		-
+			message: """
+				#^Parameter \\$encoder of method Integrated\\\\Bundle\\\\UserBundle\\\\Form\\\\EventListener\\\\UserProfilePasswordListener\\:\\:__construct\\(\\) has typehint with deprecated interface Symfony\\\\Component\\\\Security\\\\Core\\\\Encoder\\\\EncoderFactoryInterface\\:
+				since Symfony 5\\.3, use \\{@link PasswordHasherFactoryInterface\\} instead$#
+			"""
+			count: 1
+			path: src/Bundle/UserBundle/Form/EventListener/UserProfilePasswordListener.php
+
+		-
+			message: """
+				#^Return type of method Integrated\\\\Bundle\\\\UserBundle\\\\Form\\\\EventListener\\\\UserProfilePasswordListener\\:\\:getEncoder\\(\\) has typehint with deprecated interface Symfony\\\\Component\\\\Security\\\\Core\\\\Encoder\\\\PasswordEncoderInterface\\:
+				since Symfony 5\\.3, use \\{@link PasswordHasherInterface\\} instead$#
+			"""
+			count: 1
+			path: src/Bundle/UserBundle/Form/EventListener/UserProfilePasswordListener.php
+
+		-
+			message: """
+				#^Parameter \\$encoder of method Integrated\\\\Bundle\\\\UserBundle\\\\Form\\\\Type\\\\UserFormType\\:\\:__construct\\(\\) has typehint with deprecated interface Symfony\\\\Component\\\\Security\\\\Core\\\\Encoder\\\\EncoderFactoryInterface\\:
+				since Symfony 5\\.3, use \\{@link PasswordHasherFactoryInterface\\} instead$#
+			"""
+			count: 1
+			path: src/Bundle/UserBundle/Form/Type/UserFormType.php
+
+		-
+			message: """
+				#^Call to deprecated method addSecurityListenerFactory\\(\\) of class Symfony\\\\Bundle\\\\SecurityBundle\\\\DependencyInjection\\\\SecurityExtension\\:
+				since Symfony 5\\.4, use "addAuthenticatorFactory\\(\\)" instead$#
+			"""
+			count: 2
+			path: src/Bundle/UserBundle/IntegratedUserBundle.php
+
+		-
+			message: """
+				#^Class Integrated\\\\Bundle\\\\UserBundle\\\\Security\\\\Authentication\\\\Provider\\\\IpListProvider implements deprecated interface Symfony\\\\Component\\\\Security\\\\Core\\\\Authentication\\\\Provider\\\\AuthenticationProviderInterface\\:
+				since Symfony 5\\.3, use the new authenticator system instead$#
+			"""
+			count: 1
+			path: src/Bundle/UserBundle/Security/Authentication/Provider/IpListProvider.php
+
+		-
+			message: """
+				#^Class Integrated\\\\Bundle\\\\UserBundle\\\\Security\\\\Authentication\\\\Provider\\\\ScopeProvider implements deprecated interface Symfony\\\\Component\\\\Security\\\\Core\\\\Authentication\\\\Provider\\\\AuthenticationProviderInterface\\:
+				since Symfony 5\\.3, use the new authenticator system instead$#
+			"""
+			count: 1
+			path: src/Bundle/UserBundle/Security/Authentication/Provider/ScopeProvider.php
+
+		-
+			message: """
+				#^Call to deprecated method get\\(\\) of class Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:
+				since Symfony 5\\.4, use method or constructor injection in your controller instead$#
+			"""
+			count: 2
+			path: src/Bundle/WebsiteBundle/Controller/GridController.php
+
+		-
+			message: """
+				#^Call to deprecated method get\\(\\) of class Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:
+				since Symfony 5\\.4, use method or constructor injection in your controller instead$#
+			"""
+			count: 4
+			path: src/Bundle/WebsiteBundle/Controller/MenuController.php
+
+		-
+			message: """
+				#^Call to deprecated method get\\(\\) of class Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:
+				since Symfony 5\\.4, use method or constructor injection in your controller instead$#
+			"""
+			count: 1
+			path: src/Bundle/WebsiteBundle/Controller/SearchSelectionController.php
+
+		-
+			message: """
+				#^Call to deprecated method get\\(\\) of class Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:
+				since Symfony 5\\.4, use method or constructor injection in your controller instead$#
+			"""
+			count: 3
+			path: src/Bundle/WorkflowBundle/Controller/WorkflowController.php
+
+		-
+			message: """
+				#^Call to deprecated method getDoctrine\\(\\) of class Symfony\\\\Bundle\\\\FrameworkBundle\\\\Controller\\\\AbstractController\\:
+				since Symfony 5\\.4, inject an instance of ManagerRegistry in your controller instead$#
+			"""
+			count: 8
+			path: src/Bundle/WorkflowBundle/Controller/WorkflowController.php
+
+		-
+			message: """
+				#^Call to deprecated method getUsername\\(\\) of class Integrated\\\\Bundle\\\\UserBundle\\\\Model\\\\User\\:
+				since Symfony 5\\.3, use getUserIdentifier\\(\\) instead$#
+			"""
+			count: 1
+			path: src/Bundle/WorkflowBundle/Controller/WorkflowController.php
+
+		-
+			message: """
+				#^Call to deprecated method getUsername\\(\\) of class Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:
+				since Symfony 5\\.3, use getUserIdentifier\\(\\) instead$#
+			"""
+			count: 1
+			path: src/Common/Locks/Resource.php
 
