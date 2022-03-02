@@ -45,13 +45,19 @@ class Cleaner
         $changed = false;
         if ($document['action'] == 'update') {
             foreach ($document['changeSet'] as $key => $change) {
-                if (!\is_array($change[0]) || !\is_array($change[1])) {
-                    continue;
-                }
                 $diff = ArrayComparer::diff(($change[0] ?? []), ($change[1] ?? []));
                 if (\count($diff) == 0) {
                     unset($document['changeSet'][$key]);
                     $changed = true;
+                } elseif (is_array($change[0])) {
+                    $document['changeSet'][$key] = $diff;
+                }
+
+                if ($key == 'address') {
+                    //exit;
+                }
+                if (\count($diff) > 0) {
+                    //exit;
                 }
             }
         }
@@ -72,25 +78,26 @@ class Cleaner
             var_dump($document['_id']);
             echo "\n";
 
-            return;
+            exit;
             $this->documentManager->createQueryBuilder(ContentHistory::class)
                 ->remove()
                 ->field('_id')->equals($document['_id'])
                 ->getQuery()
                 ->execute();
+            exit;
         } elseif ($changed) {
             var_dump('change');
             var_dump($document['_id']);
             var_dump($document['changeSet']);
             echo "\n";
 
-            return;
             $this->documentManager->createQueryBuilder(ContentHistory::class)
                 ->updateOne()
                 ->field('changeSet')->set($document['changeSet'])
                 ->field('_id')->equals($document['_id'])
                 ->getQuery()
                 ->execute();
+            exit;
         }
     }
 }

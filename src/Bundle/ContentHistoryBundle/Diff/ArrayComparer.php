@@ -24,14 +24,42 @@ class ArrayComparer
      *
      * @return array
      */
-    public static function diff(array $old = [], array $new = [])
+    public static function diff($old, $new)
     {
-        $old = self::normalize($new, $old);
-        $new = self::normalize($old, $new);
+        $oldOriginal = $old;
+        $newOriginal = $new;
+//        var_dump('input1');
+//        var_dump($old);
+
+//        var_dump('input2');
+//        var_dump($new);
+
+        $old = self::normalizeValue($old);
+        $new = self::normalizeValue($new);
+
+//exit;
+        if (!is_array($old) || !is_array($new)) {
+            var_dump('early return');
+            if (self::isSame($old, $new)) {
+                return [];
+            }
+
+            return [$oldOriginal, $newOriginal];
+        }
+
+        $old = self::normalizeArrays($new, $old);
+        $new = self::normalizeArrays($old, $new);
+
+        var_dump('input1 norm');
+        var_dump($old);
+
+        var_dump('input2 norm');
+        var_dump($new);
 
         $diff = [];
 
         foreach ($new as $key => $value) {
+            var_dump($value);
             if (\in_array($key, self::IGNORE_KEYS)) {
                 continue;
             }
@@ -39,14 +67,17 @@ class ArrayComparer
             if (\is_array($value)) {
                 $result = self::diff($old[$key], $value);
                 if (\count($result)) {
-                    $diff[$key] = $result;
+                    $diff[$key] = [$result[0], $result[1]];
                 }
-            } elseif ($old[$key] !== $value) {
+            } elseif (!self::isSame($old[$key], $value)) {
                 // value has changed
+                var_dump($key.' - '.$old[$key].'-'.$value."\n");
                 $diff[$key] = [$old[$key], $value];
             }
         }
 
+        //var_dump('return');
+        //var_dump($diff);
         return $diff;
     }
 
@@ -56,9 +87,12 @@ class ArrayComparer
      *
      * @return array
      */
-    public static function normalize(array $old = [], array $new = [])
+    public static function normalizeArrays(array $old = [], array $new = [])
     {
         foreach (array_keys($old) as $key) {
+            //if (is_object($new[$key])) {
+            //    $new[$key] = (array) $new[$key];
+            //}
             if (!\array_key_exists($key, $new)) {
                 // add missing key
                 if (\is_array($old[$key])) {
@@ -76,11 +110,28 @@ class ArrayComparer
         return $new;
     }
 
+    public static function normalizeValue($value, bool $allowArray = true)
+    {
+        if (is_object($value)) {
+            $value = serialize((array) $value);
+        }
+
+        if (!$allowArray && is_array($value)) {
+            $value = serialize($value);
+        }
+
+        return $value;
+    }
+
     public static function isSame($value1, $value2): bool
     {
-        $value1 = (string) $value1;
-        $value2 = (string) $value2;
+        //var_dump('compare');
+        //var_dump($value1);
+        //var_dump($value2);
+        $value1 = (string) self::normalizeValue($value1, false);
+        $value2 = (string) self::normalizeValue($value2, false);
 
+        //var_dump($value1 === $value2);
         return ($value1 === $value2);
     }
 }
