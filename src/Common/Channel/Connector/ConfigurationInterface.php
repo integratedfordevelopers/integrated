@@ -23,7 +23,7 @@ interface ConfigurationInterface
      *
      * This can be a string or a form type object.
      *
-     * @return string | FormTypeInterface
+     * @return string|FormTypeInterface
      */
     public function getForm();
 }

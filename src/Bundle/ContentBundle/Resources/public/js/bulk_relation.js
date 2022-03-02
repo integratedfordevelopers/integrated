@@ -5,7 +5,7 @@ function implementSelect2() {
             multiple: $(this).data('multiple'),
             ajax: {
                 type: 'GET',
-                url: Routing.generate("integrated_content_content_index", {'_format': 'json'}),
+                url: $(this).data('url'),
                 dataType: 'json',
                 data: function (param) {
                     return {

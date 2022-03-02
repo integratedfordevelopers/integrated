@@ -82,6 +82,7 @@ class RelatedContentBlockHandler extends BlockHandler
             'block' => $block,
             'pagination' => $pagination,
             'document' => $this->getDocument(),
+            'options' => $options,
         ]);
     }
 

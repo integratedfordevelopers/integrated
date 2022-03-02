@@ -29,7 +29,7 @@ interface ResourceInterface
     public function getType();
 
     /**
-     * @return string | null
+     * @return string|null
      */
     public function getIdentifier();
 }

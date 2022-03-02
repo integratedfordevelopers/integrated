@@ -72,7 +72,7 @@ class BlockController extends Controller
         }
 
         $pageBundleInstalled = isset($this->getParameter('kernel.bundles')['IntegratedPageBundle']);
-        $data = $request->query->get('integrated_block_filter');
+        $data = $request->get('integrated_block_filter');
         $queryProvider = $this->get('integrated_block.provider.filter_query');
 
         $facetFilter = $this->createForm(BlockFilterType::class, null, [
@@ -236,8 +236,11 @@ class BlockController extends Controller
             return $this->redirect($this->generateUrl('integrated_block_block_index'));
         }
 
+        $metadata = $this->metadataFactory->getMetadata(\get_class($block));
+
         return $this->render(sprintf('IntegratedBlockBundle:block:edit.%s.twig', $request->getRequestFormat()), [
             'form' => $form->createView(),
+            'blockType' => $metadata->getType(),
         ]);
     }
 

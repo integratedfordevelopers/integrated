@@ -151,6 +151,7 @@ class FormBlockHandler extends BlockHandler
         return $this->render([
             'block' => $block,
             'form' => $form->createView(),
+            'options' => $options,
         ]);
     }
 

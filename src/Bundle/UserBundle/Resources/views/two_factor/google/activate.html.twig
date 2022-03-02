@@ -1,0 +1,57 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+
+{% block header %}
+    {% if not config.required %}
+        {{ parent() }}
+    {% else %}
+        <nav class="navbar megamenu">
+            <div class="container">
+                {% include 'IntegratedContentBundle:partials:block.logo.html.twig' %}
+            </div>
+        </nav>
+    {% endif %}
+{% endblock %}
+
+{% block crumbs %}
+    <div class="breadcrumb-holder">
+        <div class="container">
+            <ol class="breadcrumb">
+                {% if not config.required %}
+                <li>
+                    <a href="{{ path('integrated_content_content_index') }}">{% trans %}Home{% endtrans %}</a>
+                </li>
+                {% endif %}
+
+                <li class="active">{% trans %}Profile{% endtrans %}</li>
+            </ol>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 push-sm-down">
+            <h1 class="main-title font-regular">{% trans %}Activate{% endtrans %} <small>{% trans %}Google Authenticator{% endtrans %}</small></h1>
+
+            <section class="section-white section-padding section-shadow section-radius">
+                <div class="row">
+                    <div class="col-lg-6 col-lg-offset-3">
+                        <div class="text-center">
+                            <p>{% trans %}Scan the QR code with the Google Authenticator.{% endtrans %}</p>
+
+                            <img src="{{ qr_code_data_uri(integrated_user_authenticator_qr_code(user)) }}" alt="Google Authenticator QR code" class="img-thumbnail" />
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                    <div class="col-lg-6 col-lg-offset-3">
+                        {{ form(form) }}
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}

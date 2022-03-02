@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class ContainerAwareDocumentNormalizerTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ContainerInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ContainerInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $container;
 

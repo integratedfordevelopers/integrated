@@ -30,12 +30,12 @@ class RequestSerializerTest extends \PHPUnit\Framework\TestCase
     const TEST_STATE = 'TEST';
 
     /**
-     * @var SerializerInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var SerializerInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $serializer;
 
     /**
-     * @var ChannelManagerInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ChannelManagerInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $manager;
 
@@ -155,7 +155,7 @@ class RequestSerializerTest extends \PHPUnit\Framework\TestCase
     /**
      * @param string $id
      *
-     * @return ChannelInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ChannelInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getChannel($id)
     {

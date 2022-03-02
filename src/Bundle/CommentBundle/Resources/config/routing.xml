@@ -6,7 +6,6 @@
 
     <route id="integrated_comment_new" path="/comment/new/{content}/{field}">
         <default key="_controller">integrated_comment.controller.default:newAction</default>
-        <option key="expose">true</option>
     </route>
 
     <route id="integrated_comment_delete" path="/comment/delete/{comment}">
@@ -19,7 +18,6 @@
 
     <route id="integrated_comment_get" path="/comment/{comment}">
         <default key="_controller">integrated_comment.controller.default:getAction</default>
-        <option key="expose">true</option>
     </route>
 
 </routes>

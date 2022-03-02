@@ -17,6 +17,11 @@ $(document).ready(function() {
     var options = tinymce.activeEditor.windowManager.getParams();
 
     /**
+     * @type {Object}
+     */
+    var settings = tinymce.activeEditor.settings;
+
+    /**
      * @type object|null
      */
     var previousCall = null;
@@ -37,22 +42,8 @@ $(document).ready(function() {
             var item = renderItem(images[i]);
 
             // Grab the routes
-            images[i].preview = Routing.generate(
-                'integrated_storage_file_resize',
-                {
-                    id: images[i].id,
-                    ext: images[i].extension,
-                    width: 150,
-                    height: 150
-                }
-            );
-            images[i].source = Routing.generate(
-                'integrated_storage_file',
-                {
-                    id: images[i].id,
-                    ext: images[i].extension
-                }
-            );
+            images[i].preview = settings.integrated_browser_file_resize_url.replace('__id__', images[i].id).replace('__ext__', images[i].extension);
+            images[i].source = settings.integrated_browser_file_url.replace('__id__', images[i].id).replace('__ext__', images[i].extension);
 
             // Parse values
             var match = [];
@@ -169,8 +160,7 @@ $(document).ready(function() {
         $('#thumbnail-container').loader('show');
 
         var params = {
-            "q": $('#txt-search').val(),
-            "_format": "json"
+            "q": $('#txt-search').val()
         };
 
         var selectedContentTypes = getSelectedContentTypes();
@@ -184,7 +174,7 @@ $(document).ready(function() {
         }
 
         previousCall =
-            $.get(Routing.generate('integrated_content_content_index', params), function(data) {
+            $.get(settings.integrated_browser_search_url, params, function(data) {
                 render(data.items);
                 renderPagination(data.pagination);
             }, 'json')
@@ -276,7 +266,7 @@ $(document).ready(function() {
     /**
      * Here the plugin begins
      */
-    $.get(Routing.generate('integrated_content_content_media_types', {'filter': options['mode']}), function (contentTypes) {
+    $.get(settings.integrated_browser_media_types_url.replace('__type__', options['mode']), function (contentTypes) {
         var buttonHtml = '';
 
         if (contentTypes.length == 1) {

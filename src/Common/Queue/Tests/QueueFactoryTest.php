@@ -25,7 +25,7 @@ class QueueFactoryTest extends \PHPUnit\Framework\TestCase
     protected $factory;
 
     /**
-     * @var QueueProviderInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var QueueProviderInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $provider;
 

@@ -20,7 +20,7 @@ use Integrated\Common\Bulk\Action\HandlerFactoryRegistry;
 class HandlerFactoryRegistryTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var HandlerFactoryInterface[] | \PHPUnit_Framework_MockObject_MockObject[]
+     * @var HandlerFactoryInterface[]|\PHPUnit_Framework_MockObject_MockObject[]
      */
     protected $factories = [];
 

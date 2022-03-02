@@ -30,12 +30,12 @@ use Symfony\Component\Serializer\SerializerInterface;
 class CommandFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ConverterInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ConverterInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $converter;
 
     /**
-     * @var SerializerInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var SerializerInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $serializer;
 
@@ -387,7 +387,7 @@ class CommandFactoryTest extends \PHPUnit\Framework\TestCase
      * @param string $action
      * @param array  $options
      *
-     * @return JobInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return JobInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getJob($action = null, array $options = [])
     {
@@ -422,7 +422,7 @@ class CommandFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @param array $data
      *
-     * @return ContainerInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ContainerInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getContainer(array $data = [])
     {

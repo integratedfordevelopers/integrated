@@ -76,7 +76,7 @@ class RegistryTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return ResolvedTypeInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ResolvedTypeInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getType()
     {

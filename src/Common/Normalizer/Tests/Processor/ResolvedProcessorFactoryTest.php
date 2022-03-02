@@ -24,7 +24,7 @@ use ReflectionProperty;
 class ResolvedProcessorFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ContainerFactoryInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ContainerFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $factory;
 

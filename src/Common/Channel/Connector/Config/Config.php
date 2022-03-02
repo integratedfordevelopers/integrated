@@ -44,7 +44,7 @@ class Config implements ConfigInterface
      * @param string           $name
      * @param string           $adaptor
      * @param OptionsInterface $options
-     * @param DateTime | null  $publicationStartDate
+     * @param DateTime|null    $publicationStartDate
      */
     public function __construct($name, $adaptor, OptionsInterface $options, ?DateTime $publicationStartDate)
     {

@@ -31,7 +31,7 @@ class Definition
     protected $name;
 
     /**
-     * @var Collection | State[]
+     * @var Collection|State[]
      */
     protected $states;
 

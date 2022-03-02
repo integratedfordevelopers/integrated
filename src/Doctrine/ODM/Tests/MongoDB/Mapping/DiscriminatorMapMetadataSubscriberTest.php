@@ -23,7 +23,7 @@ use Integrated\Doctrine\ODM\MongoDB\Mapping\DiscriminatorMapResolverInterface;
 class DiscriminatorMapMetadataSubscriberTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var DiscriminatorMapResolverInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var DiscriminatorMapResolverInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $resolver;
 
@@ -99,7 +99,7 @@ class DiscriminatorMapMetadataSubscriberTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return LoadClassMetadataEventArgs | \PHPUnit_Framework_MockObject_MockObject
+     * @return LoadClassMetadataEventArgs|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getEvent($metadata)
     {
@@ -114,7 +114,7 @@ class DiscriminatorMapMetadataSubscriberTest extends \PHPUnit\Framework\TestCase
     /**
      * @param string $name
      *
-     * @return ClassMetadataInfo | \PHPUnit_Framework_MockObject_MockObject
+     * @return ClassMetadataInfo|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getMetadata($name)
     {

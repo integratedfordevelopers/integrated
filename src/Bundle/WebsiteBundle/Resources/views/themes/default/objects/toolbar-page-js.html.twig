@@ -1,0 +1,117 @@
+<script>
+    !function() {
+
+        var success = 0;
+        var target = null;
+
+        /**
+         * Init after page load
+         */
+        function init() {
+            document.querySelectorAll('[data-action="integrated-website-page-save"]').forEach(item =>
+                item.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    success = 0;
+                    target = this.dataset.target;
+
+                    saveMenus();
+                    saveGrids(this.dataset.id);
+                })
+            );
+        }
+
+        if (document.readyState != 'loading'){
+            init();
+        } else {
+            document.addEventListener('DOMContentLoaded', init);
+        }
+
+        var saveMenus = function () {
+            var menus = [];
+
+            document.querySelectorAll('.integrated-website-menu').forEach(item =>
+                menus.push(Integrated.Menu.create(item).getData())
+            );
+
+            fetch('{{ path('integrated_website_menu_save') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'menu': menus
+                })
+            })
+                .then(response => response.json())
+                .then(handleSuccess)
+                .catch(handleError);
+        };
+
+        var getGridItems = function ($element) {
+            let items = [];
+
+            $element.forEach(child => {
+                if ('block' === child.dataset.blockType) {
+                    items.push({
+                        'block': child.dataset.id
+                    });
+                } else if ('row' === child.dataset.blockType) {
+                    items.push({
+                        'row': {
+                            'columns': getGridItems(child.querySelectorAll(':scope > .integrated-website-col'))
+                        }
+                    });
+                } else if ('column' === child.dataset.blockType) {
+                    items.push({
+                        'size': child.dataset.size,
+                        'items': getGridItems(child.querySelectorAll(':scope > .integrated-website-sortable'))
+                    });
+                }
+            });
+
+            return items;
+        };
+
+        var saveGrids = function (pageId) {
+            var grids = [];
+
+            document.querySelectorAll('.integrated-website-grid').forEach(item => {
+                grids.push({
+                    'id': item.dataset.id,
+                    'items': getGridItems(item.querySelectorAll(':scope > .integrated-website-sortable'))
+                });
+            });
+
+            fetch('{{ path('integrated_website_grid_save') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'grids': grids,
+                    'page': pageId
+                })
+            })
+                .then(response => response.json())
+                .then(handleSuccess)
+                .catch(handleError);
+        };
+
+        var handleSuccess = function () {
+            if (2 === ++success && target) {
+                window.location.replace(target);
+            }
+        };
+
+        var handleError = function (result) {
+            // @todo error handling (INTEGRATED-420)
+            alert('An error has occurred saving the grid(s)!');
+            console.log(result.responseText);
+        }
+
+    }();
+
+    var Integrated = Integrated || {};
+
+</script>

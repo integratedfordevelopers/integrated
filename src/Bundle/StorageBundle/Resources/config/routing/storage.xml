@@ -8,8 +8,6 @@
         <default key="_controller">integrated_storage.controller_file:fileAction</default>
 
         <requirement key="ext">^[a-zA-Z-_0-9]+$</requirement>
-
-        <option key="expose">true</option>
     </route>
 
     <route id="integrated_storage_file_resize" path="/storage/{id}.{ext}/resize/{width}/{height}" methods="GET">
@@ -18,13 +16,10 @@
         <requirement key="ext">^[a-zA-Z-_0-9]+$</requirement>
         <requirement key="width">\d+</requirement>
         <requirement key="height">\d+</requirement>
-
-        <option key="expose">true</option>
     </route>
 
     <route id="integrated_storage_file_upload" path="/storage/upload" methods="POST">
         <default key="_controller">integrated_storage.controller_file:uploadAction</default>
-        <option key="expose">true</option>
     </route>
 
 </routes>

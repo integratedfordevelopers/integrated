@@ -71,6 +71,7 @@ class ContentBlockHandler extends BlockHandler
             'block' => $block,
             'pagination' => $pagination,
             'document' => $this->getDocument(),
+            'options' => $options,
         ]);
     }
 
@@ -94,6 +95,7 @@ class ContentBlockHandler extends BlockHandler
         $resolver->setDefaults([
             'filters' => [],   // add extra filters (overwrites search selection)
             'exclude' => true, // exclude already shown items
+            'gridLevel' => 0,
         ]);
 
         $resolver->setAllowedTypes('filters', 'array');

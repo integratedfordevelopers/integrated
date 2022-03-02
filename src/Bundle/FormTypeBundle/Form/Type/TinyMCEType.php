@@ -28,7 +28,7 @@ class TinyMCEType extends AbstractType
     {
         @trigger_error(
             'The formtype TinyMCEType is deprecated in favour of EditorType and will be removed in the future',
-            E_USER_DEPRECATED
+            \E_USER_DEPRECATED
         );
 
         parent::configureOptions($resolver);

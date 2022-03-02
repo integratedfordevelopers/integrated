@@ -85,7 +85,7 @@ class UrlGenerator implements UrlGeneratorInterface
             $content->getSlug()
         );
 
-        if ($parameters && $query = http_build_query($parameters, '', '&', PHP_QUERY_RFC3986)) {
+        if ($parameters && $query = http_build_query($parameters, '', '&', \PHP_QUERY_RFC3986)) {
             $url .= '?'.strtr($query, ['%2F' => '/']);
         }
 

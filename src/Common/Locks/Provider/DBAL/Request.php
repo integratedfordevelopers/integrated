@@ -25,12 +25,12 @@ class Request implements RequestInterface
     protected $resource;
 
     /**
-     * @var null | ResourceInterface
+     * @var ResourceInterface|null
      */
     protected $owner = null;
 
     /**
-     * @var null | int
+     * @var int|null
      */
     protected $timeout = null;
 

@@ -22,7 +22,7 @@ use Integrated\Common\Converter\Config\ConfigInterface;
 class RepositoryResolverTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ConfigRepositoryInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ConfigRepositoryInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $repository;
 
@@ -105,7 +105,7 @@ class RepositoryResolverTest extends \PHPUnit\Framework\TestCase
     /**
      * @param string $name
      *
-     * @return ConfigInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ConfigInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getConfig($name)
     {
@@ -118,7 +118,7 @@ class RepositoryResolverTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return ChannelInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ChannelInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getChannel()
     {

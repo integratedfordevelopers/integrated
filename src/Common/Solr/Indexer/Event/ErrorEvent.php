@@ -43,7 +43,7 @@ class ErrorEvent extends MessageEvent
     /**
      * Get the exception object for this event.
      *
-     * @return ExceptionInterface | Exception
+     * @return ExceptionInterface|Exception
      */
     public function getException()
     {

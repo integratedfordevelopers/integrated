@@ -20,7 +20,7 @@ use Integrated\Common\Solr\Indexer\Event\MessageEvent;
 class MessageEventTest extends AbstractEventTest
 {
     /**
-     * @var QueueMessageInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var QueueMessageInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $message;
 

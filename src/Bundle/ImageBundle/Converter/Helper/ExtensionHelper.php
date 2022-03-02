@@ -35,6 +35,14 @@ class ExtensionHelper
             if (!$extensions->contains($ext = strtoupper($extension))) {
                 $extensions->add($ext);
             }
+
+            if (!$extensions->contains($ext = substr(strtolower($extension), 0, 3))) {
+                $extensions->add($ext);
+            }
+
+            if (!$extensions->contains($ext = substr(strtoupper($extension), 0, 3))) {
+                $extensions->add($ext);
+            }
         }
 
         return $extensions;

@@ -23,9 +23,9 @@ class Slugger implements SluggerInterface
      */
     public function slugify($string, $delimiter = '-')
     {
-        $locale = setlocale(LC_ALL, 0);
+        $locale = setlocale(\LC_ALL, 0);
 
-        setlocale(LC_ALL, 'en_US.UTF-8');
+        setlocale(\LC_ALL, 'en_US.UTF-8');
 
         $slug = strtolower(
             trim(preg_replace('/[^a-zA-Z0-9\/_|+ -.]/', '', iconv('UTF-8', 'ASCII//TRANSLIT', $string)), $delimiter)
@@ -33,7 +33,7 @@ class Slugger implements SluggerInterface
         $slug = preg_replace('/[\/_|+ -.]+/', $delimiter, $slug);
         $slug = trim($slug, $delimiter);
 
-        setlocale(LC_ALL, $locale); // restore
+        setlocale(\LC_ALL, $locale); // restore
 
         return $slug;
     }

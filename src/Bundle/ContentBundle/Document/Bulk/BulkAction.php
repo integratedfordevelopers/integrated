@@ -36,7 +36,7 @@ class BulkAction
     private $executedAt;
 
     /**
-     * @var string | null
+     * @var string|null
      */
     private $filters = null;
 
@@ -109,7 +109,7 @@ class BulkAction
     }
 
     /**
-     * @return array | null
+     * @return array|null
      */
     public function getFilters()
     {

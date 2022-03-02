@@ -27,12 +27,12 @@ use Integrated\Common\Normalizer\Tests\Fixtures\TestParent;
 class ProcessorResolverTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var RegistryInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var RegistryInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $registry;
 
     /**
-     * @var ResolvedProcessorFactoryInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ResolvedProcessorFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $factory;
 
@@ -134,7 +134,7 @@ class ProcessorResolverTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return ProcessorInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ProcessorInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getProcessor()
     {
@@ -142,7 +142,7 @@ class ProcessorResolverTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return ResolvedProcessorFactoryTest | \PHPUnit_Framework_MockObject_MockObject
+     * @return ResolvedProcessorFactoryTest|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getResolvedProcessor()
     {

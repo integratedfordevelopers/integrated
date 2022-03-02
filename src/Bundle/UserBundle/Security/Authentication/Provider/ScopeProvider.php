@@ -21,6 +21,7 @@ class ScopeProvider implements AuthenticationProviderInterface
      */
     public function authenticate(TokenInterface $token)
     {
+        return $token;
     }
 
     /**

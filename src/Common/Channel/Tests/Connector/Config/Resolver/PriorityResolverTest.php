@@ -23,7 +23,7 @@ use Integrated\Common\Converter\Config\ConfigInterface;
 class PriorityResolverTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ResolverInterface[] | \PHPUnit_Framework_MockObject_MockObject[]
+     * @var ResolverInterface[]|\PHPUnit_Framework_MockObject_MockObject[]
      */
     private $resolvers = [];
 
@@ -126,7 +126,7 @@ class PriorityResolverTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return ResolverInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ResolverInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getResolver()
     {
@@ -136,7 +136,7 @@ class PriorityResolverTest extends \PHPUnit\Framework\TestCase
     /**
      * @param string $name
      *
-     * @return ConfigInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ConfigInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getConfig($name)
     {
@@ -149,7 +149,7 @@ class PriorityResolverTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return ChannelInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ChannelInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getChannel()
     {

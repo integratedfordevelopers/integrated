@@ -1,7 +1,7 @@
 <div class="row">
 {% for item in block.items %}
     <div class="{% for key, size in item.sizes %}col-{{ key }}-{{ size }}{% else %}col-sm-12{% endfor %}">
-        {{ integrated_block(item.block) }}
+        {{ integrated_block(item.block, {'gridLevel': options.gridLevel }) }}
     </div>
 
 {% endfor %}

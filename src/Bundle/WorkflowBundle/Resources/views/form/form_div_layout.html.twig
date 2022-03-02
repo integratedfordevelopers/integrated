@@ -1,5 +1,8 @@
 {% block integrated_workflow_row  %}
-    {% set attr = attr|merge({ 'class': (attr.class|default('') ~ ' workflow')|trim }) %}
+    {% set attr = attr|merge({
+        'class': (attr.class|default('') ~ ' workflow')|trim,
+        'data-workflow-state-change': path('integrated_workflow_change_state')
+    }) %}
 
     <div {{ block('widget_container_attributes') }}>
         {{ block('form_rows') }}

@@ -170,7 +170,7 @@ class UniqueConfigIteratorTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return ConfigInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ConfigInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getConfig($name)
     {

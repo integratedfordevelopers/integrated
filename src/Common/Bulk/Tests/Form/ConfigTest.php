@@ -21,7 +21,7 @@ use Integrated\Common\Bulk\Form\ConfigInterface;
 class ConfigTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ActionMatcherInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ActionMatcherInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $matcher;
 

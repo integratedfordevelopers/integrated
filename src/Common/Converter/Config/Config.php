@@ -22,7 +22,7 @@ class Config implements ConfigInterface
     private $types;
 
     /**
-     * @var null | ConfigInterface
+     * @var ConfigInterface|null
      */
     private $parent = null;
 

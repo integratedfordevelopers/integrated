@@ -750,8 +750,8 @@ class ContentController extends Controller
      * - user: this is the user the lock belongs to or null if the lock does
      *         not have a owner.
      *
-     * @param object     $object
-     * @param int | null $timeout
+     * @param object   $object
+     * @param int|null $timeout
      *
      * @return array
      */
@@ -1132,7 +1132,7 @@ class ContentController extends Controller
             foreach ($relation->getReferences() as $reference) {
                 $properties = [
                     'id' => $reference->getId(),
-                    'title' => method_exists($reference, 'getTitle') ? $reference->getTitle() : $reference->getId(),
+                    'title' => (string) $reference,
                 ];
 
                 if ($reference instanceof Image) {
