@@ -151,6 +151,14 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
+    public function getUserIdentifier()
+    {
+        return $this->username;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setPassword($password)
     {
         $this->password = (string) $password;
