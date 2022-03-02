@@ -68,10 +68,6 @@ class ArrayComparer
                     $new[$key] = null;
                 }
             }
-
-            if (\is_array($old[$key])) {
-                $new[$key] = self::normalize($old[$key], $new[$key]);
-            }
         }
 
         return $new;

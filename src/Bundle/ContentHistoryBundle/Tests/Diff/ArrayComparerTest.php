@@ -112,6 +112,12 @@ class ArrayComparerTest extends \PHPUnit\Framework\TestCase
         );
 
         $this->assertDiff(
+            ['address' => ['name' => 'Name1']], // old
+            ['address' => ['key7' => null, 'name' => 'Name1']], // new
+            [] // expected
+        );
+
+        $this->assertDiff(
             ['address' => ['key7' => null, 'name' => 'Name1']], // old
             ['address' => ['name' => 'Name2']], // new
             ['address' => ['name' => ['Name1', 'Name2']]] // expected
