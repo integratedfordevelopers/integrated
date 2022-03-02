@@ -41,8 +41,8 @@ class ButtonTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function getExtendedType()
+    public static function getExtendedTypes(): iterable
     {
-        return ButtonType::class;
+        return [ButtonType::class];
     }
 }

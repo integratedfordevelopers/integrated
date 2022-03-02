@@ -37,7 +37,7 @@ class GridExtension extends AbstractExtension
 
     public function __construct(RequestStack $requestStack, ThemeManager $themeManager)
     {
-        $this->request = $requestStack->getMasterRequest();
+        $this->request = $requestStack->getMainRequest();
 
         $this->resolver = new OptionsResolver();
         $this->resolver->setDefaults([

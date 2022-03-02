@@ -112,7 +112,7 @@ class WorkerTest extends \PHPUnit\Framework\TestCase
                 [$this->callback($callback)],
                 [$this->callback($callback)]
             )
-            ->willReturnArgument(1);
+            ->willReturnArgument(0);
 
         $instance->execute();
     }
@@ -140,7 +140,7 @@ class WorkerTest extends \PHPUnit\Framework\TestCase
                 [$this->callback($callback)],
                 [$this->callback($callback)]
             )
-            ->willReturnArgument(1);
+            ->willReturnArgument(0);
 
         $instance->execute();
     }
@@ -188,7 +188,7 @@ class WorkerTest extends \PHPUnit\Framework\TestCase
                 [$this->callback($callback[1])],
                 [$this->callback($callback[0])]
             )
-            ->willReturnArgument(1);
+            ->willReturnArgument(0);
 
         $instance->execute();
     }

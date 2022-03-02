@@ -50,7 +50,7 @@ class EditableChecker
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->tokenStorage = $tokenStorage;
-        $this->request = $requestStack->getMasterRequest();
+        $this->request = $requestStack->getMainRequest();
     }
 
     /**

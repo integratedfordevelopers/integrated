@@ -78,7 +78,7 @@ class ContentTypeController extends AbstractController
      */
     public function index()
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $documents = $this->contentTypeManager->getAll();
         $documentTypes = $this->metadata->getAllMetadata();
@@ -112,7 +112,7 @@ class ContentTypeController extends AbstractController
      */
     public function show($id)
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $contentType = $this->getContentType($id);
         $form = $this->createDeleteForm($contentType);
@@ -132,7 +132,7 @@ class ContentTypeController extends AbstractController
      */
     public function new(Request $request)
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $metadata = $this->metadata->getMetadata($request->get('class'));
 
@@ -174,7 +174,7 @@ class ContentTypeController extends AbstractController
      */
     public function edit(Request $request, $id)
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $contentType = $this->getContentType($id);
         $metadata = $this->metadata->getMetadata($contentType->getClass());
@@ -216,7 +216,7 @@ class ContentTypeController extends AbstractController
      */
     public function delete(Request $request, $id)
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $contentType = $this->getContentType($id);
 

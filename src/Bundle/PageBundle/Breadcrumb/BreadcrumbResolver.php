@@ -58,7 +58,7 @@ class BreadcrumbResolver
         $this->documentManager = $documentManager;
         $this->urlResolver = $urlResolver;
         $this->channelContext = $channelContext;
-        $this->request = $requestStack->getMasterRequest();
+        $this->request = $requestStack->getMainRequest();
     }
 
     /**

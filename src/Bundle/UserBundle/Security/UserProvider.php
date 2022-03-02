@@ -14,7 +14,7 @@ namespace Integrated\Bundle\UserBundle\Security;
 use Integrated\Bundle\UserBundle\Model\User;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
@@ -62,8 +62,8 @@ class UserProvider implements UserProviderInterface
         $user = $this->manager->findEnabledByUsernameAndScope($username);
 
         if (!$user) {
-            $exception = new UsernameNotFoundException(sprintf('No user with the username "%s" exists', $username));
-            $exception->setUsername($username);
+            $exception = new UserNotFoundException(sprintf('No user with the username "%s" exists', $username));
+            $exception->setUserIdentifier($username);
 
             throw $exception;
         }
@@ -90,13 +90,13 @@ class UserProvider implements UserProviderInterface
         $loaded = $this->manager->find($user->getId());
 
         if (!$loaded) {
-            $exception = new UsernameNotFoundException(
+            $exception = new UserNotFoundException(
                 sprintf(
                     'The user with id "%s" could not be refreshed',
                     $user->getId()
                 )
             );
-            $exception->setUsername($user->getUsername());
+            $exception->setUserIdentifier($user->getUserIdentifier());
 
             throw $exception;
         }

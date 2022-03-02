@@ -30,6 +30,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -138,8 +139,10 @@ class FormBlockHandler extends BlockHandler
                 $data = $request->request->get($form->getName());
 
                 // remove irrelevant fields
-                unset($data['actions']);
-                unset($data['_token']);
+                if ($data instanceof InputBag) {
+                    unset($data['actions']);
+                    unset($data['_token']);
+                }
 
                 $this->formMailer->send($data, $block->getEmailAddresses(), $block->getTitle());
 

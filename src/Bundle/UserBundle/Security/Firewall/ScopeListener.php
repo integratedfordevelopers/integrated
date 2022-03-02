@@ -70,7 +70,6 @@ class ScopeListener extends AbstractListener
 
         $newToken = new UsernamePasswordToken(
             $user,
-            $token->getCredentials(),
             $this->providerKey,
             $roles
         );
