@@ -69,8 +69,8 @@ class Cleaner
 
         if (\count($document['changeSet']) === 0) {
             var_dump('remove');
-            var_dump($originalDocument);
-            var_dump($document);
+            var_dump($document['_id']);
+            echo "\n";
 
             return;
             $this->documentManager->createQueryBuilder(ContentHistory::class)
@@ -80,8 +80,9 @@ class Cleaner
                 ->execute();
         } elseif ($changed) {
             var_dump('change');
-            var_dump($originalDocument);
-            var_dump($document);
+            var_dump($document['_id']);
+            var_dump($document['changeSet']);
+            echo "\n";
 
             return;
             $this->documentManager->createQueryBuilder(ContentHistory::class)

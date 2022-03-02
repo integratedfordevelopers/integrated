@@ -27,7 +27,6 @@ class ArrayComparer
     public static function diff(array $old = [], array $new = [])
     {
         $old = self::normalize($new, $old);
-
         $new = self::normalize($old, $new);
 
         $diff = [];
@@ -37,7 +36,7 @@ class ArrayComparer
                 continue;
             }
 
-            if (\is_array($value) && null !== $old[$key]) {
+            if (\is_array($value)) {
                 $result = self::diff($old[$key], $value);
                 if (\count($result)) {
                     $diff[$key] = $result;
@@ -68,8 +67,20 @@ class ArrayComparer
                     $new[$key] = null;
                 }
             }
+
+            if (\is_array($old[$key]) && !\is_array($new[$key])) {
+                $new[$key] = [];
+            }
         }
 
         return $new;
+    }
+
+    public static function isSame($value1, $value2): bool
+    {
+        $value1 = (string) $value1;
+        $value2 = (string) $value2;
+
+        return ($value1 === $value2);
     }
 }
