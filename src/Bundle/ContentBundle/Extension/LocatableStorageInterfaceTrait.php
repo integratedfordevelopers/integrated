@@ -44,6 +44,7 @@ trait LocatableStorageInterfaceTrait
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         if (0 === $offset) {

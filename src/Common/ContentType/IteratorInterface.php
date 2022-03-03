@@ -25,6 +25,7 @@ interface IteratorInterface extends BaseIteratorInterface
      *
      * @return contentTypeInterface
      */
+    #[\ReturnTypeWillChange]
     public function current();
 
     /**
