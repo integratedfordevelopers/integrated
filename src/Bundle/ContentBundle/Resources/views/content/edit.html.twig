@@ -173,10 +173,12 @@
     {% endblock %}
 {% endblock %}
 
+{% block webpack_js %}
+    <script src="{{ asset('bundles/integratedintegrated/edit.js') }}"></script>
+{% endblock %}
+
 {% block javascript %}
     {{ parent() }}
-
-    <script src="{{ asset('bundles/integratedintegrated/content_edit.js') }}"></script>
 
     {% if content is defined %}
     <script>
@@ -235,7 +237,7 @@
             var formInvalid = {{ form.vars.valid ? '0' : '1' }};
         </script>
 
-        <script src="{{ asset('bundles/integratedintegrated/js/unlock_article.js') }}"></script>
+        <script src="{{ asset('bundles/integratedcontent/js/unlock_article.js') }}"></script>
     {% endif %}
 {% endif %}
 
@@ -244,6 +246,9 @@
 
 {% block style %}
     {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('bundles/integratedintegrated/edit.css') }}">
+
     <style>
         .form-horizontal.margin-top {margin-top: 15px;}
         .form-horizontal .add-wrapper {margin-top: 5px;}

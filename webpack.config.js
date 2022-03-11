@@ -9,6 +9,13 @@ webpackConfig = Encore.setOutputPath('./src/Bundle/IntegratedBundle/Resources/pu
         './src/Bundle/WorkflowBundle/Resources/assets/css/style.css',
         './src/Bundle/ContentBundle/Resources/assets/js/main.js',
     ])
+    .addEntry('edit', [
+        './node_modules/jquery-datetimepicker/jquery.datetimepicker.css',
+        './src/Bundle/ContentBundle/Resources/assets/js/edit.js',
+        './src/Bundle/ContentBundle/Resources/assets/js/handlebars.helpers.js',
+        './src/Bundle/UserBundle/Resources/assets/js/visible_user_form.js',
+        './src/Bundle/WorkflowBundle/Resources/assets/js/workflowChangeState.js',
+    ])
     .addEntry('iframe', [
         './src/Bundle/BlockBundle/Resources/assets/css/iframe.css',
     ])
@@ -18,21 +25,9 @@ webpackConfig = Encore.setOutputPath('./src/Bundle/IntegratedBundle/Resources/pu
         './node_modules/tinymce/jquery.tinymce.min.js',
         './node_modules/tinymce/tinymce.min.js',
     ])
-    .addEntry('content_edit', [
-        './node_modules/select2/dist/js/select2.full',
-        './src/Bundle/ContentBundle/Resources/assets/js/handlebars.helpers.js',
-        './src/Bundle/ContentBundle/Resources/assets/js/relation.js',
-        './src/Bundle/UserBundle/Resources/assets/js/visible_user_form.js',
-        './src/Bundle/WorkflowBundle/Resources/assets/js/workflowChangeState.js',
-    ])
     .addEntry('content_sortable', [
         './node_modules/components-jqueryui/jquery-ui.min.js',
         './src/Bundle/FormTypeBundle/Resources/assets/js/content_sortable_collection.js',
-    ])
-    .addEntry('datetimepicker', [
-        './node_modules/jquery-datetimepicker/jquery.datetimepicker.css',
-        './node_modules/jquery-datetimepicker/build/jquery.datetimepicker.min.js',
-        './src/Bundle/FormTypeBundle/Resources/assets/js/datetimepicker.js',
     ])
     .addEntry('drag-drop', [
         './node_modules/jquery.filer/css/jquery.filer.css',
@@ -55,7 +50,8 @@ webpackConfig = Encore.setOutputPath('./src/Bundle/IntegratedBundle/Resources/pu
     .getWebpackConfig();
 
 webpackConfig.resolve.alias = {
-    typeahead: PathResolver.resolve(__dirname, "node_modules/typeahead.js/dist/typeahead.bundle.min.js")
+    typeahead: PathResolver.resolve(__dirname, "node_modules/typeahead.js/dist/typeahead.bundle.js"),
+    jquery: PathResolver.resolve(__dirname, "node_modules/jquery/dist/jquery.js")
 };
 
 webpackConfig.resolve.fallback = {'fs': false};
