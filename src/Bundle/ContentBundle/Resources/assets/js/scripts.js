@@ -117,7 +117,7 @@ $(document).ready(function () {
 
     // this event listener will add a divider between terms and results.
     elm.bind('typeahead:render', function (e, suggestions, async, dataset) {
-        var first = elm.parent('.twitter-typeahead').find('.tt-dataset-' + dataset + ' .tt-suggestion-term').first();
+        var first = elm.parent('.twitter-typeahead').find('.tt-dataset-suggestions .tt-suggestion-term').first();
 
         if (!first.is(':first-child')) {
             first.before('<div role="separator" class="tt-divider"></div>');
