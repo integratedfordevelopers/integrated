@@ -71,7 +71,7 @@ class SluggableSubscriber implements EventSubscriber
             'prePersist',
             'postPersist',
             'preUpdate',
-            //'onFlush', // @todo implement to support update after a persist (INTEGRATED-294)
+            // 'onFlush', // @todo implement to support update after a persist (INTEGRATED-294)
         ];
     }
 

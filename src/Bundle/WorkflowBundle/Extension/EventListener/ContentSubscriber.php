@@ -31,6 +31,7 @@ use Integrated\Common\Security\PermissionInterface;
 use Integrated\Common\Workflow\Event\WorkflowStateChangedEvent;
 use Integrated\Common\Workflow\Events as WorkflowEvents;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Mime\Email;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -206,7 +207,7 @@ class ContentSubscriber implements ContentSubscriberInterface
         if ($data['assigned'] !== $state->getAssigned()) {
             $state->setAssigned($data['assigned']);
 
-            //sent mail when user changed
+            // sent mail when user changed
 
             if ($data['assigned'] instanceof User) {
                 if ($data['assigned']->getRelation() instanceof Person) {
@@ -220,17 +221,17 @@ class ContentSubscriber implements ContentSubscriberInterface
                             $title = $content->getName();
                         }
 
-                        $message = (new \Swift_Message())
-                            ->setSubject('[Integrated] "'.$title.'" has been assigned to you')
-                            ->setFrom('mailer@integratedforpublishers.com')
-                            ->setTo($person->getEmail())
-                            ->setBody(
+                        $message = (new Email())
+                            ->from('mailer@integratedforpublishers.com')
+                            ->to($person->getEmail())
+                            ->subject('[Integrated] "'.$title.'" has been assigned to you')
+                            ->text(
                                 'An item has been assigned to you:
 
 Name: '.$title.'
-E-mail: '.$person->getEmail().'',
-                                'text/plain'
+E-mail: '.$person->getEmail().''
                             );
+
                         $this->getContainer()->get('mailer')->send($message);
                     }
                 }
@@ -408,7 +409,7 @@ E-mail: '.$person->getEmail().'',
         if (\count($state->getPermissions()) > 0) {
             $permissionObject = $state;
         } else {
-            //permissions inherited from content type
+            // permissions inherited from content type
             $contentType = $this->getContainer()->get('doctrine_mongodb.odm.document_manager')->getRepository(ContentType::class)->find($content->getContentType());
             if ($contentType) {
                 if (\count($contentType->getPermissions()) == 0) {

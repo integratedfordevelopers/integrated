@@ -57,10 +57,10 @@ class UserProfilePasswordListener implements EventSubscriberInterface
         $inheritedPasswordOptions = $event->getForm()->get('password')->getConfig()->getOptions();
 
         if ($event->getData() === null || !$event->getData()->getPassword()) {
-            //password is not set, so it should not be blank
+            // password is not set, so it should not be blank
             $inheritedPasswordOptions['constraints'][] = new NotBlank();
         } else {
-            //make password optional, it is already set
+            // make password optional, it is already set
             $inheritedPasswordOptions['attr']['help_text'] = 'Password will only be changed if a new password is entered';
             $inheritedPasswordOptions['required'] = false;
         }

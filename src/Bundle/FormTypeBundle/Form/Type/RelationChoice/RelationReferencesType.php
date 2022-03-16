@@ -46,7 +46,7 @@ class RelationReferencesType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        //label is rendered with the reference
+        // label is rendered with the reference
         $view->vars = array_replace($view->vars, ['label' => false]);
     }
 

@@ -66,10 +66,10 @@ class BlockUsageProvider
     public function getPagesPerBlock($blockId = null)
     {
         if (null === $this->blockPages) {
-            //loads blockPages
+            // loads blockPages
             $this->convertPages();
 
-            //to prevent doing same logic every time if there are no results
+            // to prevent doing same logic every time if there are no results
             if (null === $this->blockPages) {
                 $this->blockPages = [];
             }
@@ -90,10 +90,10 @@ class BlockUsageProvider
     public function getBlocksPerChannel($channelId = null)
     {
         if (null === $this->channelBlocks) {
-            //loads channelBlocks
+            // loads channelBlocks
             $this->convertPages();
 
-            //to prevent doing same logic every time if there are no results
+            // to prevent doing same logic every time if there are no results
             if (null === $this->channelBlocks) {
                 $this->channelBlocks = [];
             }

@@ -87,7 +87,7 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
             throw new \Exception(sprintf('Relations should implement Collection, "%s" given', \gettype($relations)));
         }
 
-        //get all relation ids
+        // get all relation ids
         $relationIds = [];
         foreach ($relations as $relation) {
             $relationIds[] = $relation->getRelationId();
@@ -96,7 +96,7 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
         foreach ($this->options['relations'] as $relationId) {
             $relation = $this->findRelation($relationId, $event->getForm()->getParent()->getData());
 
-            //no need to add if the relation is already in the collection
+            // no need to add if the relation is already in the collection
             if (\in_array($relationId, $relationIds)) {
                 continue;
             }

@@ -220,7 +220,7 @@ class ContentProvider
 
             $sort_default = 'rel';
         } else {
-            //relevance only available when sorting on specific query
+            // relevance only available when sorting on specific query
             unset($sort_options['rel']);
         }
 
@@ -255,7 +255,7 @@ class ContentProvider
         $filterWorkflow = [];
 
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
-            //admin is always allowed to do everything
+            // admin is always allowed to do everything
             return;
         }
 
@@ -281,7 +281,7 @@ class ContentProvider
         // always allow access to assinged content
         $fq->setQuery($fq->getQuery().' OR facet_workflow_assigned_id: %1%', [$user->getId()]);
 
-        /* @var Person $person*/
+        /* @var Person $person */
         if ($person = $user->getRelation()) {
             $fq->setQuery($fq->getQuery().' OR author: %1%*', [$person->getId()]);
         }

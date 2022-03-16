@@ -235,14 +235,14 @@ class WorkflowController extends AbstractController
         if (\count($state->getPermissions()) > 0) {
             $permissionObject = $state;
         } else {
-            //permissions inherited from content type
+            // permissions inherited from content type
             $contentType = $this->get('doctrine_mongodb.odm.document_manager')->getRepository(ContentType::class)->find($request->get('contentType'));
             if ($contentType && \count($contentType->getPermissions()) > 0) {
                 $permissionObject = $contentType;
             }
         }
 
-        //use workflow permissions
+        // use workflow permissions
         if ($permissionObject) {
             foreach ($permissionObject->getPermissions() as $permission) {
                 if ($permission->getMask() >= PermissionInterface::WRITE) {

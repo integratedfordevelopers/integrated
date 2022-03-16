@@ -106,7 +106,7 @@ class Container implements ContainerInterface
      */
     protected static function validateAndReturn($value)
     {
-        if (is_scalar($value)) {
+        if (\is_scalar($value)) {
             return $value;
         }
 

@@ -52,7 +52,7 @@ class ContentPathExtension extends AbstractExtension
         $path = [];
         while ($data = $data->getReferenceByRelationType('parent')) {
             if (isset($path[$data->getId()])) {
-                //circular reference
+                // circular reference
                 break;
             }
             $path[$data->getId()] = (string) $data;
