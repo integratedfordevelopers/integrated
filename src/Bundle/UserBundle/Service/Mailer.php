@@ -10,6 +10,9 @@
 
 namespace Integrated\Bundle\UserBundle\Service;
 
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Error\Error;
@@ -24,7 +27,7 @@ class Mailer
     private $userManager;
 
     /**
-     * @var \Swift_Mailer
+     * @var MailerInterface
      */
     private $mailer;
 
@@ -57,14 +60,14 @@ class Mailer
      * Password constructor.
      *
      * @param UserManager         $userManager
-     * @param \Swift_Mailer       $mailer
+     * @param MailerInterface     $mailer
      * @param Environment         $templating
      * @param TranslatorInterface $translator
      * @param KeyGenerator        $keyGenerator
      * @param                     $from
      * @param                     $name
      */
-    public function __construct(UserManager $userManager, \Swift_Mailer $mailer, Environment $templating, TranslatorInterface $translator, KeyGenerator $keyGenerator, $from, $name)
+    public function __construct(UserManager $userManager, MailerInterface $mailer, Environment $templating, TranslatorInterface $translator, KeyGenerator $keyGenerator, $from, $name)
     {
         $this->userManager = $userManager;
         $this->mailer = $mailer;
@@ -88,26 +91,23 @@ class Mailer
         $data = [
             'subject' => '[Integrated] '.$this->translator->trans('Password reset'),
         ];
+
         $template = '@IntegratedUser/mail/password.reset.notfound.html.twig';
 
         if ($user = $this->userManager->findEnabledByUsernameAndScope($email, $scope)) {
-            $timestamp = time();
-            $key = $this->keyGenerator->generateKey($timestamp, $user);
             $template = '@IntegratedUser/mail/password.reset.html.twig';
 
             $data['user'] = $user;
-            $data['timestamp'] = $timestamp;
-            $data['key'] = $key;
+            $data['timestamp'] = time();
+            $data['key'] = $this->keyGenerator->generateKey($data['timestamp'], $user);
         }
 
-        $message = (new \Swift_Message())
-            ->setSubject($data['subject'])
-            ->setFrom($this->from, $this->name)
-            ->setTo($email)
-            ->setBody(
-                $this->templating->render($template, $data),
-                'text/html'
-            );
+        $message = (new Email())
+            ->from(new Address($this->from, $this->name))
+            ->to($email)
+            ->subject($data['subject'])
+            ->html($this->templating->render($template, $data));
+
         $this->mailer->send($message);
 
         return true;
