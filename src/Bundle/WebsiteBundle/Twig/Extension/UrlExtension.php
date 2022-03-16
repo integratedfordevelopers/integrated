@@ -65,7 +65,7 @@ class UrlExtension extends AbstractExtension
             return $this->urlResolver->generateUrl($document, $channelId, $fallback);
         }
 
-        //probably solr document
+        // probably solr document
         return $this->solrUrlExtractor->getUrl($document, $channelId);
     }
 

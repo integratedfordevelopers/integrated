@@ -151,7 +151,7 @@ class ImageExtension extends AbstractExtension
             return $this->imageMimicHandling->open($image);
         }
 
-        //detect json format
+        // detect json format
         if (strpos($image, '{') === 0) {
             return $this->imageJson($image);
         }
@@ -170,7 +170,7 @@ class ImageExtension extends AbstractExtension
             return $image->getMetadata()->getCredits();
         }
 
-        //detect json format
+        // detect json format
         if (strpos($image, '{') === 0) {
             $imageData = @json_decode($image);
 
@@ -191,7 +191,7 @@ class ImageExtension extends AbstractExtension
             return $image->getMetadata()->getDescription();
         }
 
-        //detect json format
+        // detect json format
         if (strpos($image, '{') === 0) {
             $imageData = @json_decode($image);
 

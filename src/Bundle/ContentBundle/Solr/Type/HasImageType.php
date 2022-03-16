@@ -31,7 +31,7 @@ class HasImageType implements TypeInterface
             return; // only process content
         }
 
-        //Add property for has image / doesn't have image (usefull to make selections with articles for views with image, or to find articles with missing image)
+        // Add property for has image / doesn't have image (usefull to make selections with articles for views with image, or to find articles with missing image)
         $found = false;
         $items = $data->getReferencesByRelationType('embedded');
         if ($items) {

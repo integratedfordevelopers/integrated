@@ -88,7 +88,7 @@ abstract class RelationTest extends ContentTest
         $this->getContent()->addPhonenumber('work', '0123456789');
 
         // Asserts
-        //$this->assertSame('0123456789', $this->getContent()->removePhonenumber('work')); // @todo (INTEGRATED-452)
+        // $this->assertSame('0123456789', $this->getContent()->removePhonenumber('work')); // @todo (INTEGRATED-452)
     }
 
     /**

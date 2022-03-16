@@ -38,7 +38,7 @@ class BundleTest
         foreach ($finder as $directory) {
             $directory = $directory->getFilename();
             if (isset($this->bundles['Integrated'.$directory])) {
-                //bundle found
+                // bundle found
                 continue;
             }
             $errors[] = 'Integrated'.$directory.' has not been loaded';

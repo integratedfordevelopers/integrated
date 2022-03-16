@@ -57,16 +57,16 @@ class SolrUrlExtractor
         if (isset($document[$arrayKey])) {
             $url = $document[$arrayKey];
 
-            //add app_*.php if not in production
+            // add app_*.php if not in production
             return $this->router->getContext()->getBaseUrl().$url;
         }
 
-        //fallback
+        // fallback
         if (isset($document['url'])) {
             return $document['url'];
         }
 
-        //url is not in solr document
+        // url is not in solr document
         return null;
     }
 }

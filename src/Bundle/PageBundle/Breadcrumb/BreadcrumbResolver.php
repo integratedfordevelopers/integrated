@@ -90,14 +90,14 @@ class BreadcrumbResolver
                 $url = '/';
             }
 
-            //support Page
+            // support Page
             if ($page = $pageRepository->findOneBy(['path' => $url, 'channel.$id' => $channel->getId()])) {
                 /* @var Page $page */
                 $this->breadcrumbItems[] = new BreadcrumbItem($page->getTitle(), $page->getPath());
                 continue;
             }
 
-            //support Content
+            // support Content
             if (!empty($part) && $content = $contentRepository->findOneBy(['slug' => $part, 'channels.$id' => $channel->getId()])) {
                 /* @var Content $content */
                 if ($content->isPublished() && strpos($this->urlResolver->generateUrl($content), $url) !== false) {

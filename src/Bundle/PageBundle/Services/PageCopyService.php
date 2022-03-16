@@ -111,7 +111,7 @@ class PageCopyService
             $block = $item->getBlock();
 
             if ($block instanceof Block) {
-                //copy block
+                // copy block
                 if (isset($data['block_'.$block->getId()]['operation']) && $data['block_'.$block->getId()]['operation'] == 'clone') {
                     $copiedBlock = clone $block;
                     $copiedBlock->setId($data['block_'.$block->getId()]['newBlockId']);

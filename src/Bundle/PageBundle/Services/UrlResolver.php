@@ -119,7 +119,7 @@ class UrlResolver
             '%s/content/%s/%s',
             $this->router->getContext()->getBaseUrl(),
             $document->getContentType(),
-            //todo INTEGRATED-440 add Slug to ContentInterface
+            // todo INTEGRATED-440 add Slug to ContentInterface
             $document->getSlug()
         );
     }
@@ -158,7 +158,7 @@ class UrlResolver
 
                 $parameters[$relationId] = $relation->getSlug();
             } else {
-                //no relation found, as fallback use relationId
+                // no relation found, as fallback use relationId
                 $parameters[$relationId] = $relationId;
             }
         }

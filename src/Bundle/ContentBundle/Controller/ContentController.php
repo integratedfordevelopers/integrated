@@ -134,7 +134,7 @@ class ContentController extends AbstractController
         // Store facetTitles in array
         $facetTitles = [];
 
-        //remember search state
+        // remember search state
         $session = $request->getSession();
         if ($request->query->get('remember') && $session->has('content_index_view')) {
             $request->query->add(unserialize($session->get('content_index_view')));
@@ -227,7 +227,7 @@ class ContentController extends AbstractController
         foreach ($dm->getRepository($this->relationClass)->findAll() as $relation) {
             $name = preg_replace('/[^a-zA-Z]/', '', $relation->getName());
 
-            //create relation facet field
+            // create relation facet field
             $facetSet->createFacetField($name)->setField('facet_'.$relation->getId())->getLocalParameters()->setExclude($name);
             $facetTitles[$name] = $relation->getName();
             $relationfilter = $request->query->get($name);
@@ -372,7 +372,7 @@ class ContentController extends AbstractController
 
             $sort_default = 'rel';
         } else {
-            //relevance only available when sorting on specific query
+            // relevance only available when sorting on specific query
             unset($sort_options['rel']);
         }
 
@@ -478,7 +478,7 @@ class ContentController extends AbstractController
             }
 
             if ($form->isValid()) {
-                //higher priority for content edited in Integrated
+                // higher priority for content edited in Integrated
                 $queue = $this->queueSubscriber->getQueue();
                 $this->queueSubscriber->setPriority($queue::PRIORITY_HIGH);
 
@@ -594,7 +594,7 @@ class ContentController extends AbstractController
             // this is not rest compatible since a button click is required to save
             if ($form->get('actions')->getData() == 'save') {
                 if (!$locking['locked'] && $form->isValid()) {
-                    //higher priority for content edited in Integrated
+                    // higher priority for content edited in Integrated
                     $queue = $this->queueSubscriber->getQueue();
                     $this->queueSubscriber->setPriority($queue::PRIORITY_HIGH);
 
@@ -725,7 +725,7 @@ class ContentController extends AbstractController
             // this is not rest compatible since a button click is required to save
             if ($form->get('actions')->getData() == 'delete') {
                 if ($form->isValid()) {
-                    //higher priority for content edited in Integrated
+                    // higher priority for content edited in Integrated
                     $queue = $this->queueSubscriber->getQueue();
                     $this->queueSubscriber->setPriority($queue::PRIORITY_HIGH);
 
