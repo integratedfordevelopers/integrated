@@ -101,7 +101,9 @@
 </div>
 
 {% block javascript %}
-    <script src="{{ asset('bundles/integratedintegrated/app.js') }}"></script>
+    {% block webpack_js %}
+        <script src="{{ asset('bundles/integratedintegrated/app.js') }}"></script>
+    {% endblock %}
 
     {% if app.request.locale %}
     <script>
