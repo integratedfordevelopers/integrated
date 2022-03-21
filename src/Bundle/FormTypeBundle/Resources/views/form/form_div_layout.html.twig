@@ -119,7 +119,7 @@
                 {% set prototype_html = prototype_html ~ '<a href="javascript:;" class="pull-right" title="' ~ form.vars.delete_button_text|trans({}, translation_domain) ~ '" data-removefield="collection" data-field="__id__"><span class="glyphicon glyphicon-remove"></span></a>' %}
             {% endif %}
             {% set prototype_html = '<div class="panel-heading"><h4 class="panel-title">' ~ prototype_html ~ '</h4></div>' %}
-            {% set prototype_html = prototype_html ~ '<div class="panel-collapse collapse in"><div class="panel-body">' ~ form_widget(prototype, prototype_vars) ~ '</div></div>' %}
+            {% set prototype_html = prototype_html ~ '<div id="__id__" class="panel-collapse collapse in"><div class="panel-body">' ~ form_widget(prototype, prototype_vars) ~ '</div></div>' %}
             {% set prototype_html = '<div class="panel panel-default">' ~ prototype_html ~ '</div>' %}
 
             {% set attr = attr|merge({'data-prototype': prototype_html }) %}
