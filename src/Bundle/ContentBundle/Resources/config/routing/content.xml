@@ -21,7 +21,7 @@
 	</route>
 
 	<route id="integrated_content_content_media_types" path="/media_types/{filter}"  methods="GET">
-		<default key="_controller">Integrated\Bundle\ContentBundle\Controller\ContentController::mediaTypes</default>
+		<default key="_controller">Integrated\Bundle\ContentBundle\Controller\ContentController::mediaTypesAction</default>
 		<default key="filter">null</default>
 	</route>
 

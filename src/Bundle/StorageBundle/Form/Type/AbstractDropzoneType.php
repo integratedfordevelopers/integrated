@@ -92,7 +92,7 @@ abstract class AbstractDropzoneType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $this->javascripts->add('bundles/integratedintegrated/drag-drop.css');
+        $this->stylesheets->add('bundles/integratedintegrated/drag-drop.css');
         $this->javascripts->add('bundles/integratedintegrated/drag-drop.js');
 
         $view->vars['type'] = $this->type;

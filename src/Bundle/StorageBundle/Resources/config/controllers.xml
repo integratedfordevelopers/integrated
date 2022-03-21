@@ -10,6 +10,8 @@
             <argument type="service" id="integrated_storage.metadata" />
             <argument type="service" id="integrated_image.converter_web_format" />
             <argument type="service" id="image.handling" />
+
+            <tag name="controller.service_arguments" />
         </service>
 
     </services>
