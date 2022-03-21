@@ -69,9 +69,8 @@
         <div class="col-sm-12">
             <div id="{{ id }}_container">
                 <textarea id="{{ id }}" name="{{ full_name }}" class="form-control integrated_tinymce"
-                    data-external-plugins=""
-                    data-document_base_url="{{ asset('/bundles/integratedintegrated/tinymce') }}"
                     data-content_css="{{ content_styles.content_css|merge([asset('/bundles/integratedformtype/css/tinymce.content.css')])|join(',') }}"
+                    data-format_styles="{{ content_styles.style_formats|json_encode(true) }}"
                     data-integrated_browser_media_types_url="{{ path('integrated_content_content_media_types', {'filter': '__type__'}) }}"
                     data-integrated_browser_search_url="{{ path('integrated_content_content_index', {'_format': 'json'}) }}"
                     data-integrated_browser_file_url="{{ path('integrated_storage_file', {'id': '__id__', 'ext': '__ext__'}) }}"

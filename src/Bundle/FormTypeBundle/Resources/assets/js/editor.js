@@ -28,6 +28,19 @@ import 'tinymce/plugins/code';
 $('.integrated_tinymce').each(function(key, elem){
     let element = $(elem);
 
+    let style_formats = [
+        {title: 'Paragraph', format: 'p'},
+        {title: 'Heading 2', block: 'h2' },
+        {title: 'Heading 3', block: 'h3' },
+        {title: 'Heading 4', block: 'h4' },
+        {title: 'Heading 5', block: 'h5' },
+        {title: 'Preformatted (fixed font)', block: 'pre' },
+        {title: 'Superscript', icon: "superscript", inline: 'sup'},
+        {title: 'Subscript', icon: "subscript", inline: 'sub'}
+    ];
+
+    style_formats = style_formats.concat(element.data('format_styles'));
+
     tinymce.init({
         target: elem,
         theme: "modern",
@@ -59,20 +72,6 @@ $('.integrated_tinymce').each(function(key, elem){
         integrated_browser_file_url: element.data('integrated_browser_file_url'),
         integrated_browser_file_resize_url: element.data('integrated_browser_file_resize_url'),
         document_base_url : element.data('document_base_url'),
-        style_formats: [
-            {title: 'Paragraph', format: 'p'},
-            {title: 'Heading 2', block: 'h2' },
-            {title: 'Heading 3', block: 'h3' },
-            {title: 'Heading 4', block: 'h4' },
-            {title: 'Heading 5', block: 'h5' },
-            {title: 'Preformatted (fixed font)', block: 'pre' },
-            {title: 'Superscript', icon: "superscript", inline: 'sup'},
-            {title: 'Subscript', icon: "subscript", inline: 'sub'}
-            // {% for style_format in content_styles.style_formats %}
-            //     {% if loop.first %},{% endif %}
-            //     {{ style_format|json_encode|raw }}
-            //     {% if not loop.last %},{% endif %}
-            // {% endfor %}
-        ]
+        style_formats: style_formats
     });
 });
