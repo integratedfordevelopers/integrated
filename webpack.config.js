@@ -15,15 +15,13 @@ webpackConfig = Encore.setOutputPath('./src/Bundle/IntegratedBundle/Resources/pu
         './src/Bundle/ContentBundle/Resources/assets/js/handlebars.helpers.js',
         './src/Bundle/UserBundle/Resources/assets/js/visible_user_form.js',
         './src/Bundle/WorkflowBundle/Resources/assets/js/workflowChangeState.js',
+        './src/Bundle/FormTypeBundle/Resources/assets/css/tinymce.editor.css',
+        './src/Bundle/FormTypeBundle/Resources/assets/js/editor.js',
+        './node_modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css',
+        './node_modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js',
     ])
     .addEntry('iframe', [
         './src/Bundle/BlockBundle/Resources/assets/css/iframe.css',
-    ])
-    .addEntry('tinymce', [
-        './src/Bundle/FormTypeBundle/Resources/assets/css/tinymce.content.css',
-        './src/Bundle/FormTypeBundle/Resources/assets/css/tinymce.editor.css',
-        './node_modules/tinymce/jquery.tinymce.min.js',
-        './node_modules/tinymce/tinymce.min.js',
     ])
     .addEntry('content_sortable', [
         './node_modules/components-jqueryui/jquery-ui.min.js',
@@ -41,6 +39,10 @@ webpackConfig = Encore.setOutputPath('./src/Bundle/IntegratedBundle/Resources/pu
         './src/Bundle/WorkflowBundle/Resources/assets/js/defaultSelection.js',
         './src/Bundle/WorkflowBundle/Resources/assets/js/select2_init.js',
     ])
+    .copyFiles({
+        from: './node_modules/tinymce/skins',
+        to: 'skins/[path][name].[ext]'
+    })
     .cleanupOutputBeforeBuild()
     .autoProvidejQuery()
     .enableSassLoader()

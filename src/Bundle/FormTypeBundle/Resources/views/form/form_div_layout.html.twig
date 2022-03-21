@@ -38,7 +38,6 @@
 
 {% block integrated_color_row %}
 {% apply spaceless %}
-    {% integrated_javascripts 'bundles/integratedformtype/components/mjolnic-bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js' %}{% endintegrated_javascripts %}
     {% integrated_javascripts inline=true %}
         $('.colorpicker-component').colorpicker();
     {% endintegrated_javascripts %}
@@ -66,70 +65,22 @@
 
 {% block integrated_editor_row  %}
     {% apply spaceless %}
-
-    <link href="{{ asset('bundles/integratedintegrated/tinymce.css') }}" />
-
     <div class="form-group">
         <div class="col-sm-12">
             <div id="{{ id }}_container">
-                <textarea id="{{ id }}" name="{{ full_name }}" class="form-control integrated_tinymce">{% if value is not empty %}{{ value }}{% endif %}</textarea>
+                <textarea id="{{ id }}" name="{{ full_name }}" class="form-control integrated_tinymce"
+                    data-content_css="{{ content_styles.content_css|merge([asset('/bundles/integratedformtype/css/tinymce.content.css')])|join(',') }}"
+                    data-format_styles="{{ content_styles.style_formats|json_encode(true) }}"
+                    data-integrated_browser_media_types_url="{{ path('integrated_content_content_media_types', {'filter': '__type__'}) }}"
+                    data-integrated_browser_search_url="{{ path('integrated_content_content_index', {'_format': 'json'}) }}"
+                    data-integrated_browser_file_url="{{ path('integrated_storage_file', {'id': '__id__', 'ext': '__ext__'}) }}"
+                    data-integrated_browser_file_resize_url="{{ path('integrated_storage_file_resize', {'id': '__id__', 'ext': '__ext__', 'width': '150', 'height': '150'}) }}"
+                >{% if value is not empty %}{{ value }}{% endif %}</textarea>
             </div>
 
             {{ block('form_errors') }}
         </div>
     </div>
-    <script type="text/javascript">
-        require(["{{ asset('bundles/integratedintegrated/tinymce.js') }}"],
-                function () {
-                    tinymce.init({
-                        selector: "textarea#{{ id }}",
-                        theme: "modern",
-                        plugins: [
-                            ["advlist autolink link lists charmap hr anchor pagebreak"],
-                            ["searchreplace wordcount visualchars fullscreen nonbreaking"],
-                            ["table contextmenu directionality template paste wordcount autoresize code"]
-                        ],
-                        external_plugins: {
-                            "integratedBrowser": "/bundles/integratedformtype/js/tinymce-plugins/integrated-browser/plugin.js",
-                            "integratedColumn": "/bundles/integratedformtype/js/tinymce-plugins/integrated-column/plugin.js"
-                        },
-                        add_unload_trigger: false,
-                        schema: "html5",
-                        menubar: false,
-                        toolbar: "styleselect | bold italic underline | bullist numlist | link integratedImage integratedVideo integratedColumn image media print preview fullpage table | charmap pagebreak | pastetext searchreplace | code fullscreen",
-                        statusbar: true,
-                        statusbar_size: "small",
-                        width: "100%",
-                        height: "0",
-                        autoresize_min_height: 300,
-                        autoresize_max_height: (window.innerHeight-64),
-                        browser_spellcheck : true,
-                        autoresize_bottom_margin: "0px",
-                        convert_urls: false,
-                        content_css: "{{ content_styles.content_css|merge(['/bundles/integratedformtype/css/tinymce.content.css'])|join(',') }}",
-                        integrated_browser_media_types_url: "{{ path('integrated_content_content_media_types', {'filter': '__type__'}) }}",
-                        integrated_browser_search_url: "{{ path('integrated_content_content_index', {'_format': 'json'}) }}",
-                        integrated_browser_file_url: "{{ path('integrated_storage_file', {'id': '__id__', 'ext': '__ext__'}) }}",
-                        integrated_browser_file_resize_url: "{{ path('integrated_storage_file_resize', {'id': '__id__', 'ext': '__ext__', 'width': '150', 'height': '150'}) }}",
-                        style_formats: [
-                            {title: 'Paragraph', format: 'p'},
-                            {title: 'Heading 2', block: 'h2' },
-                            {title: 'Heading 3', block: 'h3' },
-                            {title: 'Heading 4', block: 'h4' },
-                            {title: 'Heading 5', block: 'h5' },
-                            {title: 'Preformatted (fixed font)', block: 'pre' },
-                            {title: 'Superscript', icon: "superscript", inline: 'sup'},
-                            {title: 'Subscript', icon: "subscript", inline: 'sub'}
-                            {% for style_format in content_styles.style_formats %}
-                                {% if loop.first %},{% endif %}
-                                {{ style_format|json_encode|raw }}
-                                {% if not loop.last %},{% endif %}
-                            {% endfor %}
-                        ]
-                    });
-                }
-        );
-        </script>
     {% endapply %}
 {% endblock %}
 

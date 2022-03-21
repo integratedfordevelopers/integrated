@@ -40,8 +40,6 @@ class ColorType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->manager->add('bundles/integratedformtype/components/mjolnic-bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css');
-
         $builder->addViewTransformer(new ColorTransformer());
     }
 
