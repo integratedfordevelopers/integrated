@@ -46,7 +46,17 @@
     </div>
 {% endblock %}
 
+{% block webpack_js %}
+    <script src="{{ asset('bundles/integratedintegrated/edit.js') }}"></script>
+{% endblock %}
+
 {% block javascript %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('bundles/integratedblock/js/published_title.js') }}"></script>
+{% endblock %}
+
+{% block style %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('bundles/integratedintegrated/edit.css') }}">
 {% endblock %}

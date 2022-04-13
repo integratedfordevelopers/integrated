@@ -17,4 +17,39 @@ $(function() {
             $input.datetimepicker('reset'); //support hide,show and destroy command
         });
     });
+
+    $('[data-prototype]').each(function(index, elm) {
+        $(elm).data('index', $(elm).find('ul li').length);
+
+        $(elm).find('ul li').each(function() {
+            addTagFormDeleteLink($(this));
+        });
+
+        $(elm).find('[data-addfield="collection"]').click(function(ev) {
+            addFormToCollection($(elm));
+        });
+    });
+
+    function addFormToCollection($collection) {
+        let index = $collection.data('index');
+
+        let newForm = $collection.data('prototype');
+        newForm = newForm.replace(/__name__/g, index);
+        newForm = newForm.replace(/__id__/g, $collection.attr('id') + '_' + index);
+
+        $collection.data('index', index + 1);
+
+        let $newFormLi = $('<li></li>').append(newForm);
+
+        addTagFormDeleteLink($newFormLi);
+
+        $collection.find('ul').append($newFormLi);
+    }
+
+    function addTagFormDeleteLink($tagFormLi) {
+        let $removeFormButton = $($tagFormLi).find('[data-removefield]');
+        $removeFormButton.on('click', function(e) {
+            $tagFormLi.remove();
+        });
+    }
 });
