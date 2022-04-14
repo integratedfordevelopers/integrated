@@ -53,7 +53,7 @@ class IpListFirewallListener implements EventSubscriberInterface
         $request = $event->getRequest();
 
         if ($this->map instanceof FirewallMap && $config = $this->map->getFirewallConfig($request)) {
-            if (\in_array('ip_list', $config->getListeners(), true) && !$this->matcher->match($request)) {
+            if (\in_array('ip_list', $config->getAuthenticators(), true) && !$this->matcher->match($request)) {
                 $response = new Response();
                 $response->setStatusCode(403, 'IP address rejected');
 

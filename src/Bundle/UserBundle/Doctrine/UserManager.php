@@ -17,7 +17,7 @@ use Integrated\Bundle\UserBundle\Model\ScopeInterface;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 use InvalidArgumentException;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -35,16 +35,16 @@ class UserManager implements UserManagerInterface
     private $repository;
 
     /**
-     * @var EncoderFactoryInterface
+     * @var PasswordHasherFactoryInterface
      */
-    private $encoderFactory;
+    private $hasherFactory;
 
     /**
-     * @param ObjectManager           $om
-     * @param                         $class
-     * @param EncoderFactoryInterface $encoderFactory
+     * @param ObjectManager                  $om
+     * @param                                $class
+     * @param PasswordHasherFactoryInterface $hasherFactory
      */
-    public function __construct(ObjectManager $om, $class, EncoderFactoryInterface $encoderFactory)
+    public function __construct(ObjectManager $om, $class, PasswordHasherFactoryInterface $hasherFactory)
     {
         $this->om = $om;
         $this->repository = $this->om->getRepository($class);
@@ -53,7 +53,7 @@ class UserManager implements UserManagerInterface
             throw new InvalidArgumentException(sprintf('The class "%s" is not subclass of Integrated\\Bundle\\UserBundle\\Model\\UserInterface', $this->repository->getClassName()));
         }
 
-        $this->encoderFactory = $encoderFactory;
+        $this->hasherFactory = $hasherFactory;
     }
 
     /**
@@ -218,10 +218,11 @@ class UserManager implements UserManagerInterface
             return false;
         }
 
-        $salt = base64_encode(random_bytes(72));
+        $user->setPassword($this->hasherFactory->getPasswordHasher($user)->hash($password));
 
-        $user->setPassword($this->encoderFactory->getEncoder($user)->encodePassword($password, $salt));
-        $user->setSalt($salt);
+        if ($user->getSalt()) {
+            $user->setSalt(null);
+        }
 
         $this->persist($user);
 

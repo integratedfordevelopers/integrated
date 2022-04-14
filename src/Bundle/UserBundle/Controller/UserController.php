@@ -139,7 +139,7 @@ class UserController extends AbstractController
 
             if ($form->isValid()) {
                 $this->getManager()->persist($user);
-                $this->addFlash('success', sprintf('The changes to the user %s are saved', $user->getUsername()));
+                $this->addFlash('success', sprintf('The changes to the user %s are saved', $user->getUserIdentifier()));
 
                 return $this->redirectToRoute('integrated_user_user_index');
             }
@@ -180,7 +180,7 @@ class UserController extends AbstractController
 
             if ($form->isValid()) {
                 $this->getManager()->remove($user);
-                $this->addFlash('success', sprintf('The user %s is removed', $user->getUsername()));
+                $this->addFlash('success', sprintf('The user %s is removed', $user->getUserIdentifier()));
 
                 return $this->redirectToRoute('integrated_user_user_index');
             }

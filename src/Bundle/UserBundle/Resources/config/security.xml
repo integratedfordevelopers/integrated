@@ -10,8 +10,6 @@
             <argument type="service" id="integrated_user.user.manager"/>
         </service>
 
-        <service id="Integrated\Bundle\UserBundle\Security\Authentication\Provider\ScopeProvider" public="false"/>
-
         <service id="Integrated\Bundle\UserBundle\Security\Firewall\ScopeListener" public="false">
             <argument type="service" id="security.token_storage"/>
             <argument/>
@@ -21,7 +19,6 @@
             <argument type="service" id="integrated_user.ip_list.manager"/>
         </service>
 
-        <service id="integrated_user.security.authentication.provider.ip_list" class="Integrated\Bundle\UserBundle\Security\Authentication\Provider\IpListProvider" public="false"/>
         <service id="integrated_user.security.authentication.listener.ip_list" class="Integrated\Bundle\UserBundle\Security\Firewall\IpListListener" public="false"/>
 
     </services>

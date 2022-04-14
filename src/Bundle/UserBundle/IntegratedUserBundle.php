@@ -40,8 +40,8 @@ class IntegratedUserBundle extends Bundle
         $security = $container->getExtension('security');
 
         if ($security instanceof SecurityExtension) {
-            $security->addSecurityListenerFactory(new ScopeFactory());
-            $security->addSecurityListenerFactory(new IpListFactory());
+            $security->addAuthenticatorFactory(new ScopeFactory());
+            $security->addAuthenticatorFactory(new IpListFactory());
         }
     }
 

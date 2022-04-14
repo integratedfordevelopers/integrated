@@ -16,8 +16,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
@@ -26,16 +25,16 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class UserProfilePasswordListener implements EventSubscriberInterface
 {
     /**
-     * @var EncoderFactoryInterface
+     * @var PasswordHasherFactoryInterface
      */
-    private $encoderFactory;
+    private $hasherFactory;
 
     /**
-     * @param EncoderFactoryInterface $encoder
+     * @param PasswordHasherFactoryInterface $encoder
      */
-    public function __construct(EncoderFactoryInterface $encoder)
+    public function __construct(PasswordHasherFactoryInterface $hasherFactory)
     {
-        $this->encoderFactory = $encoder;
+        $this->hasherFactory = $hasherFactory;
     }
 
     /**
@@ -80,24 +79,12 @@ class UserProfilePasswordListener implements EventSubscriberInterface
             return; // not a user so nothing to encode
         }
 
-        // if a password is entered it need to be encoded and stored in
-        // the user model.
-
         if ($password = $form->get('password')->getData()) {
-            $salt = base64_encode(random_bytes(72));
+            $user->setPassword($this->hasherFactory->getPasswordHasher($user)->hash($password));
 
-            $user->setPassword($this->getEncoder($user)->encodePassword($password, $salt));
-            $user->setSalt($salt);
+            if ($user->getSalt()) {
+                $user->setSalt(null);
+            }
         }
-    }
-
-    /**
-     * @param object $user
-     *
-     * @return PasswordEncoderInterface
-     */
-    protected function getEncoder($user)
-    {
-        return $this->encoderFactory->getEncoder($user);
     }
 }

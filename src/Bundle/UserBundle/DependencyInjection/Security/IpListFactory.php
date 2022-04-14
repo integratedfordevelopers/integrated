@@ -11,32 +11,36 @@
 
 namespace Integrated\Bundle\UserBundle\DependencyInjection\Security;
 
-use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\SecurityFactoryInterface;
+use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\AuthenticatorFactoryInterface;
+use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\FirewallListenerFactoryInterface;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class IpListFactory implements SecurityFactoryInterface
+class IpListFactory implements AuthenticatorFactoryInterface, FirewallListenerFactoryInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function create(ContainerBuilder $container, $id, $config, $userProvider, $defaultEntryPoint)
+    public function createAuthenticator(ContainerBuilder $container, string $firewallName, array $config, string $userProviderId)
     {
-        $providerId = 'integrated_user.security.authentication.provider.ip_list.'.$id;
-        $listenerId = 'integrated_user.security.authentication.listener.ip_list.'.$id;
+        return [];
+    }
 
-        $container->setAlias($providerId, 'integrated_user.security.authentication.provider.ip_list');
+    public function createListeners(ContainerBuilder $container, string $firewallName, array $config): array
+    {
+        $listenerId = 'integrated_user.security.authentication.listener.ip_list.'.$firewallName;
+
         $container->setAlias($listenerId, 'integrated_user.security.authentication.listener.ip_list');
 
-        return [$providerId, $listenerId, $defaultEntryPoint];
+        return [$listenerId];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPosition()
+    public function getPriority(): int
     {
-        return 'http';
+        return -30;
     }
 
     /**

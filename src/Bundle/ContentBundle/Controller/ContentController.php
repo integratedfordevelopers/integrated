@@ -920,7 +920,7 @@ class ContentController extends AbstractController
             $text = '';
 
             if ($user) {
-                $text = $user->getUsername();
+                $text = $user->getUserIdentifier();
 
                 // we got a basic user name now try to get a better one
 

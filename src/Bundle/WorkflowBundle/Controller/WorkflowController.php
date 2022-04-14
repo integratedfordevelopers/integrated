@@ -280,7 +280,7 @@ class WorkflowController extends AbstractController
             } else {
                 $users[] = [
                     'id' => $item->getId(),
-                    'name' => $item->getUsername(),
+                    'name' => $item->getUserIdentifier(),
                 ];
             }
         }

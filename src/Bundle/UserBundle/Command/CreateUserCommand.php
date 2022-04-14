@@ -20,7 +20,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -49,29 +49,29 @@ class CreateUserCommand extends Command
     private $validator;
 
     /**
-     * @var EncoderFactoryInterface
+     * @var PasswordHasherFactoryInterface
      */
-    private $encoderFactory;
+    private $hasherFactory;
 
     /**
-     * @param ScopeManager            $scopeManager
-     * @param RoleManager             $roleManager
-     * @param UserManagerInterface    $userManager
-     * @param ValidatorInterface      $validator
-     * @param EncoderFactoryInterface $encoderFactory
+     * @param ScopeManager                   $scopeManager
+     * @param RoleManager                    $roleManager
+     * @param UserManagerInterface           $userManager
+     * @param ValidatorInterface             $validator
+     * @param PasswordHasherFactoryInterface $hasherFactory
      */
     public function __construct(
         ScopeManager $scopeManager,
         RoleManager $roleManager,
         UserManagerInterface $userManager,
         ValidatorInterface $validator,
-        EncoderFactoryInterface $encoderFactory
+        PasswordHasherFactoryInterface $hasherFactory
     ) {
         $this->scopeManager = $scopeManager;
         $this->roleManager = $roleManager;
         $this->userManager = $userManager;
         $this->validator = $validator;
-        $this->encoderFactory = $encoderFactory;
+        $this->hasherFactory = $hasherFactory;
 
         parent::__construct();
     }
@@ -119,11 +119,8 @@ The <info>%command.name%</info> command creates a new user
 
         $user = $this->userManager->create();
 
-        $salt = base64_encode(random_bytes(72));
-
         $user->setUsername($username);
-        $user->setPassword($this->encoderFactory->getEncoder($user)->encodePassword($password, $salt));
-        $user->setSalt($salt);
+        $user->setPassword($this->hasherFactory->getPasswordHasher($user)->hash($password));
         $user->setEmail($email);
 
         $scopeName = 'Integrated';

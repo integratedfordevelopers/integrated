@@ -60,7 +60,7 @@ class TwoFactorController extends AbstractController
 
                 $this->manager->persist($user);
 
-                $translation = $this->get('translator')->trans('The two factor authenticator for user %name% is removed', ['%name%' => $user->getUsername()]);
+                $translation = $this->get('translator')->trans('The two factor authenticator for user %name% is removed', ['%name%' => $user->getUserIdentifier()]);
                 $this->addFlash('success', $translation);
 
                 return $this->redirectToRoute('integrated_user_user_index');
