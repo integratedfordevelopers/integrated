@@ -126,7 +126,7 @@ class ChannelChangedListener implements EventSubscriberInterface
 
         foreach ($pages as $page) {
             $this->dm->remove($page);
-            $this->dm->flush($page);
+            $this->dm->flush();
         }
     }
 
@@ -142,7 +142,7 @@ class ChannelChangedListener implements EventSubscriberInterface
 
         foreach ($pages as $page) {
             $this->dm->remove($page);
-            $this->dm->flush($page);
+            $this->dm->flush();
         }
     }
 

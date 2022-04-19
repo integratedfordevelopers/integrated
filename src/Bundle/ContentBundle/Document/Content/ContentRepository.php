@@ -100,6 +100,6 @@ class ContentRepository extends DocumentRepository
             }
         }
 
-        $this->dm->flush($documents);
+        $this->dm->flush();
     }
 }

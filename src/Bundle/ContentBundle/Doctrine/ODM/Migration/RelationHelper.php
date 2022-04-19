@@ -62,7 +62,7 @@ trait RelationHelper
                 ->setRequired($required);
 
             $this->getDocumentManager()->persist($relation);
-            $this->getDocumentManager()->flush($relation);
+            $this->getDocumentManager()->flush();
 
             $this->write(sprintf('Added relation with id "%s".', $id));
         }
@@ -80,7 +80,7 @@ trait RelationHelper
 
         if ($relation) {
             $dm->remove($relation);
-            $dm->flush($relation);
+            $dm->flush();
 
             $this->write(sprintf('Removed relation with id "%s".', $id));
         }
@@ -97,7 +97,7 @@ trait RelationHelper
 
         if ($relation) {
             $dm->remove($relation);
-            $dm->flush($relation);
+            $dm->flush();
 
             $this->write(sprintf('Removed relation with type "%s".', $type));
         }

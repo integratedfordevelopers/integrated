@@ -59,7 +59,7 @@ trait ContentTypeHelper
             $this->setContentTypeFields($contentType, $requiredFields, $optionalFields);
         }
 
-        $dm->flush($contentType);
+        $dm->flush();
 
         return $contentType;
     }
@@ -120,7 +120,7 @@ trait ContentTypeHelper
 
         $contentType->setFields($fields);
 
-        $this->getDocumentManager()->flush($contentType);
+        $this->getDocumentManager()->flush();
 
         return $contentType;
     }
@@ -176,7 +176,7 @@ trait ContentTypeHelper
 
         $contentType->setFields($fields);
 
-        $this->getDocumentManager()->flush($contentType);
+        $this->getDocumentManager()->flush();
 
         return $contentType;
     }
@@ -218,7 +218,7 @@ trait ContentTypeHelper
 
         if ($contentType) {
             $dm->remove($contentType);
-            $dm->flush($contentType);
+            $dm->flush();
 
             $this->write(sprintf('Removed contentType with id "%s".', $id));
         }
