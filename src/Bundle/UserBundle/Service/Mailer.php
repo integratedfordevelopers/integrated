@@ -93,10 +93,10 @@ class Mailer
         $template = 'IntegratedUserBundle::mail/password.reset.html.twig';
 
         $data = [
-            'subject'   => '[Integrated] '.$this->translator->trans('Password reset'),
-            'user'      => $user,
+            'subject' => '[Integrated] '.$this->translator->trans('Password reset'),
+            'user' => $user,
             'timestamp' => $timestamp,
-            'key'       => $key,
+            'key' => $key,
         ];
 
         $message = (new \Swift_Message())
