@@ -37,20 +37,22 @@ class RegisterContentStyleParametersPass implements CompilerPassInterface
         $this->parameters = [self::CONTENT_CSS => [], self::STYLE_FORMAT => []];
 
         foreach ($container->getParameter('kernel.bundles') as $name => $class) {
-            $this->addParameters(\dirname((new ReflectionClass($class))->getFileName()));
+            $this->addParameters(\dirname((new ReflectionClass($class))->getFileName()).'/Resources/config');
+        }
+
+        if ($container->hasParameter('kernel.project_dir')) {
+            $this->addParameters($container->getParameter('kernel.project_dir').'/config');
         }
 
         $container->getParameterBag()->add([self::PARAMETER_NAME => $this->parameters]);
     }
 
     /**
-     * @param $dir
-     *
      * @throws FileException
      */
-    private function addParameters($dir)
+    private function addParameters(string $dir)
     {
-        $filePath = $dir.'/Resources/config/contentstyle/contentstyle.xml';
+        $filePath = $dir.'/contentstyle/contentstyle.xml';
         if (!is_file($filePath)) {
             return null;
         }
