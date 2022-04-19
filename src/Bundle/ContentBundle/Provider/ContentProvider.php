@@ -215,7 +215,7 @@ class ContentProvider
             $ids = array_filter(explode(',', $ids), function ($value) {
                 return preg_match('/[a-z0-9]{32}/', $value);
             });
-            if (count($ids)) {
+            if (\count($ids)) {
                 $query->createFilterQuery('ids')->setQuery('type_id: ("'.implode('" OR "', $ids).'")');
             }
         }
