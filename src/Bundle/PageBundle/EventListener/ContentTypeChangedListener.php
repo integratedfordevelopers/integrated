@@ -128,7 +128,7 @@ class ContentTypeChangedListener implements EventSubscriberInterface
 
         foreach ($pages as $page) {
             $this->dm->remove($page);
-            $this->dm->flush($page);
+            $this->dm->flush();
         }
     }
 
