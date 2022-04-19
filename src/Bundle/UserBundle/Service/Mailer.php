@@ -84,7 +84,7 @@ class Mailer
      */
     public function sendPasswordResetMail(string $email, ScopeInterface $scope = null): bool
     {
-        if (!$user = $this->userManager->findEnabledByUsernameAndScope($email, $scope)) {
+        if (!$user = $this->userManager->findByUsernameAndScope($email, $scope)) {
             return false;
         }
 
