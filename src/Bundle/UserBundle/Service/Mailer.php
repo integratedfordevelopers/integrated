@@ -84,22 +84,20 @@ class Mailer
      */
     public function sendPasswordResetMail(string $email, ScopeInterface $scope = null): bool
     {
-        $data = [
-            'subject' => '[Integrated] '.$this->translator->trans('Password reset'),
-        ];
-        $template = 'IntegratedUserBundle::mail/password.reset.notfound.html.twig';
-
-        if ($user = $this->userManager->findByUsernameAndScope($email, $scope)) {
-            if ($user->isEnabled()) {
-                $timestamp = time();
-                $key = $this->keyGenerator->generateKey($timestamp, $user);
-                $template = 'IntegratedUserBundle::mail/password.reset.html.twig';
-
-                $data['user'] = $user;
-                $data['timestamp'] = $timestamp;
-                $data['key'] = $key;
-            }
+        if (!$user = $this->userManager->findEnabledByUsernameAndScope($email, $scope)) {
+            return false;
         }
+
+        $timestamp = time();
+        $key = $this->keyGenerator->generateKey($timestamp, $user);
+        $template = 'IntegratedUserBundle::mail/password.reset.html.twig';
+
+        $data = [
+            'subject'   => '[Integrated] '.$this->translator->trans('Password reset'),
+            'user'      => $user,
+            'timestamp' => $timestamp,
+            'key'       => $key,
+        ];
 
         $message = (new \Swift_Message())
             ->setSubject($data['subject'])

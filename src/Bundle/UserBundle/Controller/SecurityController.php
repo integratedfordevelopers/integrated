@@ -94,7 +94,7 @@ class SecurityController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $this->mailer->sendPasswordResetMail($form->get('email')->getData());
 
-            $this->get('braincrafted_bootstrap.flash')->success('An e-mail with a password reset link has been sent');
+            $this->get('braincrafted_bootstrap.flash')->success('If your e-mail address has an account, a password reset link has been sent');
 
             return $this->redirectToRoute('integrated_user_login');
         }
