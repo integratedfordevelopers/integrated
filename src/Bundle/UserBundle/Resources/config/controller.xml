@@ -20,7 +20,7 @@
 
         <service id="Integrated\Bundle\UserBundle\Controller\ProfileController">
             <argument type="service" id="integrated_user.user.manager" />
-            <argument type="service" id="security.encoder_factory" />
+            <argument type="service" id="security.password_hasher_factory" />
             <argument type="service" id="service_container" />
 
             <tag name="controller.service_arguments" />
