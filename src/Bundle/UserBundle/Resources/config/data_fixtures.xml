@@ -5,7 +5,7 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
         <service id="integrated_content.data_fixtures.faker.encoder_provider" class="Integrated\Bundle\UserBundle\DataFixtures\Faker\Provider\EncodeProvider">
-            <argument type="service" id="security.encoder_factory" />
+            <argument type="service" id="security.password_hasher_factory" />
             <tag name="nelmio_alice.faker.provider" />
         </service>
     </services>
