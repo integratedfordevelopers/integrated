@@ -94,8 +94,13 @@ class SearchContentReferenced
 
                     foreach ($fieldAssociations as $fieldAssociation) {
                         $fieldAssocClassName = $fieldMetaData->getAssociationTargetClass($fieldAssociation);
+                        $allow = $deleted['className'] == $fieldAssocClassName || is_subclass_of($deleted['className'], $fieldAssocClassName);
 
-                        if ($deleted['className'] == $fieldAssocClassName || is_subclass_of($deleted['className'], $fieldAssocClassName)) {
+                        if (!$fieldMetaData->isEmbeddedDocument) {
+                            $allow = $deleted['className'] != $fieldAssocClassName && is_subclass_of($deleted['className'], $fieldAssocClassName);
+                        }
+
+                        if ($allow) {
                             $items = $this->dm->createQueryBuilder($classMetadata->getName())
                                 ->field($assocFieldName.'.'.$fieldAssociation.'.$id')
                                 ->equals($deleted['idValue'])
