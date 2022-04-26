@@ -69,10 +69,7 @@ class ProfileController extends AbstractController
 
             if ($form->isValid()) {
                 $user->setPassword($this->hasherFactory->getPasswordHasher($user)->hash($form->get('password')->getData()));
-
-                if ($user->getSalt()) {
-                    $user->setSalt(null);
-                }
+                $user->setSalt(null);
 
                 $this->userManager->persist($user);
                 $this->addFlash('success', 'Your profile have been saved');

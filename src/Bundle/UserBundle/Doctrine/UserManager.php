@@ -219,10 +219,7 @@ class UserManager implements UserManagerInterface
         }
 
         $user->setPassword($this->hasherFactory->getPasswordHasher($user)->hash($password));
-
-        if ($user->getSalt()) {
-            $user->setSalt(null);
-        }
+        $user->setSalt(null);
 
         $this->persist($user);
 

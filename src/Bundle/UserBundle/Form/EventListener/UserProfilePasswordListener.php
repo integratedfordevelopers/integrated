@@ -81,10 +81,7 @@ class UserProfilePasswordListener implements EventSubscriberInterface
 
         if ($password = $form->get('password')->getData()) {
             $user->setPassword($this->hasherFactory->getPasswordHasher($user)->hash($password));
-
-            if ($user->getSalt()) {
-                $user->setSalt(null);
-            }
+            $user->setSalt(null);
         }
     }
 }
