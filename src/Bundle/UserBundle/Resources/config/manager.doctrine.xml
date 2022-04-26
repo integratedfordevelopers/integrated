@@ -11,7 +11,7 @@
         <service id="integrated_user.user.manager.doctrine" class="Integrated\Bundle\UserBundle\Doctrine\UserManager">
             <argument type="service" id="integrated_user.doctrine.object_manager"/>
             <argument>%integrated_user.user.class%</argument>
-            <argument type="service" id="security.encoder_factory"/>
+            <argument type="service" id="security.password_hasher_factory"/>
         </service>
 
         <service id="Integrated\Bundle\UserBundle\Doctrine\UserManager" alias="integrated_user.user.manager.doctrine">

@@ -8,7 +8,7 @@
         <service id="integrated_user.command.change_password_command" class="Integrated\Bundle\UserBundle\Command\ChangePasswordCommand">
             <argument type="service" id="integrated_user.scope.manager" />
             <argument type="service" id="integrated_user.user.manager" />
-            <argument type="service" id="security.encoder_factory" />
+            <argument type="service" id="security.password_hasher_factory" />
 
             <tag name="console.command" />
         </service>
@@ -18,7 +18,7 @@
             <argument type="service" id="integrated_user.role.manager" />
             <argument type="service" id="integrated_user.user.manager" />
             <argument type="service" id="validator" />
-            <argument type="service" id="security.encoder_factory" />
+            <argument type="service" id="security.password_hasher_factory" />
 
             <tag name="console.command" />
         </service>

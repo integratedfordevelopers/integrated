@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 
 class ProfileController extends AbstractController
 {
@@ -31,22 +31,22 @@ class ProfileController extends AbstractController
     protected $userManager;
 
     /**
-     * @var EncoderFactoryInterface
+     * @var PasswordHasherFactoryInterface
      */
-    protected $encoderFactory;
+    protected $hasherFactory;
 
     /**
-     * @param UserManagerInterface    $userManager
-     * @param EncoderFactoryInterface $encoderFactory
-     * @param ContainerInterface      $container
+     * @param UserManagerInterface           $userManager
+     * @param PasswordHasherFactoryInterface $hasherFactory
+     * @param ContainerInterface             $container
      */
     public function __construct(
         UserManagerInterface $userManager,
-        EncoderFactoryInterface $encoderFactory,
+        PasswordHasherFactoryInterface $hasherFactory,
         ContainerInterface $container
     ) {
         $this->userManager = $userManager;
-        $this->encoderFactory = $encoderFactory;
+        $this->hasherFactory = $hasherFactory;
         $this->container = $container;
     }
 
@@ -68,10 +68,8 @@ class ProfileController extends AbstractController
             }
 
             if ($form->isValid()) {
-                $salt = base64_encode(random_bytes(72));
-
-                $user->setPassword($this->encoderFactory->getEncoder($user)->encodePassword($form->get('password')->getData(), $salt));
-                $user->setSalt($salt);
+                $user->setPassword($this->hasherFactory->getPasswordHasher($user)->hash($form->get('password')->getData()));
+                $user->setSalt(null);
 
                 $this->userManager->persist($user);
                 $this->addFlash('success', 'Your profile have been saved');

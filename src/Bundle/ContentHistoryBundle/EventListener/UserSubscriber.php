@@ -61,7 +61,7 @@ class UserSubscriber implements EventSubscriberInterface
             $securityUser = $token->getUser();
 
             if ($securityUser instanceof UserInterface) {
-                $user->setName($securityUser->getUsername());
+                $user->setName($securityUser->getUserIdentifier());
             }
 
             if ($securityUser instanceof \Integrated\Bundle\UserBundle\Model\User) {
