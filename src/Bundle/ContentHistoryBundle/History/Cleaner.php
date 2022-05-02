@@ -20,7 +20,7 @@ class Cleaner
     /**
      * @var array
      */
-    public $cleanTable = [];
+    private $cleanTable = [];
 
     /**
      * @var DocumentManager
@@ -35,29 +35,29 @@ class Cleaner
         $this->documentManager = $documentManager;
     }
 
+    public function setCleanTable(array $cleanTable)
+    {
+        $this->cleanTable = $cleanTable;
+    }
+
     /**
      * @return array
      */
     public function clean(array $document)
     {
-        $originalDocument = $document;
-
         $changed = false;
         if ($document['action'] == 'update') {
             foreach ($document['changeSet'] as $key => $change) {
+                if (!\is_array($change[0] ?? null) && !\is_array($change[1] ?? null)) {
+                    continue;
+                }
+
                 $diff = ArrayComparer::diff(($change[0] ?? []), ($change[1] ?? []));
                 if (\count($diff) == 0) {
                     unset($document['changeSet'][$key]);
                     $changed = true;
                 } elseif (\is_array($change[0])) {
                     $document['changeSet'][$key] = $diff;
-                }
-
-                if ($key == 'address') {
-                    //exit;
-                }
-                if (\count($diff) > 0) {
-                    //exit;
                 }
             }
         }
@@ -74,30 +74,24 @@ class Cleaner
         }
 
         if (\count($document['changeSet']) === 0) {
-            var_dump('remove');
-            var_dump($document['_id']);
-            echo "\n";
-
-            exit;
             $this->documentManager->createQueryBuilder(ContentHistory::class)
                 ->remove()
                 ->field('_id')->equals($document['_id'])
                 ->getQuery()
                 ->execute();
-            exit;
-        } elseif ($changed) {
-            var_dump('change');
-            var_dump($document['_id']);
-            var_dump($document['changeSet']);
-            echo "\n";
 
-            $this->documentManager->createQueryBuilder(ContentHistory::class)
-                ->updateOne()
-                ->field('changeSet')->set($document['changeSet'])
-                ->field('_id')->equals($document['_id'])
-                ->getQuery()
-                ->execute();
-            exit;
+            return;
         }
+
+        if (!$changed) {
+            return;
+        }
+
+        $this->documentManager->createQueryBuilder(ContentHistory::class)
+            ->updateOne()
+            ->field('changeSet')->set($document['changeSet'])
+            ->field('_id')->equals($document['_id'])
+            ->getQuery()
+            ->execute();
     }
 }

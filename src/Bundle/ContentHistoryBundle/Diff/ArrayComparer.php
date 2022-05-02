@@ -101,7 +101,7 @@ class ArrayComparer
 
         if ($allowArray && \is_array($value)) {
             foreach ($value as $key => $item) {
-                if (\substr($key, 0, 1) === '$') {
+                if (substr($key, 0, 1) === '$') {
                     $value['_'.$key] = $item;
                     unset($value[$key]);
                 }
