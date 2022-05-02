@@ -33,7 +33,6 @@ class ArrayComparer
         $new = self::normalizeValue($new);
 
         if (!\is_array($old) && !\is_array($new)) {
-            var_dump('early return');
             if (self::isSame($old, $new)) {
                 return [];
             }
