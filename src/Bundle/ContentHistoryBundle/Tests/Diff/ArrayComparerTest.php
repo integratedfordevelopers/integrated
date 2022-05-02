@@ -150,6 +150,6 @@ class ArrayComparerTest extends \PHPUnit\Framework\TestCase
      */
     protected function assertNormalize(array $old = [], array $new = [], array $expected = [])
     {
-        $this->assertEquals($expected, ArrayComparer::normalize($old, $new));
+        $this->assertEquals($expected, ArrayComparer::normalizeArrays($old, $new));
     }
 }

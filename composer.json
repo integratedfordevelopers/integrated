@@ -101,5 +101,10 @@
             "dev-release/0.14": "0.14.x-dev",
             "dev-release/0.15": "0.15.x-dev"
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "endroid/installer": true
+        }
     }
 }

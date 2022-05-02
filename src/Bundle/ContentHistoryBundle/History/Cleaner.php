@@ -49,7 +49,7 @@ class Cleaner
                 if (\count($diff) == 0) {
                     unset($document['changeSet'][$key]);
                     $changed = true;
-                } elseif (is_array($change[0])) {
+                } elseif (\is_array($change[0])) {
                     $document['changeSet'][$key] = $diff;
                 }
 
