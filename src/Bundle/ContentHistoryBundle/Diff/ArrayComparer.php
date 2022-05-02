@@ -51,20 +51,22 @@ class ArrayComparer
         $old = self::normalizeArrays($new, $old);
         $new = self::normalizeArrays($old, $new);
 
-        $diff = [];
+        $diffOld = [];
+        $diffNew = [];
 
         foreach ($new as $key => $value) {
-            if (\in_array($key, self::IGNORE_KEYS)) {
+            if (\in_array($key, self::IGNORE_KEYS, true)) {
                 continue;
             }
 
             $result = self::diff($old[$key], $value);
             if (\count($result)) {
-                $diff[$key] = $result;
+                $diffOld[$key] = $result[0];
+                $diffNew[$key] = $result[1];
             }
         }
 
-        return $diff;
+        return [$diffOld, $diffNew];
     }
 
     /**
@@ -97,6 +99,15 @@ class ArrayComparer
     {
         if (\is_object($value)) {
             $value = serialize((array) $value);
+        }
+
+        if ($allowArray && \is_array($value)) {
+            foreach ($value as $key => $item) {
+                if (\substr($key, 0, 1) === '$') {
+                    $value['_'.$key] = $item;
+                    unset($value[$key]);
+                }
+            }
         }
 
         if (!$allowArray && \is_array($value)) {
