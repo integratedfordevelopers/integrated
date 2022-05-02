@@ -51,8 +51,7 @@ class ArrayComparer
         $old = self::normalizeArrays($new, $old);
         $new = self::normalizeArrays($old, $new);
 
-        $diffOld = [];
-        $diffNew = [];
+        $diff = [];
 
         foreach ($new as $key => $value) {
             if (\in_array($key, self::IGNORE_KEYS, true)) {
@@ -61,12 +60,11 @@ class ArrayComparer
 
             $result = self::diff($old[$key], $value);
             if (\count($result)) {
-                $diffOld[$key] = $result[0];
-                $diffNew[$key] = $result[1];
+                $diff[$key] = $result;
             }
         }
 
-        return [$diffOld, $diffNew];
+        return $diff;
     }
 
     /**
