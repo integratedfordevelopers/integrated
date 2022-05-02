@@ -61,6 +61,14 @@ class ArrayComparer
             $result = self::diff($old[$key], $value);
             if (\count($result)) {
                 $diff[$key] = $result;
+
+                if ($key === 'references') {
+                    if (isset($old['relationId'])) {
+                        $diff['relationId'] = [$old['relationId'], $old['relationId']];
+                    } elseif (isset($new['relationId'])) {
+                        $diff['relationId'] = [$new['relationId'], $new['relationId']];
+                    }
+                }
             }
         }
 
