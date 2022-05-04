@@ -11,7 +11,6 @@
 namespace Integrated\Bundle\UserBundle\Service;
 
 use Integrated\Bundle\UserBundle\Doctrine\UserManager;
-use Integrated\Bundle\UserBundle\Model\ScopeInterface;
 use Integrated\Bundle\UserBundle\Model\User;
 use Symfony\Bridge\Twig\TwigEngine;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -76,7 +75,7 @@ class Mailer
     }
 
     /**
-     * @param User     $user
+     * @param User $user
      *
      * @throws \Twig\Error\Error
      */
