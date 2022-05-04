@@ -18,7 +18,7 @@ class Parser
     public function getReadableChangeset(ContentHistory $history): array
     {
         $table = [];
-        dump($history->getChangeSet());
+
         foreach ($history->getChangeSet() as $key => $data) {
             $data = $this->normalizeValue($data);
 
@@ -34,8 +34,6 @@ class Parser
 
             $this->walkArray($table, $key, $data);
         }
-
-        dump($table);
 
         return $table;
     }
@@ -72,9 +70,9 @@ class Parser
     {
         if ($value instanceof \DateTimeInterface) {
             return $value->format('r');
-        } elseif ($value instanceof \MongoDate) {
-            dump($value->toDateTime());
+        }
 
+        if ($value instanceof \MongoDate) {
             return $value->toDateTime()->format('r');
         }
 
