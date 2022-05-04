@@ -10,6 +10,9 @@
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
         </service>
 
+        <service id="Integrated\Bundle\ContentHistoryBundle\History\Parser">
+        </service>
+
     </services>
 
 </container>
