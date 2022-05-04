@@ -11,8 +11,6 @@
 
 namespace Integrated\Bundle\ContentHistoryBundle\History;
 
-use Doctrine\ODM\MongoDB\DocumentManager;
-use Integrated\Bundle\ContentHistoryBundle\Diff\ArrayComparer;
 use Integrated\Bundle\ContentHistoryBundle\Document\ContentHistory;
 
 class Parser
@@ -24,7 +22,7 @@ class Parser
         foreach ($history->getChangeSet() as $key => $data) {
             $data = $this->normalizeValue($data);
 
-            if (!is_array($data)) {
+            if (!\is_array($data)) {
                 $table[] = [
                     'name' => $key,
                     'old' => '',
@@ -44,7 +42,7 @@ class Parser
 
     private function walkArray(array &$table, string $path, array $data)
     {
-        if (count($data) === 2 && array_key_exists(0, $data) && array_key_exists(1, $data) && !is_array($data[0]) && !is_array($data[1])) {
+        if (\count($data) === 2 && \array_key_exists(0, $data) && \array_key_exists(1, $data) && !\is_array($data[0]) && !\is_array($data[1])) {
             $table[] = [
                 'name' => $path,
                 'old' => $this->normalizeValue($data[0]),
@@ -56,7 +54,7 @@ class Parser
 
         foreach ($data as $key => $subdata) {
             $subdata = $this->normalizeValue($subdata);
-            if (!is_array($subdata)) {
+            if (!\is_array($subdata)) {
                 $table[] = [
                     'name' => $path.' > '.$key,
                     'old' => '',
@@ -76,6 +74,7 @@ class Parser
             return $value->format('r');
         } elseif ($value instanceof \MongoDate) {
             dump($value->toDateTime());
+
             return $value->toDateTime()->format('r');
         }
 
