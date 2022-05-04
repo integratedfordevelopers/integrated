@@ -11,7 +11,7 @@
 namespace Integrated\Bundle\UserBundle\Service;
 
 use Integrated\Bundle\UserBundle\Doctrine\UserManager;
-use Integrated\Bundle\UserBundle\Model\ScopeInterface;
+use Integrated\Bundle\UserBundle\Model\User;
 use Symfony\Bridge\Twig\TwigEngine;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -75,42 +75,31 @@ class Mailer
     }
 
     /**
-     * @param string              $email
-     * @param ScopeInterface|null $scope
-     *
-     * @return bool
+     * @param User $user
      *
      * @throws \Twig\Error\Error
      */
-    public function sendPasswordResetMail(string $email, ScopeInterface $scope = null): bool
+    public function sendPasswordResetMail(User $user): void
     {
+        $timestamp = time();
+        $key = $this->keyGenerator->generateKey($timestamp, $user);
+        $template = 'IntegratedUserBundle::mail/password.reset.html.twig';
+
         $data = [
             'subject' => '[Integrated] '.$this->translator->trans('Password reset'),
+            'user' => $user,
+            'timestamp' => $timestamp,
+            'key' => $key,
         ];
-        $template = 'IntegratedUserBundle::mail/password.reset.notfound.html.twig';
-
-        if ($user = $this->userManager->findByUsernameAndScope($email, $scope)) {
-            if ($user->isEnabled()) {
-                $timestamp = time();
-                $key = $this->keyGenerator->generateKey($timestamp, $user);
-                $template = 'IntegratedUserBundle::mail/password.reset.html.twig';
-
-                $data['user'] = $user;
-                $data['timestamp'] = $timestamp;
-                $data['key'] = $key;
-            }
-        }
 
         $message = (new \Swift_Message())
             ->setSubject($data['subject'])
             ->setFrom($this->from, $this->name)
-            ->setTo($email)
+            ->setTo($user->getUsername())
             ->setBody(
                 $this->templating->render($template, $data),
                 'text/html'
             );
         $this->mailer->send($message);
-
-        return true;
     }
 }
