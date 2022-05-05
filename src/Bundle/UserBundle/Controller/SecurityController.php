@@ -93,9 +93,13 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->mailer->sendPasswordResetMail($form->get('email')->getData());
+            if ($user = $this->userManager->findByUsernameAndScope($form->get('email')->getData())) {
+                if ($user->isEnabled()) {
+                    $this->mailer->sendPasswordResetMail($user);
+                }
+            }
 
-            $this->addFlash('success', 'An e-mail with a password reset link has been sent');
+            $this->addFlash('success', 'If your e-mail address has an account, a password reset link has been sent');
 
             return $this->redirectToRoute('integrated_user_login');
         }

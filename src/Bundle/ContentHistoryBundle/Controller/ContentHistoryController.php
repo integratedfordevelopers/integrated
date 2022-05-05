@@ -14,6 +14,7 @@ namespace Integrated\Bundle\ContentHistoryBundle\Controller;
 use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentHistoryBundle\Document\ContentHistory;
+use Integrated\Bundle\ContentHistoryBundle\History\Parser;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,17 +30,24 @@ class ContentHistoryController extends AbstractController
     protected $repository;
 
     /**
+     * @var Parser
+     */
+    protected $parser;
+
+    /**
      * @var PaginatorInterface
      */
     protected $paginator;
 
     /**
      * @param DocumentRepository $repository
+     * @param Parser             $parser
      * @param PaginatorInterface $paginator
      */
-    public function __construct(DocumentRepository $repository, PaginatorInterface $paginator)
+    public function __construct(DocumentRepository $repository, Parser $parser, PaginatorInterface $paginator)
     {
         $this->repository = $repository;
+        $this->parser = $parser;
         $this->paginator = $paginator;
     }
 
@@ -76,6 +84,7 @@ class ContentHistoryController extends AbstractController
     {
         return $this->render('@IntegratedContentHistory/content_history/show.html.twig', [
             'contentHistory' => $contentHistory,
+            'changeSet' => $this->parser->getReadableChangeset($contentHistory),
         ]);
     }
 
