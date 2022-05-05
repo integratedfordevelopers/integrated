@@ -16,7 +16,7 @@ namespace Integrated\Bundle\ContentHistoryBundle\Diff;
  */
 class ArrayComparer
 {
-    const IGNORE_KEYS = ['$db'];
+    public const IGNORE_KEYS = ['$db'];
 
     /**
      * @param array $old

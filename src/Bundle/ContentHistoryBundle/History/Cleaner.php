@@ -40,9 +40,6 @@ class Cleaner
         $this->cleanTable = $cleanTable;
     }
 
-    /**
-     * @return array
-     */
     public function clean(array $document)
     {
         $changed = false;
