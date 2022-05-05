@@ -17,7 +17,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Error\Error;
 use Integrated\Bundle\UserBundle\Doctrine\UserManager;
-use Integrated\Bundle\UserBundle\Model\ScopeInterface;
+use Integrated\Bundle\UserBundle\Model\User;
 
 class Mailer
 {
@@ -79,37 +79,29 @@ class Mailer
     }
 
     /**
-     * @param string              $email
-     * @param ScopeInterface|null $scope
-     *
-     * @return bool
+     * @param User $user
      *
      * @throws Error
      */
-    public function sendPasswordResetMail(string $email, ScopeInterface $scope = null): bool
+    public function sendPasswordResetMail(User $user): void
     {
+        $timestamp = time();
+        $key = $this->keyGenerator->generateKey($timestamp, $user);
+        $template = 'IntegratedUser/mail/password.reset.html.twig';
+
         $data = [
             'subject' => '[Integrated] '.$this->translator->trans('Password reset'),
+            'user' => $user,
+            'timestamp' => $timestamp,
+            'key' => $key,
         ];
-
-        $template = '@IntegratedUser/mail/password.reset.notfound.html.twig';
-
-        if ($user = $this->userManager->findEnabledByUsernameAndScope($email, $scope)) {
-            $template = '@IntegratedUser/mail/password.reset.html.twig';
-
-            $data['user'] = $user;
-            $data['timestamp'] = time();
-            $data['key'] = $this->keyGenerator->generateKey($data['timestamp'], $user);
-        }
 
         $message = (new Email())
             ->from(new Address($this->from, $this->name))
-            ->to($email)
+            ->to($user->getUsername())
             ->subject($data['subject'])
             ->html($this->templating->render($template, $data));
 
         $this->mailer->send($message);
-
-        return true;
     }
 }

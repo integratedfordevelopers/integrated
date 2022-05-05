@@ -213,21 +213,23 @@ The <info>%command.name%</info> command starts a index of the site.
         // Don't hydrate for performance reasons
         $builder = $this->documentManager->createQueryBuilder(Content::class);
         $builder->select('id', 'contentType', 'class')->hydrate(false);
+        $builder->immortal(true);
+
+        if (!$input->getOption('full')) {
+            $builder->field('contentType')->in($input->getArgument('id'));
+        }
+
+        $count = $builder->count()->getQuery()->execute();
+        $result = $builder->find()->getQuery()->execute();
 
         if ($input->getOption('full')) {
-            $result = $builder->getQuery()->execute()->immortal();
-
             // The entire site is going to be reindex so everything that is now in the queue
             // will be redone so just clear it so content is not double indexed.
 
             $this->queue->clear();
-        } else {
-            $builder->field('contentType')->in($input->getArgument('id'));
-
-            $result = $builder->getQuery()->execute()->immortal();
         }
 
-        if ($count = $result->count()) {
+        if ($count) {
             $progress = new ProgressBar($output, $count);
 
             $progress->setRedrawFrequency(min(max(floor($count / 250), 1), 100));

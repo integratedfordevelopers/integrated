@@ -8,6 +8,7 @@
 
         <service id="Integrated\Bundle\ContentHistoryBundle\Controller\ContentHistoryController" public="true">
             <argument type="service" id="integrated_content_history.repository.content_history" />
+            <argument type="service" id="Integrated\Bundle\ContentHistoryBundle\History\Parser" />
             <argument type="service" id="knp_paginator" />
 
             <tag name="controller.service_arguments" />
