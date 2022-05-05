@@ -16,37 +16,118 @@ namespace Integrated\Bundle\ContentHistoryBundle\Diff;
  */
 class ArrayComparer
 {
+    const IGNORE_KEYS = ['$db'];
+
     /**
      * @param array $old
      * @param array $new
      *
      * @return array
      */
-    public static function diff(array $old = [], array $new = [])
+    public static function diff($old, $new)
     {
-        foreach (array_keys($old) as $key) {
-            if (!\array_key_exists($key, $new)) {
-                // add missing key
-                $new[$key] = null;
+        $oldOriginal = $old;
+        $newOriginal = $new;
+
+        $old = self::normalizeValue($old);
+        $new = self::normalizeValue($new);
+
+        if (!\is_array($old) && !\is_array($new)) {
+            if (self::isSame($old, $new)) {
+                return [];
             }
+
+            return [$oldOriginal, $newOriginal];
         }
 
-        foreach (array_keys($new) as $key) {
-            if (!\array_key_exists($key, $old)) {
-                // add missing key
-                $old[$key] = null;
-            }
+        if (!\is_array($old)) {
+            $old = [0 => $old];
         }
+
+        if (!\is_array($new)) {
+            $new = [0 => $new];
+        }
+
+        $old = self::normalizeArrays($new, $old);
+        $new = self::normalizeArrays($old, $new);
 
         $diff = [];
 
         foreach ($new as $key => $value) {
-            if ($old[$key] != $value) {
-                // value has changed
-                $diff[$key] = [$old[$key], $value];
+            if (\in_array($key, self::IGNORE_KEYS, true)) {
+                continue;
+            }
+
+            $result = self::diff($old[$key], $value);
+            if (\count($result)) {
+                $diff[$key] = $result;
+
+                if ($key === 'references') {
+                    if (isset($old['relationId'])) {
+                        $diff['relationId'] = [$old['relationId'], $old['relationId']];
+                    } elseif (isset($new['relationId'])) {
+                        $diff['relationId'] = [$new['relationId'], $new['relationId']];
+                    }
+                }
             }
         }
 
         return $diff;
+    }
+
+    /**
+     * @param array $old
+     * @param array $new
+     *
+     * @return array
+     */
+    public static function normalizeArrays(array $old = [], array $new = [])
+    {
+        foreach (array_keys($old) as $key) {
+            if (!\array_key_exists($key, $new)) {
+                // add missing key
+                if (\is_array($old[$key])) {
+                    $new[$key] = [];
+                } else {
+                    $new[$key] = null;
+                }
+            }
+
+            if (\is_array($old[$key]) && !\is_array($new[$key])) {
+                $new[$key] = [];
+            }
+        }
+
+        return $new;
+    }
+
+    public static function normalizeValue($value, bool $allowArray = true)
+    {
+        if (\is_object($value)) {
+            $value = serialize((array) $value);
+        }
+
+        if ($allowArray && \is_array($value)) {
+            foreach ($value as $key => $item) {
+                if (substr($key, 0, 1) === '$') {
+                    $value['_'.$key] = $item;
+                    unset($value[$key]);
+                }
+            }
+        }
+
+        if (!$allowArray && \is_array($value)) {
+            $value = serialize($value);
+        }
+
+        return $value;
+    }
+
+    public static function isSame($value1, $value2): bool
+    {
+        $value1 = (string) self::normalizeValue($value1, false);
+        $value2 = (string) self::normalizeValue($value2, false);
+
+        return $value1 === $value2;
     }
 }

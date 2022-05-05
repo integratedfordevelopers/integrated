@@ -96,5 +96,10 @@
         "branch-alias": {
             "dev-release/0.17": "0.17.x-dev"
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "endroid/installer": true
+        }
     }
 }

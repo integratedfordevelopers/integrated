@@ -15,6 +15,7 @@
         <service id="integrated_content_history.controller.content_history" class="%integrated_content_history.controller.content_history.class%" public="true">
             <argument type="service" id="templating" />
             <argument type="service" id="integrated_content_history.repository.content_history" />
+            <argument type="service" id="Integrated\Bundle\ContentHistoryBundle\History\Parser" />
             <argument type="service" id="knp_paginator" />
         </service>
 

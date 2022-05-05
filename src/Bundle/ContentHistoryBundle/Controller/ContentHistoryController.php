@@ -14,6 +14,7 @@ namespace Integrated\Bundle\ContentHistoryBundle\Controller;
 use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentHistoryBundle\Document\ContentHistory;
+use Integrated\Bundle\ContentHistoryBundle\History\Parser;
 use Knp\Component\Pager\Paginator;
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,6 +35,11 @@ class ContentHistoryController
     protected $repository;
 
     /**
+     * @var Parser
+     */
+    protected $parser;
+
+    /**
      * @var Paginator
      */
     protected $paginator;
@@ -41,12 +47,14 @@ class ContentHistoryController
     /**
      * @param TwigEngine         $templating
      * @param DocumentRepository $repository
+     * @param Parser             $parser
      * @param Paginator          $paginator
      */
-    public function __construct(TwigEngine $templating, DocumentRepository $repository, Paginator $paginator)
+    public function __construct(TwigEngine $templating, DocumentRepository $repository, Parser $parser, Paginator $paginator)
     {
         $this->templating = $templating;
         $this->repository = $repository;
+        $this->parser = $parser;
         $this->paginator = $paginator;
     }
 
@@ -83,6 +91,7 @@ class ContentHistoryController
     {
         return $this->templating->renderResponse('IntegratedContentHistoryBundle:content_history:show.html.twig', [
             'contentHistory' => $contentHistory,
+            'changeSet' => $this->parser->getReadableChangeset($contentHistory),
         ]);
     }
 
