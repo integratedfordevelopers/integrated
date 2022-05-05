@@ -59,7 +59,7 @@
         "symfony/monolog-bundle": "~3.7.1",
         "symfony/polyfill-iconv": "~1.6",
         "symfony/polyfill-php80": "^1.23.1",
-        "symfony/process": "^5.4",
+        "symfony/process": "~4.4",
         "symfony/routing": "~4.4",
         "symfony/security-acl": "~3.0",
         "symfony/security-bundle": "~4.4.1",
