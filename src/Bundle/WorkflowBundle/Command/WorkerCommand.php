@@ -138,7 +138,11 @@ The <info>%command.name%</info> .
         $process->run();
 
         $process->run(function ($type, $buffer) use ($output) {
-            $output->write($buffer, false, $type);
+            if (Process::ERR === $type) {
+                $output->write($buffer);
+            } else {
+                $output->write($buffer, false, $output::VERBOSITY_VERBOSE);
+            }
         });
 
         if (!$process->isSuccessful()) {
