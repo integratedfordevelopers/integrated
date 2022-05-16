@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\DataFixtures\MongoDB;
 
+use Doctrine\Bundle\MongoDBBundle\Fixture\ODMFixtureInterface;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Nelmio\Alice\Loader\SimpleFilesLoader;
@@ -21,9 +22,19 @@ use Symfony\Component\Finder\Finder;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class LoadFixtureData implements ContainerAwareInterface, FixtureInterface
+class LoadFixtureData implements ContainerAwareInterface, ODMFixtureInterface
 {
     use ContainerAwareTrait;
+
+    /**
+     * @var SimpleFilesLoader
+     */
+    private $loader;
+
+    public function __construct(SimpleFilesLoader $loader)
+    {
+        $this->loader = $loader;
+    }
 
     /**
      * {@inheritdoc}
@@ -37,7 +48,7 @@ class LoadFixtureData implements ContainerAwareInterface, FixtureInterface
             $files[] = $file->getRealpath();
         }
 
-        foreach ($this->getLoader()->loadFiles($files)->getObjects() as $object) {
+        foreach ($this->loader->loadFiles($files)->getObjects() as $object) {
             $manager->persist($object);
         }
 

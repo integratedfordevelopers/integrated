@@ -5,12 +5,11 @@ Integrated\Bundle\ContentBundle\Document\Content\Article:
     title: <sentence()>
     subtitle: 15%? <sentence()>
     intro: 40%? <paragraph()>
-    content: <paragraphs(rand(6, 12), true)>
+    content: <paragraphs(6, true)>
     authors: <randomElement([1,1,1,1,1,1,1,2,2,3])>x @embedded_author*
     source: 40%? <sentence()>
     locale: <locale()>
-#    location: 20%? @location_embed*
-    channels: <numberBetween(1, 5)>x @channel*
+    channels: ['@channel-my-channel']
 
   news{1..20}:
     contentType: news
@@ -19,7 +18,7 @@ Integrated\Bundle\ContentBundle\Document\Content\Article:
     subtitle: 15%? <sentence()>
     authors: <randomElement([1,1,1,1,1,1,1,2,2,3])>x @embedded_author*
     intro: 40%? <paragraph()>
-    content: <paragraphs(rand(6, 12), true)>
+    content: <paragraphs(8, true)>
     source: 40%? <sentence()>
     locale: <locale()>
     channels: <numberBetween(1, 5)>x @channel*
@@ -31,7 +30,7 @@ Integrated\Bundle\ContentBundle\Document\Content\Article:
     subtitle: 5%? <sentence()>
     authors: <randomElement([1,1,1,1,1,1,1,2,2,3])>x @embedded_author*
     intro: 80%? <paragraph()>
-    content: <paragraphs(rand(3, 10), true)>
+    content: <paragraphs(10, true)>
     locale: <locale()>
 #    location: 20%? @location_embed*
     channels: <numberBetween(1, 5)>x @channel*
@@ -46,12 +45,11 @@ Integrated\Bundle\ContentBundle\Document\Content\Relation\Person:
     prefix: <title(@self->gender)>
     disabled: <boolean(10)>
     accountnumber (unique): <numberBetween(5000, 9000)>
-    description: <paragraphs(rand(2, 4), true)>
+    description: <paragraphs(2, true)>
     phonenumbers: <randomElement([1,1,1,1,1,1,1,2])>x @embedded_phonenumber*
     email: <email()>
     addresses: [75%? @embedded_address*]
     jobs: <randomElement([0,0,1,1,1,1,1,2])>x @embedded_job*
-    channels: <numberBetween(1, 5)>x @channel*
 #    picture
 
 Integrated\Bundle\ContentBundle\Document\Content\Relation\Company:
@@ -59,7 +57,7 @@ Integrated\Bundle\ContentBundle\Document\Content\Relation\Company:
     contentType: company
     disabled: <boolean(10)>
     accountnumber (unique): <numberBetween(20000, 30000)>
-    description: <paragraphs(rand(2, 4), true)>
+    description: <paragraphs(4, true)>
     phonenumbers: <randomElement([1,1,1,1,1,1,1,2])>x @embedded_phonenumber*
     email: <email()>
     addresses: <randomElement([1,1,1,1,1,1,1,2])>x @embedded_address*
@@ -81,7 +79,7 @@ Integrated\Bundle\ContentBundle\Document\Content\Product:
     title: <sentence(5)>
     reference: <ean13()>
     variant: <sentence(1)>
-    content: <paragraphs(rand(6, 12), true)>
+    content: <paragraphs(6, true)>
 
 # -------------------------------------------- #
 # Below here local embedded objects            #

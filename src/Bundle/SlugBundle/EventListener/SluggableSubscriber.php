@@ -144,7 +144,7 @@ class SluggableSubscriber implements EventSubscriber
                     if (\array_key_exists($propertyMetadata->name, $changeset)) {
                         // generate custom slug
                         $slug = $this->slugger->slugify(
-                            $changeset[$propertyMetadata->name],
+                            $changeset[$propertyMetadata->name][1],
                             $propertyMetadata->slugSeparator
                         );
                     } elseif (null !== $propertyMetadata->getValue($object)) {
