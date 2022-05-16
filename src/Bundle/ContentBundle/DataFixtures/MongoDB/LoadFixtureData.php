@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\ContentBundle\DataFixtures\MongoDB;
 
 use Doctrine\Bundle\MongoDBBundle\Fixture\ODMFixtureInterface;
-use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Nelmio\Alice\Loader\SimpleFilesLoader;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
