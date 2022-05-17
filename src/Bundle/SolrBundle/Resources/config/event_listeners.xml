@@ -11,6 +11,10 @@
             <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
 
+        <service id="integrated_solr.event_listeners.solarium_query_subscriber" class="Integrated\Bundle\SolrBundle\EventListener\SolariumQueryPageFixerSubscriber">
+            <tag name="knp_paginator.subscriber" />
+        </service>
+
     </services>
 
 </container>
