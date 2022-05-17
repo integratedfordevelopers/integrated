@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\UserBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Bundle\FixturesBundle\ORMFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Nelmio\Alice\Loader\SimpleFilesLoader;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -21,7 +21,7 @@ use Symfony\Component\Finder\Finder;
 /**
  * @author Johan Liefers <johan@e-active.nl>
  */
-class LoadFixtureData implements ContainerAwareInterface, FixtureInterface
+class LoadFixtureData implements ContainerAwareInterface, ORMFixtureInterface
 {
     use ContainerAwareTrait;
 
@@ -36,6 +36,16 @@ class LoadFixtureData implements ContainerAwareInterface, FixtureInterface
     protected $locale = 'en_US';
 
     /**
+     * @var SimpleFilesLoader
+     */
+    private $loader;
+
+    public function __construct(SimpleFilesLoader $loader)
+    {
+        $this->loader = $loader;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
@@ -47,18 +57,10 @@ class LoadFixtureData implements ContainerAwareInterface, FixtureInterface
             $files[] = $file->getRealpath();
         }
 
-        foreach ($this->getLoader()->loadFiles($files)->getObjects() as $object) {
+        foreach ($this->loader->loadFiles($files)->getObjects() as $object) {
             $manager->persist($object);
         }
 
         $manager->flush();
-    }
-
-    /**
-     * @return SimpleFilesLoader
-     */
-    private function getLoader()
-    {
-        return $this->container->get('nelmio_alice.files_loader.simple');
     }
 }
