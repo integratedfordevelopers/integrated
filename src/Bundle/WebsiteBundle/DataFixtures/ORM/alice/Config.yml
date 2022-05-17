@@ -8,4 +8,4 @@ Integrated\Bundle\ChannelBundle\Model\Config:
 Integrated\Bundle\ChannelBundle\Model\Options:
   website-config-my-channel-options:
     __construct:
-      [theme: 'thompson']
+      [theme: 'default']
