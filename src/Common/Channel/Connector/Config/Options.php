@@ -12,6 +12,7 @@
 namespace Integrated\Common\Channel\Connector\Config;
 
 use ArrayIterator;
+use ReturnTypeWillChange;
 use Traversable;
 
 /**
@@ -121,7 +122,8 @@ class Options implements OptionsInterface
     /**
      * {@inheritdoc}
      */
-    public function offsetGet($offset)
+    #[ReturnTypeWillChange]
+    public function offsetGet($offset): mixed
     {
         return $this->get($offset);
     }

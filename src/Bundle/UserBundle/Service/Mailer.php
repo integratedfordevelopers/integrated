@@ -98,7 +98,7 @@ class Mailer
 
         $message = (new Email())
             ->from(new Address($this->from, $this->name))
-            ->to($user->getUsername())
+            ->to($user->getUserIdentifier())
             ->subject($data['subject'])
             ->html($this->templating->render($template, $data));
 
