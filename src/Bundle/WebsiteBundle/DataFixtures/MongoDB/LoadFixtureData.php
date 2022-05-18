@@ -26,11 +26,11 @@ class LoadFixtureData implements ContainerAwareInterface, ODMFixtureInterface
     use ContainerAwareTrait;
 
     /**
-     * @var SimpleFilesLoader
+     * @var SimpleFilesLoader|null
      */
     private $loader;
 
-    public function __construct(SimpleFilesLoader $loader)
+    public function __construct(?SimpleFilesLoader $loader)
     {
         $this->loader = $loader;
     }
@@ -40,6 +40,10 @@ class LoadFixtureData implements ContainerAwareInterface, ODMFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
+        if (!$this->loader) {
+            throw new \Exception('Nelmio\Alice is required to load fixtures');
+        }
+
         $files = [];
 
         /** @var \Symfony\Component\Finder\SplFileInfo $file */
