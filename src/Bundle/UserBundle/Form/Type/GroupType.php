@@ -40,7 +40,6 @@ class GroupType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefault('class', $this->manager->getClassName());
-        $resolver->setDefault('choice_value', 'id');
         $resolver->setDefault('choice_label', 'name');
     }
 
