@@ -63,7 +63,7 @@ class ParentAwareConfigIterator implements Iterator
      *
      * @return TypeConfigInterface
      */
-    public function current()
+    public function current(): mixed
     {
         return $this->current ? $this->current->current() : false;
     }

@@ -10,6 +10,7 @@
             <argument type="service" id="integrated_block.metadata.factory"/>
             <argument type="service" id="doctrine_mongodb.odm.document_manager"/>
             <argument type="service" id="knp_paginator"/>
+            <argument type="service" id="integrated_block.provider.filter_query"/>
 
             <tag name="controller.service_arguments"/>
             <tag name="container.service_subscriber" />

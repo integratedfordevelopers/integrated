@@ -26,7 +26,7 @@
             <argument type="service" id="integrated_channel.config.manager" />
             <argument type="service" id="router" />
 
-            <tag name="integrated_channel.event_subscriber" />
+            <tag name="kernel.event_subscriber" />
         </service>
 
     </services>

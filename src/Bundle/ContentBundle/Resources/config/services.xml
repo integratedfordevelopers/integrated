@@ -24,7 +24,7 @@
         <service id="integrated_content.form_request_handler" class="%integrated_content.form_request_handler%">
 
             <argument type="service" id="form.server_params" />
-            <argument type="service" id="integrated_content.event_dispatcher" />
+            <argument type="service" id="event_dispatcher" />
 
         </service>
 

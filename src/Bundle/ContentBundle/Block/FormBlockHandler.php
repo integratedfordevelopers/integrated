@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Block;
 
 use Integrated\Bundle\FormTypeBundle\Form\Type\FormActionsType;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\DocumentManager;
@@ -26,7 +27,6 @@ use Integrated\Bundle\ContentBundle\Mailer\FormMailer;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Integrated\Common\Content\Form\ContentFormType;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormFactory;
@@ -68,17 +68,17 @@ class FormBlockHandler extends BlockHandler
     protected $channelContext;
 
     /**
-     * @var EventDispatcher
+     * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
 
     /**
-     * @param FormFactory             $formFactory
-     * @param DocumentManager         $documentManager
-     * @param RequestStack            $requestStack
-     * @param FormMailer              $formMailer
-     * @param ChannelContextInterface $channelContext
-     * @param EventDispatcher         $eventDispatcher
+     * @param FormFactory              $formFactory
+     * @param DocumentManager          $documentManager
+     * @param RequestStack             $requestStack
+     * @param FormMailer               $formMailer
+     * @param ChannelContextInterface  $channelContext
+     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         FormFactory $formFactory,
@@ -86,7 +86,7 @@ class FormBlockHandler extends BlockHandler
         RequestStack $requestStack,
         FormMailer $formMailer,
         ChannelContextInterface $channelContext,
-        EventDispatcher $eventDispatcher
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->formFactory = $formFactory;
         $this->documentManager = $documentManager;

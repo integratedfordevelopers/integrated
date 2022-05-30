@@ -52,6 +52,34 @@
         </service>
 
         <service id="integrated_website.controller.grid" class="%integrated_website.controller.grid.class%">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="integrated_page.grid.factory" />
+
+            <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+
+        <service id="integrated_website.controller.menu" class="Integrated\Bundle\WebsiteBundle\Controller\MenuController">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="integrated_menu.provider.integrated_menu_provider" />
+            <argument type="service" id="integrated.menu_factory.database" />
+            <argument type="service" id="channel.context" />
+
+            <tag name="controller.service_arguments" />
+            <tag name="container.service_subscriber" />
+
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+
+        <service id="integrated_website.controller.menu" class="Integrated\Bundle\WebsiteBundle\Controller\SearchSelectionController">
+            <argument type="service" id="integrated_content.provider.solarium" />
+
             <tag name="controller.service_arguments" />
             <tag name="container.service_subscriber" />
 
@@ -61,8 +89,6 @@
         </service>
 
         <service id="Integrated\Bundle\WebsiteBundle\Controller\SessionController">
-            <argument type="service" id="session" />
-
             <tag name="controller.service_arguments" />
             <tag name="container.service_subscriber" />
 

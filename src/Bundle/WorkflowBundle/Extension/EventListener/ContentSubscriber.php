@@ -198,7 +198,7 @@ class ContentSubscriber implements ContentSubscriberInterface
             $log->setState($data['state']);
             $state->setState($data['state']);
 
-            $dispatcher = $this->container->get('integrated_workflow.event_dispatcher');
+            $dispatcher = $this->container->get('event_dispatcher');
             $dispatcher->dispatch(new WorkflowStateChangedEvent($state, $content), WorkflowEvents::STATE_CHANGED);
 
             $persist = true;

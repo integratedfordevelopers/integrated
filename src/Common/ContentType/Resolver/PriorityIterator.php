@@ -49,7 +49,7 @@ class PriorityIterator implements IteratorInterface
     /**
      * {@inheritdoc}
      */
-    public function current()
+    public function current(): mixed
     {
         return $this->iterator->current();
     }
@@ -71,7 +71,7 @@ class PriorityIterator implements IteratorInterface
     /**
      * {@inheritdoc}
      */
-    public function key()
+    public function key(): mixed
     {
         return $this->iterator->valid() ? $this->iterator->key() : null;
     }

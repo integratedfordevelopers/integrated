@@ -16,12 +16,14 @@ use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
 use Integrated\Bundle\ContentBundle\Form\Type\SearchSelectionType;
+use Integrated\Bundle\ContentBundle\Services\SearchContentReferenced;
 use Integrated\Bundle\IntegratedBundle\Controller\AbstractController;
 use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -30,6 +32,28 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class SearchSelectionController extends AbstractController
 {
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
+    /**
+     * @var DocumentManager
+     */
+    private $documentManager;
+
+    /**
+     * @var SearchContentReferenced
+     */
+    private $searchContentReferenced;
+
+    public function __construct(RequestStack $requestStack, DocumentManager $documentManager, SearchContentReferenced $searchContentReferenced)
+    {
+        $this->requestStack = $requestStack;
+        $this->documentManager = $documentManager;
+        $this->searchContentReferenced = $searchContentReferenced;
+    }
+
     /**
      * Lists all the SearchSelection documents.
      *
@@ -64,8 +88,8 @@ class SearchSelectionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDocumentManager()->persist($searchSelection);
-            $this->getDocumentManager()->flush();
+            $this->documentManager->persist($searchSelection);
+            $this->documentManager->flush();
 
             $this->addFlash('success', 'Item created');
 
@@ -97,7 +121,7 @@ class SearchSelectionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDocumentManager()->flush();
+            $this->documentManager->flush();
 
             $this->addFlash('success', 'Item updated');
 
@@ -125,15 +149,14 @@ class SearchSelectionController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $contentReferenced = $this->get('integrated_content.services.search.content.referenced');
-        $referenced = $contentReferenced->getReferenced($searchSelection);
+        $referenced = $this->searchContentReferenced->getReferenced($searchSelection);
 
         $form = $this->createDeleteForm($searchSelection->getId(), \count($referenced) > 0);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDocumentManager()->remove($searchSelection);
-            $this->getDocumentManager()->flush();
+            $this->documentManager->remove($searchSelection);
+            $this->documentManager->flush();
 
             $this->addFlash('success', 'Item deleted');
 
@@ -155,10 +178,10 @@ class SearchSelectionController extends AbstractController
     public function menu()
     {
         /** @var Request $request */
-        $request = $this->get('request_stack')->getMainRequest();
+        $request = $this->requestStack->getMainRequest();
 
         /** @var SearchSelectionRepository $repo */
-        $repo = $this->getDocumentManager()->getRepository(SearchSelection::class);
+        $repo = $this->documentManager->getRepository(SearchSelection::class);
 
         $user = $this->getUser();
 
@@ -178,7 +201,7 @@ class SearchSelectionController extends AbstractController
     protected function createCreateForm(SearchSelection $searchSelection)
     {
         /** @var Request $request */
-        $request = $this->get('request_stack')->getCurrentRequest();
+        $request = $this->requestStack->getCurrentRequest();
 
         $form = $this->createForm(
             SearchSelectionType::class,
@@ -250,20 +273,12 @@ class SearchSelectionController extends AbstractController
      */
     protected function getQueryBuilder()
     {
-        $builder = $this->getDocumentManager()->createQueryBuilder(SearchSelection::class);
+        $builder = $this->documentManager->createQueryBuilder(SearchSelection::class);
 
-        if (false === $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if (false === $this->isGranted('ROLE_ADMIN')) {
             $builder->field('userId')->equals($this->getUser()->getId());
         }
 
         return $builder;
-    }
-
-    /**
-     * @return DocumentManager
-     */
-    protected function getDocumentManager()
-    {
-        return $this->get('doctrine_mongodb')->getManager();
     }
 }

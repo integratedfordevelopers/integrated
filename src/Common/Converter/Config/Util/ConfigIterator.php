@@ -42,7 +42,7 @@ class ConfigIterator implements Iterator
      *
      * @return TypeConfigInterface
      */
-    public function current()
+    public function current(): mixed
     {
         return current($this->types);
     }
@@ -60,7 +60,7 @@ class ConfigIterator implements Iterator
      *
      * @return int
      */
-    public function key()
+    public function key(): mixed
     {
         return key($this->types);
     }

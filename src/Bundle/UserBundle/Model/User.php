@@ -421,4 +421,23 @@ class User implements UserInterface
     {
         return $user->getUserIdentifier() === $this->getUserIdentifier();
     }
+
+    public function __serialize(): array
+    {
+        return [
+            $this->id,
+            $this->username,
+            $this->password,
+            $this->salt,
+        ];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        list(
+            $this->id,
+            $this->username,
+            $this->password,
+            $this->salt) = $data;
+    }
 }

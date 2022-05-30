@@ -114,7 +114,7 @@ class AppCache implements CacheInterface
             return false;
         }
 
-        if ($request = $this->requestStack->getMasterRequest()) {
+        if ($request = $this->requestStack->getMainRequest()) {
             $file = $request->server->get('DOCUMENT_ROOT').$request->getBasePath().$storage->getPathname();
             if (file_exists($file)) {
                 return new \SplFileObject($file, 'r');
