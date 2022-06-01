@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ContentBundle\Form\Type\RelationType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,6 +31,13 @@ class RelationController extends AbstractController
      */
     protected $relationClass = 'Integrated\\Bundle\\ContentBundle\\Document\\Relation\\Relation';
 
+    private $documentManager;
+
+    public function __construct(DocumentManager $documentManager)
+    {
+        $this->documentManager = $documentManager;
+    }
+
     /**
      * Lists all the Relation documents.
      *
@@ -41,9 +49,7 @@ class RelationController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-        $dm = $this->get('doctrine_mongodb')->getManager();
-        $qb = $dm->createQueryBuilder($this->relationClass)
+        $qb = $this->documentManager->createQueryBuilder($this->relationClass)
             ->sort('name');
 
         if ($contentType = $request->get('contentType')) {
@@ -107,10 +113,8 @@ class RelationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-            $dm = $this->get('doctrine_mongodb')->getManager();
-            $dm->persist($relation);
-            $dm->flush();
+            $this->documentManager->persist($relation);
+            $this->documentManager->flush();
 
             $this->addFlash('success', 'Item created');
 
@@ -156,9 +160,7 @@ class RelationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-            $dm = $this->get('doctrine_mongodb')->getManager();
-            $dm->flush();
+            $this->documentManager->flush();
 
             $this->addFlash('success', 'Item updated');
 
@@ -186,10 +188,8 @@ class RelationController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isValid()) {
-            /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-            $dm = $this->get('doctrine_mongodb')->getManager();
-            $dm->remove($relation);
-            $dm->flush();
+            $this->documentManager->remove($relation);
+            $this->documentManager->flush();
 
             $this->addFlash('success', 'Item deleted');
         }

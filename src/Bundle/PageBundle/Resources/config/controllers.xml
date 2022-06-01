@@ -8,6 +8,7 @@
 
         <service id="Integrated\Bundle\PageBundle\Controller\ContentTypePageController">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="integrated_page.services.route_cache" />
 
             <tag name="controller.service_arguments" />
             <tag name="container.service_subscriber" />
@@ -20,6 +21,7 @@
         <service id="Integrated\Bundle\PageBundle\Controller\PageController">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <argument type="service" id="Integrated\Bundle\PageBundle\Services\PageCopyService" />
+            <argument type="service" id="integrated_page.services.route_cache" />
 
             <tag name="controller.service_arguments" />
             <tag name="container.service_subscriber" />

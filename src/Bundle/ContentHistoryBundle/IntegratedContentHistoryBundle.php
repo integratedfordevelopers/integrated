@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\ContentHistoryBundle;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -26,13 +25,5 @@ class IntegratedContentHistoryBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
-
-        $container->addCompilerPass(
-            new RegisterListenersPass(
-                'integrated_content_history.event_dispatcher',
-                'integrated.content_history.event_listener',
-                'integrated.content_history.event_subscriber'
-            )
-        );
     }
 }

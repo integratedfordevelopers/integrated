@@ -11,8 +11,10 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\FormTypeBundle\Form\Type\FormActionsType;
 use Integrated\Common\ContentType\ContentTypeInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
@@ -24,7 +26,6 @@ use Integrated\Common\Form\Mapping\MetadataFactory;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Integrated\Common\Form\Mapping\MetadataInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,22 +54,33 @@ class ContentTypeController extends AbstractController
     private $contentTypeManager;
 
     /**
-     * @var EventDispatcher
+     * @var EventDispatcherInterface
      */
     private $eventDispatcher;
 
     /**
+     * @var DocumentManager
+     */
+    private $documentManager;
+
+    /**
      * ContentTypeController constructor.
      *
-     * @param ContentTypeManager $contentTypeManager
-     * @param EventDispatcher    $eventDispatcher
-     * @param MetadataFactory    $metadataFactory
+     * @param ContentTypeManager       $contentTypeManager
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param MetadataFactory          $metadataFactory
+     * @param DocumentManager          $documentManager
      */
-    public function __construct(ContentTypeManager $contentTypeManager, EventDispatcher $eventDispatcher, MetadataFactory $metadataFactory)
-    {
+    public function __construct(
+        ContentTypeManager $contentTypeManager,
+        EventDispatcherInterface $eventDispatcher,
+        MetadataFactory $metadataFactory,
+        DocumentManager $documentManager
+    ) {
         $this->contentTypeManager = $contentTypeManager;
         $this->eventDispatcher = $eventDispatcher;
         $this->metadata = $metadataFactory;
+        $this->documentManager = $documentManager;
     }
 
     /**
@@ -147,10 +159,8 @@ class ContentTypeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-            $dm = $this->get('doctrine_mongodb')->getManager();
-            $dm->persist($contentType);
-            $dm->flush();
+            $this->documentManager->persist($contentType);
+            $this->documentManager->flush();
 
             $this->addFlash('success', 'Item created');
 
@@ -183,15 +193,12 @@ class ContentTypeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-            $dm = $this->get('doctrine_mongodb')->getManager();
-
-            if (!$dm->contains($contentType)) {
+            if (!$this->documentManager->contains($contentType)) {
                 // Needed for content types from XML files
-                $dm->persist($contentType);
+                $this->documentManager->persist($contentType);
             }
 
-            $dm->flush();
+            $this->documentManager->flush();
 
             $this->addFlash('success', 'Item updated');
 
@@ -228,11 +235,8 @@ class ContentTypeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-            $dm = $this->get('doctrine_mongodb')->getManager();
-
             // Only delete ContentType when there are no Content items
-            $count = \count($dm->getRepository($contentType->getClass())->findBy(['contentType' => $contentType->getId()]));
+            $count = \count($this->documentManager->getRepository($contentType->getClass())->findBy(['contentType' => $contentType->getId()]));
 
             if ($count > 0) {
                 // Set flash message and redirect to item page
@@ -241,8 +245,8 @@ class ContentTypeController extends AbstractController
                 return $this->redirectToRoute('integrated_content_content_type_show', ['id' => $contentType->getId()]);
             }
 
-            $dm->remove($contentType);
-            $dm->flush();
+            $this->documentManager->remove($contentType);
+            $this->documentManager->flush();
 
             $this->eventDispatcher->dispatch(new ContentTypeEvent($contentType), Events::CONTENT_TYPE_DELETED);
 

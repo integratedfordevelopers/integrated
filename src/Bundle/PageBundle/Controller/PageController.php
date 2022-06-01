@@ -24,6 +24,7 @@ use Integrated\Bundle\PageBundle\Form\Type\PageCopyType;
 use Integrated\Bundle\PageBundle\Form\Type\PageFilterType;
 use Integrated\Bundle\PageBundle\Form\Type\PageType;
 use Integrated\Bundle\PageBundle\Services\PageCopyService;
+use Integrated\Bundle\PageBundle\Services\RouteCache;
 use MongoDB\BSON\Regex;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
@@ -48,15 +49,22 @@ class PageController extends AbstractController
     private $pageCopyService;
 
     /**
+     * @var RouteCache
+     */
+    private $routeCache;
+
+    /**
      * PageController constructor.
      *
      * @param DocumentManager $documentManager
      * @param PageCopyService $pageCopyService
+     * @param RouteCache      $routeCache
      */
-    public function __construct(DocumentManager $documentManager, PageCopyService $pageCopyService)
+    public function __construct(DocumentManager $documentManager, PageCopyService $pageCopyService, RouteCache $routeCache)
     {
         $this->documentManager = $documentManager;
         $this->pageCopyService = $pageCopyService;
+        $this->routeCache = $routeCache;
     }
 
     /**
@@ -143,7 +151,7 @@ class PageController extends AbstractController
             $this->documentManager->persist($page);
             $this->documentManager->flush();
 
-            $this->get('integrated_page.services.route_cache')->clear();
+            $this->routeCache->clear();
 
             $this->addFlash('success', sprintf('Page "%s" has been created', $page->getTitle()));
 
@@ -175,7 +183,7 @@ class PageController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->documentManager->flush();
 
-            $this->get('integrated_page.services.route_cache')->clear();
+            $this->routeCache->clear();
 
             $this->addFlash('success', sprintf('Page "%s" has been updated', $page->getTitle()));
 
@@ -213,7 +221,7 @@ class PageController extends AbstractController
             $this->documentManager->remove($page);
             $this->documentManager->flush();
 
-            $this->get('integrated_page.services.route_cache')->clear();
+            $this->routeCache->clear();
 
             $this->addFlash('success', 'Page deleted');
 

@@ -136,4 +136,14 @@ class SolariumDataCollector extends AbstractPlugin implements DataCollectorInter
     {
         $this->data = unserialize($data);
     }
+
+    public function __serialize(): array
+    {
+        return $this->data;
+    }
+
+    public function __unserialize(array $data): void
+    {
+        $this->data = $data;
+    }
 }

@@ -17,7 +17,7 @@ use Doctrine\ODM\MongoDB\Event\OnFlushEventArgs;
 use Doctrine\ODM\MongoDB\Events;
 use Integrated\Bundle\ContentHistoryBundle\Event\ContentHistoryEvent;
 use Integrated\Common\Content\ContentInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -25,7 +25,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 class ContentHistorySubscriber implements EventSubscriber
 {
     /**
-     * @var EventDispatcher
+     * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
 
@@ -35,10 +35,10 @@ class ContentHistorySubscriber implements EventSubscriber
     protected $className;
 
     /**
-     * @param EventDispatcher $eventDispatcher
-     * @param string          $className
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param string                   $className
      */
-    public function __construct(EventDispatcher $eventDispatcher, $className)
+    public function __construct(EventDispatcherInterface $eventDispatcher, $className)
     {
         $this->eventDispatcher = $eventDispatcher;
         $this->className = $className;

@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\UserBundle\Controller;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Form\FormInterface;
 use Integrated\Bundle\FormTypeBundle\Form\Type\FormActionsType;
@@ -31,6 +33,22 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ScopeController extends AbstractController
 {
+    /**
+     * @var DocumentManager
+     */
+    private $documentManager;
+
+    /**
+     * @var EntityManager
+     */
+    private $entityManager;
+
+    public function __construct(DocumentManager $documentManager, EntityManager $entityManager)
+    {
+        $this->documentManager = $documentManager;
+        $this->entityManager = $entityManager;
+    }
+
     /**
      * @param Request $request
      *
@@ -159,9 +177,7 @@ class ScopeController extends AbstractController
 
             $hasRelations = false;
 
-            /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-            $dm = $this->get('doctrine_mongodb')->getManager();
-            if ($channels = $dm->getRepository(Channel::class)->findBy(['scope' => (string) $scope->getId()])) {
+            if ($channels = $this->documentManager->getRepository(Channel::class)->findBy(['scope' => (string) $scope->getId()])) {
                 $form->addError(
                     new FormError('This scope is in use by channels.')
                 );
@@ -169,7 +185,7 @@ class ScopeController extends AbstractController
                 $hasRelations = true;
             }
 
-            if ($users = $this->getDoctrine()->getManager()->getRepository(User::class)->findBy(['scope' => $scope])) {
+            if ($users = $this->entityManager->getRepository(User::class)->findBy(['scope' => $scope])) {
                 $form->addError(
                     new FormError('This scope is in use by users.')
                 );

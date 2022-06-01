@@ -63,6 +63,7 @@
         <service id="integrated_user.controller.two_factor" class="Integrated\Bundle\UserBundle\Controller\TwoFactorController">
             <argument type="service" id="integrated_user.user.manager" />
             <argument type="service" id="service_container" />
+            <argument type="service" id="translator" />
 
             <tag name="controller.service_arguments" />
             <tag name="container.service_subscriber" />
@@ -93,6 +94,9 @@
         </service>
 
         <service id="Integrated\Bundle\UserBundle\Controller\ScopeController">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+
             <tag name="controller.service_arguments" />
             <tag name="container.service_subscriber" />
 

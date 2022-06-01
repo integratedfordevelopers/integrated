@@ -14,6 +14,7 @@ namespace Integrated\Bundle\PageBundle\Controller;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Bundle\PageBundle\Form\Type\ContentTypePageType;
+use Integrated\Bundle\PageBundle\Services\RouteCache;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
@@ -32,13 +33,20 @@ class ContentTypePageController extends AbstractController
     private $documentManager;
 
     /**
+     * @var RouteCache
+     */
+    private $routeCache;
+
+    /**
      * PageController constructor.
      *
      * @param DocumentManager $documentManager
+     * @param RouteCache      $routeCache
      */
-    public function __construct(DocumentManager $documentManager)
+    public function __construct(DocumentManager $documentManager, RouteCache $routeCache)
     {
         $this->documentManager = $documentManager;
+        $this->routeCache = $routeCache;
     }
 
     /**
@@ -59,7 +67,7 @@ class ContentTypePageController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->documentManager->flush();
 
-            $this->get('integrated_page.services.route_cache')->clear();
+            $this->routeCache->clear();
 
             $this->addFlash('success', 'Page updated');
 
@@ -84,7 +92,7 @@ class ContentTypePageController extends AbstractController
             $page,
             [
                 'method' => 'PUT',
-                'controller' => $this->get($page->getControllerService()),
+                'controller' => $this->container->get($page->getControllerService()),
             ]
         );
 
