@@ -42,7 +42,7 @@ class ContentTypeInformation
         foreach ($contentTypes as $contentType) {
             $channelOption = $contentType->getOption('channels');
             if (isset($channelOption['disabled'])
-                && $channelOption['disabled'] == 1
+                && $channelOption['disabled'] == 2
                 || $contentType->getOption('publication') === 'disabled') {
                 continue;
             }
