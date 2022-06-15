@@ -66,7 +66,10 @@ class BlockFilterType extends AbstractType
         $builder->add(
             'q',
             TextType::class,
-            ['attr' => ['placeholder' => 'Filter block name']]
+            [
+                'required' => false,
+                'attr' => ['placeholder' => 'Filter block name'],
+            ]
         );
 
         $builder->add(
