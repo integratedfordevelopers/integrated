@@ -45,6 +45,7 @@
 
         <service id="integrated_solr.indexer.job_factory" class="Integrated\Common\Solr\Indexer\JobFactory">
             <argument type="service" id="integrated_solr.indexer.serializer" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <argument type="string">json</argument>
         </service>
 

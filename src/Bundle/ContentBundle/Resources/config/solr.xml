@@ -7,6 +7,7 @@
     <services>
 
         <service id="integrated_content.solr.content.type" class="Integrated\Bundle\ContentBundle\Solr\Type\ContentType" public="false">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <tag name="integrated_solr.type" />
         </service>
 
