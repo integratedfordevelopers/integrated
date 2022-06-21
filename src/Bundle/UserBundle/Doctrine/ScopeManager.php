@@ -80,7 +80,7 @@ class ScopeManager implements ScopeManagerInterface
         $this->om->persist($scope);
 
         if ($flush) {
-            $this->om->flush($scope);
+            $this->om->flush();
         }
     }
 
@@ -92,7 +92,7 @@ class ScopeManager implements ScopeManagerInterface
         $this->om->remove($scope);
 
         if ($flush) {
-            $this->om->flush($scope);
+            $this->om->flush();
         }
     }
 

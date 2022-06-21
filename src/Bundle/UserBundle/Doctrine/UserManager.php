@@ -90,7 +90,7 @@ class UserManager implements UserManagerInterface
         $this->om->persist($user);
 
         if ($flush) {
-            $this->om->flush($user);
+            $this->om->flush();
         }
     }
 
@@ -102,7 +102,7 @@ class UserManager implements UserManagerInterface
         $this->om->remove($user);
 
         if ($flush) {
-            $this->om->flush($user);
+            $this->om->flush();
         }
     }
 
