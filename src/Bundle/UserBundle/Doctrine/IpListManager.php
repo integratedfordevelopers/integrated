@@ -74,7 +74,7 @@ class IpListManager implements IpListManagerInterface
         $this->om->persist($list);
 
         if ($flush) {
-            $this->om->flush($list);
+            $this->om->flush();
         }
     }
 
@@ -86,7 +86,7 @@ class IpListManager implements IpListManagerInterface
         $this->om->remove($list);
 
         if ($flush) {
-            $this->om->flush($list);
+            $this->om->flush();
         }
     }
 

@@ -44,7 +44,7 @@ class ConfigRepository extends EntityRepository implements ConfigManagerInterfac
         $this->_em->persist($object);
 
         if ($flush) {
-            $this->_em->flush($object);
+            $this->_em->flush();
         }
     }
 
@@ -62,7 +62,7 @@ class ConfigRepository extends EntityRepository implements ConfigManagerInterfac
         $this->_em->remove($object);
 
         if ($flush) {
-            $this->_em->flush($object);
+            $this->_em->flush();
         }
     }
 
