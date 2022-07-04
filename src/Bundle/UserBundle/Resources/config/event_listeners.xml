@@ -36,6 +36,21 @@
             <tag name="kernel.event_subscriber" />
         </service>
 
+        <service id="integrated_user.event_listener.user_authentication_logger" class="Integrated\Bundle\UserBundle\EventListener\UserAuthenticationLoggerListener">
+            <argument type="service" id="logger" />
+            <argument type="service" id="request_stack" />
+            <tag name="kernel.event_subscriber" />
+            <tag name="monolog.logger" channel="user-activity"/>
+        </service>
+
+        <service id="integrated_user.event_listener.user_request_logger" class="Integrated\Bundle\UserBundle\EventListener\UserRequestLoggerListener">
+            <argument type="service" id="logger" />
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="security.firewall.map" />
+            <tag name="kernel.event_subscriber" />
+            <tag name="monolog.logger" channel="user-activity"/>
+        </service>
+
     </services>
 
 </container>
