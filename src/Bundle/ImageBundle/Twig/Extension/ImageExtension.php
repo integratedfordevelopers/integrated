@@ -96,7 +96,7 @@ class ImageExtension extends AbstractExtension
                 $image = $this->webFormatConverter->convert($storageModel)->getPathname();
             } catch (\Exception $e) {
                 // Set the fallback image
-                $image = false;
+                $image = $storageModel->getIdentifier();
             }
 
             if (\in_array($storageModel->getMetadata()->getExtension(), $this->mimicFormats)) {
@@ -119,8 +119,7 @@ class ImageExtension extends AbstractExtension
                 // Returns the image in a webformat
                 return $this->imageHandling->open($this->webFormatConverter->convert($image)->getPathname());
             } catch (\Exception $e) {
-                // Set the fallback image
-                $image = false;
+                $image = $image->getIdentifier();
             }
         }
 
@@ -140,8 +139,7 @@ class ImageExtension extends AbstractExtension
             try {
                 $image = $this->webFormatConverter->convert($image)->getPathname();
             } catch (\Exception $e) {
-                // Set the fallback image
-                $image = false;
+                $image = $image->getIdentifier();
             }
 
             if (\in_array($metadata->getExtension(), $this->mimicFormats)) {
