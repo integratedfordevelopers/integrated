@@ -51,7 +51,7 @@ trait LocatableStorageInterfaceTrait
             return '@';
         }
 
-        return substr($this->getPathname(), ($offset + 1), 1);
+        return substr($this->getPathname(), $offset + 1, 1);
     }
 
     /**

@@ -112,7 +112,7 @@ class VideoProvider
         $success = curl_exec($ch);
 
         // fetch mimetype of external file
-        $mimeType = (curl_getinfo($ch, \CURLINFO_CONTENT_TYPE));
+        $mimeType = curl_getinfo($ch, \CURLINFO_CONTENT_TYPE);
 
         // close it all
         curl_close($ch);
