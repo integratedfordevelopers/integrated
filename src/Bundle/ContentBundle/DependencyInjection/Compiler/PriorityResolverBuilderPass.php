@@ -35,7 +35,7 @@ class PriorityResolverBuilderPass implements CompilerPassInterface
             $arguments = [new Reference($service)];
 
             if (isset($tags[0]['priority'])) {
-                $arguments[] = (int) ($tags[0]['priority']);
+                $arguments[] = (int) $tags[0]['priority'];
             }
 
             $definition->addMethodCall('addResolver', $arguments);

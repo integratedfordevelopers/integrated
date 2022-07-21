@@ -49,7 +49,7 @@ class Cleaner
                     continue;
                 }
 
-                $diff = ArrayComparer::diff(($change[0] ?? []), ($change[1] ?? []));
+                $diff = ArrayComparer::diff($change[0] ?? [], $change[1] ?? []);
                 if (\count($diff) == 0) {
                     unset($document['changeSet'][$key]);
                     $changed = true;
