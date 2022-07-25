@@ -70,7 +70,7 @@ class AppCache implements CacheInterface
         $file = DirectoryUtil::cachePathFile(sprintf(self::CACHE_PATH, $this->directory), $storage);
 
         // Check if a file exists
-        if ($file->isFile()) {
+        if ($file->isFile() && $file->getSize() > 0) {
             return $file;
         }
 
