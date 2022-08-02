@@ -112,7 +112,7 @@ class RelationController extends AbstractController
         $form = $this->createNewForm($relation);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->documentManager->persist($relation);
             $this->documentManager->flush();
 
@@ -159,7 +159,7 @@ class RelationController extends AbstractController
         $form = $this->createEditForm($relation);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->documentManager->flush();
 
             $this->addFlash('success', 'Item updated');
@@ -187,7 +187,7 @@ class RelationController extends AbstractController
         $form = $this->createDeleteForm($relation);
 
         $form->handleRequest($request);
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->documentManager->remove($relation);
             $this->documentManager->flush();
 

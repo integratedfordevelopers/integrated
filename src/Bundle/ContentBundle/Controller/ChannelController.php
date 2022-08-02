@@ -136,7 +136,7 @@ class ChannelController extends AbstractController
         $form = $this->createCreateForm($channel);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->documentManager->persist($channel);
             $this->documentManager->flush();
 
@@ -190,7 +190,7 @@ class ChannelController extends AbstractController
         $form = $this->createEditForm($channel);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->documentManager->flush();
 
             $this->addFlash('success', 'Item updated');

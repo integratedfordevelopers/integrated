@@ -477,11 +477,9 @@ class ContentController extends AbstractController
         }
 
         $form = $this->createNewForm($contentType, $content, $request);
+        $form->handleRequest($request);
 
-        if ($request->isMethod('post')) {
-            $form->handleRequest($request);
-
-            // check for back click else its a submit
+        if ($form->isSubmitted()) {
             if ($form->get('actions')->getData() == 'cancel') {
                 return $this->redirectToRoute('integrated_content_content_index', ['remember' => 1]);
             }
@@ -713,10 +711,9 @@ class ContentController extends AbstractController
         $referenced = $this->contentReferenced->getReferenced($content);
 
         $form = $this->createDeleteForm($content, $locking, \count($referenced) > 0);
+        $form->handleRequest($request);
 
-        if ($request->isMethod('delete')) {
-            $form->handleRequest($request);
-
+        if ($form->isSubmitted()) {
             // possible actions are cancel, reload and delete
 
             if ($form->get('actions')->getData() == 'cancel') {

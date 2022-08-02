@@ -118,37 +118,34 @@ class FormBlockHandler extends BlockHandler
         $this->eventDispatcher->dispatch(new FormBlockEvent($content, $block), FormBlockEvent::PRE_LOAD);
 
         $form = $this->createForm($content, ['method' => 'post', 'content_type' => $contentType], $block);
+        $form->handleRequest($request);
 
-        if ($request->isMethod('post')) {
-            $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->linkActiveDocument($block, $content);
 
-            if ($form->isValid()) {
-                $this->linkActiveDocument($block, $content);
+            if ($channel = $this->channelContext->getChannel()) {
+                $content->addChannel($channel);
+            }
 
-                if ($channel = $this->channelContext->getChannel()) {
-                    $content->addChannel($channel);
-                }
+            $this->eventDispatcher->dispatch(new FormBlockEvent($content, $block), FormBlockEvent::PRE_FLUSH);
 
-                $this->eventDispatcher->dispatch(new FormBlockEvent($content, $block), FormBlockEvent::PRE_FLUSH);
+            $this->documentManager->persist($content);
+            $this->documentManager->flush();
 
-                $this->documentManager->persist($content);
-                $this->documentManager->flush();
+            $this->eventDispatcher->dispatch(new FormBlockEvent($content, $block), FormBlockEvent::POST_FLUSH);
 
-                $this->eventDispatcher->dispatch(new FormBlockEvent($content, $block), FormBlockEvent::POST_FLUSH);
+            $data = $request->request->get($form->getName());
 
-                $data = $request->request->get($form->getName());
+            // remove irrelevant fields
+            if ($data instanceof InputBag) {
+                unset($data['actions']);
+                unset($data['_token']);
+            }
 
-                // remove irrelevant fields
-                if ($data instanceof InputBag) {
-                    unset($data['actions']);
-                    unset($data['_token']);
-                }
+            $this->formMailer->send($data, $block->getEmailAddresses(), $block->getTitle());
 
-                $this->formMailer->send($data, $block->getEmailAddresses(), $block->getTitle());
-
-                if ($block->getReturnUrl()) {
-                    return new RedirectResponse($block->getReturnUrl());
-                }
+            if ($block->getReturnUrl()) {
+                return new RedirectResponse($block->getReturnUrl());
             }
         }
 
