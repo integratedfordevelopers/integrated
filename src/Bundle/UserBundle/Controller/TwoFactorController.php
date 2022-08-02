@@ -54,10 +54,9 @@ class TwoFactorController extends AbstractController
         }
 
         $form = $this->createDeleteForm($user);
+        $form->handleRequest($request);
 
-        if ($request->isMethod('delete')) {
-            $form->handleRequest($request);
-
+        if ($form->isSubmitted()) {
             if ($form->get('actions')->get('cancel')->isClicked()) {
                 return $this->redirectToRoute('integrated_user_user_index');
             }

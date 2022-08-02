@@ -93,11 +93,9 @@ class WorkflowController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $form = $this->createNewForm();
+        $form->handleRequest($request);
 
-        if ($request->isMethod('post')) {
-            $form->handleRequest($request);
-
-            // check for back click else its a submit
+        if ($form->isSubmitted()) {
             if ($form->get('actions')->get('cancel')->isClicked()) {
                 return $this->redirectToRoute('integrated_workflow_index');
             }
@@ -139,11 +137,9 @@ class WorkflowController extends AbstractController
         }
 
         $form = $this->createEditForm($workflow);
+        $form->handleRequest($request);
 
-        if ($request->isMethod('put')) {
-            $form->handleRequest($request);
-
-            // check for back click else its a submit
+        if ($form->isSubmitted()) {
             if ($form->get('actions')->get('cancel')->isClicked()) {
                 return $this->redirectToRoute('integrated_workflow_index');
             }
@@ -182,11 +178,9 @@ class WorkflowController extends AbstractController
         }
 
         $form = $this->createDeleteForm($workflow);
+        $form->handleRequest($request);
 
-        if ($request->isMethod('delete')) {
-            $form->handleRequest($request);
-
-            // check for back click else its a submit
+        if ($form->isSubmitted()) {
             if ($form->get('actions')->get('cancel')->isClicked()) {
                 return $this->redirectToRoute('integrated_workflow_index');
             }

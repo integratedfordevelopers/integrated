@@ -83,11 +83,9 @@ class ScopeController extends AbstractController
         }
 
         $form = $this->createNewForm();
+        $form->handleRequest($request);
 
-        if ($request->isMethod('post')) {
-            $form->handleRequest($request);
-
-            // check for cancel click else its a submit
+        if ($form->isSubmitted()) {
             if ($form->get('actions')->get('cancel')->isClicked()) {
                 return $this->redirectToRoute('integrated_user_scope_index');
             }
@@ -121,16 +119,10 @@ class ScopeController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        if (!$scope) {
-            throw $this->createNotFoundException();
-        }
-
         $form = $this->createEditForm($scope);
+        $form->handleRequest($request);
 
-        if ($request->isMethod('put')) {
-            $form->handleRequest($request);
-
-            // check for cancel click else its a submit
+        if ($form->isSubmitted()) {
             if ($form->get('actions')->get('cancel')->isClicked()) {
                 return $this->redirectToRoute('integrated_user_scope_index');
             }
