@@ -20,7 +20,7 @@ class SolariumQueryPageFixerSubscriber extends BaseSolariumQuerySubscriber
     public static function getSubscribedEvents(): array
     {
         return [
-            'knp_pager.items' => ['items', 1], /* triggers before original */
+            'knp_pager.items' => ['items', 0.5], /* triggers before original */
         ];
     }
 }
