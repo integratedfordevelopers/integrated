@@ -15,6 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Event\PreFlushEventArgs;
 use Doctrine\ORM\PersistentCollection;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Utils\StateVisibleConfig;
 
@@ -351,7 +352,7 @@ class State
      *
      * @param PreFlushEventArgs $event
      */
-    public function doPermissionFix(PreFlushEventArgs $event)
+    public function doPermissionFix(LifecycleEventArgs $event)
     {
         // if not a PersistentCollection then its probably is a new entity else check if
         // data from the database is loaded or not.
@@ -360,7 +361,7 @@ class State
             return;
         }
 
-        $em = $event->getEntityManager();
+        $em = $event->getObjectManager();
         $uow = $em->getUnitOfWork();
 
         /** @var Permission $permission */
