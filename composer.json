@@ -29,7 +29,7 @@
         "doctrine/migrations": "~2.2",
         "doctrine/mongodb-odm-bundle": "~4.3",
         "doctrine/orm": "^2.7.5",
-        "endroid/qr-code-bundle": "^3.4",
+        "endroid/qr-code-bundle": "^4.0",
         "excelwebzone/recaptcha-bundle": "^1.5",
         "facebook/graph-sdk": "~5.0",
         "gregwar/image": ">=2.0.25",
@@ -115,7 +115,10 @@
         }
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/package-versions-deprecated": false
+        }
     },
     "extra": {
         "branch-alias": {
