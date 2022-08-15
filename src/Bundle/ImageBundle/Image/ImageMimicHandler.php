@@ -21,10 +21,17 @@ class ImageMimicHandler extends ImageHandler
      */
     public function save($file, $type = 'mimic', $quality = 100)
     {
-        if ($this->source instanceof File) {
-            copy($this->source->getFile(), $file);
-        } elseif ($this->useFallbackImage) {
-            return null === $file ? file_get_contents($this->fallback) : $this->getCacheFallback();
+        try {
+            if ($this->source instanceof File) {
+                copy($this->source->getFile(), $file);
+            } elseif ($this->useFallbackImage) {
+                return null === $file ? file_get_contents($this->fallback) : $this->getCacheFallback();
+            }
+        } catch (\Exception $e) {
+            if ($this->useFallbackImage) {
+                return null === $file ? file_get_contents($this->fallback) : $this->getCacheFallback();
+            }
+            throw $e;
         }
 
         return $file;
