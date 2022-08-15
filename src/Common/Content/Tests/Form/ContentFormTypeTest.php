@@ -452,7 +452,7 @@ class ContentFormTypeTest extends \PHPUnit\Framework\TestCase
             ->expects($this->once())
             ->method('setRequired')
             ->with('content_type')
-            ->willReturn($resolver)
+            ->will($this->returnValue($resolver))
         ;
 
         $resolver
@@ -497,7 +497,7 @@ class ContentFormTypeTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return FormBuilderInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @return FormBuilderInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected function getBuilder()
     {
@@ -505,7 +505,7 @@ class ContentFormTypeTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return FormView|\PHPUnit_Framework_MockObject_MockObject
+     * @return FormView|\PHPUnit\Framework\MockObject\MockObject
      */
     protected function getView()
     {
@@ -513,7 +513,7 @@ class ContentFormTypeTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return FormInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @return FormInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected function getForm()
     {
@@ -521,7 +521,7 @@ class ContentFormTypeTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return OptionsResolver|\PHPUnit_Framework_MockObject_MockObject
+     * @return OptionsResolver|\PHPUnit\Framework\MockObject\MockObject
      */
     protected function getResolver()
     {
@@ -533,7 +533,7 @@ class ContentFormTypeTest extends \PHPUnit\Framework\TestCase
      * @param string $type
      * @param array  $options
      *
-     * @return AttributeInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @return AttributeInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected function getAttribute($name, $type, array $options = [])
     {
@@ -557,7 +557,7 @@ class ContentFormTypeTest extends \PHPUnit\Framework\TestCase
      * @param string $name
      * @param array  $options
      *
-     * @return ContentTypeFieldInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @return ContentTypeFieldInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected function getField($name, array $options = [])
     {
