@@ -13,7 +13,6 @@ namespace Integrated\Bundle\WorkflowBundle\Entity\Definition;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Event\PreFlushEventArgs;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
@@ -350,7 +349,7 @@ class State
      * Fix issues with primary key constraints errors because deletes are execute
      * after updates and inserts.
      *
-     * @param PreFlushEventArgs $event
+     * @param LifecycleEventArgs $event
      */
     public function doPermissionFix(LifecycleEventArgs $event)
     {
