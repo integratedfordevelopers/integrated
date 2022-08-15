@@ -28,7 +28,7 @@
         "doctrine/doctrine-fixtures-bundle": "^3.4.0",
         "doctrine/migrations": "~2.2",
         "doctrine/mongodb-odm-bundle": "~4.3",
-        "doctrine/orm": "^2.7.5",
+        "doctrine/orm": "^2.13.0",
         "endroid/qr-code-bundle": "^4.0",
         "excelwebzone/recaptcha-bundle": "^1.5",
         "facebook/graph-sdk": "~5.0",
