@@ -115,10 +115,7 @@
         }
     },
     "config": {
-        "sort-packages": true,
-        "allow-plugins": {
-            "composer/package-versions-deprecated": false
-        }
+        "sort-packages": true
     },
     "extra": {
         "branch-alias": {

@@ -14,7 +14,6 @@ namespace Integrated\Common\Content\Extension\Adaptor\Doctrine;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Persistence\Proxy;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\ORM\Event\PreFlushEventArgs;
 use Integrated\Common\Content\Extension\Adaptor\AbstractAdaptor;
 use Integrated\Common\Content\Extension\Events;
 
@@ -59,9 +58,9 @@ class DoctrineOrmAdaptor extends AbstractAdaptor implements EventSubscriber
         $this->dispatch(Events::POST_CREATE, $args->getObject());
     }
 
-    public function preFlush(PreFlushEventArgs $event)
+    public function preFlush(LifecycleEventArgs $event)
     {
-        $manager = $event->getEntityManager();
+        $manager = $event->getObjectManager();
         $uow = $manager->getUnitOfWork();
 
         foreach ($uow->getIdentityMap() as $class => $objects) {

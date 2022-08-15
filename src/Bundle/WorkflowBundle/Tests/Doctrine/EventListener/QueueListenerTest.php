@@ -164,7 +164,7 @@ class QueueListenerTest extends \PHPUnit\Framework\TestCase
      */
     protected function getEvent($object)
     {
-        $instance = $this->getMockBuilder('Doctrine\\ORM\\Event\\LifecycleEventArgs')->disableOriginalConstructor()->getMock();
+        $instance = $this->getMockBuilder('Doctrine\\Persistence\\Event\\LifecycleEventArgs')->disableOriginalConstructor()->getMock();
         $instance->expects($this->any())
             ->method('getObject')
             ->willReturn($object);

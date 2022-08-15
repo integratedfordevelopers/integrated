@@ -13,7 +13,7 @@ namespace Integrated\Bundle\WorkflowBundle\Doctrine\EventListener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 use Integrated\Bundle\WorkflowBundle\Entity\Workflow\Log;
 
