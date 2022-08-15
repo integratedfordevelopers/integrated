@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Tests\Doctrine\EventListener;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 use Integrated\Bundle\WorkflowBundle\Doctrine\EventListener\QueueListener;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
@@ -164,7 +164,7 @@ class QueueListenerTest extends \PHPUnit\Framework\TestCase
      */
     protected function getEvent($object)
     {
-        $instance = $this->getMockBuilder('Doctrine\\ORM\\Event\\LifecycleEventArgs')->disableOriginalConstructor()->getMock();
+        $instance = $this->getMockBuilder('Doctrine\\Persistence\\Event\\LifecycleEventArgs')->disableOriginalConstructor()->getMock();
         $instance->expects($this->any())
             ->method('getObject')
             ->willReturn($object);
