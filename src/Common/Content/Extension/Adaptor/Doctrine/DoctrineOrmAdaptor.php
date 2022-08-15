@@ -13,7 +13,7 @@ namespace Integrated\Common\Content\Extension\Adaptor\Doctrine;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Persistence\Proxy;
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Integrated\Common\Content\Extension\Adaptor\AbstractAdaptor;
 use Integrated\Common\Content\Extension\Events;
 
