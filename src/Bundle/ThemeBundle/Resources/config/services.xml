@@ -8,6 +8,7 @@
 
         <service id="integrated_theme.templating.theme_manager" class="Integrated\Bundle\ThemeBundle\Templating\ThemeManager" public="true">
             <argument type="service" id="twig.loader.native_filesystem" />
+            <argument>%kernel.project_dir%</argument>
         </service>
 
         <service id="Integrated\Bundle\ThemeBundle\Templating\ThemeManager" alias="integrated_theme.templating.theme_manager">
