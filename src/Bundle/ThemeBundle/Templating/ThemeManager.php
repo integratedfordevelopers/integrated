@@ -161,12 +161,12 @@ class ThemeManager
         $this->fallbackStack[$theme->getId()] = 1;
 
         foreach ($theme->getPaths() as $path) {
-            foreach ($this->locateResources($path) as $dir) {
-                if (file_exists($dir.'/'.$template)) {
-                    $this->fallbackStack = []; // reset
+            $resource = $path.'/'.$template;
 
-                    return $path.'/'.$template;
-                }
+            if ($this->loader->exists($resource)) {
+                $this->fallbackStack = []; // reset
+
+                return $resource;
             }
         }
 
@@ -203,15 +203,19 @@ class ThemeManager
     public function locateResources($name)
     {
         if (str_starts_with($name, '@')) {
-            list($namespace, $path) = explode('/', substr($name, 1), 2);
+            $namespace = explode('/', substr($name, 1), 2);
 
             $paths = [];
-            $namespacePaths = $this->loader->getPaths($namespace);
+            $namespacePaths = $this->loader->getPaths($namespace[0]);
             if (\count($namespacePaths) === 0) {
-                throw new \Exception(sprintf('Namespace %s not found. Use Twig namespace notation for themes', $namespace));
+                throw new \Exception(sprintf('Namespace %s not found. Use Twig namespace notation for themes', $namespace[0]));
             }
             foreach ($namespacePaths as $namespacePath) {
-                $paths[] = $namespacePath.'/'.$path;
+                if (isset($namespace[1])) {
+                    $paths[] = $namespacePath.'/'.$namespace[1];
+                } else {
+                    $paths[] = $namespacePath;
+                }
             }
 
             return $paths;
