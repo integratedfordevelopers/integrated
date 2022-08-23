@@ -60,7 +60,7 @@ class ProcessPoolGenerator
         $result = new ArrayCollection();
 
         for ($i = 0; $i < $argumentProcess->getProcessMax(); ++$i) {
-            $result[] = new Process(
+            $result[] = Process::fromShellCommandline(
                 sprintf(
                     self::COMMAND,
                     $this->input->getFirstArgument(),
