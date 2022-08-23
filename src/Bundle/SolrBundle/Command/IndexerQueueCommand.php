@@ -212,8 +212,10 @@ The <info>%command.name%</info> command starts a index of the site.
     {
         // Don't hydrate for performance reasons
         $builder = $this->documentManager->createQueryBuilder(Content::class);
-        $builder->select('id', 'contentType', 'class')->hydrate(false);
-        $builder->immortal(true);
+        $builder->select('id', 'contentType', 'class')
+            ->hydrate(false)
+            ->immortal(true)
+            ->setRewindable(false);
 
         if (!$input->getOption('full')) {
             $builder->field('contentType')->in($input->getArgument('id'));
