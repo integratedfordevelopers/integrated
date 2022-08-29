@@ -5,11 +5,11 @@
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="integrated_user_two_factor_authenticator_activate_check" path="/" methods="POST">
-        <default key="_controller">integrated_user.controller.two_factor_google::check</default>
+        <default key="_controller">Integrated\Bundle\UserBundle\Controller\TwoFactor\GoogleController::check</default>
     </route>
 
     <route id="integrated_user_two_factor_authenticator_activate" path="/">
-        <default key="_controller">integrated_user.controller.two_factor_google::form</default>
+        <default key="_controller">Integrated\Bundle\UserBundle\Controller\TwoFactor\GoogleController::form</default>
     </route>
 
 </routes>

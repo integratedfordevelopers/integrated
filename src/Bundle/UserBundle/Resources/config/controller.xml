@@ -4,6 +4,7 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
+        <defaults autowire="true" autoconfigure="true" />
 
         <service id="Integrated\Bundle\UserBundle\Controller\SecurityController">
             <argument type="service" id="integrated_user.user.manager" />
@@ -11,11 +12,6 @@
             <argument type="service" id="Integrated\Bundle\UserBundle\Service\KeyGenerator" />
 
             <tag name="controller.service_arguments" />
-            <tag name="container.service_subscriber" />
-
-            <call method="setContainer">
-                <argument type="service" id="service_container" />
-            </call>
         </service>
 
         <service id="Integrated\Bundle\UserBundle\Controller\ProfileController">
@@ -24,11 +20,6 @@
             <argument type="service" id="service_container" />
 
             <tag name="controller.service_arguments" />
-            <tag name="container.service_subscriber" />
-
-            <call method="setContainer">
-                <argument type="service" id="service_container" />
-            </call>
         </service>
 
         <service id="Integrated\Bundle\UserBundle\Controller\IpListController">
@@ -36,14 +27,9 @@
             <argument type="service" id="service_container" />
 
             <tag name="controller.service_arguments" />
-            <tag name="container.service_subscriber" />
-
-            <call method="setContainer">
-                <argument type="service" id="service_container" />
-            </call>
         </service>
 
-        <service id="integrated_user.controller.two_factor_google" class="Integrated\Bundle\UserBundle\Controller\TwoFactor\GoogleController">
+        <service class="Integrated\Bundle\UserBundle\Controller\TwoFactor\GoogleController">
             <argument type="service" id="integrated_user.two_factor.context_resolver" />
             <argument type="service" id="integrated_user.user.manager" />
             <argument type="service" id="scheb_two_factor.security.google_authenticator" />
@@ -53,44 +39,24 @@
             <argument type="service" id="service_container" />
 
             <tag name="controller.service_arguments" />
-            <tag name="container.service_subscriber" />
-
-            <call method="setContainer">
-                <argument type="service" id="service_container" />
-            </call>
         </service>
 
-        <service id="integrated_user.controller.two_factor" class="Integrated\Bundle\UserBundle\Controller\TwoFactorController">
+        <service id="Integrated\Bundle\UserBundle\Controller\TwoFactorController">
             <argument type="service" id="integrated_user.user.manager" />
             <argument type="service" id="service_container" />
             <argument type="service" id="translator" />
 
             <tag name="controller.service_arguments" />
-            <tag name="container.service_subscriber" />
-
-            <call method="setContainer">
-                <argument type="service" id="service_container" />
-            </call>
         </service>
 
         <service id="Integrated\Bundle\UserBundle\Controller\UserController">
             <argument type="service" id="integrated_user.provider.filter_query" />
 
             <tag name="controller.service_arguments" />
-            <tag name="container.service_subscriber" />
-
-            <call method="setContainer">
-                <argument type="service" id="service_container" />
-            </call>
         </service>
 
         <service id="Integrated\Bundle\UserBundle\Controller\GroupController">
             <tag name="controller.service_arguments" />
-            <tag name="container.service_subscriber" />
-
-            <call method="setContainer">
-                <argument type="service" id="service_container" />
-            </call>
         </service>
 
         <service id="Integrated\Bundle\UserBundle\Controller\ScopeController">
@@ -98,11 +64,6 @@
             <argument type="service" id="doctrine.orm.entity_manager" />
 
             <tag name="controller.service_arguments" />
-            <tag name="container.service_subscriber" />
-
-            <call method="setContainer">
-                <argument type="service" id="service_container" />
-            </call>
         </service>
     </services>
 </container>
