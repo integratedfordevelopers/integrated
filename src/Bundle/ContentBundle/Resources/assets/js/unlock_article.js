@@ -1,5 +1,7 @@
-var form = $('form.content-form');
-var modal = $("#content-edit-modal");
+import 'bootstrap-sass';
+
+const form = $('form.content-form');
+const modal = $("#content-edit-modal");
 
 /* handle BACK|FORWARD buttons in browser */
 history.pushState(null, null, location.href);
@@ -30,15 +32,15 @@ $(function () {
     }
 });
 //var is set in view
-if (formInvalid) {
+if (global.formInvalid) {
     form.data('changed', true);
 }
 
 /* ask user before leave page via href links and unlock article */
 $('a:not(form.content-form a), form.content-form button[name*=cancel]').on('click', function (e) {
-    var url = $(this).attr('href');
+    const url = $(this).attr('href');
 
-    if (url && url != '#') {
+    if (url && url !== '#') {
         e.preventDefault();
 
         if (form.data('changed')) {
