@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Controller;
 
 use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
+use Integrated\Bundle\ContentBundle\Provider\MediaProvider;
 use Integrated\Bundle\ContentBundle\Services\SearchContentReferenced;
 use Integrated\Bundle\ImageBundle\Twig\Extension\ImageExtension;
 use Integrated\Bundle\IntegratedBundle\Controller\AbstractController;
@@ -96,6 +97,11 @@ class ContentController extends AbstractController
      */
     private $imageExtension;
 
+    /**
+     * @var MediaProvider
+     */
+    private $mediaProvider;
+
     public function __construct(
         ResolverInterface $resolver,
         ContentTypeManager $contentTypeManager,
@@ -105,7 +111,8 @@ class ContentController extends AbstractController
         SearchContentReferenced $contentReferenced,
         Manager $lockManager,
         UserManagerInterface $userManager,
-        ImageExtension $imageExtension
+        ImageExtension $imageExtension,
+        MediaProvider $mediaProvider
     ) {
         $this->resolver = $resolver;
         $this->contentTypeManager = $contentTypeManager;
@@ -116,6 +123,7 @@ class ContentController extends AbstractController
         $this->lockManager = $lockManager;
         $this->userManager = $userManager;
         $this->imageExtension = $imageExtension;
+        $this->mediaProvider = $mediaProvider;
     }
 
     /**
@@ -1038,7 +1046,7 @@ class ContentController extends AbstractController
         $output = [];
 
         /* @var Image $image */
-        foreach ($this->container->get('integrated_content.provider.media')->getContentTypes($filter) as $contentType) {
+        foreach ($this->mediaProvider->getContentTypes($filter) as $contentType) {
             $output[] = [
                 'id' => $contentType->getId(),
                 'name' => $contentType->getName(),
