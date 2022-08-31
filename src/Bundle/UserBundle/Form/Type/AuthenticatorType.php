@@ -11,13 +11,10 @@
 
 namespace Integrated\Bundle\UserBundle\Form\Type;
 
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Integrated\Bundle\UserBundle\Form\EventListener\AuthenticatorCheckerListener;
+use Integrated\Bundle\UserBundle\Validator\Constraints\Authenticator;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
-use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticatorInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -30,37 +27,9 @@ class AuthenticatorType extends AbstractType
      */
     private $storage;
 
-    /**
-     * @var GoogleAuthenticatorInterface
-     */
-    private $authenticator;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var string
-     */
-    private $translationDomain;
-
-    public function __construct(TokenStorageInterface $storage, GoogleAuthenticatorInterface $authenticator, TranslatorInterface $translator, string $translationDomain = null)
+    public function __construct(TokenStorageInterface $storage)
     {
         $this->storage = $storage;
-        $this->authenticator = $authenticator;
-        $this->translator = $translator;
-        $this->translationDomain = $translationDomain;
-    }
-
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->addEventSubscriber(new AuthenticatorCheckerListener(
-            $options['user'],
-            $this->authenticator,
-            $this->translator,
-            $this->translationDomain
-        ));
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -92,6 +61,16 @@ class AuthenticatorType extends AbstractType
             }
 
             throw new InvalidOptionsException(sprintf('The option "user" with is expected to be of type "%s"', UserInterface::class));
+        });
+
+        $resolver->setDefault('constraints', function (Options $options, $value) {
+            if ($value) {
+                return $value;
+            }
+
+            return [
+                new Authenticator(['user' => $options['user']]),
+            ];
         });
     }
 

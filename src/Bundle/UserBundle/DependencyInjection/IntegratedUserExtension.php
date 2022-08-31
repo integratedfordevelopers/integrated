@@ -50,6 +50,7 @@ class IntegratedUserExtension extends Extension
         $loader->load('services.xml');
         $loader->load('two_factor.xml');
         $loader->load('twig.xml');
+        $loader->load('validator.xml');
 
         $config = $this->processConfiguration(new Configuration(), $configs);
 
