@@ -11,16 +11,29 @@
 
 namespace Integrated\Bundle\ContentBundle\Solr\Type;
 
+use Doctrine\Persistence\ObjectManager;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeInterface;
-use Symfony\Component\Security\Acl\Util\ClassUtils;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class ContentType implements TypeInterface
 {
+    /**
+     * @var ObjectManager
+     */
+    private $manager;
+
+    /**
+     * @param ObjectManager $manager
+     */
+    public function __construct(ObjectManager $manager)
+    {
+        $this->manager = $manager;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -33,7 +46,7 @@ class ContentType implements TypeInterface
         $container->set('id', $data->getContentType().'-'.$data->getId());
 
         $container->set('type_name', $data->getContentType());
-        $container->set('type_class', ClassUtils::getRealClass($data)); // could be a doctrine proxy object but we need the actual class name.
+        $container->set('type_class', $this->manager->getClassMetadata(\get_class($data))->getName()); // could be a doctrine proxy object but we need the actual class name.
         $container->set('type_id', $data->getId());
     }
 

@@ -67,7 +67,7 @@ class BreadcrumbResolverTest extends TestCase
         $this->requestStack = $this->createMock(RequestStack::class);
 
         $this->request = $this->createMock(Request::class);
-        $this->requestStack->method('getMasterRequest')->willReturn($this->request);
+        $this->requestStack->method('getMainRequest')->willReturn($this->request);
 
         $this->breadcrumbResolver = new BreadcrumbResolver(
             $this->documentManager,

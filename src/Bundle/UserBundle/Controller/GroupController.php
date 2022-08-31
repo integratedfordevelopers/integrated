@@ -62,11 +62,9 @@ class GroupController extends AbstractController
         }
 
         $form = $this->createNewForm();
+        $form->handleRequest($request);
 
-        if ($request->isMethod('post')) {
-            $form->handleRequest($request);
-
-            // check for cancel click else its a submit
+        if ($form->isSubmitted()) {
             if ($form->get('actions')->get('cancel')->isClicked()) {
                 return $this->redirectToRoute('integrated_user_group_index');
             }
@@ -106,11 +104,9 @@ class GroupController extends AbstractController
         }
 
         $form = $this->createEditForm($group);
+        $form->handleRequest($request);
 
-        if ($request->isMethod('put') || $request->isMethod('post')) {
-            $form->handleRequest($request);
-
-            // check for cancel click else its a submit
+        if ($form->isSubmitted()) {
             if ($form->get('actions')->get('cancel')->isClicked()) {
                 return $this->redirectToRoute('integrated_user_group_index');
             }
@@ -147,10 +143,9 @@ class GroupController extends AbstractController
         }
 
         $form = $this->createDeleteForm($group);
+        $form->handleRequest($request);
 
-        if ($request->isMethod('delete')) {
-            $form->handleRequest($request);
-
+        if ($form->isSubmitted()) {
             // check for cancel click else its a submit
             if ($form->get('actions')->get('cancel')->isClicked()) {
                 return $this->redirectToRoute('integrated_user_group_index');

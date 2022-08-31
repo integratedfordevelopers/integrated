@@ -134,12 +134,14 @@ class QueueProvider implements QueueProviderInterface
         );
 
         $where = [];
+        $params = [];
         if (isset($this->options['where'])) {
             $where[] = $this->options['where'];
         }
 
         if ($channel) {
             $where[] = 'channel = ?';
+            $params[] = $channel;
         }
 
         $where[] = 'time_execute <= '.time();
@@ -148,7 +150,7 @@ class QueueProvider implements QueueProviderInterface
             $query = sprintf('%s WHERE %s', $query, implode(' AND ', $where));
         }
 
-        return $this->connection->fetchOne($query, [$channel]);
+        return $this->connection->fetchOne($query, $params);
     }
 
     /**

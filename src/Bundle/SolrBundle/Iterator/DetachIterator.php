@@ -42,7 +42,7 @@ class DetachIterator implements Iterator
     /**
      * {@inheritdoc}
      */
-    public function current()
+    public function current(): mixed
     {
         $this->manager->detach($current = $this->iterator->current());
 
@@ -60,7 +60,7 @@ class DetachIterator implements Iterator
     /**
      * {@inheritdoc}
      */
-    public function key()
+    public function key(): mixed
     {
         return $this->iterator->key();
     }

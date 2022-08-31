@@ -89,7 +89,7 @@ class MenuExtension extends AbstractExtension
         $this->factory = $factory;
         $this->helper = $helper;
         $this->matcher = $matcher;
-        $this->request = $requestStack->getMasterRequest();
+        $this->request = $requestStack->getMainRequest();
 
         $this->resolver = new OptionsResolver();
         $this->resolver->setDefaults([

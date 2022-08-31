@@ -43,9 +43,14 @@ class ImageProvider
      */
     public function createImage($width = 640, $height = 480, $category = null, $dir = '/tmp')
     {
+        $image = Image::image($dir, $width, $height, $category);
+        if (!file_exists($image)) {
+            $image = __DIR__.'/../../../Resources/assets/spacer.gif';
+        }
+
         return CreateUtil::path(
             $this->sm,
-            Image::image($dir, $width, $height, $category)
+            $image,
         );
     }
 }

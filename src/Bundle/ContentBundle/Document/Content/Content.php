@@ -203,7 +203,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
      */
     public function getRelations()
     {
-        //should always be instanceOf collection, but due to corrupt database can sometimes be null
+        // should always be instanceOf collection, but due to corrupt database can sometimes be null
         if (!$this->relations instanceof Collection) {
             $this->relations = new ArrayCollection();
         }

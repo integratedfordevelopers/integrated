@@ -64,7 +64,7 @@ class WebsiteEditableListener implements EventSubscriberInterface
         $request = $event->getRequest();
 
         if (!$request->query->get('integrated_website_edit')) {
-            //edit mode is off
+            // edit mode is off
             return;
         }
 

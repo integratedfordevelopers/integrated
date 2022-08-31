@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\StorageBundle\DataFixtures\MongoDB;
 
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Bundle\MongoDBBundle\Fixture\ODMFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Nelmio\Alice\Loader\SimpleFilesLoader;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -21,15 +21,29 @@ use Symfony\Component\Finder\Finder;
 /**
  * @author Johnny Borg <johnny@e-active.nl>
  */
-class LoadFixtureData implements FixtureInterface, ContainerAwareInterface
+class LoadFixtureData implements ContainerAwareInterface, ODMFixtureInterface
 {
     use ContainerAwareTrait;
+
+    /**
+     * @var SimpleFilesLoader|null
+     */
+    private $loader;
+
+    public function __construct(?SimpleFilesLoader $loader)
+    {
+        $this->loader = $loader;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
+        if (!$this->loader) {
+            throw new \Exception('Nelmio\Alice is required to load fixtures');
+        }
+
         $files = [];
 
         /** @var \Symfony\Component\Finder\SplFileInfo $file */
@@ -37,18 +51,10 @@ class LoadFixtureData implements FixtureInterface, ContainerAwareInterface
             $files[] = $file->getRealpath();
         }
 
-        foreach ($this->getLoader()->loadFiles($files)->getObjects() as $object) {
+        foreach ($this->loader->loadFiles($files)->getObjects() as $object) {
             $manager->persist($object);
         }
 
         $manager->flush();
-    }
-
-    /**
-     * @return SimpleFilesLoader
-     */
-    private function getLoader()
-    {
-        return $this->container->get('nelmio_alice.files_loader.simple');
     }
 }

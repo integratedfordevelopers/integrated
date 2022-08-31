@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\BlockBundle\Controller;
 
+use Integrated\Bundle\BlockBundle\Provider\FilterQueryProvider;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Form\FormInterface;
@@ -48,18 +49,26 @@ class BlockController extends AbstractController
     protected $paginator;
 
     /**
+     * @var FilterQueryProvider
+     */
+    protected $provider;
+
+    /**
      * @param MetadataFactoryInterface $metadataFactory
      * @param DocumentManager          $documentManager
      * @param PaginatorInterface       $paginator
+     * @param FilterQueryProvider      $provider
      */
     public function __construct(
         MetadataFactoryInterface $metadataFactory,
         DocumentManager $documentManager,
-        PaginatorInterface $paginator
+        PaginatorInterface $paginator,
+        FilterQueryProvider $provider
     ) {
         $this->metadataFactory = $metadataFactory;
         $this->documentManager = $documentManager;
         $this->paginator = $paginator;
+        $this->provider = $provider;
     }
 
     /**
@@ -75,15 +84,14 @@ class BlockController extends AbstractController
         }
 
         $data = $request->get('integrated_block_filter');
-        $queryProvider = $this->get('integrated_block.provider.filter_query');
 
         $facetFilter = $this->createForm(BlockFilterType::class, null, [
-            'blockIds' => $queryProvider->getBlockIds($data, $user),
+            'blockIds' => $this->provider->getBlockIds($data, $user),
         ]);
         $facetFilter->handleRequest($request);
 
         $pagination = $this->paginator->paginate(
-            $queryProvider->getBlocksByChannelQueryBuilder($data, $user),
+            $this->provider->getBlocksByChannelQueryBuilder($data, $user),
             $request->query->get('page', 1),
             $request->query->get('limit', 20),
             ['defaultSortFieldName' => 'title', 'defaultSortDirection' => 'asc', 'query_type' => 'block_overview']

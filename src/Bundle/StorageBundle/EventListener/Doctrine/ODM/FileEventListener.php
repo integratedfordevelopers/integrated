@@ -78,7 +78,7 @@ class FileEventListener implements EventSubscriber
 
         foreach ($uow->getIdentityMap() as $identities) {
             foreach ($identities as $document) {
-                //skip unloaded proxies, they cannot contain a StoreIntentUpload
+                // skip unloaded proxies, they cannot contain a StoreIntentUpload
                 if ($document instanceof Proxy && !$document->__isInitialized()) {
                     continue;
                 }

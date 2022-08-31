@@ -76,7 +76,7 @@ class Resource implements ResourceInterface
 
     public static function fromAccount(UserInterface $user)
     {
-        return new self(ClassUtils::getRealClass($user), $user->getUsername());
+        return new self(ClassUtils::getRealClass($user), $user->getUserIdentifier());
     }
 
     public static function fromToken(TokenInterface $token)

@@ -23,6 +23,10 @@ class Slugger implements SluggerInterface
      */
     public function slugify($string, $delimiter = '-')
     {
+        if (!$string) {
+            return '';
+        }
+
         $locale = setlocale(\LC_ALL, 0);
 
         setlocale(\LC_ALL, 'en_US.UTF-8');

@@ -42,7 +42,7 @@ class CommentTagTransformer implements DataTransformerInterface
             ));
         }
 
-        //replace comments with span so that we can add a nice style to the commented section
+        // replace comments with span so that we can add a nice style to the commented section
         $content = StripTagsUtil::replaceCommentWith($content, StripTagsUtil::SPAN_REPLACEMENT);
 
         return $content;
@@ -70,7 +70,7 @@ class CommentTagTransformer implements DataTransformerInterface
             ));
         }
 
-        //replace span with comment tag, so no weird style is added on front-end
+        // replace span with comment tag, so no weird style is added on front-end
         $content = StripTagsUtil::replaceSpanWith($content, StripTagsUtil::COMMENT_REPLACEMENT);
 
         return $content;

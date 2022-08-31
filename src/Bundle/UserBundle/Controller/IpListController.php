@@ -68,10 +68,9 @@ class IpListController extends AbstractController
         }
 
         $form = $this->createNewForm();
+        $form->handleRequest($request);
 
-        if ($request->isMethod('post')) {
-            $form->handleRequest($request);
-
+        if ($form->isSubmitted()) {
             if ($form->get('actions')->get('cancel')->isClicked()) {
                 return $this->redirectToRoute('integrated_user_iplist_index');
             }
@@ -108,10 +107,9 @@ class IpListController extends AbstractController
         }
 
         $form = $this->createEditForm($list);
+        $form->handleRequest($request);
 
-        if ($request->isMethod('put')) {
-            $form->handleRequest($request);
-
+        if ($form->isSubmitted()) {
             if ($form->get('actions')->get('cancel')->isClicked()) {
                 return $this->redirectToRoute('integrated_user_iplist_index');
             }
@@ -147,10 +145,9 @@ class IpListController extends AbstractController
         }
 
         $form = $this->createDeleteForm($list);
+        $form->handleRequest($request);
 
-        if ($request->isMethod('delete')) {
-            $form->handleRequest($request);
-
+        if ($form->isSubmitted()) {
             if ($form->get('actions')->get('cancel')->isClicked()) {
                 return $this->redirectToRoute('integrated_user_iplist_index');
             }

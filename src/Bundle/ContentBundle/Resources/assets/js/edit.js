@@ -1,6 +1,7 @@
 import './main';
 import './handlebars.helpers';
 import './relation';
+import './unlock_article';
 
 import 'jquery-datetimepicker';
 

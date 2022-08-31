@@ -50,7 +50,7 @@ class EditableChecker
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->tokenStorage = $tokenStorage;
-        $this->request = $requestStack->getMasterRequest();
+        $this->request = $requestStack->getMainRequest();
     }
 
     /**
@@ -72,7 +72,7 @@ class EditableChecker
 
         $route = $this->request->attributes->get('_route');
 
-        //check if route begins with page or contentTypePage prefix
+        // check if route begins with page or contentTypePage prefix
         if (0 === strpos($route, ContentTypePageLoader::ROUTE_PREFIX) ||
             0 === strpos($route, PageLoader::ROUTE_PREFIX)
         ) {

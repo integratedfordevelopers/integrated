@@ -185,7 +185,7 @@ class BlockExtension extends AbstractExtension
      */
     public function renderChannelBlock(Environment $environment, string $id, string $name, string $class, array $options = [])
     {
-        //postfix with channel
+        // postfix with channel
         $id = $id.'_'.$this->channelContext->getChannel()->getId();
         $name = $name.' '.$this->channelContext->getChannel()->getName();
 

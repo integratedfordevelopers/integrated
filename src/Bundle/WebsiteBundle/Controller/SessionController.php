@@ -15,25 +15,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SessionController extends AbstractController
 {
-    /**
-     * @var SessionInterface
-     */
-    private $session;
-
-    /**
-     * SessionController constructor.
-     *
-     * @param SessionInterface $session
-     */
-    public function __construct(SessionInterface $session)
-    {
-        $this->session = $session;
-    }
-
     /**
      * @param string  $sessionId
      * @param Request $request

@@ -104,7 +104,8 @@ class QueueSubscriberTest extends \PHPUnit\Framework\TestCase
     public function testPostPersist()
     {
         $document = $this->getDocument('this-is-the-id', 'this-is-the-type');
-        $event = $this->getEvent($document);
+        $manager = $this->getManager($document);
+        $event = $this->getEvent($document, $manager);
 
         $this->serializer->expects($this->atLeastOnce())
             ->method('serialize')
@@ -130,7 +131,8 @@ class QueueSubscriberTest extends \PHPUnit\Framework\TestCase
     public function testPostUpdate()
     {
         $document = $this->getDocument('this-is-the-id', 'this-is-the-type');
-        $event = $this->getEvent($document);
+        $manager = $this->getManager($document);
+        $event = $this->getEvent($document, $manager);
 
         $this->serializer->expects($this->atLeastOnce())
             ->method('serialize')
@@ -202,12 +204,27 @@ class QueueSubscriberTest extends \PHPUnit\Framework\TestCase
         return $mock;
     }
 
+    protected function getManager($content)
+    {
+        $mockMeta = $this->createMock('Doctrine\\ODM\\MongoDB\\Mapping\\ClassMetadata');
+        $mockMeta->expects($this->once())
+            ->method('getName')
+            ->willReturn(\get_class($content));
+
+        $mock = $this->createMock('Doctrine\\ODM\MongoDB\\DocumentManager');
+        $mock->expects($this->once())
+            ->method('getClassMetadata')
+            ->willReturn($mockMeta);
+
+        return $mock;
+    }
+
     /**
      * @param object $document
      *
      * @return LifecycleEventArgs|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getEvent($document)
+    protected function getEvent($document, $manager = null)
     {
         $mock = $this->getMockBuilder('Doctrine\\ODM\MongoDB\\Event\\LifecycleEventArgs')
             ->disableOriginalConstructor()
@@ -216,6 +233,12 @@ class QueueSubscriberTest extends \PHPUnit\Framework\TestCase
         $mock->expects($this->atLeastOnce())
             ->method('getDocument')
             ->willReturn($document);
+
+        if ($manager) {
+            $mock->expects($this->once())
+                ->method('getDocumentManager')
+                ->willReturn($manager);
+        }
 
         return $mock;
     }

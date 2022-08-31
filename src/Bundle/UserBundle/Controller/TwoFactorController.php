@@ -20,6 +20,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TwoFactorController extends AbstractController
 {
@@ -28,9 +29,15 @@ class TwoFactorController extends AbstractController
      */
     private $manager;
 
-    public function __construct(UserManagerInterface $manager, ContainerInterface $container)
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    public function __construct(UserManagerInterface $manager, ContainerInterface $container, TranslatorInterface $translator)
     {
         $this->manager = $manager;
+        $this->translator = $translator;
         $this->setContainer($container);
     }
 
@@ -47,10 +54,9 @@ class TwoFactorController extends AbstractController
         }
 
         $form = $this->createDeleteForm($user);
+        $form->handleRequest($request);
 
-        if ($request->isMethod('delete')) {
-            $form->handleRequest($request);
-
+        if ($form->isSubmitted()) {
             if ($form->get('actions')->get('cancel')->isClicked()) {
                 return $this->redirectToRoute('integrated_user_user_index');
             }
@@ -60,7 +66,7 @@ class TwoFactorController extends AbstractController
 
                 $this->manager->persist($user);
 
-                $translation = $this->get('translator')->trans('The two factor authenticator for user %name% is removed', ['%name%' => $user->getUsername()]);
+                $translation = $this->translator->trans('The two factor authenticator for user %name% is removed', ['%name%' => $user->getUserIdentifier()]);
                 $this->addFlash('success', $translation);
 
                 return $this->redirectToRoute('integrated_user_user_index');

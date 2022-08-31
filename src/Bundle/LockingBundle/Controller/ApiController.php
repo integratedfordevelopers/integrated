@@ -23,13 +23,23 @@ use Symfony\Component\HttpFoundation\Request;
 class ApiController extends AbstractController
 {
     /**
+     * @var Locks\ManagerInterface|null
+     */
+    private $manager;
+
+    public function __construct(?Locks\ManagerInterface $manager)
+    {
+        $this->manager = $manager;
+    }
+
+    /**
      * @param Request $request
      *
      * @return JsonResponse
      */
     public function refresh(Request $request)
     {
-        if (!$this->has('integrated_locking.dbal.manager')) {
+        if (!$this->manager) {
             $response = [
                 'code' => 403,
                 'message' => 'Locking is not enabled',
@@ -60,10 +70,7 @@ class ApiController extends AbstractController
             return new JsonResponse($response, $response['code']);
         }
 
-        /** @var Locks\ManagerInterface $service */
-        $service = $this->get('integrated_locking.dbal.manager');
-
-        if (!$lock = $service->find($lock)) {
+        if (!$lock = $this->manager->find($lock)) {
             $response = [
                 'code' => 404,
                 'message' => 'The lock could not be found',
@@ -81,7 +88,7 @@ class ApiController extends AbstractController
         if ($owner->equals($lock->getRequest()->getOwner())) {
             // only the owner can extends the lock.
 
-            if ($lock = $service->refresh($lock)) {
+            if ($lock = $this->manager->refresh($lock)) {
                 $response['message'] = 'The lock is extended';
                 $response['lock'] = $lock->getId();
             }

@@ -12,7 +12,7 @@
             </call>
 
             <tag name="monolog.logger" channel="solr" />
-            <tag name="integrated_solr.event_subscriber" />
+            <tag name="kernel.event_subscriber" />
         </service>
 
 		<service id="integrated_solr.indexer.mongodb.subscriber" class="Integrated\MongoDB\Solr\Indexer\QueueSubscriber" public="true">
@@ -45,6 +45,7 @@
 
         <service id="integrated_solr.indexer.job_factory" class="Integrated\Common\Solr\Indexer\JobFactory">
             <argument type="service" id="integrated_solr.indexer.serializer" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <argument type="string">json</argument>
         </service>
 
@@ -57,7 +58,7 @@
 				<argument type="service" id="integrated_solr.queue.indexer" />
 			</call>
             <call method="setEventDispatcher">
-                <argument type="service" id="integrated_solr.event.dispatcher" />
+                <argument type="service" id="event_dispatcher" />
             </call>
 			<call method="setClient">
 				<argument type="service" id="integrated_solr.solarium.client.indexer" />

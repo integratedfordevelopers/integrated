@@ -11,9 +11,9 @@
 
 namespace Integrated\Common\Solr\Indexer;
 
+use Doctrine\Persistence\ObjectManager;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Solr\Exception\OutOfBoundsException;
-use Symfony\Component\Security\Acl\Util\ClassUtils;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -30,6 +30,11 @@ class JobFactory implements JobFactoryInterface
     private $serializer;
 
     /**
+     * @var ObjectManager
+     */
+    private $manager;
+
+    /**
      * @var string
      */
     private $serializerFormat;
@@ -38,11 +43,13 @@ class JobFactory implements JobFactoryInterface
      * constructor.
      *
      * @param SerializerInterface $serializer
+     * @param ObjectManager       $manager
      * @param string              $format
      */
-    public function __construct(SerializerInterface $serializer, $format = 'json')
+    public function __construct(SerializerInterface $serializer, ObjectManager $manager, $format = 'json')
     {
         $this->serializer = $serializer;
+        $this->manager = $manager;
         $this->serializerFormat = $format;
     }
 
@@ -59,7 +66,7 @@ class JobFactory implements JobFactoryInterface
             $job->setOption('document.id', sprintf('%s-%s', $content->getContentType(), $content->getId()));
 
             $job->setOption('document.data', $this->serializer->serialize($content, $this->serializerFormat));
-            $job->setOption('document.class', ClassUtils::getRealClass($content));
+            $job->setOption('document.class', $this->manager->getClassMetadata(\get_class($content))->getName());
             $job->setOption('document.format', $this->serializerFormat);
 
             return $job;

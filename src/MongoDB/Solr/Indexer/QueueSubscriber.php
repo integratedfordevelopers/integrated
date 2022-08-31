@@ -18,7 +18,6 @@ use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Queue\QueueAwareInterface;
 use Integrated\Common\Queue\QueueInterface;
 use Integrated\Common\Solr\Indexer\Job;
-use Symfony\Component\Security\Acl\Util\ClassUtils;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -172,7 +171,7 @@ class QueueSubscriber implements EventSubscriber, QueueAwareInterface, Serialize
                 $job->setOption('document.id', $document->getContentType().'-'.$document->getId());
 
                 $job->setOption('document.data', $this->getSerializer()->serialize($document, $this->getSerializerFormat()));
-                $job->setOption('document.class', ClassUtils::getRealClass($document));
+                $job->setOption('document.class', $event->getDocumentManager()->getClassMetadata(\get_class($document))->getName());
                 $job->setOption('document.format', $this->getSerializerFormat());
 
                 break;
@@ -188,7 +187,7 @@ class QueueSubscriber implements EventSubscriber, QueueAwareInterface, Serialize
         if ($this->priority > QueueInterface::PRIORITY_MEDIUM_HIGH) {
             $this->getQueue()->push(new Job('COMMIT', ['softcommit' => 'true']), 0, $this->priority);
 
-            //Do this only one time
+            // Do this only one time
             $this->setPriority(QueueInterface::PRIORITY_MEDIUM_HIGH);
         }
     }

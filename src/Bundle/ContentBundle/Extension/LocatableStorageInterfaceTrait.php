@@ -44,13 +44,14 @@ trait LocatableStorageInterfaceTrait
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         if (0 === $offset) {
             return '@';
         }
 
-        return substr($this->getPathname(), ($offset + 1), 1);
+        return substr($this->getPathname(), $offset + 1, 1);
     }
 
     /**

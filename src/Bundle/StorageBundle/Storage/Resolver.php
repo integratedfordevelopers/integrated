@@ -77,7 +77,7 @@ class Resolver implements ResolverInterface
             sprintf(
                 'No valid public path found for %s in filesystems: %s',
                 $storage->getIdentifier(),
-                implode(', ', $storage->getFilesystems())
+                implode(', ', $storage->getFilesystems()->toArray())
             )
         );
     }

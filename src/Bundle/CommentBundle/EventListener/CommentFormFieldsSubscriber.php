@@ -96,7 +96,7 @@ class CommentFormFieldsSubscriber implements EventSubscriberInterface
      */
     public function onBuildField(FieldEvent $event)
     {
-        $masterRequest = $this->requestStack->getMasterRequest();
+        $masterRequest = $this->requestStack->getMainRequest();
         if (!$masterRequest instanceof Request
             || $masterRequest->attributes->get('_route') !== 'integrated_content_content_edit') {
             return;

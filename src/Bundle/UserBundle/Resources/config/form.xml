@@ -27,7 +27,7 @@
 
         <service id="integrated_user.form.user.type" class="Integrated\Bundle\UserBundle\Form\Type\UserFormType">
             <argument type="service" id="integrated_user.user.manager"/>
-            <argument type="service" id="security.encoder_factory"/>
+            <argument type="service" id="security.password_hasher_factory"/>
             <tag name="form.type"/>
         </service>
 

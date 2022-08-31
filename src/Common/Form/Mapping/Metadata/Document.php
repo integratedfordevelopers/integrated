@@ -67,10 +67,10 @@ class Document implements MetadataEditorInterface
         $reflection = $this->getReflection();
 
         return (
-                (interface_exists($class) && $reflection->implementsInterface($class)) ||
-                $reflection->isSubclassOf($class) ||
-                (class_exists($class) && $reflection->isInstance(new $class()))
-            )
+            (interface_exists($class) && $reflection->implementsInterface($class)) ||
+            $reflection->isSubclassOf($class) ||
+            (class_exists($class) && $reflection->isInstance(new $class()))
+        )
             &&
             $reflection->isInstantiable();
     }

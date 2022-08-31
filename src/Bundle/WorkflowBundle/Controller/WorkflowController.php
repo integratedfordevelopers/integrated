@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Controller;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Form\FormInterface;
 use Integrated\Bundle\FormTypeBundle\Form\Type\FormActionsType;
@@ -38,6 +40,28 @@ use Symfony\Component\HttpFoundation\Response;
 class WorkflowController extends AbstractController
 {
     /**
+     * @var EntityManager
+     */
+    private $entityManager;
+
+    /**
+     * @var DocumentManager
+     */
+    private $documentManager;
+
+    /**
+     * @var UserManagerInterface
+     */
+    private $userManager;
+
+    public function __construct(EntityManager $entityManager, DocumentManager $documentManager, UserManagerInterface $userManager)
+    {
+        $this->entityManager = $entityManager;
+        $this->documentManager = $documentManager;
+        $this->userManager = $userManager;
+    }
+
+    /**
      * Generate a list of workflow definitions.
      *
      * @param Request $request
@@ -46,13 +70,10 @@ class WorkflowController extends AbstractController
      */
     public function index(Request $request)
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
-
-        /** @var EntityManager $em */
-        $em = $this->getDoctrine()->getManager();
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $pager = $this->getPaginator()->paginate(
-            $em->getRepository('Integrated\Bundle\WorkflowBundle\Entity\Definition')->createQueryBuilder('item'),
+            $this->entityManager->getRepository('Integrated\Bundle\WorkflowBundle\Entity\Definition')->createQueryBuilder('item'),
             $request->query->get('page', 1),
             15
         );
@@ -69,14 +90,12 @@ class WorkflowController extends AbstractController
      */
     public function new(Request $request)
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $form = $this->createNewForm();
+        $form->handleRequest($request);
 
-        if ($request->isMethod('post')) {
-            $form->handleRequest($request);
-
-            // check for back click else its a submit
+        if ($form->isSubmitted()) {
             if ($form->get('actions')->get('cancel')->isClicked()) {
                 return $this->redirectToRoute('integrated_workflow_index');
             }
@@ -84,9 +103,8 @@ class WorkflowController extends AbstractController
             if ($form->isValid()) {
                 $workflow = $form->getData();
 
-                $manager = $this->getDoctrine()->getManager();
-                $manager->persist($workflow);
-                $manager->flush();
+                $this->entityManager->persist($workflow);
+                $this->entityManager->flush();
 
                 return $this->redirectToRoute('integrated_workflow_index');
             }
@@ -106,10 +124,10 @@ class WorkflowController extends AbstractController
      */
     public function edit(Request $request)
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         /** @var Definition $workflow */
-        $workflow = $this->getDoctrine()
+        $workflow = $this->entityManager
             ->getManager()
             ->getRepository('Integrated\Bundle\WorkflowBundle\Entity\Definition')
             ->find($request->get('id'));
@@ -119,18 +137,15 @@ class WorkflowController extends AbstractController
         }
 
         $form = $this->createEditForm($workflow);
+        $form->handleRequest($request);
 
-        if ($request->isMethod('put')) {
-            $form->handleRequest($request);
-
-            // check for back click else its a submit
+        if ($form->isSubmitted()) {
             if ($form->get('actions')->get('cancel')->isClicked()) {
                 return $this->redirectToRoute('integrated_workflow_index');
             }
 
             if ($form->isValid()) {
-                $manager = $this->getDoctrine()->getManager();
-                $manager->flush();
+                $this->entityManager->flush();
 
                 $this->addFlash('success', sprintf('The changes to the workflow %s are saved', $workflow->getName()));
 
@@ -153,32 +168,26 @@ class WorkflowController extends AbstractController
      */
     public function delete(Request $request)
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         /** @var Definition $workflow */
-        $workflow = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('Integrated\Bundle\WorkflowBundle\Entity\Definition')
-            ->find($request->get('id'));
+        $workflow = $this->entityManager->getRepository('Integrated\Bundle\WorkflowBundle\Entity\Definition')->find($request->get('id'));
 
         if (!$workflow) {
             return $this->redirectToRoute('integrated_workflow_index'); // workflow is already gone
         }
 
         $form = $this->createDeleteForm($workflow);
+        $form->handleRequest($request);
 
-        if ($request->isMethod('delete')) {
-            $form->handleRequest($request);
-
-            // check for back click else its a submit
+        if ($form->isSubmitted()) {
             if ($form->get('actions')->get('cancel')->isClicked()) {
                 return $this->redirectToRoute('integrated_workflow_index');
             }
 
             if ($form->isValid()) {
-                $manager = $this->getDoctrine()->getManager();
-                $manager->remove($workflow);
-                $manager->flush();
+                $this->entityManager->remove($workflow);
+                $this->entityManager->flush();
 
                 $this->addFlash('success', sprintf('The workflow %s is removed', $workflow->getName()));
 
@@ -205,13 +214,13 @@ class WorkflowController extends AbstractController
 
         if (empty($stateId)) {
             $workflowId = $request->get('workflow');
-            $repository = $this->getDoctrine()->getRepository(Definition::class);
+            $repository = $this->entityManager->getRepository(Definition::class);
             $workflow = $repository->find($workflowId);
             $state = $workflow->getDefault();
 
             $isDefaultState = true;
         } else {
-            $repository = $this->getDoctrine()->getRepository(Definition\State::class);
+            $repository = $this->entityManager->getRepository(Definition\State::class);
             $state = $repository->find($stateId);
         }
 
@@ -220,7 +229,7 @@ class WorkflowController extends AbstractController
         }
 
         /** @var User $currentUser */
-        $currentUser = $this->get('security.token_storage')->getToken()->getUser();
+        $currentUser = $this->getUser();
 
         $currentUserGroups = [];
         /** @var Group $group */
@@ -235,14 +244,14 @@ class WorkflowController extends AbstractController
         if (\count($state->getPermissions()) > 0) {
             $permissionObject = $state;
         } else {
-            //permissions inherited from content type
-            $contentType = $this->get('doctrine_mongodb.odm.document_manager')->getRepository(ContentType::class)->find($request->get('contentType'));
+            // permissions inherited from content type
+            $contentType = $this->documentManager->getRepository(ContentType::class)->find($request->get('contentType'));
             if ($contentType && \count($contentType->getPermissions()) > 0) {
                 $permissionObject = $contentType;
             }
         }
 
-        //use workflow permissions
+        // use workflow permissions
         if ($permissionObject) {
             foreach ($permissionObject->getPermissions() as $permission) {
                 if ($permission->getMask() >= PermissionInterface::WRITE) {
@@ -257,7 +266,7 @@ class WorkflowController extends AbstractController
         }
 
         /** @var EntityRepository $userRepository */
-        $userRepository = $this->get('integrated_user.user.manager.doctrine')->getRepository();
+        $userRepository = $this->userManager->getRepository();
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $userRepository->createQueryBuilder('u');
 
@@ -280,7 +289,7 @@ class WorkflowController extends AbstractController
             } else {
                 $users[] = [
                     'id' => $item->getId(),
-                    'name' => $item->getUsername(),
+                    'name' => $item->getUserIdentifier(),
                 ];
             }
         }

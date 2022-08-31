@@ -123,7 +123,7 @@ class ChannelManager implements ChannelManagerInterface
     {
         $channel = $this->repository->findOneBy(['domains' => $criteria]);
         if (!$channel) {
-            //find a fallback with/without www.
+            // find a fallback with/without www.
             $channel = $this->repository->findOneBy(
                 ['domains' => (stripos($criteria, 'www.')) ? str_ireplace('www.', '', $criteria) : 'www.'.$criteria]
             );

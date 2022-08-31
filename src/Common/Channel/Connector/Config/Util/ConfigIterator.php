@@ -22,7 +22,7 @@ class ConfigIterator extends ArrayIterator
     /**
      * {@inheritdoc}
      */
-    public function key()
+    public function key(): ?string
     {
         if ($this->valid()) {
             return $this->current()->getName();

@@ -53,7 +53,7 @@ class RequestSubscriber implements EventSubscriberInterface
     public function onChange(ContentHistoryEvent $event)
     {
         if ($this->requestStack instanceof RequestStack) {
-            $masterRequest = $this->requestStack->getMasterRequest();
+            $masterRequest = $this->requestStack->getMainRequest();
 
             if ($masterRequest instanceof Request) {
                 $request = new Embedded\Request();

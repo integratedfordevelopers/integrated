@@ -84,11 +84,9 @@ class UserController extends AbstractController
         }
 
         $form = $this->createNewForm();
+        $form->handleRequest($request);
 
-        if ($request->isMethod('post')) {
-            $form->handleRequest($request);
-
-            // check for back click else its a submit
+        if ($form->isSubmitted()) {
             if ($form->get('actions')->get('cancel')->isClicked()) {
                 return $this->redirectToRoute('integrated_user_user_index');
             }
@@ -128,18 +126,16 @@ class UserController extends AbstractController
         }
 
         $form = $this->createEditForm($user);
+        $form->handleRequest($request);
 
-        if ($request->isMethod('put')) {
-            $form->handleRequest($request);
-
-            // check for back click else its a submit
+        if ($form->isSubmitted()) {
             if ($form->get('actions')->get('cancel')->isClicked()) {
                 return $this->redirectToRoute('integrated_user_user_index');
             }
 
             if ($form->isValid()) {
                 $this->getManager()->persist($user);
-                $this->addFlash('success', sprintf('The changes to the user %s are saved', $user->getUsername()));
+                $this->addFlash('success', sprintf('The changes to the user %s are saved', $user->getUserIdentifier()));
 
                 return $this->redirectToRoute('integrated_user_user_index');
             }
@@ -169,18 +165,16 @@ class UserController extends AbstractController
         }
 
         $form = $this->createDeleteForm($user);
+        $form->handleRequest($request);
 
-        if ($request->isMethod('delete')) {
-            $form->handleRequest($request);
-
-            // check for back click else its a submit
+        if ($form->isSubmitted()) {
             if ($form->get('actions')->get('cancel')->isClicked()) {
                 return $this->redirectToRoute('integrated_user_user_index');
             }
 
             if ($form->isValid()) {
                 $this->getManager()->remove($user);
-                $this->addFlash('success', sprintf('The user %s is removed', $user->getUsername()));
+                $this->addFlash('success', sprintf('The user %s is removed', $user->getUserIdentifier()));
 
                 return $this->redirectToRoute('integrated_user_user_index');
             }

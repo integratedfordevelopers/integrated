@@ -106,7 +106,7 @@ class RoleManager implements RoleManagerInterface
         $this->om->persist($role);
 
         if ($flush) {
-            $this->om->flush($role);
+            $this->om->flush();
         }
     }
 
@@ -118,7 +118,7 @@ class RoleManager implements RoleManagerInterface
         $this->om->remove($role);
 
         if ($flush) {
-            $this->om->flush($role);
+            $this->om->flush();
         }
     }
 

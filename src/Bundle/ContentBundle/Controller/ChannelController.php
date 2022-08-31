@@ -18,6 +18,7 @@ use Integrated\Bundle\ContentBundle\Services\SearchContentReferenced;
 use Integrated\Common\Channel\Event\ChannelEvent;
 use Integrated\Common\Channel\Events;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -42,15 +43,23 @@ class ChannelController extends AbstractController
     protected $searchContentReferenced;
 
     /**
-     * ChannelController constructor.
-     *
-     * @param DocumentManager         $documentManager
-     * @param SearchContentReferenced $searchContentReferenced
+     * @var EventDispatcherInterface
      */
-    public function __construct(DocumentManager $documentManager, SearchContentReferenced $searchContentReferenced)
-    {
+    protected $dispatcher;
+
+    /**
+     * @param DocumentManager          $documentManager
+     * @param SearchContentReferenced  $searchContentReferenced
+     * @param EventDispatcherInterface $dispatcher
+     */
+    public function __construct(
+        DocumentManager $documentManager,
+        SearchContentReferenced $searchContentReferenced,
+        EventDispatcherInterface $dispatcher
+    ) {
         $this->searchContentReferenced = $searchContentReferenced;
         $this->documentManager = $documentManager;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -127,14 +136,13 @@ class ChannelController extends AbstractController
         $form = $this->createCreateForm($channel);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->documentManager->persist($channel);
             $this->documentManager->flush();
 
             $this->addFlash('success', 'Item created');
 
-            $dispatcher = $this->get('integrated_content.event_dispatcher');
-            $dispatcher->dispatch(new ChannelEvent($channel), Events::CHANNEL_CREATED);
+            $this->dispatcher->dispatch(new ChannelEvent($channel), Events::CHANNEL_CREATED);
 
             return $this->redirectToRoute('integrated_content_channel_show', ['id' => $channel->getId()]);
         }
@@ -182,13 +190,12 @@ class ChannelController extends AbstractController
         $form = $this->createEditForm($channel);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->documentManager->flush();
 
             $this->addFlash('success', 'Item updated');
 
-            $dispatcher = $this->get('integrated_content.event_dispatcher');
-            $dispatcher->dispatch(new ChannelEvent($channel), Events::CHANNEL_UPDATED);
+            $this->dispatcher->dispatch(new ChannelEvent($channel), Events::CHANNEL_UPDATED);
 
             return $this->redirectToRoute('integrated_content_channel_show', ['id' => $channel->getId()]);
         }
@@ -222,8 +229,7 @@ class ChannelController extends AbstractController
             $this->documentManager->remove($channel);
             $this->documentManager->flush();
 
-            $dispatcher = $this->get('integrated_content.event_dispatcher');
-            $dispatcher->dispatch(new ChannelEvent($channel), Events::CHANNEL_DELETED);
+            $this->dispatcher->dispatch(new ChannelEvent($channel), Events::CHANNEL_DELETED);
 
             $this->addFlash('success', 'Channel deleted');
 

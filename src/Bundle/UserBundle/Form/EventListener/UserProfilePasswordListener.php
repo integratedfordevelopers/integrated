@@ -16,8 +16,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
@@ -26,16 +25,16 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class UserProfilePasswordListener implements EventSubscriberInterface
 {
     /**
-     * @var EncoderFactoryInterface
+     * @var PasswordHasherFactoryInterface
      */
-    private $encoderFactory;
+    private $hasherFactory;
 
     /**
-     * @param EncoderFactoryInterface $encoder
+     * @param PasswordHasherFactoryInterface $encoder
      */
-    public function __construct(EncoderFactoryInterface $encoder)
+    public function __construct(PasswordHasherFactoryInterface $hasherFactory)
     {
-        $this->encoderFactory = $encoder;
+        $this->hasherFactory = $hasherFactory;
     }
 
     /**
@@ -57,10 +56,10 @@ class UserProfilePasswordListener implements EventSubscriberInterface
         $inheritedPasswordOptions = $event->getForm()->get('password')->getConfig()->getOptions();
 
         if ($event->getData() === null || !$event->getData()->getPassword()) {
-            //password is not set, so it should not be blank
+            // password is not set, so it should not be blank
             $inheritedPasswordOptions['constraints'][] = new NotBlank();
         } else {
-            //make password optional, it is already set
+            // make password optional, it is already set
             $inheritedPasswordOptions['attr']['help_text'] = 'Password will only be changed if a new password is entered';
             $inheritedPasswordOptions['required'] = false;
         }
@@ -80,24 +79,9 @@ class UserProfilePasswordListener implements EventSubscriberInterface
             return; // not a user so nothing to encode
         }
 
-        // if a password is entered it need to be encoded and stored in
-        // the user model.
-
         if ($password = $form->get('password')->getData()) {
-            $salt = base64_encode(random_bytes(72));
-
-            $user->setPassword($this->getEncoder($user)->encodePassword($password, $salt));
-            $user->setSalt($salt);
+            $user->setPassword($this->hasherFactory->getPasswordHasher($user)->hash($password));
+            $user->setSalt(null);
         }
-    }
-
-    /**
-     * @param object $user
-     *
-     * @return PasswordEncoderInterface
-     */
-    protected function getEncoder($user)
-    {
-        return $this->encoderFactory->getEncoder($user);
     }
 }

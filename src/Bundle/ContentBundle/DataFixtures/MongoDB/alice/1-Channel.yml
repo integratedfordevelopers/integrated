@@ -1,5 +1,5 @@
 Integrated\Bundle\ContentBundle\Document\Channel\Channel:
-  channel-my-channel:
-    id:      my_channel
-    name:    My channel
-    domains: [localhost, my-channel.com]
+    channel-my-channel:
+        id:      my_channel
+        name:    My channel
+        domains: [localhost, my-channel.com]

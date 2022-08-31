@@ -11,18 +11,18 @@
 
 namespace Integrated\Bundle\UserBundle\Form\DataMapper;
 
-use Symfony\Component\Form\Extension\Core\DataMapper\PropertyPathMapper;
+use Symfony\Component\Form\Extension\Core\DataMapper\DataMapper;
 use Symfony\Component\Form\FormInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class UserMapper extends PropertyPathMapper
+class UserMapper extends DataMapper
 {
     /**
      * {@inheritdoc}
      */
-    public function mapFormsToData($forms, &$data)
+    public function mapFormsToData($forms, &$data): void
     {
         // we only want properties to be mapped back when the form is enabled else nothing should
         // be written to the $data.

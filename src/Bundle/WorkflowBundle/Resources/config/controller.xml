@@ -7,6 +7,10 @@
     <services>
 
         <service id="Integrated\Bundle\WorkflowBundle\Controller\WorkflowController">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="integrated_user.user.manager.doctrine" />
+
             <tag name="controller.service_arguments" />
             <tag name="container.service_subscriber" />
 

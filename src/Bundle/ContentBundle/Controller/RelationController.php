@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ContentBundle\Form\Type\RelationType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,6 +31,13 @@ class RelationController extends AbstractController
      */
     protected $relationClass = 'Integrated\\Bundle\\ContentBundle\\Document\\Relation\\Relation';
 
+    private $documentManager;
+
+    public function __construct(DocumentManager $documentManager)
+    {
+        $this->documentManager = $documentManager;
+    }
+
     /**
      * Lists all the Relation documents.
      *
@@ -39,11 +47,9 @@ class RelationController extends AbstractController
      */
     public function index(Request $request)
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-        $dm = $this->get('doctrine_mongodb')->getManager();
-        $qb = $dm->createQueryBuilder($this->relationClass)
+        $qb = $this->documentManager->createQueryBuilder($this->relationClass)
             ->sort('name');
 
         if ($contentType = $request->get('contentType')) {
@@ -64,7 +70,7 @@ class RelationController extends AbstractController
      */
     public function show(Relation $relation)
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $form = $this->createDeleteForm($relation);
 
@@ -81,7 +87,7 @@ class RelationController extends AbstractController
      */
     public function new()
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $form = $this->createNewForm(new Relation());
 
@@ -99,18 +105,16 @@ class RelationController extends AbstractController
      */
     public function create(Request $request)
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $relation = new Relation();
 
         $form = $this->createNewForm($relation);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-            $dm = $this->get('doctrine_mongodb')->getManager();
-            $dm->persist($relation);
-            $dm->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->documentManager->persist($relation);
+            $this->documentManager->flush();
 
             $this->addFlash('success', 'Item created');
 
@@ -131,7 +135,7 @@ class RelationController extends AbstractController
      */
     public function edit(Relation $relation)
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $form = $this->createEditForm($relation);
 
@@ -150,15 +154,13 @@ class RelationController extends AbstractController
      */
     public function update(Request $request, Relation $relation)
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $form = $this->createEditForm($relation);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-            $dm = $this->get('doctrine_mongodb')->getManager();
-            $dm->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->documentManager->flush();
 
             $this->addFlash('success', 'Item updated');
 
@@ -180,16 +182,14 @@ class RelationController extends AbstractController
      */
     public function delete(Request $request, Relation $relation)
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $form = $this->createDeleteForm($relation);
 
         $form->handleRequest($request);
-        if ($form->isValid()) {
-            /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-            $dm = $this->get('doctrine_mongodb')->getManager();
-            $dm->remove($relation);
-            $dm->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->documentManager->remove($relation);
+            $this->documentManager->flush();
 
             $this->addFlash('success', 'Item deleted');
         }

@@ -35,7 +35,7 @@ class RecursiveActiveMatcher
         $voters = [];
 
         // Add the URI matcher whenever we've got a request
-        if ($request = $requestStack->getMasterRequest()) {
+        if ($request = $requestStack->getMainRequest()) {
             $voters[] = new UriVoter(
                 str_replace(
                     $request->getScriptName(), // contains; app.php or app_dev.php

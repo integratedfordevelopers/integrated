@@ -79,24 +79,24 @@ class ContentTypeHandler implements HandlerInterface
         }
 
         if ($contentType->getId() == $contentTypeOld->getId()) {
-            //contenttype is already the same
+            // contenttype is already the same
             return;
         }
 
         if ($contentType->getClass() != $contentTypeOld->getClass()) {
-            //don't allow update when item is referenced, because class in reference need to be updated
+            // don't allow update when item is referenced, because class in reference need to be updated
             $referencedItems = $this->searchContentReferenced->getReferenced($content);
             if (\count($referencedItems) > 0) {
                 throw new \Exception('Item '.(string) $content.' is referenced by '.\count($referencedItems).' other content item(s) and can\'t be moved to another document type');
             }
 
-            //update class of content, directly on the database because the documentManager doesn't support class updates
+            // update class of content, directly on the database because the documentManager doesn't support class updates
             $this->documentManager->getDocumentCollection($contentTypeOld->getClass())->updateOne(['_id' => $content->getId()], ['$set' => ['class' => $contentType->getClass()]]);
 
             $content = $this->documentManager->getRepository($contentType->getClass())->find($content->getId());
         }
 
-        //remove old document from Solr, to avoid duplicate indexing
+        // remove old document from Solr, to avoid duplicate indexing
         $this->deleteFromSolr($contentTypeOld, $content);
 
         $content->setContentType($contentType->getId());

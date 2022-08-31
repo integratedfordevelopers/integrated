@@ -16,6 +16,7 @@
             <argument type="service" id="integrated_locking.dbal.manager" />
             <argument type="service" id="integrated_user.user.manager" />
             <argument type="service" id="integrated_image.twig_extension" />
+            <argument type="service" id="integrated_content.provider.media" />
 
             <tag name="controller.service_arguments" />
             <tag name="container.service_subscriber" />
@@ -27,8 +28,9 @@
 
         <service id="Integrated\Bundle\ContentBundle\Controller\ContentTypeController">
             <argument type="service" id="integrated_content.content_type.manager" />
-            <argument type="service" id="integrated_content.event_dispatcher" />
+            <argument type="service" id="event_dispatcher" />
             <argument type="service" id="integrated_content.metadata.factory" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
 
             <tag name="controller.service_arguments" />
             <tag name="container.service_subscriber" />
@@ -41,6 +43,7 @@
         <service id="Integrated\Bundle\ContentBundle\Controller\ChannelController">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <argument type="service" id="integrated_content.services.search.content.referenced" />
+            <argument type="service" id="event_dispatcher" />
 
             <tag name="controller.service_arguments" />
             <tag name="container.service_subscriber" />
@@ -64,6 +67,8 @@
         </service>
 
         <service id="Integrated\Bundle\ContentBundle\Controller\RelationController">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+
             <tag name="controller.service_arguments" />
             <tag name="container.service_subscriber" />
 
@@ -86,6 +91,10 @@
         </service>
 
         <service id="Integrated\Bundle\ContentBundle\Controller\SearchSelectionController">
+            <argument type="service" id="request_stack" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="integrated_content.services.search.content.referenced" />
+
             <tag name="controller.service_arguments" />
             <tag name="container.service_subscriber" />
 

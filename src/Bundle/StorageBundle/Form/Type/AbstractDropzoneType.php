@@ -77,7 +77,7 @@ abstract class AbstractDropzoneType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        //make hidden instead of checkbox
+        // make hidden instead of checkbox
         $builder->add('remove', HiddenType::class, [
             'mapped' => false,
             'required' => false,

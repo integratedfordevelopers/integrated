@@ -69,7 +69,7 @@ class WorkflowMarkerListener implements EventSubscriberInterface
         }
 
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
-            //admin is always allowed to do everything
+            // admin is always allowed to do everything
             return;
         }
 

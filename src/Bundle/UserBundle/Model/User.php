@@ -151,6 +151,14 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
+    public function getUserIdentifier()
+    {
+        return $this->username;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setPassword($password)
     {
         $this->password = (string) $password;
@@ -159,7 +167,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -175,7 +183,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getSalt()
+    public function getSalt(): ?string
     {
         return $this->salt;
     }
@@ -403,7 +411,7 @@ class User implements UserInterface
         return sprintf(
             "ID: %s\nUsername: %s\n CreatedAt: %s\nEnabled: %s",
             $this->getId(),
-            $this->getUsername(),
+            $this->getUserIdentifier(),
             $this->getCreatedAt()->format('r'),
             $this->isEnabled() ? 'TRUE' : 'FALSE'
         );
@@ -411,6 +419,25 @@ class User implements UserInterface
 
     public function isEqualTo(BaseUserInterface $user)
     {
-        return $user->getUsername() === $this->getUsername();
+        return $user->getUserIdentifier() === $this->getUserIdentifier();
+    }
+
+    public function __serialize(): array
+    {
+        return [
+            $this->id,
+            $this->username,
+            $this->password,
+            $this->salt,
+        ];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        list(
+            $this->id,
+            $this->username,
+            $this->password,
+            $this->salt) = $data;
     }
 }

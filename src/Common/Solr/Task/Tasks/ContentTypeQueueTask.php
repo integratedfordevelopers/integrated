@@ -54,4 +54,14 @@ class ContentTypeQueueTask implements Serializable
     {
         $this->id = $serialized;
     }
+
+    public function __serialize(): array
+    {
+        return ['id' => $this->id];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        $this->id = $data['id'];
+    }
 }

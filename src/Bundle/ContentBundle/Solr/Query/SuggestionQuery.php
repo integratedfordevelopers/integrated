@@ -40,7 +40,7 @@ class SuggestionQuery extends Query implements WorkflowMarkerInterface
 
         $this->addTag('suggest');
 
-        parent::__construct(is_scalar($options) ? ['query' => $options] : $options);
+        parent::__construct(\is_scalar($options) ? ['query' => $options] : $options);
     }
 
     /**

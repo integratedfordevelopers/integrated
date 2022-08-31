@@ -28,15 +28,17 @@ parameters:
 			path: src/Bundle/ContentBundle/Tests/Form/DataTransformer/ContentType/Field/CustomTransformerTest.php
 
 		-
-			message: "#^Call to deprecated function libxml_disable_entity_loader\\(\\)\\.$#"
+			message: """
+				#^Call to method createTestEntityManager\\(\\) of deprecated class Symfony\\\\Bridge\\\\Doctrine\\\\Test\\\\DoctrineTestHelper\\:
+				since Symfony 5\\.3$#
+			"""
 			count: 1
-			path: src/Bundle/ThemeBundle/DomQuery/DomQueryNodes.php
+			path: src/Bundle/ContentBundle/Tests/Form/Type/RelationTypeTest.php
 
 		-
 			message: """
-				#^Return type of method Integrated\\\\Bundle\\\\UserBundle\\\\Model\\\\User\\:\\:getRoles\\(\\) has typehint with deprecated class Symfony\\\\Component\\\\Security\\\\Core\\\\Role\\\\Role\\:
-				since Symfony 4\\.3, to be removed in 5\\.0\\. Use strings as roles instead\\.$#
+				#^Class Integrated\\\\Bundle\\\\UserBundle\\\\Form\\\\DataMapper\\\\UserMapper extends deprecated class Symfony\\\\Component\\\\Form\\\\Extension\\\\Core\\\\DataMapper\\\\PropertyPathMapper\\:
+				since symfony/form 5\\.2\\. Use \\{@see DataMapper\\} instead\\.$#
 			"""
 			count: 1
-			path: src/Bundle/UserBundle/Model/User.php
-
+			path: src/Bundle/UserBundle/Form/DataMapper/UserMapper.php

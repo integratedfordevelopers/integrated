@@ -3,19 +3,19 @@
 namespace Integrated\Bundle\UserBundle\DataFixtures\Faker\Provider;
 
 use Integrated\Bundle\UserBundle\Model\User;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 
 class EncodeProvider
 {
     /**
-     * @var EncoderFactoryInterface
+     * @var PasswordHasherFactoryInterface
      */
     private $factory;
 
     /**
-     * @param EncoderFactoryInterface $factory
+     * @param PasswordHasherFactoryInterface $factory
      */
-    public function __construct(EncoderFactoryInterface $factory)
+    public function __construct(PasswordHasherFactoryInterface $factory)
     {
         $this->factory = $factory;
     }
@@ -28,8 +28,8 @@ class EncodeProvider
      */
     public function encodePassword(User $user, $password)
     {
-        $user->setSalt(base64_encode(random_bytes(72)));
+        $user->setSalt(null);
 
-        return $this->factory->getEncoder($user)->encodePassword($password, $user->getSalt());
+        return $this->factory->getPasswordHasher($user)->hash($password);
     }
 }

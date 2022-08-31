@@ -68,8 +68,8 @@ class Exporter implements ExporterInterface
         if ($content instanceof PublishableInterface) {
             $publicationDate = $content->getPublishTime()->getStartDate();
             if (!$content->isPublished()) {
-                //make sure content is not published when publication date or state
-                //has changed after queueing
+                // make sure content is not published when publication date or state
+                // has changed after queueing
                 $state = ConnectorExporterInterface::STATE_DELETE;
             }
         }

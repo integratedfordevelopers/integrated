@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Controller;
 
 use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
+use Integrated\Bundle\ContentBundle\Provider\MediaProvider;
 use Integrated\Bundle\ContentBundle\Services\SearchContentReferenced;
 use Integrated\Bundle\ImageBundle\Twig\Extension\ImageExtension;
 use Integrated\Bundle\IntegratedBundle\Controller\AbstractController;
@@ -96,6 +97,11 @@ class ContentController extends AbstractController
      */
     private $imageExtension;
 
+    /**
+     * @var MediaProvider
+     */
+    private $mediaProvider;
+
     public function __construct(
         ResolverInterface $resolver,
         ContentTypeManager $contentTypeManager,
@@ -105,7 +111,8 @@ class ContentController extends AbstractController
         SearchContentReferenced $contentReferenced,
         Manager $lockManager,
         UserManagerInterface $userManager,
-        ImageExtension $imageExtension
+        ImageExtension $imageExtension,
+        MediaProvider $mediaProvider
     ) {
         $this->resolver = $resolver;
         $this->contentTypeManager = $contentTypeManager;
@@ -116,6 +123,7 @@ class ContentController extends AbstractController
         $this->lockManager = $lockManager;
         $this->userManager = $userManager;
         $this->imageExtension = $imageExtension;
+        $this->mediaProvider = $mediaProvider;
     }
 
     /**
@@ -134,7 +142,7 @@ class ContentController extends AbstractController
         // Store facetTitles in array
         $facetTitles = [];
 
-        //remember search state
+        // remember search state
         $session = $request->getSession();
         if ($request->query->get('remember') && $session->has('content_index_view')) {
             $request->query->add(unserialize($session->get('content_index_view')));
@@ -227,7 +235,7 @@ class ContentController extends AbstractController
         foreach ($dm->getRepository($this->relationClass)->findAll() as $relation) {
             $name = preg_replace('/[^a-zA-Z]/', '', $relation->getName());
 
-            //create relation facet field
+            // create relation facet field
             $facetSet->createFacetField($name)->setField('facet_'.$relation->getId())->getLocalParameters()->setExclude($name);
             $facetTitles[$name] = $relation->getName();
             $relationfilter = $request->query->get($name);
@@ -381,7 +389,7 @@ class ContentController extends AbstractController
 
             $sort_default = 'rel';
         } else {
-            //relevance only available when sorting on specific query
+            // relevance only available when sorting on specific query
             unset($sort_options['rel']);
         }
 
@@ -477,17 +485,15 @@ class ContentController extends AbstractController
         }
 
         $form = $this->createNewForm($contentType, $content, $request);
+        $form->handleRequest($request);
 
-        if ($request->isMethod('post')) {
-            $form->handleRequest($request);
-
-            // check for back click else its a submit
+        if ($form->isSubmitted()) {
             if ($form->get('actions')->getData() == 'cancel') {
                 return $this->redirectToRoute('integrated_content_content_index', ['remember' => 1]);
             }
 
             if ($form->isValid()) {
-                //higher priority for content edited in Integrated
+                // higher priority for content edited in Integrated
                 $queue = $this->queueSubscriber->getQueue();
                 $this->queueSubscriber->setPriority($queue::PRIORITY_HIGH);
 
@@ -603,7 +609,7 @@ class ContentController extends AbstractController
             // this is not rest compatible since a button click is required to save
             if ($form->get('actions')->getData() == 'save') {
                 if (!$locking['locked'] && $form->isValid()) {
-                    //higher priority for content edited in Integrated
+                    // higher priority for content edited in Integrated
                     $queue = $this->queueSubscriber->getQueue();
                     $this->queueSubscriber->setPriority($queue::PRIORITY_HIGH);
 
@@ -713,10 +719,9 @@ class ContentController extends AbstractController
         $referenced = $this->contentReferenced->getReferenced($content);
 
         $form = $this->createDeleteForm($content, $locking, \count($referenced) > 0);
+        $form->handleRequest($request);
 
-        if ($request->isMethod('delete')) {
-            $form->handleRequest($request);
-
+        if ($form->isSubmitted()) {
             // possible actions are cancel, reload and delete
 
             if ($form->get('actions')->getData() == 'cancel') {
@@ -734,7 +739,7 @@ class ContentController extends AbstractController
             // this is not rest compatible since a button click is required to save
             if ($form->get('actions')->getData() == 'delete') {
                 if ($form->isValid()) {
-                    //higher priority for content edited in Integrated
+                    // higher priority for content edited in Integrated
                     $queue = $this->queueSubscriber->getQueue();
                     $this->queueSubscriber->setPriority($queue::PRIORITY_HIGH);
 
@@ -929,7 +934,7 @@ class ContentController extends AbstractController
             $text = '';
 
             if ($user) {
-                $text = $user->getUsername();
+                $text = $user->getUserIdentifier();
 
                 // we got a basic user name now try to get a better one
 
@@ -1041,7 +1046,7 @@ class ContentController extends AbstractController
         $output = [];
 
         /* @var Image $image */
-        foreach ($this->container->get('integrated_content.provider.media')->getContentTypes($filter) as $contentType) {
+        foreach ($this->mediaProvider->getContentTypes($filter) as $contentType) {
             $output[] = [
                 'id' => $contentType->getId(),
                 'name' => $contentType->getName(),

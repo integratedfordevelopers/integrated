@@ -11,27 +11,30 @@
 
 namespace Integrated\Bundle\UserBundle\DependencyInjection\Security;
 
-use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\SecurityFactoryInterface;
+use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\AuthenticatorFactoryInterface;
+use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\FirewallListenerFactoryInterface;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Integrated\Bundle\UserBundle\Security\Authentication\Provider\ScopeProvider;
 use Integrated\Bundle\UserBundle\Security\Firewall\ScopeListener;
 
-class ScopeFactory implements SecurityFactoryInterface
+class ScopeFactory implements AuthenticatorFactoryInterface, FirewallListenerFactoryInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function create(ContainerBuilder $container, $id, $config, $userProvider, $defaultEntryPoint)
+    public function createAuthenticator(ContainerBuilder $container, string $firewallName, array $config, string $userProviderId)
     {
-        $providerId = 'integrated_user.security.authentication.provider.scope.'.$id;
-        $listenerId = 'integrated_user.security.authentication.listener.scope.'.$id;
+        return [];
+    }
 
-        $container->setDefinition($providerId, new ChildDefinition(ScopeProvider::class));
-        $container->setDefinition($listenerId, new ChildDefinition(ScopeListener::class))->replaceArgument(1, $id);
+    public function createListeners(ContainerBuilder $container, string $firewallName, array $config): array
+    {
+        $listenerId = 'integrated_user.security.authentication.listener.scope.'.$firewallName;
 
-        return [$providerId, $listenerId, $defaultEntryPoint];
+        $container->setDefinition($listenerId, new ChildDefinition(ScopeListener::class))->replaceArgument(1, $firewallName);
+
+        return [$listenerId];
     }
 
     /**
@@ -40,6 +43,14 @@ class ScopeFactory implements SecurityFactoryInterface
     public function getPosition()
     {
         return 'remember_me';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority(): int
+    {
+        return -40;
     }
 
     /**

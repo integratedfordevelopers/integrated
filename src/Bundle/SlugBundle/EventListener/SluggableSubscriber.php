@@ -71,7 +71,7 @@ class SluggableSubscriber implements EventSubscriber
             'prePersist',
             'postPersist',
             'preUpdate',
-            //'onFlush', // @todo implement to support update after a persist (INTEGRATED-294)
+            // 'onFlush', // @todo implement to support update after a persist (INTEGRATED-294)
         ];
     }
 
@@ -144,7 +144,7 @@ class SluggableSubscriber implements EventSubscriber
                     if (\array_key_exists($propertyMetadata->name, $changeset)) {
                         // generate custom slug
                         $slug = $this->slugger->slugify(
-                            $changeset[$propertyMetadata->name],
+                            $changeset[$propertyMetadata->name][1],
                             $propertyMetadata->slugSeparator
                         );
                     } elseif (null !== $propertyMetadata->getValue($object)) {
@@ -345,7 +345,7 @@ class SluggableSubscriber implements EventSubscriber
         if ($uow instanceof ODMUnitOfWork) {
             return array_merge($objects, $this->getRepository($om, $class)->findBy([
                 $field => new Regex(
-                    '/^'.preg_quote($slug, '/').'('.preg_quote($separator, '/').'\d+)?$/'
+                    '^'.preg_quote($slug, '/').'('.preg_quote($separator, '/').'\d+)?$'
                 ), // counter is optional
             ]));
         }

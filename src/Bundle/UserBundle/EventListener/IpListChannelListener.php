@@ -46,7 +46,7 @@ class IpListChannelListener implements EventSubscriberInterface
 
     public function onRequest(RequestEvent $event)
     {
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 

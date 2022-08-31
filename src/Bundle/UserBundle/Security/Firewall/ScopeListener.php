@@ -20,8 +20,9 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Firewall\AbstractListener;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Integrated\Bundle\UserBundle\Model\Scope;
+use Symfony\Component\Security\Http\Firewall\FirewallListenerInterface;
 
-class ScopeListener extends AbstractListener
+class ScopeListener extends AbstractListener implements FirewallListenerInterface
 {
     /**
      * @var TokenStorageInterface
@@ -70,7 +71,6 @@ class ScopeListener extends AbstractListener
 
         $newToken = new UsernamePasswordToken(
             $user,
-            $token->getCredentials(),
             $this->providerKey,
             $roles
         );

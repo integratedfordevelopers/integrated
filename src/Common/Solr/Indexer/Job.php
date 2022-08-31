@@ -156,4 +156,14 @@ class Job implements JobInterface
 
         return $this;
     }
+
+    public function __serialize(): array
+    {
+        return ['action' => $this->action, 'options' => $this->options];
+    }
+
+    public function __unserialize(array $data)
+    {
+        $this->__construct($data['action'], (array) $data['options']);
+    }
 }

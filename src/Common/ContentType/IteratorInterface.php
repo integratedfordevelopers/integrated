@@ -25,7 +25,8 @@ interface IteratorInterface extends BaseIteratorInterface
      *
      * @return contentTypeInterface
      */
-    public function current();
+    #[\ReturnTypeWillChange]
+    public function current(): mixed;
 
     /**
      * Move forward to next content type.
@@ -42,7 +43,7 @@ interface IteratorInterface extends BaseIteratorInterface
      *
      * @return mixed scalar on success, or null on failure
      */
-    public function key();
+    public function key(): mixed;
 
     /**
      * Checks if current position is valid.

@@ -4,10 +4,16 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
+        <service id="Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\LoadFixtureData" autowire="true" autoconfigure="true">
+            <argument type="service" id="nelmio_alice.files_loader.simple" on-invalid="null" />
+            <tag name="doctrine.fixture.odm" />
+        </service>
+
         <service id="integrated_storage.data_fixtures.faker.image_provider" class="Integrated\Bundle\StorageBundle\DataFixtures\Faker\Provider\ImageProvider">
             <argument type="service" id="integrated_storage.manager" />
             <tag name="nelmio_alice.faker.provider" />
         </service>
+
         <service id="integrated_storage.data_fixtures.faker.video_provider" class="Integrated\Bundle\StorageBundle\DataFixtures\Faker\Provider\VideoProvider">
             <argument type="service" id="integrated_storage.manager" />
             <tag name="nelmio_alice.faker.provider" />

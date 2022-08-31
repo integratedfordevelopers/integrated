@@ -77,9 +77,9 @@ class StateManager
             if (!$this->entityManager->getRepository(State::class)->findOneBy(['content_id' => $content['_id'], 'content_class' => $content['class']])) {
                 $content = $this->documentManager->getRepository(Content::class)->find($content['_id']);
 
-                //is disabled field state same as published state? we don't want to change the disabled state without an item review
+                // is disabled field state same as published state? we don't want to change the disabled state without an item review
                 if ($content->isDisabled() != $defaultState->isPublishable()) {
-                    //explicitly assign new state to article
+                    // explicitly assign new state to article
                     $state = new State();
                     $state->setContent($content);
                     $state->setState($defaultState);

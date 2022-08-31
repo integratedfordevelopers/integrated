@@ -8,13 +8,7 @@
         <type name="integrated.fields">
             <options>
 
-                <string key="title">title</string>
-                <string key="title_sort">title</string>
-
                 <string key="slug">slug</string>
-
-                <string key="intro">intro</string>
-                <string key="content">content</string>
 
                 <string key="disabled_int">disabled</string>
                 <string key="pub_time">publishTime.startDate</string>
@@ -32,6 +26,11 @@
 
         <type name="integrated.fields">
             <options>
+
+                <string key="title">title</string>
+                <string key="title_sort">title</string>
+                <string key="intro">intro</string>
+                <string key="content">content</string>
 
                 <string key="subtitle">subtitle</string>
 
@@ -115,6 +114,8 @@
 
         <type name="integrated.fields">
             <options>
+                <string key="title">title</string>
+                <string key="title_sort">title</string>
 
                 <string key="content">description</string>
                 <string key="description">description</string>
@@ -158,6 +159,8 @@
 
         <type name="integrated.fields">
             <options>
+                <string key="title">title</string>
+                <string key="title_sort">title</string>
 
                 <string key="content">description</string>
                 <string key="description">description</string>
@@ -241,6 +244,8 @@
     <class name="Integrated\Bundle\ContentBundle\Document\Content\Comment">
         <type name="integrated.fields">
             <options>
+                <string key="title">title</string>
+                <string key="title_sort">title</string>
 
                 <string key="title">descriptor</string>
                 <string key="name">name</string>
