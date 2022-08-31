@@ -29,7 +29,7 @@
             <tag name="controller.service_arguments" />
         </service>
 
-        <service class="Integrated\Bundle\UserBundle\Controller\TwoFactor\GoogleController">
+        <service id="Integrated\Bundle\UserBundle\Controller\TwoFactor\GoogleController">
             <argument type="service" id="integrated_user.two_factor.context_resolver" />
             <argument type="service" id="integrated_user.user.manager" />
             <argument type="service" id="scheb_two_factor.security.google_authenticator" />
