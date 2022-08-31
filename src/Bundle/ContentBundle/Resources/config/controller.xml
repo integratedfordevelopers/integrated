@@ -16,6 +16,7 @@
             <argument type="service" id="integrated_locking.dbal.manager" />
             <argument type="service" id="integrated_user.user.manager" />
             <argument type="service" id="integrated_image.twig_extension" />
+            <argument type="service" id="integrated_content.provider.media" />
 
             <tag name="controller.service_arguments" />
             <tag name="container.service_subscriber" />
