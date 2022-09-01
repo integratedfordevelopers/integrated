@@ -31,6 +31,10 @@ class AuthenticatorValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, Authenticator::class);
         }
 
+        if (null === $value || '' === $value) {
+            return;
+        }
+
         if (!$this->authenticator->checkCode($constraint->user, $value)) {
             $this->context->buildViolation($constraint->message)
                 ->setTranslationDomain($this->translationDomain)

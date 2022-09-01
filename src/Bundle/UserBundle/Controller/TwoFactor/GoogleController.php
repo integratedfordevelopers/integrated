@@ -122,6 +122,6 @@ class GoogleController extends AbstractController
             return $this->utils->createRedirectResponse($request, $this->provider->getTargetPath($context));
         }
 
-        return $this->forward('Integrated\Bundle\UserBundle\Controller\TwoFactor\GoogleController::form');
+        return $this->redirectToRoute($context->getConfig()->getFormPath());
     }
 }

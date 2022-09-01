@@ -19,6 +19,7 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class AuthenticatorType extends AbstractType
 {
@@ -70,6 +71,7 @@ class AuthenticatorType extends AbstractType
 
             return [
                 new Authenticator(['user' => $options['user']]),
+                new NotBlank(),
             ];
         });
     }

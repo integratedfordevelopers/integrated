@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\UserBundle\Form\Type;
 
+use Integrated\Bundle\UserBundle\Form\EventListener\AuthenticatorErrorListener;
 use Integrated\Bundle\UserBundle\Security\TwoFactor\Http\ContextInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -39,6 +40,8 @@ class AuthenticatorFormType extends AbstractType
         ]);
 
         $builder->add('activate', SubmitType::class);
+
+        $builder->addEventSubscriber(new AuthenticatorErrorListener($options['context'], '_auth_code'));
     }
 
     public function configureOptions(OptionsResolver $resolver)
