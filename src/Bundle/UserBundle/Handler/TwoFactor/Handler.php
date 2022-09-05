@@ -50,6 +50,8 @@ class Handler implements HandlerInterface
     {
         $form = $this->factory->create(AuthenticatorFormType::class, null, ['context' => $this->context]);
 
+        $form->handleRequest($this->context->getRequest());
+
         return $this->twig->render($this->template, [
             'context' => $this->context,
             'user' => $this->context->getUser(),
