@@ -23,7 +23,7 @@ class FilterQueryProvider
     /**
      * @param array|null $data
      *
-     * @return array
+     * @return \Doctrine\ORM\Query
      */
     public function getUsers($data)
     {
@@ -49,7 +49,7 @@ class FilterQueryProvider
                 ->setParameter('q', '%'.$data['q'].'%');
         }
 
-        return $queryBuilder->getQuery()->execute();
+        return $queryBuilder->getQuery();
     }
 
     public function getGroupChoices($data)
