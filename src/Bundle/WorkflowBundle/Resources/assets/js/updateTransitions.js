@@ -7,124 +7,90 @@
  * file that was distributed with this source code.
  */
 
-/*
- * @author Roy Frans <roy@e-active.nl>
- */
-(function()
-{
-    var statesId = 'workflow_definition_edit_states';
-    var states = $('#' + statesId).find('.integrated-collection').children();
+import '../../../../ContentBundle/Resources/assets/js/collection'
 
-    $(document).ready(function (e) {
-        //trigger sorting
-        if ($('workflow_definition_new_states').length) {
-            statesId = 'workflow_definition_new_states';
-            states = $('#' + statesId).find('.integrated-collection').children();
-        }
+const workflow = 'integrated_workflow_definition_states';
 
-        $.each(states, function (i, el) {
-            sort(getId(el));
-        });
+$(document).ready(function (e) {
+    init();
+});
 
-        setTriggers();
+function init() {
+    $('#'+workflow+' [data-addfield="collection"]').click(function (event) {
+        setTimeout(update, 0);
+        setTimeout(register, 0);
     });
 
-    function setTriggers()
-    {
-        $('.state_add_button').click(function (e) {
-            // use timeout to make sure the state has been added before processing it
-            setTimeout(stateAdded, 100);
+    register();
+}
+
+function update() {
+    const states = getStates();
+
+    $('#'+workflow+' select.state_transitions_input_field').each(function() {
+        const elm = $(this);
+        const id = parseInt(this.id.replace(workflow, '').replace('transitions', '').replace('_', ''));
+        const val = elm.val();
+
+        elm.empty();
+
+        for (const index in states) {
+            if (states[index].id == id) {
+                continue;
+            }
+
+            elm.append($('<option></option>').val(states[index].id).html(states[index].label))
+        }
+
+        elm.val(val);
+    });
+
+    function getStates() {
+        let map = {};
+
+        $('#'+workflow+' .state_name_input_field').each(function() {
+            map[parseInt(this.id.replace(workflow, '').replace('name', '').replace('_', ''))] = $(this).val();
         });
 
-        $('#' + statesId)
-            .delegate('.state_delete_button', 'click', function (e) {
-                var id = parseInt($(this).attr('data-field').replace("workflow_definition_edit_states_", ""));
+        let array = [];
 
-                stateDeleted(id);
-            }).delegate('.state_name_input_field', "change", function (e) {
-                var id = parseInt(this.id.replace(statesId + "_", "").replace("_name", ""));
-
-                stateChanged(id);
-            });
-    }
-
-    function stateAdded()
-    {
-        // find id of new state
-        var newStateId = getId($('#' + statesId).find('.integrated-collection').children().last());
-
-        // get new state name
-        var newStateName = $('#' + statesId +'_' + newStateId + '_name').val();
-
-        // populate new state with current transitions
-        for (var i = 0; i < newStateId; i++) {
-            var stateName = $('#' + statesId + '_' + i + '_name').val();
-            $('#' + statesId + '_' + newStateId + '_transitions')
-                .append(
-                    $('<option></option>')
-                        .val(i)
-                        .html(stateName)
-                );
+        for (const id in map) {
+            array.push({
+                'id': id,
+                'label': map[id],
+            })
         }
 
-        // add new state to transition lists of other states
-        for (i = 0; i < newStateId; i++) {
-            $('#' + statesId + '_' + i + '_transitions')
-                .append(
-                    $('<option></option>')
-                        .val(newStateId)
-                        .html(newStateName)
-                );
-            // transition list may need sorting
-            sort(i);
+        array.sort(function (a, b) {
+            return a.label == b.label ? 0 : a.label < b.label ? -1 : 1
+        });
+
+        return array;
+    }
+}
+
+function register() {
+    $('#'+workflow+' [data-removefield="collection"]').each(function () {
+        let elm = $(this);
+
+        if (!elm.data('workflow-state-event-registered')) {
+            elm.on('click', function(event) {
+                setTimeout(update, 0);
+            })
         }
 
-        // transition list of new state may need sorting
-        sort(newStateId);
-    }
+        elm.data('workflow-state-event-registered', 1);
+    })
 
-    function stateChanged(id)
-    {
-        // get state name
-        var stateName = $('#' + statesId + '_' + id + '_name').val();
+    $('#'+workflow+' .state_name_input_field').each(function () {
+        let elm = $(this);
 
-        // replace name of this state in transition lists of other states
-        var stateLength = $('#' + statesId).find('.integrated-collection').children().length;
-
-        for (var i = 0; i < stateLength; i++) {
-            $('#' + statesId + '_' + i + '_transitions option[value=\'' + id + '\']').html(stateName);
-
-            // transition list may need sorting
-            sort(i);
+        if (!elm.data('workflow-state-event-registered')) {
+            elm.on('change', function(event) {
+                update();
+            })
         }
-    }
 
-    function stateDeleted(id)
-    {
-        // delete this state from transition lists of other states
-        var stateLength = $('#' + statesId).find('.integrated-collection').children().length;
-
-        for (var i = 0; i < stateLength; i++) {
-            $('#' + statesId + '_' + i + '_transitions option[value=\'' + id + '\']').remove();
-        }
-    }
-
-    function sort(selectElementId)
-    {
-        // sort transition list
-        var select = $('#' + statesId + '_' + selectElementId + '_transitions');
-        select.html(select.find('option').sort(function (a, b) {
-            return a.text == b.text ? 0 : a.text < b.text ? -1 : 1
-        }));
-    }
-
-    function getId(stateLi)
-    {
-        // get the id number of the given li element
-        return parseInt(
-            $(stateLi).find('div[id^="' + statesId + '_"]')[0].id
-                .replace(statesId + "_", '')
-        );
-    }
-})
-();
+        elm.data('workflow-state-event-registered', 1);
+    })
+}
