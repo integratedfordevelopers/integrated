@@ -9,8 +9,10 @@ Below example security config that can be used to setup a basic login support
 for a integrated website.
 
     security:
-        encoders:
-            Integrated\Bundle\UserBundle\Model\User: sha512
+        enable_authenticator_manager: true
+
+        password_hasher:
+            Integrated\Bundle\UserBundle\Model\User: auto
 
         providers:
             integrated_user:
@@ -23,9 +25,9 @@ for a integrated website.
 
             main:
                 pattern:  ^/
-                anonymous: ~
+                lazy: true
                 form_login:
-                    csrf_token_generator: security.csrf.token_manager
+                    enable_csrf: true
 
                     login_path:    integrated_user_login
                     check_path:    integrated_user_check
@@ -34,10 +36,10 @@ for a integrated website.
                     path:   integrated_user_logout
                     target: /
                 remember_me:
-                    secret:   '%secret%'
+                    secret:   '%kernel.secret%'
                     lifetime: 2592000 # 30 days
                     path:     /					
 
         access_control:
-            - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+            - { path: ^/login, roles: PUBLIC_ACCESS }
             - { path: ^/, roles: IS_AUTHENTICATED_REMEMBERED }

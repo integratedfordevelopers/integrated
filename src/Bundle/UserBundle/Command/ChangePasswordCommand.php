@@ -22,6 +22,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
+use Symfony\Component\PasswordHasher\LegacyPasswordHasherInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -107,8 +108,17 @@ The <info>%command.name%</info> command replaces the password of the user
             return 1;
         }
 
-        $user->setPassword($this->hasherFactory->getPasswordHasher($user)->hash($password));
-        $user->setSalt(null);
+        $hasher = $this->hasherFactory->getPasswordHasher($user);
+
+        if (!$hasher instanceof LegacyPasswordHasherInterface) {
+            $user->setPassword($hasher->hash($password, $user->getSalt()));
+            $user->setSalt(null);
+        } else {
+            $salt = base64_encode(random_bytes(72));
+
+            $user->setPassword($hasher->hash($password, $salt));
+            $user->setSalt($salt);
+        }
 
         try {
             $this->userManager->persist($user);

@@ -15,13 +15,15 @@ use Integrated\Bundle\UserBundle\Model\User;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class UserProvider implements UserProviderInterface
+class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
 {
     /**
      * @var UserManagerInterface
@@ -114,5 +116,19 @@ class UserProvider implements UserProviderInterface
         }
 
         return $class === $this->manager->getClassName() || is_subclass_of($class, $this->manager->getClassName());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function upgradePassword(PasswordAuthenticatedUserInterface|UserInterface $user, string $newHashedPassword)
+    {
+        if (!$this->supportsClass(\get_class($user))) {
+            return;
+        }
+
+        $user->setPassword($newHashedPassword);
+        $user->setSalt(null);
+        $this->manager->persist($user);
     }
 }

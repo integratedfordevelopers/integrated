@@ -21,6 +21,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
+use Symfony\Component\PasswordHasher\LegacyPasswordHasherInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -119,9 +120,19 @@ The <info>%command.name%</info> command creates a new user
 
         $user = $this->userManager->create();
 
+        $hasher = $this->hasherFactory->getPasswordHasher($user);
+
         $user->setUsername($username);
-        $user->setPassword($this->hasherFactory->getPasswordHasher($user)->hash($password));
         $user->setEmail($email);
+
+        if (!$hasher instanceof LegacyPasswordHasherInterface) {
+            $user->setPassword($hasher->hash($password));
+        } else {
+            $salt = base64_encode(random_bytes(72));
+
+            $user->setPassword($hasher->hash($password, $salt));
+            $user->setSalt($salt);
+        }
 
         $scopeName = 'Integrated';
         if ($input->hasArgument('scope')) {
