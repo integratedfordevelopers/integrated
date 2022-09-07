@@ -107,6 +107,10 @@ class StateType extends AbstractType
 
                 'multiple' => true,
                 'expanded' => false,
+
+                'attr' => [
+                    'class' => 'state_transitions_input_field',
+                ],
             ]);
         }
     }
