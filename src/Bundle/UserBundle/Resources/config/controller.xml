@@ -50,6 +50,7 @@
         </service>
 
         <service id="Integrated\Bundle\UserBundle\Controller\UserController">
+            <argument type="service" id="integrated_user.user.manager" />
             <argument type="service" id="integrated_user.provider.filter_query" />
 
             <tag name="controller.service_arguments" />
