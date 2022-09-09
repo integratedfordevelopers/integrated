@@ -31,13 +31,19 @@ use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 class UserController extends AbstractController
 {
     /**
+     * @var UserManagerInterface
+     */
+    private $manager;
+
+    /**
      * @var FilterQueryProvider
      */
-    private $filterQueryProvider;
+    private $provider;
 
-    public function __construct(FilterQueryProvider $filterQueryProvider)
+    public function __construct(UserManagerInterface $manager, FilterQueryProvider $provider)
     {
-        $this->filterQueryProvider = $filterQueryProvider;
+        $this->manager = $manager;
+        $this->provider = $provider;
     }
 
     /**
@@ -53,7 +59,7 @@ class UserController extends AbstractController
 
         $data = $request->query->get('integrated_user_filter');
 
-        $users = $this->filterQueryProvider->getUsers($data);
+        $users = $this->provider->getUsers($data);
 
         $facetFilter = $this->createForm(UserFilterType::class, null, [
             'data' => $data,
@@ -94,7 +100,7 @@ class UserController extends AbstractController
             if ($form->isValid()) {
                 $user = $form->getData();
 
-                $this->getManager()->persist($user);
+                $this->manager->persist($user);
                 $this->addFlash('success', sprintf('The user %s is created', $user->getUsername()));
 
                 return $this->redirectToRoute('integrated_user_user_index');
@@ -119,7 +125,7 @@ class UserController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        $user = $this->getManager()->find($request->get('id'));
+        $user = $this->manager->find($request->get('id'));
 
         if (!$user) {
             throw $this->createNotFoundException();
@@ -134,7 +140,7 @@ class UserController extends AbstractController
             }
 
             if ($form->isValid()) {
-                $this->getManager()->persist($user);
+                $this->manager->persist($user);
                 $this->addFlash('success', sprintf('The changes to the user %s are saved', $user->getUserIdentifier()));
 
                 return $this->redirectToRoute('integrated_user_user_index');
@@ -158,7 +164,7 @@ class UserController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        $user = $this->getManager()->find($request->get('id'));
+        $user = $this->manager->find($request->get('id'));
 
         if (!$user) {
             return $this->redirectToRoute('integrated_user_user_index'); // user is already gone
@@ -173,7 +179,7 @@ class UserController extends AbstractController
             }
 
             if ($form->isValid()) {
-                $this->getManager()->remove($user);
+                $this->manager->remove($user);
                 $this->addFlash('success', sprintf('The user %s is removed', $user->getUserIdentifier()));
 
                 return $this->redirectToRoute('integrated_user_user_index');
@@ -272,19 +278,5 @@ class UserController extends AbstractController
         ]);
 
         return $form;
-    }
-
-    /**
-     * @return UserManagerInterface
-     *
-     * @throws \LogicException
-     */
-    protected function getManager()
-    {
-        if (!$this->container->has('integrated_user.user.manager')) {
-            throw new \LogicException('The UserBundle is not registered in your application.');
-        }
-
-        return $this->container->get('integrated_user.user.manager');
     }
 }
