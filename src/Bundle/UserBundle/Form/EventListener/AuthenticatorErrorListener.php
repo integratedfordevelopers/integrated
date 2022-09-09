@@ -56,9 +56,7 @@ class AuthenticatorErrorListener implements EventSubscriberInterface
             $form = $event->getForm()->get($this->name);
 
             foreach (unserialize($session->remove(self::INVALID_CODE_ERROR)) as $error) {
-                if ($error instanceof FormError) {
-                    $form->addError($error);
-                }
+                $form->addError(new FormError($error));
             }
         }
     }
@@ -72,6 +70,10 @@ class AuthenticatorErrorListener implements EventSubscriberInterface
         $session->remove(self::INVALID_CODE_ERROR);
 
         if ($errors = iterator_to_array($event->getForm()->get($this->name)->getErrors())) {
+            $errors = array_map(function (FormError $error) {
+                return $error->getMessage();
+            }, $errors);
+
             $session->set(self::INVALID_CODE_ERROR, serialize($errors));
         }
     }
