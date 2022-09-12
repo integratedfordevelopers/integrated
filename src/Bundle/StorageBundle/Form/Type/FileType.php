@@ -82,7 +82,7 @@ class FileType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('file', SymfonyFileType::class, [
-            'required' => false,
+            'required' => $options['required'],
             'mapped' => false,
             'empty_data' => null,
             'constraints' => $options['constraints_file'],
