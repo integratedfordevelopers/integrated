@@ -123,16 +123,5 @@ $(document).ready(function(){
         $.extend(filer_default_opts, $dropZone.data('options'));
 
         $('input[type="file"]', $dropZone).filer(filer_default_opts);
-
-        //validate form
-        $dropZone.closest('form').submit(function () {
-            if ($dropZone.hasClass('required') && $dropZone.find('.dropzone-empty').is(':visible')) {
-                $dropZone.addClass('empty-error');
-                $('html, body').animate({
-                    scrollTop: $dropZone.offset().top
-                }, 1000);
-                return false;
-            }
-        });
     });
 });
