@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Entity\Definition;
 
-use Doctrine\Persistence\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PreFlushEventArgs;
 use Integrated\Common\Security\Permission as CommonPermission;
 
 /**
@@ -54,10 +54,8 @@ class Permission extends CommonPermission
 
     /**
      * Remove the permissions that have a null state (orphans).
-     *
-     * @param LifecycleEventArgs $event
      */
-    public function doPermissionFix(LifecycleEventArgs $event)
+    public function doPermissionFix(PreFlushEventArgs $event)
     {
         if ($this->getState() === null) {
             $uow = $event->getObjectManager()->getUnitOfWork();
