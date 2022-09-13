@@ -55,7 +55,7 @@
 
         <service id="integrated_form_type.form_type.content_choice_type" class="Integrated\Bundle\FormTypeBundle\Form\Type\ContentChoiceType">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
-            <argument type="string">IntegratedContentBundle:Content\Content</argument>
+            <argument type="string">Integrated\Bundle\ContentBundle\Document\Content\Content</argument>
             <argument type="string">integrated_content_content_index</argument>
             <argument type="collection">
                 <argument key="_format">json</argument>
@@ -66,7 +66,7 @@
 
         <service id="Integrated\Bundle\FormTypeBundle\Form\Type\ContentRankType">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
-            <argument type="string">IntegratedContentBundle:Content\Content</argument>
+            <argument type="string">Integrated\Bundle\ContentBundle\Document\Content\Content</argument>
             <argument type="string">integrated_content_content_index</argument>
             <argument type="collection">
                 <argument key="_format">json</argument>
