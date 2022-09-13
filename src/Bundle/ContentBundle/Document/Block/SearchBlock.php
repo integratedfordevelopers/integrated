@@ -28,7 +28,7 @@ class SearchBlock extends Block
      * @Type\Field(
      *      type="Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType",
      *      options={
-     *          "class"="IntegratedContentBundle:Block\ContentBlock",
+     *          "class"="Integrated\Bundle\ContentBundle\Document\Block\ContentBlock",
      *          "choice_label"="title",
      *          "placeholder"=""
      *      }
