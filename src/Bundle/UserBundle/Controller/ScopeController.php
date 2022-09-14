@@ -43,10 +43,16 @@ class ScopeController extends AbstractController
      */
     private $entityManager;
 
-    public function __construct(DocumentManager $documentManager, EntityManager $entityManager)
+    /**
+     * @var ScopeManagerInterface
+     */
+    private $scopeManager;
+
+    public function __construct(DocumentManager $documentManager, EntityManager $entityManager, ScopeManagerInterface $scopeManager)
     {
         $this->documentManager = $documentManager;
         $this->entityManager = $entityManager;
+        $this->scopeManager = $scopeManager;
     }
 
     /**
@@ -61,7 +67,7 @@ class ScopeController extends AbstractController
         }
 
         $paginator = $this->getPaginator()->paginate(
-            $this->getManager()->findAll(),
+            $this->scopeManager->findAll(),
             $request->query->get('page', 1),
             15
         );
@@ -93,7 +99,7 @@ class ScopeController extends AbstractController
             if ($form->isValid()) {
                 $scope = $form->getData();
 
-                $this->getManager()->persist($scope);
+                $this->scopeManager->persist($scope);
                 $this->addFlash('success', sprintf('The scope %s is created', $scope->getName()));
 
                 return $this->redirectToRoute('integrated_user_scope_index');
@@ -128,7 +134,7 @@ class ScopeController extends AbstractController
             }
 
             if ($form->isValid()) {
-                $this->getManager()->persist($scope);
+                $this->scopeManager->persist($scope);
                 $this->addFlash('success', sprintf('The changes to the scope %s are saved', $scope->getName()));
 
                 return $this->redirectToRoute('integrated_user_scope_index');
@@ -186,7 +192,7 @@ class ScopeController extends AbstractController
             }
 
             if (false === $hasRelations) {
-                $this->getManager()->remove($scope);
+                $this->scopeManager->remove($scope);
                 $this->addFlash('success', sprintf('The scope %s is removed', $scope->getName()));
 
                 return $this->redirectToRoute('integrated_user_scope_index');
@@ -273,13 +279,5 @@ class ScopeController extends AbstractController
         ]);
 
         return $form;
-    }
-
-    /**
-     * @return ScopeManagerInterface
-     */
-    protected function getManager()
-    {
-        return $this->container->get('integrated_user.scope.manager');
     }
 }

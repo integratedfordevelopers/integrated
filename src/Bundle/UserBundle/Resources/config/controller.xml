@@ -57,12 +57,15 @@
         </service>
 
         <service id="Integrated\Bundle\UserBundle\Controller\GroupController">
+            <argument type="service" id="integrated_user.group.manager"/>
+
             <tag name="controller.service_arguments" />
         </service>
 
         <service id="Integrated\Bundle\UserBundle\Controller\ScopeController">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="integrated_user.scope.manager" />
 
             <tag name="controller.service_arguments" />
         </service>
