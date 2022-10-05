@@ -67,7 +67,10 @@ class IntegratedSolrExtension extends Extension
             $endpoints[] = new Reference('solarium.client.endpoint.'.$name);
         }
 
-        $container->register('solarium.adapter.curl', Curl::class);
+        $container->register('solarium.adapter.curl', Curl::class)->addMethodCall(
+            'setTimeout',
+            [$config['timeout'] ?? 200]
+        );
 
         $container->setDefinition(
             'solarium.client',
