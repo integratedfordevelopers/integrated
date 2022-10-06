@@ -91,13 +91,13 @@ class SearchContentReferenced
                 } elseif ($fieldMetaData = $metadataFactory->getMetadataFor($assocClassName)) {
                     $fieldAssociations = $fieldMetaData->getAssociationNames();
 
+                    if (!$fieldMetaData->isEmbeddedDocument ) {
+                        continue;
+                    }
+
                     foreach ($fieldAssociations as $fieldAssociation) {
                         $fieldAssocClassName = $fieldMetaData->getAssociationTargetClass($fieldAssociation);
                         $allow = $deleted['className'] == $fieldAssocClassName || is_subclass_of($deleted['className'], $fieldAssocClassName);
-
-                        if (!$fieldMetaData->isEmbeddedDocument) {
-                            $allow = $deleted['className'] != $fieldAssocClassName && is_subclass_of($deleted['className'], $fieldAssocClassName);
-                        }
 
                         if ($allow) {
                             $items = $this->dm->createQueryBuilder($classMetadata->getName())
