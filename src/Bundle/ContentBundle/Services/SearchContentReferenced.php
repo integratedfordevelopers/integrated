@@ -18,8 +18,6 @@ use Integrated\Bundle\ContentBundle\Document\Content\Content;
 
 /**
  * Class SearchContentReferenced.
- *
- * @author Vasil Pascal <developer.optimum@gmail.com>
  */
 class SearchContentReferenced
 {
@@ -35,8 +33,6 @@ class SearchContentReferenced
 
     /**
      * SearchContentReferenced constructor.
-     *
-     * @param DocumentManager $dm
      */
     public function __construct(DocumentManager $dm)
     {
@@ -91,7 +87,7 @@ class SearchContentReferenced
                 } elseif ($fieldMetaData = $metadataFactory->getMetadataFor($assocClassName)) {
                     $fieldAssociations = $fieldMetaData->getAssociationNames();
 
-                    if (!$fieldMetaData->isEmbeddedDocument ) {
+                    if (!$fieldMetaData->isEmbeddedDocument) {
                         continue;
                     }
 
@@ -121,8 +117,7 @@ class SearchContentReferenced
     }
 
     /**
-     * @param mixed           $document
-     * @param DocumentManager $documentManager
+     * @param mixed $document
      *
      * @return array
      *
