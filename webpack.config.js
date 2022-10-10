@@ -20,6 +20,9 @@ webpackConfig = Encore.setOutputPath('./src/Bundle/IntegratedBundle/Resources/pu
         './node_modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css',
         './node_modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js',
     ])
+    .addEntry('collection', [
+        './src/Bundle/ContentBundle/Resources/assets/js/collection.js',
+    ])
     .addEntry('iframe', [
         './src/Bundle/BlockBundle/Resources/assets/css/iframe.css',
     ])
