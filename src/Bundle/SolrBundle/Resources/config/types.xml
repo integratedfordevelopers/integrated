@@ -6,6 +6,10 @@
 
     <services>
 
+        <service id="integrated_solr.type.property_accessor" class="Symfony\Component\PropertyAccess\PropertyAccessor">
+            <argument>0</argument>
+        </service>
+
         <service id="integrated_solr.type.clear.type" class="Integrated\Bundle\SolrBundle\Solr\Type\ClearType">
             <tag name="integrated_solr.type" />
         </service>
@@ -18,11 +22,13 @@
             <tag name="integrated_solr.type" />
         </service>
 
-        <service id="integrated_solr.type.field.append.type" class="Integrated\Bundle\SolrBundle\Solr\Type\FieldAppendMapperType">
+        <service id="integrated_solr.type.field.append.type" class="Integrated\Bundle\SolrBundle\Solr\Type\FieldAppendMapperType" parent="integrated_solr.type.field.type">
             <tag name="integrated_solr.type" />
         </service>
 
-        <service id="integrated_solr.type.field.type" class="Integrated\Bundle\SolrBundle\Solr\Type\FieldMapperType">
+        <service id="integrated_solr.type.field.type" class="Integrated\Bundle\SolrBundle\Solr\Type\FieldMapperType" >
+            <argument type="service" id="integrated_solr.type.property_accessor" />
+
             <tag name="integrated_solr.type" />
         </service>
 
@@ -30,7 +36,7 @@
             <tag name="integrated_solr.type" />
         </service>
 
-        <service id="integrated_solr.type.json.type" class="Integrated\Bundle\SolrBundle\Solr\Type\JsonType">
+        <service id="integrated_solr.type.json.type" class="Integrated\Bundle\SolrBundle\Solr\Type\JsonType" parent="integrated_solr.type.field.type">
             <tag name="integrated_solr.type" />
         </service>
 

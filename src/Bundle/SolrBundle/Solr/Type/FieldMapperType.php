@@ -175,7 +175,7 @@ class FieldMapperType implements TypeInterface
                     if (!\is_array($array) && !$array instanceof Traversable) {
                         $array = [$array];
                     }
-                } catch (ExceptionInterface|\ErrorException $e) {
+                } catch (ExceptionInterface $e) {
                     $array = [];
                 }
 
@@ -225,7 +225,7 @@ class FieldMapperType implements TypeInterface
 
         try {
             return $this->convert($this->accessor->getValue($data, (string) $path));
-        } catch (ExceptionInterface|\ErrorException $e) {
+        } catch (ExceptionInterface $e) {
             return null;
         }
     }
