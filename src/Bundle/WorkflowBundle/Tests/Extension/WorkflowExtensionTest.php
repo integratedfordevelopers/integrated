@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Tests\Extension;
 
+use Integrated\Bundle\WorkflowBundle\Extension\EventListener\ContentSubscriber;
 use Integrated\Bundle\WorkflowBundle\Extension\WorkflowExtension;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -20,20 +20,19 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class WorkflowExtensionTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ContainerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ContentSubscriber|\PHPUnit_Framework_MockObject_MockObject
      */
-    private $container;
+    private $subscriber;
 
     protected function setUp(): void
     {
-        $this->container = $this->createMock('Symfony\\Component\\DependencyInjection\\ContainerInterface');
+        $this->subscriber = $this->createMock(ContentSubscriber::class);
     }
 
     public function testInterface()
     {
         $instance = $this->getInstance();
 
-        $this->assertInstanceOf('Symfony\\Component\\DependencyInjection\\ContainerAwareInterface', $instance);
         $this->assertInstanceOf('Integrated\\Common\\Content\\Extension\\ExtensionInterface', $instance);
     }
 
@@ -52,9 +51,6 @@ class WorkflowExtensionTest extends \PHPUnit\Framework\TestCase
 
     protected function getInstance()
     {
-        $instance = new WorkflowExtension();
-        $instance->setContainer($this->container);
-
-        return $instance;
+        return new WorkflowExtension($this->subscriber);
     }
 }

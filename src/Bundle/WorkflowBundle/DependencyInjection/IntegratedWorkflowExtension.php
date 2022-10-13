@@ -17,11 +17,6 @@ use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-/**
- * Extension for loading configuration.
- *
- * @author Jan Sanne Mulder <jansanne@e-active.nl>
- */
 class IntegratedWorkflowExtension extends Extension implements PrependExtensionInterface
 {
     /**
@@ -52,6 +47,10 @@ class IntegratedWorkflowExtension extends Extension implements PrependExtensionI
         $loader->load('solr.xml');
 
         $loader->load('event_listeners.xml');
+
+        $config = $this->processConfiguration(new Configuration(), $configs);
+
+        $container->setParameter('integrated_workflow_email', $config['email']);
     }
 
     /**

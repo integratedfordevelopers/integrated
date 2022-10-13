@@ -16,6 +16,7 @@
             <argument type="service" id="integrated_workflow.extension.doctrine.object_manager" />
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <argument type="service" id="mailer" />
+            <argument>%integrated_workflow_email%</argument>
         </service>
 
 		<service id="integrated_workflow.extension" class="Integrated\Bundle\WorkflowBundle\Extension\WorkflowExtension">

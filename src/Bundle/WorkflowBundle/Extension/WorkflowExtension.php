@@ -14,8 +14,6 @@ namespace Integrated\Bundle\WorkflowBundle\Extension;
 use Integrated\Bundle\WorkflowBundle\Extension\EventListener\ContentSubscriber;
 use Integrated\Bundle\WorkflowBundle\Extension\EventListener\MetadataSubscriber;
 use Integrated\Common\Content\Extension\ExtensionInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

@@ -32,7 +32,6 @@ use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\Security\PermissionInterface;
 use Integrated\Common\Workflow\Event\WorkflowStateChangedEvent;
 use Integrated\Common\Workflow\Events as WorkflowEvents;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
@@ -95,7 +94,7 @@ class ContentSubscriber implements ContentSubscriberInterface
         EntityManagerInterface $entityManager,
         DocumentManager $documentManager,
         MailerInterface $mailer,
-        ?string $fromEmail = null
+        string $fromEmail
     ) {
         $this->userManager = $userManager;
         $this->eventDispatcher = $eventDispatcher;
@@ -104,7 +103,7 @@ class ContentSubscriber implements ContentSubscriberInterface
         $this->entityManager = $entityManager;
         $this->documentManager = $documentManager;
         $this->mailer = $mailer;
-        $this->fromEmail = $fromEmail ?? 'mailer@integratedforpublishers.com';
+        $this->fromEmail = $fromEmail;
     }
 
     public static function getSubscribedEvents()
@@ -298,7 +297,7 @@ E-mail: '.$person->getEmail().''
         }
     }
 
-    protected function getState(ContentInterface $content):? State
+    protected function getState(ContentInterface $content): ?State
     {
         $repository = $this->entityManager->getRepository(State::class);
 
@@ -309,9 +308,9 @@ E-mail: '.$person->getEmail().''
         return null;
     }
 
-    protected function getUser():? UserInterface
+    protected function getUser(): ?UserInterface
     {
-        if (null === $token = $this->tokenStorgage->getToken()) {
+        if (null === $token = $this->tokenStorage->getToken()) {
             return null;
         }
 
@@ -324,7 +323,7 @@ E-mail: '.$person->getEmail().''
         return $user;
     }
 
-    protected function getWorkflow(object $object):? Definition
+    protected function getWorkflow(object $object): ?Definition
     {
         if (!$object instanceof ContentInterface) {
             return null;
