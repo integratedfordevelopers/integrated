@@ -1,3 +1,7 @@
+import $ from 'jquery';
+jQuery = $;
+global.$ = global.jQuery = $;
+window.$ = window.jQuery = $;
 
 $('[data-prototype]').each(function(index, elm) {
     init($(this));

@@ -14,18 +14,22 @@ namespace Integrated\Bundle\WorkflowBundle\Extension;
 use Integrated\Bundle\WorkflowBundle\Extension\EventListener\ContentSubscriber;
 use Integrated\Bundle\WorkflowBundle\Extension\EventListener\MetadataSubscriber;
 use Integrated\Common\Content\Extension\ExtensionInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class WorkflowExtension implements ExtensionInterface, ContainerAwareInterface
+class WorkflowExtension implements ExtensionInterface
 {
     /**
-     * @var ContainerInterface
+     * @var ContentSubscriber
      */
-    private $container = null;
+    private $contentSubscriber;
+
+    public function __construct(ContentSubscriber $contentSubscriber)
+    {
+        $contentSubscriber->setExtension($this);
+        $this->contentSubscriber = $contentSubscriber;
+    }
 
     /**
      * {@inheritdoc}
@@ -33,7 +37,7 @@ class WorkflowExtension implements ExtensionInterface, ContainerAwareInterface
     public function getSubscribers()
     {
         return [
-            new ContentSubscriber($this, $this->container),
+            $this->contentSubscriber,
             new MetadataSubscriber($this),
         ];
     }
@@ -44,13 +48,5 @@ class WorkflowExtension implements ExtensionInterface, ContainerAwareInterface
     public function getName()
     {
         return 'integrated.extension.workflow';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
     }
 }

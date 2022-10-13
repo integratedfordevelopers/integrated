@@ -11,12 +11,14 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Extension\EventListener;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\UserBundle\Model\Group;
 use Integrated\Bundle\UserBundle\Model\User;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
+use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Entity\Workflow\Log;
 use Integrated\Bundle\WorkflowBundle\Entity\Workflow\State;
@@ -30,49 +32,80 @@ use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\Security\PermissionInterface;
 use Integrated\Common\Workflow\Event\WorkflowStateChangedEvent;
 use Integrated\Common\Workflow\Events as WorkflowEvents;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-/**
- * @author Jan Sanne Mulder <jansanne@e-active.nl>
- */
 class ContentSubscriber implements ContentSubscriberInterface
 {
     public const CONTENT_CLASS = 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Relation\\Relation';
+
+    /**
+     * @var UserManagerInterface
+     */
+    private $userManager;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
+
+    /**
+     * @var ResolverInterface
+     */
+    private $resolver;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
+     * @var DocumentManager
+     */
+    private $documentManager;
+
+    /**
+     * @var MailerInterface
+     */
+    private $mailer;
+
+    /**
+     * @var string
+     */
+    private $fromEmail;
 
     /**
      * @var ExtensionInterface
      */
     private $extension;
 
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
-     * @var ObjectManager
-     */
-    private $manager;
-
-    /**
-     * @var ResolverInterface
-     */
-    private $resolver = null;
-
-    /**
-     * @param ExtensionInterface $extension
-     * @param ContainerInterface $container
-     */
-    public function __construct(ExtensionInterface $extension, ContainerInterface $container)
-    {
-        $this->extension = $extension;
-        $this->container = $container;
+    public function __construct(
+        UserManagerInterface $userManager,
+        EventDispatcherInterface $eventDispatcher,
+        TokenStorageInterface $tokenStorage,
+        ResolverInterface $resolver,
+        EntityManagerInterface $entityManager,
+        DocumentManager $documentManager,
+        MailerInterface $mailer,
+        string $fromEmail
+    ) {
+        $this->userManager = $userManager;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->tokenStorage = $tokenStorage;
+        $this->resolver = $resolver;
+        $this->entityManager = $entityManager;
+        $this->documentManager = $documentManager;
+        $this->mailer = $mailer;
+        $this->fromEmail = $fromEmail;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents()
     {
         return [
@@ -85,9 +118,6 @@ class ContentSubscriber implements ContentSubscriberInterface
         ];
     }
 
-    /**
-     * @param ContentEvent $event
-     */
     public function read(ContentEvent $event)
     {
         $content = $event->getContent();
@@ -113,9 +143,6 @@ class ContentSubscriber implements ContentSubscriberInterface
         $event->setData($data);
     }
 
-    /**
-     * @param ContentEvent $event
-     */
     public function preUpdate(ContentEvent $event)
     {
         $content = $event->getContent();
@@ -139,7 +166,7 @@ class ContentSubscriber implements ContentSubscriberInterface
         }
 
         if (!$data['assigned'] instanceof User && $data['assigned']) {
-            $data['assigned'] = $this->container->get('integrated_user.user.manager')->find($data['assigned']);
+            $data['assigned'] = $this->userManager->find($data['assigned']);
         }
 
         if ($data['assigned'] && !$this->hasAssignedAccess($data['assigned'], $data['state'], $content)) {
@@ -161,9 +188,6 @@ class ContentSubscriber implements ContentSubscriberInterface
         $content->setDisabled(!$state->isPublishable()); // hax: setDisabled is not in the interface
     }
 
-    /**
-     * @param ContentEvent $event
-     */
     public function postUpdate(ContentEvent $event)
     {
         $content = $event->getContent();
@@ -178,7 +202,7 @@ class ContentSubscriber implements ContentSubscriberInterface
             $state = new State();
             $state->setContent($content);
 
-            $this->getManager()->persist($state);
+            $this->entityManager->persist($state);
         }
 
         $persist = false;
@@ -198,8 +222,7 @@ class ContentSubscriber implements ContentSubscriberInterface
             $log->setState($data['state']);
             $state->setState($data['state']);
 
-            $dispatcher = $this->container->get('event_dispatcher');
-            $dispatcher->dispatch(new WorkflowStateChangedEvent($state, $content), WorkflowEvents::STATE_CHANGED);
+            $this->eventDispatcher->dispatch(new WorkflowStateChangedEvent($state, $content), WorkflowEvents::STATE_CHANGED);
 
             $persist = true;
         }
@@ -222,7 +245,7 @@ class ContentSubscriber implements ContentSubscriberInterface
                         }
 
                         $message = (new Email())
-                            ->from('mailer@integratedforpublishers.com')
+                            ->from($this->fromEmail)
                             ->to($person->getEmail())
                             ->subject('[Integrated] "'.$title.'" has been assigned to you')
                             ->text(
@@ -232,7 +255,7 @@ Name: '.$title.'
 E-mail: '.$person->getEmail().''
                             );
 
-                        $this->getContainer()->get('mailer')->send($message);
+                        $this->mailer->send($message);
                     }
                 }
             }
@@ -246,17 +269,14 @@ E-mail: '.$person->getEmail().''
         }
 
         if ($persist) {
-            $this->getManager()->persist($log);
+            $this->entityManager->persist($log);
 
             $state->addLog($log);
         }
 
-        $this->getManager()->flush();
+        $this->entityManager->flush();
     }
 
-    /**
-     * @param ContentEvent $event
-     */
     public function delete(ContentEvent $event)
     {
         $content = $event->getContent();
@@ -266,7 +286,7 @@ E-mail: '.$person->getEmail().''
         }
 
         if ($state = $this->getState($content)) {
-            $this->getManager()->remove($state);
+            $this->entityManager->remove($state);
         }
 
         $event->setData(null);
@@ -277,14 +297,9 @@ E-mail: '.$person->getEmail().''
         }
     }
 
-    /**
-     * @param ContentInterface $content
-     *
-     * @return State|null
-     */
-    protected function getState(ContentInterface $content)
+    protected function getState(ContentInterface $content): ?State
     {
-        $repository = $this->getManager()->getRepository('Integrated\\Bundle\\WorkflowBundle\\Entity\\Workflow\\State');
+        $repository = $this->entityManager->getRepository(State::class);
 
         if ($entity = $repository->findOneBy(['content' => $content])) {
             return $entity;
@@ -293,16 +308,9 @@ E-mail: '.$person->getEmail().''
         return null;
     }
 
-    /**
-     * @return UserInterface|null
-     */
-    protected function getUser()
+    protected function getUser(): ?UserInterface
     {
-        if (!$this->container->has('security.token_storage')) {
-            return null;
-        }
-
-        if (null === $token = $this->container->get('security.token_storage')->getToken()) {
+        if (null === $token = $this->tokenStorage->getToken()) {
             return null;
         }
 
@@ -315,12 +323,7 @@ E-mail: '.$person->getEmail().''
         return $user;
     }
 
-    /**
-     * @param object $object
-     *
-     * @return Definition|null
-     */
-    protected function getWorkflow($object)
+    protected function getWorkflow(object $object): ?Definition
     {
         if (!$object instanceof ContentInterface) {
             return null;
@@ -334,14 +337,14 @@ E-mail: '.$person->getEmail().''
             return null;
         }
 
-        if (!$this->getResolver()->hasType($type)) {
+        if (!$this->resolver->hasType($type)) {
             return null;
         }
 
-        $type = $this->getResolver()->getType($type);
+        $type = $this->resolver->getType($type);
 
         if ($workflow = $type->getOption('workflow')) {
-            $repository = $this->getManager()->getRepository('Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition');
+            $repository = $this->entityManager->getRepository(Definition::class);
 
             if ($entity = $repository->find($workflow)) {
                 return $entity;
@@ -351,54 +354,17 @@ E-mail: '.$person->getEmail().''
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExtension()
+    public function getExtension(): ExtensionInterface
     {
         return $this->extension;
     }
 
-    /**
-     * @return ContainerInterface
-     */
-    protected function getContainer()
+    public function setExtension(ExtensionInterface $extension): void
     {
-        return $this->container;
+        $this->extension = $extension;
     }
 
-    /**
-     * @return ObjectManager
-     */
-    protected function getManager()
-    {
-        if ($this->manager === null) {
-            $this->manager = $this->getContainer()->get('integrated_workflow.extension.doctrine.object_manager');
-        }
-
-        return $this->manager;
-    }
-
-    /**
-     * @return ResolverInterface
-     */
-    protected function getResolver()
-    {
-        if ($this->resolver === null) {
-            $this->resolver = $this->getContainer()->get('integrated.form.resolver'); // hax
-        }
-
-        return $this->resolver;
-    }
-
-    /**
-     * @param User             $assigned
-     * @param Definition\State $state
-     * @param ContentInterface $content
-     *
-     * @return bool
-     */
-    protected function hasAssignedAccess(User $assigned, Definition\State $state, ContentInterface $content)
+    protected function hasAssignedAccess(User $assigned, Definition\State $state, ContentInterface $content): bool
     {
         $groups = [];
         /** @var Group $group */
@@ -410,7 +376,7 @@ E-mail: '.$person->getEmail().''
             $permissionObject = $state;
         } else {
             // permissions inherited from content type
-            $contentType = $this->getContainer()->get('doctrine_mongodb.odm.document_manager')->getRepository(ContentType::class)->find($content->getContentType());
+            $contentType = $this->documentManager->getRepository(ContentType::class)->find($content->getContentType());
             if ($contentType) {
                 if (\count($contentType->getPermissions()) == 0) {
                     return true;
