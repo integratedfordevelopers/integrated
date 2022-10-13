@@ -4,25 +4,28 @@
 		   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		   xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-	<parameters>
-
-		<parameter key="integrated_workflow.extension.class">Integrated\Bundle\WorkflowBundle\Extension\WorkflowExtension</parameter>
-		<parameter key="integrated_workflow.extension.form.integration.listener.class">Integrated\Bundle\WorkflowBundle\EventListener\ContentWorkflowIntegrationListener</parameter>
-
-	</parameters>
-
 	<services>
 
 		<service id="integrated_workflow.extension.doctrine.object_manager" alias="doctrine.orm.entity_manager" /> <!-- config option -->
 
-		<service id="integrated_workflow.extension" class="%integrated_workflow.extension.class%">
-			<call method="setContainer">
-				<argument type="service" id="service_container"/>
-			</call>
+        <service id="Integrated\Bundle\WorkflowBundle\Extension\EventListener\ContentSubscriber">
+            <argument type="service" id="integrated_user.user.manager" />
+            <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="integrated.form.resolver" />
+            <argument type="service" id="integrated_workflow.extension.doctrine.object_manager" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="mailer" />
+            <argument>%integrated_workflow_email%</argument>
+        </service>
+
+		<service id="integrated_workflow.extension" class="Integrated\Bundle\WorkflowBundle\Extension\WorkflowExtension">
+            <argument type="service" id="Integrated\Bundle\WorkflowBundle\Extension\EventListener\ContentSubscriber" />
+
 			<tag name="integrated_content.extension" />
 		</service>
 
-		<service id="integrated_workflow.extension.form.integration.listener" class="%integrated_workflow.extension.form.integration.listener.class%">
+		<service id="integrated_workflow.extension.form.integration.listener" class="Integrated\Bundle\WorkflowBundle\EventListener\ContentWorkflowIntegrationListener">
 			<tag name="integrated_content.form.event_subscriber" />
 		</service>
 
