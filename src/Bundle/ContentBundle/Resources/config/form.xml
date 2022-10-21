@@ -1,202 +1,204 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <container xmlns="http://symfony.com/schema/dic/services"
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-<services>
+    <services>
 
-           <service id="integrated_content.form.factory.event_dispatcher" class="Symfony\Component\EventDispatcher\EventDispatcher" public="false" />
+        <service id="integrated_content.form.factory.event_dispatcher" class="Symfony\Component\EventDispatcher\EventDispatcher" public="false"/>
 
-           <service id="integrated_content.form.content_form_type" class="Integrated\Common\Content\Form\ContentFormType">
-                      <argument type="service" id="integrated_content.metadata.factory" />
-                      <argument type="service" id="integrated_content.resolver" />
-                      <argument type="service" id="integrated_content.form.factory.event_dispatcher" />
+        <service id="integrated_content.form.content_form_type" class="Integrated\Common\Content\Form\ContentFormType">
+            <argument type="service" id="integrated_content.metadata.factory"/>
+            <argument type="service" id="integrated_content.resolver"/>
+            <argument type="service" id="integrated_content.form.factory.event_dispatcher"/>
 
-                      <tag name="form.type" />
-           </service>
+            <tag name="form.type"/>
+        </service>
 
-           <service id="integrated.form.resolver" alias="integrated_content.resolver.priority" public="true" />
+        <service id="integrated.form.resolver" alias="integrated_content.resolver.priority" public="true"/>
 
-           <service id="integrated_content.form.channel.repository" class="Doctrine\Persistence\ObjectRepository">
-                      <factory service="doctrine_mongodb" method="getRepository" />
-                      <argument type="string">Integrated\Bundle\ContentBundle\Document\Channel\Channel</argument>
-           </service>
+        <service id="integrated_content.form.channel.repository" class="Doctrine\Persistence\ObjectRepository">
+            <factory service="doctrine_mongodb" method="getRepository"/>
+            <argument type="string">Integrated\Bundle\ContentBundle\Document\Channel\Channel</argument>
+        </service>
 
-           <service id="integrated_content.form.channel.listener" class="Integrated\Bundle\ContentBundle\EventListener\ContentChannelIntegrationListener">
-                      <argument type="service" id="integrated_content.form.channel.repository" />
-                      <argument type="service" id="security.authorization_checker" />
+        <service id="integrated_content.form.channel.listener"
+                 class="Integrated\Bundle\ContentBundle\EventListener\ContentChannelIntegrationListener">
+            <argument type="service" id="integrated_content.form.channel.repository"/>
+            <argument type="service" id="security.authorization_checker"/>
 
-                      <tag name="integrated_content.form.event_subscriber" />
-           </service>
+            <tag name="integrated_content.form.event_subscriber"/>
+        </service>
 
-           <service id="integrated_content.form.relations.listener" class="Integrated\Bundle\ContentBundle\EventListener\ContentRelationsIntegrationListener">
-                      <argument type="string">relations</argument>
-                      <argument type="string">Integrated\Bundle\ContentBundle\Form\Type\RelationsType</argument>
+        <service id="integrated_content.form.relations.listener" class="Integrated\Bundle\ContentBundle\EventListener\ContentRelationsIntegrationListener">
+            <argument type="string">relations</argument>
+            <argument type="string">Integrated\Bundle\ContentBundle\Form\Type\RelationsType</argument>
 
-                      <tag name="integrated_content.form.event_subscriber" />
-           </service>
+            <tag name="integrated_content.form.event_subscriber"/>
+        </service>
 
-           <service id="integrated_content.form.custom_field_listener" class="Integrated\Bundle\ContentBundle\Form\EventListener\CustomFieldListener">
-                      <tag name="integrated_content.form.event_subscriber" />
-           </service>
+        <service id="integrated_content.form.custom_field_listener" class="Integrated\Bundle\ContentBundle\Form\EventListener\CustomFieldListener">
+            <tag name="integrated_content.form.event_subscriber"/>
+        </service>
 
-           <service id="integrated_content.form.type.image_choice" class="Integrated\Bundle\ContentBundle\Form\Type\ImageChoiceType">
-                      <argument type="service" id="doctrine_mongodb.odm.document_manager" />
-                      <tag name="form.type" />
-           </service>
+        <service id="integrated_content.form.type.image_choice" class="Integrated\Bundle\ContentBundle\Form\Type\ImageChoiceType">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager"/>
+            <tag name="form.type"/>
+        </service>
 
-           <service id="integrated_content.form.type.csv_array" class="Integrated\Bundle\ContentBundle\Form\Type\CsvArray">
-                      <tag name="form.type" />
-           </service>
+        <service id="integrated_content.form.type.csv_array" class="Integrated\Bundle\ContentBundle\Form\Type\CsvArray">
+            <tag name="form.type"/>
+        </service>
 
-           <service id="integrated_content.form.custom_fields_type" class="Integrated\Bundle\ContentBundle\Form\Type\CustomFieldsType">
-                      <tag name="form.type" />
-           </service>
+        <service id="integrated_content.form.custom_fields_type" class="Integrated\Bundle\ContentBundle\Form\Type\CustomFieldsType">
+            <tag name="form.type"/>
+        </service>
 
-           <service id="integrated_content.form.actions.type" class="Integrated\Bundle\ContentBundle\Form\Type\ActionsType">
-                      <tag name="form.type" />
-           </service>
+        <service id="integrated_content.form.actions.type" class="Integrated\Bundle\ContentBundle\Form\Type\ActionsType">
+            <tag name="form.type"/>
+        </service>
 
-           <service id="integrated_content.form.content.relations.type" class="Integrated\Bundle\ContentBundle\Form\Type\RelationsType">
-                      <argument type="service" id="doctrine_mongodb"/>
-                      <tag name="form.type" />
-           </service>
+        <service id="integrated_content.form.content.relations.type" class="Integrated\Bundle\ContentBundle\Form\Type\RelationsType">
+            <argument type="service" id="doctrine_mongodb"/>
+            <tag name="form.type"/>
+        </service>
 
-           <service id="integrated_content.form.content_type.channel.repository" alias="integrated_content.form.channel.repository" />
+        <service id="integrated_content.form.content_type.channel.repository" alias="integrated_content.form.channel.repository"/>
 
-           <service id="integrated_content.form.content_type.type" class="Integrated\Bundle\ContentBundle\Form\Type\ContentTypeFormType">
-                      <tag name="form.type" />
-           </service>
+        <service id="integrated_content.form.content_type.type" class="Integrated\Bundle\ContentBundle\Form\Type\ContentTypeFormType">
+            <tag name="form.type"/>
+        </service>
 
-           <!-- ContentType fields -->
-                      <service id="integrated_content.form.type.content_type.fields_type" class="Integrated\Bundle\ContentBundle\Form\Type\ContentType\FieldsType">
-                                 <tag name="form.type" />
-                      </service>
+        <!-- ContentType fields -->
+        <service id="integrated_content.form.type.content_type.fields_type" class="Integrated\Bundle\ContentBundle\Form\Type\ContentType\FieldsType">
+            <tag name="form.type"/>
+        </service>
 
-                      <service id="integrated_content.form.type.content_type.fields.default_type" class="Integrated\Bundle\ContentBundle\Form\Type\ContentType\Fields\DefaultType">
-                                 <tag name="form.type" />
-                      </service>
+        <service id="integrated_content.form.type.content_type.fields.default_type" class="Integrated\Bundle\ContentBundle\Form\Type\ContentType\Fields\DefaultType">
+            <tag name="form.type"/>
+        </service>
 
-                      <service id="integrated_content.form.type.content_type.fields.custom_type" class="Integrated\Bundle\ContentBundle\Form\Type\ContentType\Fields\CustomType">
-                                 <argument type="service" id="integrated_content.form.registry" />
-                                 <tag name="form.type" />
-                      </service>
+        <service id="integrated_content.form.type.content_type.fields.custom_type" class="Integrated\Bundle\ContentBundle\Form\Type\ContentType\Fields\CustomType">
+            <argument type="service" id="integrated_content.form.registry"/>
+            <tag name="form.type"/>
+        </service>
 
-                      <service id="integrated_content.form.type.content_type.fields.collection.default_type" class="Integrated\Bundle\ContentBundle\Form\Type\ContentType\Fields\Collection\DefaultType">
-                                 <tag name="form.type" />
-                      </service>
+        <service id="integrated_content.form.type.content_type.fields.collection.default_type" class="Integrated\Bundle\ContentBundle\Form\Type\ContentType\Fields\Collection\DefaultType">
+            <tag name="form.type"/>
+        </service>
 
-                      <service id="integrated_content.form.content_type.channels.type" class="Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelsType">
-                                 <tag name="form.type" />
-                      </service>
+        <service id="integrated_content.form.content_type.channels.type" class="Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelsType">
+            <tag name="form.type"/>
+        </service>
 
-                      <service id="integrated_content.form.content_type.channel.collection.type" class="Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelCollectionType">
-                                 <argument type="service" id="integrated_content.form.content_type.channel.repository" />
-                                 <tag name="form.type" />
-                      </service>
+        <service id="integrated_content.form.content_type.channel.collection.type"
+                 class="Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelCollectionType">
+            <argument type="service" id="integrated_content.form.content_type.channel.repository"/>
+            <tag name="form.type"/>
+        </service>
 
-                      <service id="integrated_content.form.content_type.channel.type" class="Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelType" />
+        <service id="integrated_content.form.content_type.channel.type" class="Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelType"/>
 
-                      <service id="integrated_content.form.type.channel" class="Integrated\Bundle\ContentBundle\Form\Type\ChannelType">
-                                 <tag name="form.type" />
-                      </service>
+        <service id="integrated_content.form.type.channel" class="Integrated\Bundle\ContentBundle\Form\Type\ChannelType">
+            <tag name="form.type"/>
+        </service>
 
-                      <service id="integrated_content.form.delete.type" class="Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType" />
+        <service id="integrated_content.form.delete.type" class="Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType"/>
 
-                      <service id="integrated_content.form.type.relation" class="Integrated\Bundle\ContentBundle\Form\Type\RelationType">
-                                 <tag name="form.type" />
-                      </service>
+        <service id="integrated_content.form.type.relation" class="Integrated\Bundle\ContentBundle\Form\Type\RelationType">
+            <tag name="form.type"/>
+        </service>
 
-                      <service id="integrated_content.form.type.phonenumber" class="Integrated\Bundle\ContentBundle\Form\Type\PhonenumberType">
-                                 <tag name="form.type" />
-                      </service>
+        <service id="integrated_content.form.type.phonenumber" class="Integrated\Bundle\ContentBundle\Form\Type\PhonenumberType">
+            <tag name="form.type"/>
+        </service>
 
-                      <service id="integrated_content.form.type.address" class="Integrated\Bundle\ContentBundle\Form\Type\AddressType">
-                                 <tag name="form.type" />
-                      </service>
+        <service id="integrated_content.form.type.address" class="Integrated\Bundle\ContentBundle\Form\Type\AddressType">
+            <tag name="form.type"/>
+        </service>
 
-                      <service id="integrated_formtype_form_type_author" class="Integrated\Bundle\ContentBundle\Form\Type\AuthorType">
-                                 <argument type="service" id="doctrine_mongodb" />
-                                 <argument type="service" id="integrated_content.content_type.manager" />
+        <service id="integrated_formtype_form_type_author" class="Integrated\Bundle\ContentBundle\Form\Type\AuthorType">
+            <argument type="service" id="doctrine_mongodb"/>
+            <argument type="service" id="integrated_content.content_type.manager"/>
 
-                                 <tag name="form.type" />
-                      </service>
+            <tag name="form.type"/>
+        </service>
 
-                      <service id="integrated_content.form.search_selection.type" class="Integrated\Bundle\ContentBundle\Form\Type\SearchSelectionType">
-                                 <argument type="service" id="security.authorization_checker" />
-                                 <tag name="form.type" />
-                      </service>
+        <service id="integrated_content.form.search_selection.type" class="Integrated\Bundle\ContentBundle\Form\Type\SearchSelectionType">
+            <argument type="service" id="security.authorization_checker"/>
+            <tag name="form.type"/>
+        </service>
 
-                      <service id="integrated_content.form.search_selection_choice.type" class="Integrated\Bundle\ContentBundle\Form\Type\SearchSelectionChoiceType">
-                                 <argument type="service" id="doctrine_mongodb.odm.document_manager" />
-                                 <argument type="service" id="security.token_storage" />
+        <service id="integrated_content.form.search_selection_choice.type" class="Integrated\Bundle\ContentBundle\Form\Type\SearchSelectionChoiceType">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager"/>
+            <argument type="service" id="security.token_storage"/>
 
-                                 <tag name="form.type" />
-                      </service>
+            <tag name="form.type"/>
+        </service>
 
-                      <service id="integrated_content.form.publish_time.type" class="Integrated\Bundle\ContentBundle\Form\Type\PublishTimeType">
-                                 <tag name="form.type" />
-                      </service>
+        <service id="integrated_content.form.publish_time.type" class="Integrated\Bundle\ContentBundle\Form\Type\PublishTimeType">
+            <tag name="form.type"/>
+        </service>
 
-                      <service id="integrated_formtype.form.content_type_choice" class="Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChoice">
-                                 <argument type="service" id="integrated_content.content_type_repository" />
-                                 <argument type="service" id="integrated_content.content_type.manager" />
-                                 <argument type="service" id="security.authorization_checker" />
-                                 <tag name="form.type" />
-                      </service>
+        <service id="integrated_formtype.form.content_type_choice" class="Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChoice">
+            <argument type="service" id="integrated_content.content_type_repository"/>
+            <argument type="service" id="integrated_content.content_type.manager"/>
+            <argument type="service" id="security.authorization_checker"/>
+            <tag name="form.type"/>
+        </service>
 
-                      <service id="integrated_content.form.listener.form_field" class="Integrated\Bundle\ContentBundle\Form\EventListener\FormFieldSubscriber">
-                                 <argument type="service" id="security.authorization_checker" />
-                                 <tag name="integrated_content.form.event_subscriber" />
-                      </service>
+        <service id="integrated_content.form.listener.form_field" class="Integrated\Bundle\ContentBundle\Form\EventListener\FormFieldSubscriber">
+            <argument type="service" id="security.authorization_checker"/>
+            <tag name="integrated_content.form.event_subscriber"/>
+        </service>
 
-                      <service id="integrated_content.form.type.primary_channel" class="Integrated\Bundle\ContentBundle\Form\Type\PrimaryChannelType">
-                                 <argument type="service" id="translator" />
-                                 <tag name="form.type" />
-                      </service>
+        <service id="integrated_content.form.type.primary_channel" class="Integrated\Bundle\ContentBundle\Form\Type\PrimaryChannelType">
+            <argument type="service" id="translator"/>
+            <tag name="form.type"/>
+        </service>
 
-                      <service id="integrated_content.form.type.job.company_job" class="Integrated\Bundle\ContentBundle\Form\Type\Job\CompanyJobType">
-                                 <argument type="service" id="integrated_content.content_type.manager" />
-                                 <tag name="form.type" />
-                      </service>
+        <service id="integrated_content.form.type.job.company_job" class="Integrated\Bundle\ContentBundle\Form\Type\Job\CompanyJobType">
+            <argument type="service" id="integrated_content.content_type.manager"/>
+            <tag name="form.type"/>
+        </service>
 
-                      <service id="integrated_content.form.type.job.contact_persons" class="Integrated\Bundle\ContentBundle\Form\Type\Job\ContactPersonsType">
-                                 <tag name="form.type" />
-                      </service>
+        <service id="integrated_content.form.type.job.contact_persons" class="Integrated\Bundle\ContentBundle\Form\Type\Job\ContactPersonsType">
+            <tag name="form.type"/>
+        </service>
 
-                      <service id="integrated_content.event_listener.scope_subscriber" class="Integrated\Bundle\ContentBundle\Form\EventListener\ScopeEventSubscriber">
-                                 <argument type="service" id="doctrine.orm.entity_manager" />
-                                 <tag name="doctrine_mongodb.odm.event_listener" event="postLoad" />
-                      </service>
+        <service id="integrated_content.event_listener.scope_subscriber" class="Integrated\Bundle\ContentBundle\Form\EventListener\ScopeEventSubscriber">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <tag name="doctrine_mongodb.odm.event_listener" event="postLoad"/>
+        </service>
 
-                      <service id="integrated_bundle_content.form.type.bulk_action_relation" class="Integrated\Bundle\ContentBundle\Form\Type\BulkActionRelationType">
-                                 <argument type="service" id="router" />
-                                 <argument type="string">integrated_content_content_index</argument>
-                                 <argument type="collection">
-                                            <argument type="string" key="_format">json</argument>
-                                 </argument>
+        <service id="integrated_bundle_content.form.type.bulk_action_relation" class="Integrated\Bundle\ContentBundle\Form\Type\BulkActionRelationType">
+            <argument type="service" id="router"/>
+            <argument type="string">integrated_content_content_index</argument>
+            <argument type="collection">
+                <argument type="string" key="_format">json</argument>
+            </argument>
 
-                                 <tag name="form.type" />
-                      </service>
+            <tag name="form.type"/>
+        </service>
 
-                      <service id="integrated_bundle_content.form.type.bulk_action_relation_references" class="Integrated\Bundle\ContentBundle\Form\Type\BulkActionRelationReferencesType">
-                                 <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+        <service id="integrated_bundle_content.form.type.bulk_action_relation_references" class="Integrated\Bundle\ContentBundle\Form\Type\BulkActionRelationReferencesType">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager"/>
 
-                                 <tag name="form.type" />
-                      </service>
+            <tag name="form.type"/>
+        </service>
 
-                      <service id="integrated_content.form.type.bulk_actions" class="Integrated\Bundle\ContentBundle\Form\Type\BulkActionsType">
-                                 <argument type="service" id="integrated_content.bulk.form.provider" />
+        <service id="integrated_content.form.type.bulk_actions" class="Integrated\Bundle\ContentBundle\Form\Type\BulkActionsType">
+            <argument type="service" id="integrated_content.bulk.form.provider"/>
 
-                                 <tag name="form.type" />
-                      </service>
+            <tag name="form.type"/>
+        </service>
 
-                      <service id="integrated_content.form.type.channel_permissions" class="Integrated\Bundle\ContentBundle\Form\Type\PermissionsType">
-                                 <argument type="service" id="integrated_user.repository.group" />
-                                 <tag name="form.type" />
-                      </service>
+        <service id="integrated_content.form.type.channel_permissions" class="Integrated\Bundle\ContentBundle\Form\Type\PermissionsType">
+            <argument type="service" id="integrated_user.repository.group"/>
+            <tag name="form.type"/>
+        </service>
 
-           </services>
+    </services>
 
 </container>

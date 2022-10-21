@@ -1,48 +1,33 @@
 <?php
 
-/*
- * This file is part of the Integrated package.
- *
- * (c) e-Active B.V. <integrated@e-active.nl>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Integrated\Bundle\FormTypeBundle\EventListener;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
 use Integrated\Bundle\ContentBundle\Document\Content\File;
-use Integrated\Bundle\ContentBundle\Event\HandleRequestEvent;
-use Integrated\Bundle\ContentBundle\Events\IntegratedHttpRequestHandlerEvents;
 use Integrated\Bundle\ContentBundle\Relation\HtmlRelation;
 use Integrated\Bundle\FormTypeBundle\Form\Type\EditorType;
 use Integrated\Common\Content\ContentInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
-/**
- * @author Johnny Borg <johnny@e-active.nl>
- */
 class EditorImageRelationEventListener implements EventSubscriberInterface
 {
     /**
      * @var DocumentManager
      */
-    private $documentManager;
+    private $manager;
 
     /**
      * @var HtmlRelation
      */
-    private $htmlRelation;
+    private $parser;
 
-    /**
-     * @param DocumentManager $documentManager
-     */
-    public function __construct(DocumentManager $documentManager)
+    public function __construct(DocumentManager $manager, HtmlRelation $parser)
     {
-        $this->htmlRelation = new HtmlRelation();
-        $this->documentManager = $documentManager;
+        $this->manager = $manager;
+        $this->parser = $parser;
     }
 
     /**
@@ -51,47 +36,52 @@ class EditorImageRelationEventListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            IntegratedHttpRequestHandlerEvents::POST_HANDLE => 'postHandleRequest',
+            FormEvents::POST_SUBMIT => 'handleRelations',
         ];
     }
 
-    /**
-     * @param HandleRequestEvent $event
-     */
-    public function postHandleRequest(HandleRequestEvent $event)
+    public function handleRelations(FormEvent $event)
     {
-        // The document binded to the form
-        $document = $event->getData();
+        $form = $event->getForm();
 
-        if ($document instanceof ContentInterface) {
-            // Check if we've already got something
-            if ($relation = $document->getRelation(EditorType::RELATION)) {
-                $relation->getReferences()->clear();
-            } else {
-                $relation = (new Relation())
-                    ->setRelationId(EditorType::RELATION)
-                    ->setRelationType('embedded')
-                ;
-            }
+        if (!$form->isRoot()) {
+            return;
+        }
 
-            // Add the new relations
-            foreach ($event->getForm()->all() as $form) {
-                $type = $form->getConfig()->getType()->getInnerType();
-                if ($type instanceof EditorType) {
-                    if ($data = $form->getData()) {
-                        foreach ($this->htmlRelation->read($data) as $id) {
-                            if ($image = $this->documentManager->find(File::class, $id)) {
-                                $relation->addReference($image);
-                            }
+        $content = $event->getData();
+
+        if (!$content instanceof ContentInterface) {
+            return;
+        }
+
+        $relation = $content->getRelation(EditorType::RELATION);
+
+        if (!$relation = $content->getRelation(EditorType::RELATION)) {
+            $relation = (new Relation())
+                ->setRelationId(EditorType::RELATION)
+                ->setRelationType('embedded');
+        }
+
+        $relation->getReferences()->clear();
+
+        foreach ($event->getForm() as $child) {
+            if ($child->getConfig()->getType()->getInnerType() instanceof EditorType) {
+                $data = $child->getData();
+
+                if (\is_string($data) && trim($data)) {
+                    foreach ($this->parser->read($data) as $id) {
+                        if ($image = $this->manager->find(File::class, $id)) {
+                            $relation->addReference($image);
                         }
                     }
                 }
             }
+        }
 
-            // Only add the relation if there's something
-            if ($relation->getReferences()->count()) {
-                $document->addRelation($relation);
-            }
+        if ($relation->getReferences()->count()) {
+            $content->addRelation($relation);
+        } else {
+            $content->removeRelation($relation);
         }
     }
 }
