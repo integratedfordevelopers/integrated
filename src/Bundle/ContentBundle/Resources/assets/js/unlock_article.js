@@ -41,6 +41,10 @@ $('a:not(form.content-form a), form.content-form button[name*=cancel]').on('clic
     const url = $(this).attr('href');
 
     if (url && url !== '#') {
+        if ($(this).attr('target') === '_blank') {
+            return;
+        }
+
         e.preventDefault();
 
         if (form.data('changed')) {
