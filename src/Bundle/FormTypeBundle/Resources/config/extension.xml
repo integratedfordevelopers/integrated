@@ -7,11 +7,16 @@
     <services>
 
         <service id="Integrated\Bundle\FormTypeBundle\Form\Extension\TypeSetterExtension">
-            <tag name="form.type_extension" extended_type="Symfony\Component\Form\Extension\Core\Type\FormType" alias="form" />
+            <tag name="form.type_extension" />
         </service>
 
         <service id="Integrated\Bundle\FormTypeBundle\Form\Extension\ButtonTypeExtension">
-            <tag name="form.type_extension" extended_type="Symfony\Component\Form\Extension\Core\Type\ButtonType" alias="button" />
+            <tag name="form.type_extension" />
+        </service>
+
+        <service id="Integrated\Bundle\FormTypeBundle\Form\Extension\EditorImageRelationExtension">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager"/>
+            <tag name="form.type_extension" />
         </service>
 
     </services>
