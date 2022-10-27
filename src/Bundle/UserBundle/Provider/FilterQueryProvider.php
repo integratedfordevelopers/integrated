@@ -45,7 +45,7 @@ class FilterQueryProvider
 
         if (isset($data['q'])) {
             $queryBuilder
-                ->andWhere('User.username LIKE :q')
+                ->andWhere('User.username LIKE :q OR User.email LIKE :q')
                 ->setParameter('q', '%'.$data['q'].'%');
         }
 
