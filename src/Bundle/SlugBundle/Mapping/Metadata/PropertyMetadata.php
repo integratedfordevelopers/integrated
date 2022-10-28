@@ -11,27 +11,89 @@
 
 namespace Integrated\Bundle\SlugBundle\Mapping\Metadata;
 
-use Metadata\PropertyMetadata as BasePropertyMetadata;
+use Integrated\Bundle\SlugBundle\Mapping\PropertyMetadataInterface;
+use ReflectionProperty;
 
-/**
- * Property metadata with slug properties.
- *
- * @author Ger Jan van den Bosch <gerjan@e-active.nl>
- */
-class PropertyMetadata extends BasePropertyMetadata
+class PropertyMetadata implements PropertyMetadataInterface
 {
     /**
-     * @var array
+     * @var string
      */
-    public $slugFields = [];
+    private $name;
+
+    /**
+     * @var string[]
+     */
+    private $fields = [];
 
     /**
      * @var string
      */
-    public $slugSeparator = '-';
+    private $separator;
 
     /**
      * @var int
      */
-    public $slugLengthLimit = 200;
+    private $lengthLimit;
+
+    /**
+     * @var ReflectionProperty
+     */
+    private $reflection;
+
+    /**
+     * @throws \ReflectionException
+     */
+    public function __construct(string $class, string $name, array $fields, string $separator, int $lengthLimit)
+    {
+        $this->name = $name;
+        $this->fields = $fields;
+        $this->separator = $separator;
+        $this->lengthLimit = $lengthLimit;
+
+        $this->reflection = new ReflectionProperty($class, $name);
+        $this->reflection->setAccessible(true);
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getFields(): array
+    {
+        return $this->fields;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSeparator(): string
+    {
+        return $this->separator;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLengthLimit(): int
+    {
+        return $this->lengthLimit;
+    }
+
+    public function getValue(object $object)
+    {
+        return $this->reflection->getValue($object);
+    }
+
+    public function setValue(object $object, $value): void
+    {
+        $this->reflection->setValue($object, $value);
+    }
 }

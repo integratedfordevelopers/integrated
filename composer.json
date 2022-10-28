@@ -34,7 +34,6 @@
         "facebook/graph-sdk": "~5.0",
         "gregwar/image": ">=2.0.25",
         "gregwar/image-bundle": "^v3.0.1",
-        "jms/metadata": "~1.6",
         "knplabs/knp-gaufrette-bundle": "~0.5",
         "knplabs/knp-menu-bundle": "^3.2",
         "knplabs/knp-paginator-bundle": "~5.0",

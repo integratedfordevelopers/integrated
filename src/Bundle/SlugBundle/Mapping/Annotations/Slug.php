@@ -11,20 +11,16 @@
 
 namespace Integrated\Bundle\SlugBundle\Mapping\Annotations;
 
-use Doctrine\Common\Annotations\Annotation;
+use BadMethodCallException;
 
 /**
- * Slug annotation.
- *
- * @author Ger Jan van den Bosch <gerjan@e-active.nl>
- *
  * @Annotation
  * @Target({"PROPERTY"})
  */
-final class Slug extends Annotation
+class Slug
 {
     /**
-     * @var array
+     * @var string[]
      */
     public $fields = [];
 
@@ -37,4 +33,66 @@ final class Slug extends Annotation
      * @var int
      */
     public $lengthLimit = 200;
+
+    /**
+     * @throws BadMethodCallException
+     */
+    public function __construct(array $data)
+    {
+        foreach ($data as $key => $value) {
+            $method = 'set'.str_replace('_', '', $key);
+            if (!method_exists($this, $method)) {
+                throw new BadMethodCallException(sprintf("Unknown property '%s' on annotation '%s'.", $key, static::class));
+            }
+            $this->$method($value);
+        }
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getFields(): array
+    {
+        return $this->fields;
+    }
+
+    /**
+     * @param string[] $fields
+     */
+    public function setFields(array $fields): void
+    {
+        $this->fields = $fields;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSeparator(): string
+    {
+        return $this->separator;
+    }
+
+    /**
+     * @param string $separator
+     */
+    public function setSeparator(string $separator): void
+    {
+        $this->separator = $separator;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLengthLimit(): int
+    {
+        return $this->lengthLimit;
+    }
+
+    /**
+     * @param int $lengthLimit
+     */
+    public function setLengthLimit(int $lengthLimit): void
+    {
+        $this->lengthLimit = $lengthLimit;
+    }
 }

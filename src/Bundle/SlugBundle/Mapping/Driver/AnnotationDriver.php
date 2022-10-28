@@ -12,15 +12,13 @@
 namespace Integrated\Bundle\SlugBundle\Mapping\Driver;
 
 use Doctrine\Common\Annotations\Reader;
+use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
+use Integrated\Bundle\SlugBundle\Mapping\ClassMetadataInterface;
+use Integrated\Bundle\SlugBundle\Mapping\DriverInterface;
 use Integrated\Bundle\SlugBundle\Mapping\Metadata\PropertyMetadata;
-use Metadata\Driver\DriverInterface;
-use Metadata\MergeableClassMetadata;
+use ReflectionClass;
+use ReflectionException;
 
-/**
- * Annotation driver.
- *
- * @author Ger Jan van den Bosch <gerjan@e-active.nl>
- */
 class AnnotationDriver implements DriverInterface
 {
     /**
@@ -28,39 +26,25 @@ class AnnotationDriver implements DriverInterface
      */
     private $reader;
 
-    /**
-     * @param Reader $reader
-     */
     public function __construct(Reader $reader)
     {
         $this->reader = $reader;
     }
 
     /**
-     * {@inheritdoc}
+     * @throws ReflectionException
      */
-    public function loadMetadataForClass(\ReflectionClass $class)
+    public function loadMetadataForClass(string $class, ClassMetadataInterface $metadata): void
     {
-        $classMetadata = new MergeableClassMetadata($class->getName());
+        $reflectionClass = new ReflectionClass($class);
 
-        foreach ($class->getProperties() as $reflectionProperty) {
-            $propertyMetadata = new PropertyMetadata($class->getName(), $reflectionProperty->getName());
-
-            /** @var \Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug $annotation */
-            $annotation = $this->reader->getPropertyAnnotation(
-                $reflectionProperty,
-                'Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug'
-            );
-
-            if (null !== $annotation) {
-                $propertyMetadata->slugFields = $annotation->fields;
-                $propertyMetadata->slugSeparator = $annotation->separator;
-                $propertyMetadata->slugLengthLimit = $annotation->lengthLimit;
+        foreach ($reflectionClass->getProperties() as $property) {
+            /** @var Slug $slug */
+            if (!$slug = $this->reader->getPropertyAnnotation($property, Slug::class)) {
+                continue;
             }
 
-            $classMetadata->addPropertyMetadata($propertyMetadata);
+            $metadata->addProperty(new PropertyMetadata($class, $property->getName(), $slug->getFields(), $slug->getSeparator(), $slug->getLengthLimit()));
         }
-
-        return $classMetadata;
     }
 }
