@@ -20,7 +20,7 @@
         <field name="username"/>
         <field name="password"/>
         <field name="salt" column="password_salt" nullable="true"/>
-        <field name="email" unique="true" nullable="true"/>
+        <field name="email" nullable="true"/>
         <field name="createdAt" column="created_at" type="datetime"/>
         <field name="enabled" type="boolean"/>
         <field name="relation" nullable="true"/>
