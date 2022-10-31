@@ -325,6 +325,7 @@ class User implements UserInterface
     {
         $relation = $relation instanceof \Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation ? $relation : null;
 
+        $this->email = $relation->getEmail();
         $this->relation = $relation ? $relation->getId() : null;
         $this->relation_instance = $relation;
     }
