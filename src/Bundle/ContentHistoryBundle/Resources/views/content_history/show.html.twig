@@ -1,7 +1,28 @@
 {% extends '@IntegratedContent/base.html.twig' %}
 
-{% block header %}{% endblock %}
-{% block crumbs %}{% endblock %}
+{% block crumbs %}
+    <div class="breadcrumb-holder">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{{ path('integrated_content_content_index') }}">{% trans %}Content navigator{% endtrans %}</a>
+                </li>
+                <li>
+                    <a href="{{ path('integrated_content_content_index', { 'contenttypes': [ type.id ] }) }}">{{ type.name|trans }}</a>
+                </li>
+                <li>
+                    <a href="{{ path('integrated_content_content_edit', { 'id': content.id }) }}">{{ content|default(type.name|trans) }}</a>
+                </li>
+                <li>
+                    <a href="{{ path('integrated_content_history_index', { 'id': content.id }) }}">{% trans %}History{% endtrans %}</a>
+                </li>
+                {% block crumbs_items %}
+                    <li class="active">{% trans %}Show{% endtrans %}</li>
+                {% endblock %}
+            </ol>
+        </div>
+    </div>
+{% endblock %}
 
 {% block content %}
 <section class="section-white section-padding section-shadow section-radius">

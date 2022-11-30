@@ -11,10 +11,13 @@
 
 namespace Integrated\Bundle\ContentHistoryBundle\Controller;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
+use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentHistoryBundle\Document\ContentHistory;
 use Integrated\Bundle\ContentHistoryBundle\History\Parser;
+use Integrated\Common\ContentType\ContentTypeInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +30,7 @@ class ContentHistoryController extends AbstractController
     /**
      * @var DocumentRepository
      */
-    protected $repository;
+    protected $manager;
 
     /**
      * @var Parser
@@ -40,15 +43,21 @@ class ContentHistoryController extends AbstractController
     protected $paginator;
 
     /**
+     * @var ContentTypeManager
+     */
+    protected $contentTypeManager;
+
+    /**
      * @param DocumentRepository $repository
      * @param Parser             $parser
      * @param PaginatorInterface $paginator
      */
-    public function __construct(DocumentRepository $repository, Parser $parser, PaginatorInterface $paginator)
+    public function __construct(DocumentManager $manager, Parser $parser, PaginatorInterface $paginator, ContentTypeManager $contentTypeManager)
     {
-        $this->repository = $repository;
+        $this->manager = $manager;
         $this->parser = $parser;
         $this->paginator = $paginator;
+        $this->contentTypeManager = $contentTypeManager;
     }
 
     /**
@@ -59,7 +68,10 @@ class ContentHistoryController extends AbstractController
      */
     public function index(Content $content, Request $request)
     {
-        $builder = $this->repository->createQueryBuilder();
+        /** @var ContentTypeInterface $contentType */
+        $contentType = $this->contentTypeManager->getType($content->getContentType());
+
+        $builder = $this->manager->getRepository(ContentHistory::class)->createQueryBuilder();
 
         $builder->field('contentId')->equals($content->getId());
         $builder->sort('date', 'desc');
@@ -71,6 +83,8 @@ class ContentHistoryController extends AbstractController
         );
 
         return $this->render('@IntegratedContentHistory/content_history/index.html.twig', [
+            'type' => $contentType,
+            'content' => $content,
             'paginator' => $paginator,
         ]);
     }
@@ -82,7 +96,14 @@ class ContentHistoryController extends AbstractController
      */
     public function show(ContentHistory $contentHistory)
     {
+        $content = $this->manager->find(Content::class, $contentHistory->getContentId());
+
+        /** @var ContentTypeInterface $contentType */
+        $contentType = $this->contentTypeManager->getType($content->getContentType());
+
         return $this->render('@IntegratedContentHistory/content_history/show.html.twig', [
+            'type' => $contentType,
+            'content' => $content,
             'contentHistory' => $contentHistory,
             'changeSet' => $this->parser->getReadableChangeset($contentHistory),
         ]);
@@ -98,7 +119,7 @@ class ContentHistoryController extends AbstractController
     {
         return $this->render('@IntegratedContentHistory/content_history/history.html.twig', [
             'content' => $content,
-            'documents' => $this->repository->findBy(
+            'documents' => $this->manager->getRepository(ContentHistory::class)->findBy(
                 ['contentId' => $content->getId()],
                 ['date' => 'desc'],
                 $limit + 1
