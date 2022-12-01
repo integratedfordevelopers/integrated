@@ -17,10 +17,10 @@ use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentHistoryBundle\Document\ContentHistory;
 use Integrated\Bundle\ContentHistoryBundle\History\Parser;
-use Integrated\Common\ContentType\ContentTypeInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -47,11 +47,6 @@ class ContentHistoryController extends AbstractController
      */
     protected $contentTypeManager;
 
-    /**
-     * @param DocumentRepository $repository
-     * @param Parser             $parser
-     * @param PaginatorInterface $paginator
-     */
     public function __construct(DocumentManager $manager, Parser $parser, PaginatorInterface $paginator, ContentTypeManager $contentTypeManager)
     {
         $this->manager = $manager;
@@ -60,15 +55,8 @@ class ContentHistoryController extends AbstractController
         $this->contentTypeManager = $contentTypeManager;
     }
 
-    /**
-     * @param Content $content
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function index(Content $content, Request $request)
+    public function index(Content $content, Request $request): Response
     {
-        /** @var ContentTypeInterface $contentType */
         $contentType = $this->contentTypeManager->getType($content->getContentType());
 
         $builder = $this->manager->getRepository(ContentHistory::class)->createQueryBuilder();
@@ -89,16 +77,9 @@ class ContentHistoryController extends AbstractController
         ]);
     }
 
-    /**
-     * @param ContentHistory $contentHistory
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function show(ContentHistory $contentHistory)
+    public function show(ContentHistory $contentHistory): Response
     {
         $content = $this->manager->find(Content::class, $contentHistory->getContentId());
-
-        /** @var ContentTypeInterface $contentType */
         $contentType = $this->contentTypeManager->getType($content->getContentType());
 
         return $this->render('@IntegratedContentHistory/content_history/show.html.twig', [
@@ -109,13 +90,7 @@ class ContentHistoryController extends AbstractController
         ]);
     }
 
-    /**
-     * @param Content $content
-     * @param int     $limit
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function history(Content $content, $limit = 3)
+    public function history(Content $content, int $limit = 3): Response
     {
         return $this->render('@IntegratedContentHistory/content_history/history.html.twig', [
             'content' => $content,
