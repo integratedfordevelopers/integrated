@@ -26,7 +26,7 @@
 
         {% if documents|length > limit %}
             <br />
-            <a href="{{ path('integrated_content_history_index', { 'id': content.id }) }}">Show full history</a>
+            <a href="{{ path('integrated_content_history_index', { 'id': content.id }) }}">{% trans %}Show full history{% endtrans %}</a>
         {% endif %}
     </div>
 {% endif %}
