@@ -16,9 +16,7 @@
         </service>
 
         <service id="Integrated\Bundle\UserBundle\Service\Mailer">
-            <argument type="service" id="integrated_user.user.manager" />
             <argument type="service" id="mailer" />
-            <argument type="service" id="twig" />
             <argument type="service" id="translator" />
             <argument type="service" id="Integrated\Bundle\UserBundle\Service\KeyGenerator" />
             <argument>%mailer_from%</argument>
