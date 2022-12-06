@@ -93,7 +93,7 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($user = $this->userManager->findByUsernameAndScope($form->get('email')->getData())) {
+            if ($user = $this->userManager->findEnabledByUsernameAndScope($form->get('email')->getData())) {
                 if ($user->isEnabled()) {
                     $this->mailer->sendPasswordResetMail($user);
                 }
