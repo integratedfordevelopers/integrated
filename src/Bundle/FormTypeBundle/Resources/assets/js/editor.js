@@ -56,7 +56,7 @@ $('.integrated_tinymce').each(function(key, elem){
         add_unload_trigger: false,
         schema: "html5",
         menubar: false,
-        toolbar: "styleselect | bold italic underline | bullist numlist | link integratedImage integratedVideo integratedColumn image media print preview fullpage table | charmap pagebreak | pastetext searchreplace | code fullscreen",
+        toolbar: "styleselect | bold italic underline | bullist numlist | link anchor integratedImage integratedVideo integratedColumn image media print preview fullpage table | charmap pagebreak | pastetext searchreplace | code fullscreen",
         statusbar: true,
         statusbar_size: "small",
         width: "100%",

@@ -10,31 +10,18 @@
 
 namespace Integrated\Bundle\UserBundle\Service;
 
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
-use Symfony\Component\Mime\Email;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
-use Twig\Error\Error;
-use Integrated\Bundle\UserBundle\Doctrine\UserManager;
 use Integrated\Bundle\UserBundle\Model\User;
 
 class Mailer
 {
     /**
-     * @var UserManager
-     */
-    private $userManager;
-
-    /**
      * @var MailerInterface
      */
     private $mailer;
-
-    /**
-     * @var Environment
-     */
-    private $templating;
 
     /**
      * @var TranslatorInterface
@@ -56,22 +43,9 @@ class Mailer
      */
     private $name;
 
-    /**
-     * Password constructor.
-     *
-     * @param UserManager         $userManager
-     * @param MailerInterface     $mailer
-     * @param Environment         $templating
-     * @param TranslatorInterface $translator
-     * @param KeyGenerator        $keyGenerator
-     * @param                     $from
-     * @param                     $name
-     */
-    public function __construct(UserManager $userManager, MailerInterface $mailer, Environment $templating, TranslatorInterface $translator, KeyGenerator $keyGenerator, $from, $name)
+    public function __construct(MailerInterface $mailer, TranslatorInterface $translator, KeyGenerator $keyGenerator, ?string $from, ?string $name)
     {
-        $this->userManager = $userManager;
         $this->mailer = $mailer;
-        $this->templating = $templating;
         $this->translator = $translator;
         $this->keyGenerator = $keyGenerator;
         $this->from = $from;
@@ -81,13 +55,12 @@ class Mailer
     /**
      * @param User $user
      *
-     * @throws Error
+     * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
      */
     public function sendPasswordResetMail(User $user): void
     {
         $timestamp = time();
         $key = $this->keyGenerator->generateKey($timestamp, $user);
-        $template = 'IntegratedUser/mail/password.reset.html.twig';
 
         $data = [
             'subject' => '[Integrated] '.$this->translator->trans('Password reset'),
@@ -96,11 +69,12 @@ class Mailer
             'key' => $key,
         ];
 
-        $message = (new Email())
+        $message = (new TemplatedEmail())
             ->from(new Address($this->from, $this->name))
             ->to($user->getUserIdentifier())
+            ->htmlTemplate('@IntegratedUser/mail/password.reset.html.twig')
             ->subject($data['subject'])
-            ->html($this->templating->render($template, $data));
+            ->context($data);
 
         $this->mailer->send($message);
     }

@@ -11,13 +11,16 @@
 
 namespace Integrated\Bundle\ContentHistoryBundle\Controller;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
+use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentHistoryBundle\Document\ContentHistory;
 use Integrated\Bundle\ContentHistoryBundle\History\Parser;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -27,7 +30,7 @@ class ContentHistoryController extends AbstractController
     /**
      * @var DocumentRepository
      */
-    protected $repository;
+    protected $manager;
 
     /**
      * @var Parser
@@ -40,26 +43,23 @@ class ContentHistoryController extends AbstractController
     protected $paginator;
 
     /**
-     * @param DocumentRepository $repository
-     * @param Parser             $parser
-     * @param PaginatorInterface $paginator
+     * @var ContentTypeManager
      */
-    public function __construct(DocumentRepository $repository, Parser $parser, PaginatorInterface $paginator)
+    protected $contentTypeManager;
+
+    public function __construct(DocumentManager $manager, Parser $parser, PaginatorInterface $paginator, ContentTypeManager $contentTypeManager)
     {
-        $this->repository = $repository;
+        $this->manager = $manager;
         $this->parser = $parser;
         $this->paginator = $paginator;
+        $this->contentTypeManager = $contentTypeManager;
     }
 
-    /**
-     * @param Content $content
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function index(Content $content, Request $request)
+    public function index(Content $content, Request $request): Response
     {
-        $builder = $this->repository->createQueryBuilder();
+        $contentType = $this->contentTypeManager->getType($content->getContentType());
+
+        $builder = $this->manager->getRepository(ContentHistory::class)->createQueryBuilder();
 
         $builder->field('contentId')->equals($content->getId());
         $builder->sort('date', 'desc');
@@ -71,34 +71,30 @@ class ContentHistoryController extends AbstractController
         );
 
         return $this->render('@IntegratedContentHistory/content_history/index.html.twig', [
+            'type' => $contentType,
+            'content' => $content,
             'paginator' => $paginator,
         ]);
     }
 
-    /**
-     * @param ContentHistory $contentHistory
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function show(ContentHistory $contentHistory)
+    public function show(ContentHistory $contentHistory): Response
     {
+        $content = $this->manager->find(Content::class, $contentHistory->getContentId());
+        $contentType = $this->contentTypeManager->getType($content->getContentType());
+
         return $this->render('@IntegratedContentHistory/content_history/show.html.twig', [
+            'type' => $contentType,
+            'content' => $content,
             'contentHistory' => $contentHistory,
             'changeSet' => $this->parser->getReadableChangeset($contentHistory),
         ]);
     }
 
-    /**
-     * @param Content $content
-     * @param int     $limit
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function history(Content $content, $limit = 3)
+    public function history(Content $content, int $limit = 3): Response
     {
         return $this->render('@IntegratedContentHistory/content_history/history.html.twig', [
             'content' => $content,
-            'documents' => $this->repository->findBy(
+            'documents' => $this->manager->getRepository(ContentHistory::class)->findBy(
                 ['contentId' => $content->getId()],
                 ['date' => 'desc'],
                 $limit + 1
