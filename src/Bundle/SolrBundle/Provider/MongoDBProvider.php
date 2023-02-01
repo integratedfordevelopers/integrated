@@ -41,6 +41,7 @@ class MongoDBProvider implements ContentProviderInterface, ContentTypeProviderIn
     public function getReferenced($id)
     {
         $iterator = $this->repository->createQueryBuilder()
+            ->setRewindable(false)
             ->field('relations.references.$id')->equals($id)
             ->getQuery()
             ->getIterator();
@@ -54,6 +55,7 @@ class MongoDBProvider implements ContentProviderInterface, ContentTypeProviderIn
     public function getContent($id)
     {
         $iterator = $this->repository->createQueryBuilder()
+            ->setRewindable(false)
             ->field('contentType')->equals($id)
             ->getQuery()
             ->getIterator();
