@@ -2,6 +2,7 @@ import 'bootstrap-sass';
 
 const form = $('form.content-form');
 const modal = $("#content-edit-modal");
+const cancelButton = $('[name*=cancel]', form);
 
 /* handle BACK|FORWARD buttons in browser */
 history.pushState(null, null, location.href);
@@ -40,6 +41,10 @@ if (global.formInvalid) {
 $('a:not(form.content-form a), form.content-form button[name*=cancel]').on('click', function (e) {
     const url = $(this).attr('href');
 
+    if (!cancelButton.length) {
+        return;
+    }
+
     if (url && url !== '#') {
         if ($(this).attr('target') === '_blank') {
             return;
@@ -72,7 +77,7 @@ function leavePage(returnUrl) {
 
     window.onbeforeunload = null;
     form.data('changed', false);
-    $('[name*=cancel]', form).trigger('click');
+    cancelButton.trigger('click');
 }
 
 $('button', form).on('click', function () {
