@@ -27,19 +27,23 @@ class BlockRepository extends DocumentRepository
      */
     public function getTypeChoices(MetadataFactoryInterface $factory, array $ids = null)
     {
-        $qb = $this->createQueryBuilder()
-            ->group(['class' => 1], ['total' => 0])
-            ->reduce('function (curr, result ) { result.total += 1;}');
+        $qb = $this->createAggregationBuilder();
 
         if (null !== $ids) {
-            $qb->field('_id')->in($ids);
+            $qb->match()->field('_id')->in($ids);
         }
 
-        $groupCountBlock = $qb->getQuery()->getIterator();
+        $qb->group()
+            ->field('_id')
+            ->expression('$class')
+            ->field('total')
+            ->sum(1);
+
+        $groupCountBlock = $qb->execute();
 
         $typeCount = [];
         foreach ($groupCountBlock as $result) {
-            $typeCount[$result['class']] = $result['total'];
+            $typeCount[$result['_id']] = $result['total'];
         }
 
         $typeChoices = [];
